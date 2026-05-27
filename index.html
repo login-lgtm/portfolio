@@ -1,0 +1,1309 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Vivien Evers — Brand & Marketing</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #EEECEA;
+      --bg-card: #FFFFFF;
+      --accent: #6B5CE7;
+      --accent-light: #DDD9F7;
+      --text: #1A1A1A;
+      --text-mid: #666666;
+      --text-light: #999999;
+      --border: #D8D4D0;
+      --folder-blue: #6AADDF;
+      --folder-dark: #4A8DBF;
+      --tag-bg: #E8E4E0;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'DM Sans', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      cursor: none;
+      overflow-x: hidden;
+    }
+
+    /* ── CUSTOM CURSOR ─────────────────────────── */
+    .cursor {
+      width: 10px; height: 10px;
+      background: var(--accent);
+      border-radius: 50%;
+      position: fixed;
+      pointer-events: none;
+      z-index: 9999;
+      transform: translate(-50%, -50%);
+      transition: transform 0.1s ease, width 0.2s ease, height 0.2s ease, background 0.2s ease;
+      mix-blend-mode: multiply;
+    }
+    .cursor-ring {
+      width: 36px; height: 36px;
+      border: 1.5px solid var(--accent);
+      border-radius: 50%;
+      position: fixed;
+      pointer-events: none;
+      z-index: 9998;
+      transform: translate(-50%, -50%);
+      transition: transform 0.12s ease, width 0.25s ease, height 0.25s ease, opacity 0.2s ease;
+      opacity: 0.5;
+    }
+    body:hover .cursor { opacity: 1; }
+    a:hover ~ .cursor, button:hover ~ .cursor { width: 20px; height: 20px; }
+
+    /* ── GRAIN OVERLAY ─────────────────────────── */
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+      pointer-events: none;
+      z-index: 9990;
+      opacity: 0.4;
+    }
+
+    /* ── GRID BACKGROUND ───────────────────────── */
+    body::after {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image:
+        linear-gradient(rgba(0,0,0,0.035) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(0,0,0,0.035) 1px, transparent 1px);
+      background-size: 40px 40px;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    /* ── NAV ───────────────────────────────────── */
+    nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 100;
+      padding: 16px 40px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      backdrop-filter: blur(12px);
+      background: rgba(238, 236, 234, 0.85);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .nav-breadcrumb {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      background: white;
+      padding: 6px 14px;
+      border-radius: 20px;
+      border: 1px solid var(--border);
+      font-size: 12px;
+    }
+    .nav-breadcrumb .folder-icon {
+      display: inline-flex;
+      flex-direction: column;
+      gap: 1px;
+      margin-right: 2px;
+    }
+    .folder-tab {
+      width: 12px; height: 4px;
+      background: #90BEDD;
+      border-radius: 2px 2px 0 0;
+    }
+    .folder-body {
+      width: 18px; height: 13px;
+      background: #689DCF;
+      border-radius: 0 2px 2px 2px;
+    }
+    .nav-breadcrumb .sep { color: var(--text-light); }
+    .nav-breadcrumb .active { color: var(--accent); font-weight: 500; }
+
+    .nav-links {
+      display: flex; gap: 32px;
+      list-style: none;
+    }
+    .nav-links a {
+      font-size: 14px;
+      font-weight: 500;
+      color: var(--text);
+      text-decoration: none;
+      position: relative;
+      transition: color 0.2s;
+    }
+    .nav-links a:hover { color: var(--accent); }
+    .nav-links a::after {
+      content: '';
+      position: absolute;
+      bottom: -2px; left: 0;
+      width: 0; height: 1.5px;
+      background: var(--accent);
+      transition: width 0.2s ease;
+    }
+    .nav-links a:hover::after { width: 100%; }
+
+    /* ── HERO ──────────────────────────────────── */
+    #hero {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      padding: 120px 80px 80px;
+      position: relative;
+      z-index: 1;
+    }
+
+    .hero-left { flex: 1; }
+
+    .hero-tag {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: var(--accent-light);
+      color: var(--accent);
+      padding: 6px 16px;
+      border-radius: 20px;
+      font-size: 13px;
+      font-weight: 500;
+      margin-bottom: 28px;
+      opacity: 0;
+      animation: fadeUp 0.6s ease 0.2s forwards;
+    }
+    .hero-tag .dot {
+      width: 6px; height: 6px;
+      background: var(--accent);
+      border-radius: 50%;
+      animation: pulse 2s infinite;
+    }
+    @keyframes pulse {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.5; transform: scale(0.8); }
+    }
+
+    .hero-name {
+      font-family: 'Instrument Serif', serif;
+      font-size: clamp(64px, 8vw, 112px);
+      line-height: 1.0;
+      letter-spacing: -2px;
+      margin-bottom: 8px;
+      opacity: 0;
+      animation: fadeUp 0.7s ease 0.3s forwards;
+    }
+    .hero-name em {
+      font-style: italic;
+      color: var(--accent);
+    }
+
+    .hero-sub {
+      font-size: clamp(18px, 2.5vw, 26px);
+      color: var(--text-mid);
+      font-weight: 300;
+      margin-bottom: 40px;
+      opacity: 0;
+      animation: fadeUp 0.7s ease 0.45s forwards;
+    }
+
+    .hero-ctas {
+      display: flex; gap: 14px; flex-wrap: wrap;
+      opacity: 0;
+      animation: fadeUp 0.7s ease 0.6s forwards;
+    }
+
+    .btn-primary {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: var(--text);
+      color: white;
+      padding: 14px 28px;
+      border-radius: 100px;
+      font-size: 14px;
+      font-weight: 500;
+      text-decoration: none;
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+    .btn-primary:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 24px rgba(0,0,0,0.15);
+    }
+    .btn-secondary {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: transparent;
+      color: var(--text);
+      padding: 14px 28px;
+      border-radius: 100px;
+      font-size: 14px;
+      font-weight: 500;
+      text-decoration: none;
+      border: 1.5px solid var(--border);
+      transition: border-color 0.2s, transform 0.2s;
+    }
+    .btn-secondary:hover {
+      border-color: var(--accent);
+      color: var(--accent);
+      transform: translateY(-2px);
+    }
+
+    /* Floating cards on right */
+    .hero-right {
+      flex: 1;
+      position: relative;
+      height: 500px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .float-card {
+      position: absolute;
+      background: white;
+      border-radius: 16px;
+      box-shadow: 0 8px 40px rgba(0,0,0,0.10);
+      padding: 0;
+      overflow: hidden;
+      animation: floatAnim var(--dur, 4s) ease-in-out infinite;
+      animation-delay: var(--delay, 0s);
+    }
+    @keyframes floatAnim {
+      0%, 100% { transform: translateY(0px) rotate(var(--rot, 0deg)); }
+      50% { transform: translateY(-12px) rotate(var(--rot, 0deg)); }
+    }
+
+    .mac-chrome {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      padding: 10px 14px;
+      background: #F5F3F1;
+      border-bottom: 1px solid var(--border);
+    }
+    .mac-dot {
+      width: 10px; height: 10px;
+      border-radius: 50%;
+    }
+    .mac-dot.red { background: #FF5F57; }
+    .mac-dot.yellow { background: #FFBD2E; }
+    .mac-dot.green { background: #28C940; }
+    .mac-chrome-title {
+      font-size: 11px;
+      color: var(--text-light);
+      margin-left: 6px;
+    }
+
+    .card-content { padding: 20px 24px; }
+
+    .card-main {
+      width: 380px;
+      top: 40px; right: 60px;
+      opacity: 0;
+      animation: fadeUp 0.7s ease 0.5s forwards, floatAnim 5s ease-in-out 1.2s infinite;
+      --rot: -1deg;
+    }
+    .card-main .card-label {
+      font-size: 11px;
+      color: var(--accent);
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      margin-bottom: 6px;
+    }
+    .card-main .card-title {
+      font-family: 'Instrument Serif', serif;
+      font-size: 20px;
+      margin-bottom: 8px;
+    }
+    .card-main .card-desc {
+      font-size: 13px;
+      color: var(--text-mid);
+      line-height: 1.6;
+      margin-bottom: 14px;
+    }
+    .tag-row { display: flex; gap: 6px; flex-wrap: wrap; }
+    .tag {
+      font-size: 11px;
+      background: var(--tag-bg);
+      color: var(--text-mid);
+      padding: 4px 10px;
+      border-radius: 100px;
+    }
+    .tag.accent {
+      background: var(--accent-light);
+      color: var(--accent);
+    }
+
+    .card-small {
+      width: 200px;
+      bottom: 80px; right: 20px;
+      opacity: 0;
+      animation: fadeUp 0.7s ease 0.8s forwards, floatAnim 4s ease-in-out 1.5s infinite;
+      --rot: 2deg;
+      --dur: 4s;
+      --delay: 0.5s;
+    }
+
+    .card-location {
+      width: 190px;
+      top: 200px; left: 20px;
+      opacity: 0;
+      animation: fadeUp 0.7s ease 1s forwards, floatAnim 6s ease-in-out 1.8s infinite;
+      --rot: -2deg;
+      --dur: 6s;
+    }
+
+    /* ── SECTION HEADERS ───────────────────────── */
+    .section-label {
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 12px;
+    }
+    .section-title {
+      font-family: 'Instrument Serif', serif;
+      font-size: clamp(40px, 5vw, 64px);
+      line-height: 1.1;
+      letter-spacing: -1px;
+      margin-bottom: 16px;
+    }
+    .section-sub {
+      font-size: 18px;
+      color: var(--text-mid);
+      font-weight: 300;
+      max-width: 560px;
+    }
+
+    /* ── WORK SECTION ──────────────────────────── */
+    #work {
+      padding: 120px 80px;
+      position: relative;
+      z-index: 1;
+    }
+
+    .work-header {
+      margin-bottom: 60px;
+    }
+
+    /* Finder nav bar */
+    .finder-bar {
+      display: flex;
+      align-items: center;
+      gap: 0;
+      background: white;
+      border-radius: 12px;
+      padding: 0 24px;
+      height: 64px;
+      box-shadow: 0 2px 12px rgba(0,0,0,0.06);
+      margin-bottom: 32px;
+      overflow: hidden;
+    }
+    .finder-dots {
+      display: flex; gap: 6px;
+      margin-right: 20px;
+    }
+    .finder-breadcrumb {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 13px;
+      color: var(--text-mid);
+      margin-right: auto;
+    }
+    .finder-breadcrumb .active { color: var(--text); font-weight: 500; }
+    .finder-folders {
+      display: flex;
+      gap: 28px;
+      margin-left: 40px;
+    }
+    .finder-folder {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      cursor: pointer;
+      padding: 8px 12px;
+      border-radius: 8px;
+      transition: background 0.2s;
+    }
+    .finder-folder:hover { background: var(--tag-bg); }
+    .finder-folder.active { background: var(--accent-light); }
+    .finder-folder.active .folder-body,
+    .finder-folder.active .folder-tab { background: var(--accent); }
+    .finder-folder-info { display: flex; flex-direction: column; }
+    .finder-folder-name {
+      font-size: 13px;
+      font-weight: 500;
+      color: var(--text);
+    }
+    .finder-folder-sub {
+      font-size: 11px;
+      color: var(--text-light);
+    }
+
+    /* Project cards grid */
+    .projects-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 24px;
+    }
+
+    .project-card {
+      background: white;
+      border-radius: 20px;
+      overflow: hidden;
+      box-shadow: 0 4px 24px rgba(0,0,0,0.06);
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      cursor: pointer;
+      opacity: 0;
+      transform: translateY(30px);
+    }
+    .project-card.visible {
+      opacity: 1;
+      transform: translateY(0);
+      transition: opacity 0.6s ease, transform 0.6s ease, box-shadow 0.3s ease;
+    }
+    .project-card:hover {
+      transform: translateY(-6px);
+      box-shadow: 0 16px 48px rgba(0,0,0,0.12);
+    }
+
+    .project-card-chrome { background: #F5F3F1; }
+
+    .project-card-body { padding: 28px; }
+
+    .project-cat {
+      font-size: 11px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--accent);
+      margin-bottom: 8px;
+    }
+    .project-title {
+      font-family: 'Instrument Serif', serif;
+      font-size: 28px;
+      margin-bottom: 10px;
+      line-height: 1.2;
+    }
+    .project-desc {
+      font-size: 14px;
+      color: var(--text-mid);
+      line-height: 1.7;
+      margin-bottom: 20px;
+    }
+    .project-footer {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding-top: 16px;
+      border-top: 1px solid var(--border);
+    }
+    .project-role {
+      font-size: 12px;
+      font-weight: 500;
+      color: var(--text);
+    }
+    .project-year {
+      font-size: 12px;
+      color: var(--text-light);
+    }
+
+    /* ── ABOUT SECTION ─────────────────────────── */
+    #about {
+      padding: 120px 80px;
+      background: #1E1A2E;
+      position: relative;
+      z-index: 1;
+      overflow: hidden;
+    }
+
+    #about::before {
+      content: '';
+      position: absolute;
+      top: -200px; right: -200px;
+      width: 600px; height: 600px;
+      background: radial-gradient(circle, rgba(107, 92, 231, 0.15) 0%, transparent 70%);
+      pointer-events: none;
+    }
+
+    .about-inner {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 80px;
+      align-items: start;
+    }
+
+    .about-statement {
+      font-family: 'Instrument Serif', serif;
+      font-size: clamp(36px, 4vw, 52px);
+      color: white;
+      line-height: 1.2;
+      letter-spacing: -0.5px;
+    }
+    .about-statement em {
+      color: var(--accent-light);
+      font-style: italic;
+    }
+
+    .about-right { }
+
+    .sticky-note {
+      background: #FFF8C5;
+      padding: 28px 32px;
+      border-radius: 4px;
+      margin-bottom: 32px;
+      transform: rotate(-1.5deg);
+      box-shadow: 4px 4px 16px rgba(0,0,0,0.15);
+      font-family: 'Courier New', monospace;
+      font-size: 14px;
+      line-height: 1.8;
+      color: #333;
+      position: relative;
+    }
+    .sticky-note::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 50%;
+      transform: translateX(-50%);
+      display: flex;
+      gap: 20px;
+    }
+    .sticky-pins {
+      display: flex;
+      justify-content: space-around;
+      margin-bottom: 14px;
+    }
+    .sticky-pin {
+      width: 8px; height: 8px;
+      background: rgba(0,0,0,0.2);
+      border-radius: 50%;
+    }
+
+    .values-list {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+    .value-item {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      color: rgba(255,255,255,0.6);
+      font-size: 15px;
+      transition: color 0.2s;
+    }
+    .value-item:hover { color: rgba(255,255,255,0.95); }
+    .value-arrow {
+      color: var(--accent-light);
+      font-size: 16px;
+    }
+
+    /* ── SKILLS SECTION ────────────────────────── */
+    #skills {
+      padding: 120px 80px;
+      position: relative;
+      z-index: 1;
+    }
+
+    .skills-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 20px;
+      margin-top: 60px;
+    }
+
+    .skill-group {
+      background: white;
+      border-radius: 16px;
+      padding: 28px;
+      box-shadow: 0 2px 16px rgba(0,0,0,0.05);
+      opacity: 0;
+      transform: translateY(20px);
+      transition: opacity 0.5s ease, transform 0.5s ease;
+    }
+    .skill-group.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    .skill-group-title {
+      font-size: 12px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--text-light);
+      margin-bottom: 16px;
+    }
+    .skill-tags {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+    .skill-tag {
+      display: inline-block;
+      background: var(--tag-bg);
+      color: var(--text-mid);
+      padding: 6px 12px;
+      border-radius: 8px;
+      font-size: 13px;
+      font-weight: 500;
+      transition: background 0.2s, color 0.2s;
+    }
+    .skill-tag:hover {
+      background: var(--accent-light);
+      color: var(--accent);
+    }
+
+    /* ── CONTACT SECTION ───────────────────────── */
+    #contact {
+      padding: 120px 80px;
+      background: var(--accent);
+      position: relative;
+      z-index: 1;
+      text-align: center;
+      overflow: hidden;
+    }
+
+    #contact::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background-image:
+        linear-gradient(rgba(255,255,255,0.05) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,0.05) 1px, transparent 1px);
+      background-size: 40px 40px;
+    }
+
+    .contact-inner { position: relative; z-index: 1; }
+
+    /* iMessage style */
+    .imessage-wrapper {
+      display: inline-flex;
+      flex-direction: column;
+      align-items: flex-end;
+      gap: 8px;
+      margin-bottom: 48px;
+    }
+    .imessage-time {
+      font-size: 12px;
+      color: rgba(255,255,255,0.6);
+      margin-bottom: 4px;
+    }
+    .imessage-bubble {
+      background: rgba(255,255,255,0.2);
+      backdrop-filter: blur(8px);
+      color: white;
+      padding: 14px 22px;
+      border-radius: 20px 20px 4px 20px;
+      font-size: 18px;
+      font-weight: 500;
+      max-width: 360px;
+    }
+    .imessage-bubble.second {
+      border-radius: 20px 20px 4px 20px;
+      font-size: 16px;
+      font-weight: 400;
+    }
+
+    .contact-title {
+      font-family: 'Instrument Serif', serif;
+      font-size: clamp(48px, 6vw, 80px);
+      color: white;
+      line-height: 1.1;
+      margin-bottom: 24px;
+      letter-spacing: -1px;
+    }
+
+    .contact-btns {
+      display: flex;
+      gap: 16px;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+    .contact-btn-white {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: white;
+      color: var(--accent);
+      padding: 14px 28px;
+      border-radius: 100px;
+      font-size: 15px;
+      font-weight: 600;
+      text-decoration: none;
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+    .contact-btn-white:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 24px rgba(0,0,0,0.2);
+    }
+    .contact-btn-outline {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: transparent;
+      color: white;
+      padding: 14px 28px;
+      border-radius: 100px;
+      font-size: 15px;
+      font-weight: 500;
+      text-decoration: none;
+      border: 1.5px solid rgba(255,255,255,0.4);
+      transition: border-color 0.2s, transform 0.2s;
+    }
+    .contact-btn-outline:hover {
+      border-color: white;
+      transform: translateY(-2px);
+    }
+
+    /* Footer bar */
+    .footer-bar {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-top: 64px;
+      padding-top: 24px;
+      border-top: 1px solid rgba(255,255,255,0.15);
+      font-size: 12px;
+      color: rgba(255,255,255,0.4);
+      justify-content: space-between;
+    }
+    .footer-breadcrumb {
+      display: flex; align-items: center; gap: 6px;
+    }
+
+    /* ── SCROLL ANIMATIONS ─────────────────────── */
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(24px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .reveal {
+      opacity: 0;
+      transform: translateY(32px);
+      transition: opacity 0.7s ease, transform 0.7s ease;
+    }
+    .reveal.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* Stagger delays */
+    .reveal:nth-child(2) { transition-delay: 0.1s; }
+    .reveal:nth-child(3) { transition-delay: 0.2s; }
+    .reveal:nth-child(4) { transition-delay: 0.3s; }
+
+    /* ── SCROLLING MARQUEE ─────────────────────── */
+    .marquee-section {
+      overflow: hidden;
+      padding: 28px 0;
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+      background: white;
+      position: relative;
+      z-index: 1;
+    }
+    .marquee-track {
+      display: flex;
+      gap: 0;
+      animation: marquee 20s linear infinite;
+      width: max-content;
+    }
+    .marquee-item {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      padding: 0 40px;
+      font-size: 14px;
+      font-weight: 500;
+      color: var(--text-mid);
+      white-space: nowrap;
+    }
+    .marquee-dot {
+      width: 5px; height: 5px;
+      background: var(--accent);
+      border-radius: 50%;
+    }
+    @keyframes marquee {
+      from { transform: translateX(0); }
+      to { transform: translateX(-50%); }
+    }
+
+    /* ── RESPONSIVE ────────────────────────────── */
+    @media (max-width: 900px) {
+      #hero { flex-direction: column; padding: 100px 32px 60px; }
+      .hero-right { display: none; }
+      #work, #about, #skills, #contact { padding: 80px 32px; }
+      .about-inner { grid-template-columns: 1fr; gap: 40px; }
+      .skills-grid { grid-template-columns: repeat(2, 1fr); }
+      .projects-grid { grid-template-columns: 1fr; }
+      .finder-folders { display: none; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Custom cursor -->
+  <div class="cursor" id="cursor"></div>
+  <div class="cursor-ring" id="cursorRing"></div>
+
+  <!-- NAV -->
+  <nav>
+    <div class="nav-breadcrumb">
+      <span class="folder-icon">
+        <div class="folder-tab"></div>
+        <div class="folder-body"></div>
+      </span>
+      <span class="sep">›</span>
+      <span>Vivien Evers</span>
+      <span class="sep">›</span>
+      <span class="active">Portfolio</span>
+    </div>
+    <ul class="nav-links">
+      <li><a href="#work">Work</a></li>
+      <li><a href="#about">About</a></li>
+      <li><a href="#skills">Skills</a></li>
+      <li><a href="#contact">Contact</a></li>
+    </ul>
+  </nav>
+
+  <!-- HERO -->
+  <section id="hero">
+    <div class="hero-left">
+      <div class="hero-tag">
+        <span class="dot"></span>
+        Open to new roles · Hamburg
+      </div>
+      <h1 class="hero-name">Vivien<br><em>Evers</em></h1>
+      <p class="hero-sub">Mediengestalterin — Brand, Design & Marketing</p>
+      <div class="hero-ctas">
+        <a href="#work" class="btn-primary">View my work ▶</a>
+        <a href="#contact" class="btn-secondary">Let's chat ☕</a>
+      </div>
+    </div>
+
+    <div class="hero-right">
+      <!-- Main floating card -->
+      <div class="float-card card-main">
+        <div class="mac-chrome">
+          <span class="mac-dot red"></span>
+          <span class="mac-dot yellow"></span>
+          <span class="mac-dot green"></span>
+          <span class="mac-chrome-title">vivien-evers — about</span>
+        </div>
+        <div class="card-content">
+          <div class="card-label">About me</div>
+          <div class="card-title">Brand builder. Design thinker.</div>
+          <div class="card-desc">I design how brands look, feel and communicate — from visual identity to campaign.</div>
+          <div class="tag-row">
+            <span class="tag accent">Brand & Marketing</span>
+            <span class="tag">Figma</span>
+            <span class="tag">Adobe Suite</span>
+            <span class="tag">Print</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Small stat card -->
+      <div class="float-card card-small">
+        <div class="mac-chrome">
+          <span class="mac-dot red"></span>
+          <span class="mac-dot yellow"></span>
+          <span class="mac-dot green"></span>
+        </div>
+        <div class="card-content">
+          <div style="font-size:32px;font-family:'Instrument Serif',serif;font-weight:400;">10+</div>
+          <div style="font-size:11px;text-transform:uppercase;letter-spacing:.08em;color:var(--text-light);margin-top:2px;">Events produced</div>
+        </div>
+      </div>
+
+      <!-- Location card -->
+      <div class="float-card card-location">
+        <div class="card-content" style="padding:16px 20px;">
+          <div style="font-size:14px;font-weight:500;">📍 Hamburg, Germany</div>
+          <div style="font-size:12px;color:var(--text-light);margin-top:4px;">Open to hybrid & remote</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- MARQUEE -->
+  <div class="marquee-section">
+    <div class="marquee-track">
+      <!-- Two copies for seamless loop -->
+      <div class="marquee-item"><span class="marquee-dot"></span>Brand Development</div>
+      <div class="marquee-item"><span class="marquee-dot"></span>Art Direction</div>
+      <div class="marquee-item"><span class="marquee-dot"></span>Print Production</div>
+      <div class="marquee-item"><span class="marquee-dot"></span>Figma</div>
+      <div class="marquee-item"><span class="marquee-dot"></span>Visual Identity</div>
+      <div class="marquee-item"><span class="marquee-dot"></span>Webdesign</div>
+      <div class="marquee-item"><span class="marquee-dot"></span>Adobe Suite</div>
+      <div class="marquee-item"><span class="marquee-dot"></span>Event Marketing</div>
+      <div class="marquee-item"><span class="marquee-dot"></span>Webflow</div>
+      <div class="marquee-item"><span class="marquee-dot"></span>Brand Communication</div>
+      <div class="marquee-item"><span class="marquee-dot"></span>Brand Development</div>
+      <div class="marquee-item"><span class="marquee-dot"></span>Art Direction</div>
+      <div class="marquee-item"><span class="marquee-dot"></span>Print Production</div>
+      <div class="marquee-item"><span class="marquee-dot"></span>Figma</div>
+      <div class="marquee-item"><span class="marquee-dot"></span>Visual Identity</div>
+      <div class="marquee-item"><span class="marquee-dot"></span>Webdesign</div>
+      <div class="marquee-item"><span class="marquee-dot"></span>Adobe Suite</div>
+      <div class="marquee-item"><span class="marquee-dot"></span>Event Marketing</div>
+      <div class="marquee-item"><span class="marquee-dot"></span>Webflow</div>
+      <div class="marquee-item"><span class="marquee-dot"></span>Brand Communication</div>
+    </div>
+  </div>
+
+  <!-- WORK -->
+  <section id="work">
+    <div class="work-header reveal">
+      <div class="section-label">Selected Work</div>
+      <h2 class="section-title">What I've built</h2>
+      <p class="section-sub">Brand systems, print campaigns and digital experiences — framed around strategy, not just execution.</p>
+    </div>
+
+    <!-- Finder nav -->
+    <div class="finder-bar reveal">
+      <div class="finder-dots">
+        <span class="mac-dot red"></span>
+        <span class="mac-dot yellow"></span>
+        <span class="mac-dot green"></span>
+      </div>
+      <div class="finder-breadcrumb">
+        <span class="folder-icon">
+          <div class="folder-tab"></div>
+          <div class="folder-body"></div>
+        </span>
+        <span class="sep">›</span>
+        <span class="active">Vivien Evers</span>
+        <span class="sep">›</span>
+        <span>Portfolio</span>
+        <span class="sep">›</span>
+        <span>Work</span>
+      </div>
+      <div class="finder-folders">
+        <div class="finder-folder active">
+          <span class="folder-icon"><div class="folder-tab"></div><div class="folder-body"></div></span>
+          <div class="finder-folder-info">
+            <span class="finder-folder-name">Music is for Lovers</span>
+            <span class="finder-folder-sub">Brand System</span>
+          </div>
+        </div>
+        <div class="finder-folder">
+          <span class="folder-icon"><div class="folder-tab"></div><div class="folder-body"></div></span>
+          <div class="finder-folder-info">
+            <span class="finder-folder-name">JCO Hamburg</span>
+            <span class="finder-folder-sub">Communication</span>
+          </div>
+        </div>
+        <div class="finder-folder">
+          <span class="folder-icon"><div class="folder-tab"></div><div class="folder-body"></div></span>
+          <div class="finder-folder-info">
+            <span class="finder-folder-name">Apprenticeship</span>
+            <span class="finder-folder-sub">Web & Print</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Project cards -->
+    <div class="projects-grid">
+      <div class="project-card">
+        <div class="mac-chrome project-card-chrome">
+          <div class="mac-chrome" style="background:transparent;border:none;padding:10px 14px;">
+            <span class="mac-dot red"></span>
+            <span class="mac-dot yellow"></span>
+            <span class="mac-dot green"></span>
+            <span class="mac-chrome-title">music-is-for-lovers</span>
+          </div>
+        </div>
+        <div class="project-card-body">
+          <div class="project-cat">Brand Development · Art Direction · Print & Digital</div>
+          <h3 class="project-title">Music is for Lovers</h3>
+          <p class="project-desc">Co-built an electronic music event brand from zero — visual system, identity and communication across three formats: MIFL, Studio Liebe, NRG. 10+ events, 400 guests, partnerships with Jägermeister & Carlsberg.</p>
+          <div class="tag-row" style="margin-bottom:20px;">
+            <span class="tag">Brand System</span>
+            <span class="tag">Event Marketing</span>
+            <span class="tag">Print</span>
+            <span class="tag accent">Co-Founder</span>
+          </div>
+          <div class="project-footer">
+            <span class="project-role">Brand & Creative Lead</span>
+            <span class="project-year">2022 – now</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="project-card">
+        <div class="mac-chrome project-card-chrome">
+          <div class="mac-chrome" style="background:transparent;border:none;padding:10px 14px;">
+            <span class="mac-dot red"></span>
+            <span class="mac-dot yellow"></span>
+            <span class="mac-dot green"></span>
+            <span class="mac-chrome-title">studio-liebe-nrg — print & identity</span>
+          </div>
+        </div>
+        <div class="project-card-body">
+          <div class="project-cat">Print Design · Poster · Large Format</div>
+          <h3 class="project-title">Studio Liebe & NRG</h3>
+          <p class="project-desc">Art direction and poster design for two sub-brands of MIFL. Includes large-format print production for OMR 2024 Hamburg — from design file to physical venue installation.</p>
+          <div class="tag-row" style="margin-bottom:20px;">
+            <span class="tag">Art Direction</span>
+            <span class="tag">Large Format</span>
+            <span class="tag">Adobe Suite</span>
+            <span class="tag accent">Print Production</span>
+          </div>
+          <div class="project-footer">
+            <span class="project-role">Art Direction & Design</span>
+            <span class="project-year">2023 – 2024</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="project-card">
+        <div class="mac-chrome project-card-chrome">
+          <div class="mac-chrome" style="background:transparent;border:none;padding:10px 14px;">
+            <span class="mac-dot red"></span>
+            <span class="mac-dot yellow"></span>
+            <span class="mac-dot green"></span>
+            <span class="mac-chrome-title">jewish-chamber-orchestra</span>
+          </div>
+        </div>
+        <div class="project-card-body">
+          <div class="project-cat">Brand Communication · Visual Strategy</div>
+          <h3 class="project-title">Jewish Chamber Orchestra Hamburg</h3>
+          <p class="project-desc">Bringing a traditional cultural institution closer to a younger audience — without losing depth. Responsible for visual communication and brand tone across digital channels.</p>
+          <div class="tag-row" style="margin-bottom:20px;">
+            <span class="tag">Brand Communication</span>
+            <span class="tag">Visual Identity</span>
+            <span class="tag accent">Cultural Institution</span>
+          </div>
+          <div class="project-footer">
+            <span class="project-role">Brand & Communications</span>
+            <span class="project-year">2023 – 2025</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="project-card">
+        <div class="mac-chrome project-card-chrome">
+          <div class="mac-chrome" style="background:transparent;border:none;padding:10px 14px;">
+            <span class="mac-dot red"></span>
+            <span class="mac-dot yellow"></span>
+            <span class="mac-dot green"></span>
+            <span class="mac-chrome-title">apprenticeship — web & print</span>
+          </div>
+        </div>
+        <div class="project-card-body">
+          <div class="project-cat">Webdesign · Corporate Design · Print</div>
+          <h3 class="project-title">During my Apprenticeship</h3>
+          <p class="project-desc">Three years of hands-on work at a Hamburg agency — websites designed in Figma & Webflow, corporate identity systems, print production and real client projects from brief to delivery.</p>
+          <div class="tag-row" style="margin-bottom:20px;">
+            <span class="tag">Figma</span>
+            <span class="tag">Webflow</span>
+            <span class="tag">Corporate Design</span>
+            <span class="tag accent">Jan 2026 ✓</span>
+          </div>
+          <div class="project-footer">
+            <span class="project-role">Mediengestalterin Digital & Print</span>
+            <span class="project-year">2023 – 2026</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ABOUT -->
+  <section id="about">
+    <div class="about-inner">
+      <div>
+        <p class="about-statement reveal">I'm not a<br>content creator.<br>I'm a <em>brand builder.</em></p>
+        <div class="values-list" style="margin-top:48px;">
+          <div class="value-item reveal"><span class="value-arrow">→</span> Atmosphere over aesthetics</div>
+          <div class="value-item reveal"><span class="value-arrow">→</span> Perception over output</div>
+          <div class="value-item reveal"><span class="value-arrow">→</span> Consistency over noise</div>
+          <div class="value-item reveal"><span class="value-arrow">→</span> Experience over execution</div>
+        </div>
+      </div>
+      <div>
+        <div class="sticky-note reveal">
+          <div class="sticky-pins">
+            <div class="sticky-pin"></div>
+            <div class="sticky-pin"></div>
+            <div class="sticky-pin"></div>
+            <div class="sticky-pin"></div>
+          </div>
+          I care about how brands feel,<br>
+          how they communicate and<br>
+          how people connect to them.<br><br>
+          Curious, observant<br>
+          and always building.
+        </div>
+        <p class="reveal" style="color:rgba(255,255,255,0.5);font-size:15px;line-height:1.8;">
+          Coming from a design background, I've been building brands through events, print and digital work — with real projects, real audiences and real impact.<br><br>
+          Now I'm looking for an in-house role at a <strong style="color:rgba(255,255,255,0.85);">Lifestyle or Consumer Brand</strong> where design thinking and marketing strategy come together.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- SKILLS -->
+  <section id="skills">
+    <div class="reveal">
+      <div class="section-label">Skills & Tools</div>
+      <h2 class="section-title">What I work with</h2>
+    </div>
+    <div class="skills-grid">
+      <div class="skill-group">
+        <div class="skill-group-title">Design</div>
+        <div class="skill-tags">
+          <span class="skill-tag">Figma</span>
+          <span class="skill-tag">Adobe Illustrator</span>
+          <span class="skill-tag">Adobe InDesign</span>
+          <span class="skill-tag">Adobe Photoshop</span>
+          <span class="skill-tag">Canva Pro</span>
+        </div>
+      </div>
+      <div class="skill-group">
+        <div class="skill-group-title">Web & Digital</div>
+        <div class="skill-tags">
+          <span class="skill-tag">Webflow</span>
+          <span class="skill-tag">Figma Sites</span>
+          <span class="skill-tag">Web Design</span>
+          <span class="skill-tag">UI/UX Thinking</span>
+        </div>
+      </div>
+      <div class="skill-group">
+        <div class="skill-group-title">Brand & Marketing</div>
+        <div class="skill-tags">
+          <span class="skill-tag">Brand Strategy</span>
+          <span class="skill-tag">Visual Identity</span>
+          <span class="skill-tag">Art Direction</span>
+          <span class="skill-tag">Campaign Design</span>
+          <span class="skill-tag">Event Marketing</span>
+        </div>
+      </div>
+      <div class="skill-group">
+        <div class="skill-group-title">Production</div>
+        <div class="skill-tags">
+          <span class="skill-tag">Print Production</span>
+          <span class="skill-tag">Large Format</span>
+          <span class="skill-tag">Druckvorstufe</span>
+          <span class="skill-tag">On-site Execution</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CONTACT -->
+  <section id="contact">
+    <div class="contact-inner">
+      <div class="imessage-wrapper">
+        <div class="imessage-time">Today 09:48 AM</div>
+        <div class="imessage-bubble">Let's have a coffee chat! ☕</div>
+        <div class="imessage-bubble second">I'd love to get to know you and your team.</div>
+      </div>
+      <h2 class="contact-title">Ready when you are.</h2>
+      <div class="contact-btns">
+        <a href="mailto:hallo@vivienevers.de" class="contact-btn-white">✉ hallo@vivienevers.de</a>
+        <a href="https://linkedin.com/in/vivien-victoria-evers" class="contact-btn-outline" target="_blank">LinkedIn →</a>
+      </div>
+      <div class="footer-bar">
+        <div class="footer-breadcrumb">
+          <span class="folder-icon" style="filter:brightness(10);">
+            <div class="folder-tab" style="background:rgba(255,255,255,0.4)"></div>
+            <div class="folder-body" style="background:rgba(255,255,255,0.4)"></div>
+          </span>
+          <span>›</span>
+          <span>Vivien Evers</span>
+          <span>›</span>
+          <span>Portfolio</span>
+        </div>
+        <span>© 2025 Vivien Evers · vivienevers.de</span>
+      </div>
+    </div>
+  </section>
+
+  <script>
+    // ── CUSTOM CURSOR ──────────────────────────────────────
+    const cursor = document.getElementById('cursor');
+    const ring = document.getElementById('cursorRing');
+    let mouseX = 0, mouseY = 0;
+    let ringX = 0, ringY = 0;
+
+    document.addEventListener('mousemove', e => {
+      mouseX = e.clientX; mouseY = e.clientY;
+      cursor.style.left = mouseX + 'px';
+      cursor.style.top = mouseY + 'px';
+    });
+
+    // Smooth ring follow
+    function animateRing() {
+      ringX += (mouseX - ringX) * 0.12;
+      ringY += (mouseY - ringY) * 0.12;
+      ring.style.left = ringX + 'px';
+      ring.style.top = ringY + 'px';
+      requestAnimationFrame(animateRing);
+    }
+    animateRing();
+
+    // Cursor effects on hover
+    document.querySelectorAll('a, button, .project-card, .finder-folder, .skill-tag').forEach(el => {
+      el.addEventListener('mouseenter', () => {
+        cursor.style.width = '20px';
+        cursor.style.height = '20px';
+        ring.style.width = '56px';
+        ring.style.height = '56px';
+        ring.style.opacity = '0.3';
+      });
+      el.addEventListener('mouseleave', () => {
+        cursor.style.width = '10px';
+        cursor.style.height = '10px';
+        ring.style.width = '36px';
+        ring.style.height = '36px';
+        ring.style.opacity = '0.5';
+      });
+    });
+
+    // ── SCROLL REVEAL ──────────────────────────────────────
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach((entry, i) => {
+        if (entry.isIntersecting) {
+          setTimeout(() => {
+            entry.target.classList.add('visible');
+          }, entry.target.dataset.delay || 0);
+        }
+      });
+    }, { threshold: 0.15 });
+
+    document.querySelectorAll('.reveal, .project-card, .skill-group').forEach((el, i) => {
+      el.dataset.delay = (i % 4) * 80;
+      observer.observe(el);
+    });
+
+    // ── PARALLAX ON HERO CARDS ─────────────────────────────
+    document.addEventListener('mousemove', e => {
+      const x = (e.clientX / window.innerWidth - 0.5) * 18;
+      const y = (e.clientY / window.innerHeight - 0.5) * 18;
+      document.querySelectorAll('.float-card').forEach((card, i) => {
+        const factor = (i + 1) * 0.4;
+        card.style.transform = `translate(${x * factor}px, ${y * factor}px) rotate(${card.style.getPropertyValue('--rot') || '0deg'})`;
+      });
+    });
+
+    // ── FINDER FOLDER ACTIVE STATE ─────────────────────────
+    document.querySelectorAll('.finder-folder').forEach(folder => {
+      folder.addEventListener('click', () => {
+        document.querySelectorAll('.finder-folder').forEach(f => f.classList.remove('active'));
+        folder.classList.add('active');
+      });
+    });
+  </script>
+</body>
+</html>
