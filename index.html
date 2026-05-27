@@ -639,6 +639,110 @@
     .skill-tag:hover { background:var(--accent-light); color:var(--accent); }
 
     /* ─────────────────────────────────────────────
+       MAC DOCK
+    ───────────────────────────────────────────── */
+    .dock-wrapper {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      margin-top: 56px;
+      gap: 12px;
+    }
+    .dock {
+      display: flex;
+      align-items: flex-end;
+      gap: 12px;
+      background: rgba(245, 243, 241, 0.94);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border-radius: 20px;
+      padding: 14px 22px;
+      box-shadow:
+        0 8px 32px rgba(0,0,0,.10),
+        inset 0 1px 0 rgba(255,255,255,.7),
+        0 0 0 1px rgba(0,0,0,.07);
+      user-select: none;
+    }
+    .dock-item {
+      position: relative;
+      display: flex;
+      align-items: flex-end;
+    }
+    .dock-icon {
+      width: 48px;
+      height: 48px;
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transform-origin: bottom center;
+      transition: transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
+      will-change: transform;
+      overflow: hidden;
+      flex-shrink: 0;
+      cursor: default;
+    }
+    .dock-sep {
+      width: 1px;
+      height: 40px;
+      background: #E0DDD9;
+      align-self: center;
+      flex-shrink: 0;
+      margin: 0 2px;
+    }
+    /* Tooltip */
+    .dock-tip {
+      position: absolute;
+      bottom: calc(100% + 16px);
+      left: 50%;
+      transform: translateX(-50%) scale(0.88);
+      background: rgba(22, 18, 36, 0.9);
+      backdrop-filter: blur(8px);
+      color: white;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 11.5px;
+      font-weight: 400;
+      white-space: nowrap;
+      padding: 7px 13px;
+      border-radius: 8px;
+      pointer-events: none;
+      opacity: 0;
+      transition: opacity 0.13s ease, transform 0.13s ease;
+      z-index: 200;
+      letter-spacing: 0.01em;
+    }
+    .dock-tip::after {
+      content: '';
+      position: absolute;
+      top: 100%;
+      left: 50%;
+      transform: translateX(-50%);
+      border: 5px solid transparent;
+      border-top-color: rgba(22, 18, 36, 0.9);
+    }
+    .dock-item:hover .dock-tip {
+      opacity: 1;
+      transform: translateX(-50%) scale(1);
+    }
+    .dock-label {
+      font-size: 17px;
+      font-weight: 700;
+      font-family: 'DM Sans', sans-serif;
+      letter-spacing: -0.3px;
+    }
+    .dock-hint {
+      font-size: 12px;
+      color: var(--text-light);
+      font-family: 'DM Sans', sans-serif;
+      letter-spacing: 0.02em;
+    }
+    @media (max-width: 900px) {
+      .dock-wrapper { align-items: flex-start; overflow-x: auto; width: 100%; padding-bottom: 4px; }
+      .dock { gap: 8px; padding: 12px 16px; }
+      .dock-icon { width: 42px; height: 42px; }
+    }
+
+    /* ─────────────────────────────────────────────
        CONTACT
     ───────────────────────────────────────────── */
     #contact {
@@ -1039,6 +1143,132 @@
         </div>
       </div>
     </div>
+
+    <!-- ── MAC DOCK ──────────────────────────────────────── -->
+    <div class="dock-wrapper reveal">
+      <div class="dock" id="mac-dock">
+
+        <!-- GRUPPE 1 · Mac System -->
+        <div class="dock-item">
+          <div class="dock-icon" style="background:linear-gradient(to right,#4594D3 50%,#6DB5E4 50%);">
+            <svg width="36" height="30" viewBox="0 0 36 30" fill="none">
+              <!-- folder tab hint -->
+              <path d="M0 0h14l3 7H0z" fill="rgba(255,255,255,.22)"/>
+              <!-- left eye -->
+              <circle cx="11" cy="20" r="6" fill="white"/>
+              <circle cx="12.5" cy="18.5" r="3" fill="#1B4F90"/>
+              <circle cx="13.3" cy="17.6" r="1.1" fill="white"/>
+              <!-- right eye -->
+              <circle cx="25" cy="20" r="6" fill="white"/>
+              <circle cx="26.5" cy="18.5" r="3" fill="#1B4F90"/>
+              <circle cx="27.3" cy="17.6" r="1.1" fill="white"/>
+            </svg>
+          </div>
+          <div class="dock-tip">File & project organisation</div>
+        </div>
+
+        <div class="dock-item">
+          <div class="dock-icon" style="background:#EFEEEC;">
+            <svg width="26" height="26" viewBox="0 0 26 26" fill="none">
+              <rect x="1" y="1" width="11" height="7.5" rx="2.5" fill="#FF6B6B"/>
+              <rect x="14" y="1" width="11" height="7.5" rx="2.5" fill="#4ECDC4"/>
+              <rect x="1" y="10" width="11" height="7" rx="2.5" fill="#6C63FF"/>
+              <rect x="14" y="10" width="11" height="7" rx="2.5" fill="#FF9F43"/>
+              <rect x="1" y="19" width="11" height="6" rx="2.5" fill="#00B894"/>
+              <rect x="14" y="19" width="11" height="6" rx="2.5" fill="#FD79A8"/>
+            </svg>
+          </div>
+          <div class="dock-tip">My creative workspace</div>
+        </div>
+
+        <div class="dock-sep"></div>
+
+        <!-- GRUPPE 2 · Adobe -->
+        <div class="dock-item">
+          <div class="dock-icon" style="background:#001E36;">
+            <span class="dock-label" style="color:#31A8FF;">Ps</span>
+          </div>
+          <div class="dock-tip">Image editing · Photo retouching · Compositing</div>
+        </div>
+
+        <div class="dock-item">
+          <div class="dock-icon" style="background:#FF9A00;">
+            <span class="dock-label" style="color:#1A1A1A;">Ai</span>
+          </div>
+          <div class="dock-tip">Vector graphics · Logo design · Brand assets</div>
+        </div>
+
+        <div class="dock-item">
+          <div class="dock-icon" style="background:#FF3366;">
+            <span class="dock-label" style="color:#fff;">Id</span>
+          </div>
+          <div class="dock-tip">Print layouts · Editorial · Druckvorstufe</div>
+        </div>
+
+        <div class="dock-sep"></div>
+
+        <!-- GRUPPE 3 · Design & Content -->
+        <div class="dock-item">
+          <div class="dock-icon" style="background:#1E1E1E;">
+            <!-- Figma logo (5 Formen) -->
+            <svg width="18" height="27" viewBox="0 0 24 36" fill="none">
+              <path d="M6 36c3.3 0 6-2.7 6-6v-6H6c-3.3 0-6 2.7-6 6s2.7 6 6 6z" fill="#0ACF83"/>
+              <path d="M0 18c0-3.3 2.7-6 6-6h6v12H6c-3.3 0-6-2.7-6-6z" fill="#A259FF"/>
+              <path d="M0 6C0 2.7 2.7 0 6 0h6v12H6C2.7 12 0 9.3 0 6z" fill="#F24E1E"/>
+              <path d="M12 0h6c3.3 0 6 2.7 6 6s-2.7 6-6 6h-6V0z" fill="#FF7262"/>
+              <circle cx="18" cy="18" r="6" fill="#1ABCFE"/>
+            </svg>
+          </div>
+          <div class="dock-tip">UI Design · Web Design · Prototyping · Figma Sites</div>
+        </div>
+
+        <div class="dock-item">
+          <div class="dock-icon" style="background:#00C4CC;">
+            <span class="dock-label" style="color:white;font-size:14px;">Ca</span>
+          </div>
+          <div class="dock-tip">Social media assets · Quick turnaround designs</div>
+        </div>
+
+        <div class="dock-item">
+          <div class="dock-icon" style="background:#111;">
+            <!-- CapCut: Schere -->
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+              <circle cx="6.5" cy="6.5" r="3" stroke="white" stroke-width="1.6" fill="none"/>
+              <circle cx="6.5" cy="17.5" r="3" stroke="white" stroke-width="1.6" fill="none"/>
+              <path d="M9.3 8.3L21 3" stroke="white" stroke-width="1.6" stroke-linecap="round"/>
+              <path d="M9.3 15.7L21 21" stroke="white" stroke-width="1.6" stroke-linecap="round"/>
+              <path d="M13 12L9.3 8.3" stroke="white" stroke-width="1.6" stroke-linecap="round"/>
+              <path d="M13 12L9.3 15.7" stroke="white" stroke-width="1.6" stroke-linecap="round"/>
+            </svg>
+          </div>
+          <div class="dock-tip">Video editing · Reels · Motion content</div>
+        </div>
+
+        <!-- GRUPPE 4 · AI Tools -->
+        <div class="dock-item">
+          <div class="dock-icon" style="background:#10A37F;">
+            <!-- OpenAI Logo -->
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="white">
+              <path d="M22.28 9.28a5.81 5.81 0 0 0-.5-4.77 6 6 0 0 0-6.45-2.51 5.8 5.8 0 0 0-4.39-2A6 6 0 0 0 5.27 3.87a5.81 5.81 0 0 0-3.88 2.82A6 6 0 0 0 2.12 14a5.8 5.8 0 0 0 .5 4.77A6 6 0 0 0 9.07 22a5.8 5.8 0 0 0 4.39 2 6 6 0 0 0 5.71-4.15 5.8 5.8 0 0 0 3.88-2.82A6 6 0 0 0 22.28 9.28zM13.46 20.11A4.44 4.44 0 0 1 10.09 19l.09-.06 5.59-9.67a.39.39 0 0 1 .71.21v.05L13.46 20.11zm-7.45-5.28a4.44 4.44 0 0 1-.52-3.2l.09.07 5.6 9.67a.39.39 0 0 1-.6.42L6.01 14.83zm-1.54-9.1A4.44 4.44 0 0 1 8 3.49v.13l-.01 11.17a.39.39 0 0 1-.43.24L4.47 5.73zm10.59 8.2L9.41 5.28a.39.39 0 0 1 .42-.59l6.1 3.52a4.44 4.44 0 0 1-1.89 8.14z"/>
+            </svg>
+          </div>
+          <div class="dock-tip">Copywriting support · Research · Ideation</div>
+        </div>
+
+        <div class="dock-item">
+          <div class="dock-icon" style="background:#CC9A6E;">
+            <!-- Claude: Bogen-C -->
+            <svg width="26" height="26" viewBox="0 0 24 24" fill="none">
+              <path d="M19.5 8C18.2 5.2 15.3 3.2 12 3.2c-4.9 0-8.8 4-8.8 8.8s3.9 8.8 8.8 8.8c3.3 0 6.2-2 7.5-4.8" stroke="white" stroke-width="2.5" stroke-linecap="round"/>
+            </svg>
+          </div>
+          <div class="dock-tip">Creative workflows · Strategy · Code</div>
+        </div>
+
+      </div><!-- /dock -->
+      <p class="dock-hint">Hover over a tool to see how I use it</p>
+    </div><!-- /dock-wrapper -->
+
   </section>
 
   <!-- ══════════════════════════════════════════
@@ -1314,6 +1544,28 @@
       el.dataset.delay = (i%4)*80;
       obs.observe(el);
     });
+
+    /* ── MAC DOCK MAGNIFICATION ─────────────────────────────── */
+    (function() {
+      const dock  = document.getElementById('mac-dock');
+      if (!dock) return;
+      const icons = Array.from(dock.querySelectorAll('.dock-icon'));
+
+      icons.forEach((icon, idx) => {
+        icon.addEventListener('mouseenter', () => {
+          icons.forEach((other, j) => {
+            const d = Math.abs(j - idx);
+            if      (d === 0) other.style.transform = 'scale(1.35) translateY(-8px)';
+            else if (d === 1) other.style.transform = 'scale(1.15) translateY(-4px)';
+            else              other.style.transform = '';
+          });
+        });
+      });
+
+      dock.addEventListener('mouseleave', () => {
+        icons.forEach(icon => { icon.style.transform = ''; });
+      });
+    })();
 
     /* ── PARALLAX HERO CARDS ──────────────────────────────── */
     document.addEventListener('mousemove', e => {
