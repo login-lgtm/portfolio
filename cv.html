@@ -1,0 +1,656 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Vivien Evers — CV</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #EEECEA;
+      --accent: #6B5CE7;
+      --accent-light: #DDD9F7;
+      --text: #1A1A1A;
+      --text-mid: #666666;
+      --text-light: #999999;
+      --border: #D8D4D0;
+      --tag-bg: #E8E4E0;
+      --dark: #1E1A2E;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'DM Sans', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      cursor: none;
+      overflow-x: hidden;
+    }
+
+    /* ── CURSOR ─────────────────────────────────── */
+    .cursor {
+      width: 10px; height: 10px;
+      background: var(--accent); border-radius: 50%;
+      position: fixed; pointer-events: none;
+      z-index: 9999; transform: translate(-50%, -50%);
+      transition: width 0.2s, height 0.2s;
+      mix-blend-mode: multiply;
+    }
+    .cursor-ring {
+      width: 36px; height: 36px;
+      border: 1.5px solid var(--accent); border-radius: 50%;
+      position: fixed; pointer-events: none;
+      z-index: 9998; transform: translate(-50%, -50%);
+      opacity: 0.5;
+      transition: width 0.25s, height 0.25s, opacity 0.2s;
+    }
+
+    /* ── GRAIN ──────────────────────────────────── */
+    body::before {
+      content: '';
+      position: fixed; inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+      pointer-events: none; z-index: 9990; opacity: 0.4;
+    }
+    body::after {
+      content: '';
+      position: fixed; inset: 0;
+      background-image:
+        linear-gradient(rgba(0,0,0,0.03) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(0,0,0,0.03) 1px, transparent 1px);
+      background-size: 40px 40px;
+      pointer-events: none; z-index: 0;
+    }
+
+    /* ── NAV ─────────────────────────────────────── */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0;
+      z-index: 100; padding: 16px 40px;
+      display: flex; align-items: center; justify-content: space-between;
+      backdrop-filter: blur(12px);
+      background: rgba(238,236,234,0.85);
+      border-bottom: 1px solid var(--border);
+    }
+    .nav-breadcrumb {
+      display: flex; align-items: center; gap: 6px;
+      background: white; padding: 6px 14px;
+      border-radius: 20px; border: 1px solid var(--border);
+      font-size: 12px;
+    }
+    .folder-icon { display: inline-flex; flex-direction: column; gap: 1px; margin-right: 2px; }
+    .folder-tab  { width: 12px; height: 4px; background: #90BEDD; border-radius: 2px 2px 0 0; }
+    .folder-body { width: 18px; height: 13px; background: #689DCF; border-radius: 0 2px 2px 2px; }
+    .nav-breadcrumb .sep { color: var(--text-light); }
+    .nav-breadcrumb .active { color: var(--accent); font-weight: 500; }
+    .nav-links { display: flex; gap: 32px; list-style: none; }
+    .nav-links a {
+      font-size: 14px; font-weight: 500;
+      color: var(--text); text-decoration: none;
+      position: relative; transition: color 0.2s;
+    }
+    .nav-links a:hover { color: var(--accent); }
+    .nav-links a::after {
+      content: ''; position: absolute;
+      bottom: -2px; left: 0;
+      width: 0; height: 1.5px;
+      background: var(--accent); transition: width 0.2s;
+    }
+    .nav-links a:hover::after { width: 100%; }
+    .nav-links a.current { color: var(--accent); }
+    .nav-links a.current::after { width: 100%; }
+
+    /* ── CV HERO (dark) ─────────────────────────── */
+    .cv-hero {
+      background: var(--dark);
+      padding: 160px 80px 80px;
+      position: relative;
+      overflow: hidden;
+      z-index: 1;
+    }
+    .cv-hero::before {
+      content: '';
+      position: absolute;
+      top: -150px; right: -150px;
+      width: 500px; height: 500px;
+      background: radial-gradient(circle, rgba(107,92,231,0.18) 0%, transparent 65%);
+      pointer-events: none;
+    }
+    .cv-hero::after {
+      content: '';
+      position: absolute;
+      bottom: -80px; left: -80px;
+      width: 320px; height: 320px;
+      background: radial-gradient(circle, rgba(90,174,224,0.08) 0%, transparent 65%);
+      pointer-events: none;
+    }
+    .cv-terminal-path {
+      font-family: 'Courier New', Courier, monospace;
+      font-size: 14px;
+      color: rgba(255,255,255,0.4);
+      margin-bottom: 20px;
+      letter-spacing: 0.04em;
+    }
+    .cv-terminal-path span { color: var(--accent-light); }
+    .cv-hero-title {
+      font-family: 'Instrument Serif', serif;
+      font-size: clamp(52px, 6vw, 88px);
+      color: white;
+      line-height: 1.05;
+      letter-spacing: -2px;
+      margin-bottom: 18px;
+    }
+    .cv-hero-title em { font-style: italic; color: var(--accent-light); }
+    .cv-hero-sub {
+      font-size: 18px;
+      color: rgba(255,255,255,0.5);
+      font-weight: 300;
+      max-width: 480px;
+    }
+
+    /* ── CONTENT WRAPPER ────────────────────────── */
+    .cv-content {
+      position: relative;
+      z-index: 1;
+    }
+
+    /* ── AT A GLANCE ────────────────────────────── */
+    .cv-glance {
+      padding: 80px 80px 60px;
+    }
+    .section-label {
+      font-size: 11px; font-weight: 600;
+      letter-spacing: 0.12em; text-transform: uppercase;
+      color: var(--accent); margin-bottom: 32px;
+    }
+    .glance-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 20px;
+    }
+    .glance-card {
+      background: white;
+      border-radius: 16px;
+      padding: 32px 36px;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.06);
+      transition: transform 0.25s ease, box-shadow 0.25s ease;
+    }
+    .glance-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 12px 40px rgba(0,0,0,0.1);
+    }
+    .glance-number {
+      font-family: 'Instrument Serif', serif;
+      font-size: 56px;
+      color: var(--text);
+      line-height: 1;
+      margin-bottom: 10px;
+      letter-spacing: -2px;
+    }
+    .glance-number span { color: var(--accent); }
+    .glance-label {
+      font-size: 11px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--text-light);
+      line-height: 1.5;
+    }
+
+    /* ── EXPERIENCE ─────────────────────────────── */
+    .cv-experience {
+      padding: 20px 80px 80px;
+    }
+    .cv-section-title {
+      font-family: 'Instrument Serif', serif;
+      font-size: clamp(32px, 4vw, 48px);
+      line-height: 1.1;
+      letter-spacing: -1px;
+      margin-bottom: 48px;
+    }
+    .timeline {
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+      border-top: 1px solid var(--border);
+    }
+    .timeline-entry {
+      display: grid;
+      grid-template-columns: 180px 1fr;
+      gap: 0;
+      padding: 36px 0;
+      border-bottom: 1px solid var(--border);
+      opacity: 0; transform: translateY(24px);
+      transition: opacity 0.6s ease, transform 0.6s ease;
+    }
+    .timeline-entry.visible { opacity: 1; transform: translateY(0); }
+    .timeline-period {
+      padding-top: 2px;
+      padding-right: 32px;
+    }
+    .timeline-date {
+      font-family: 'Courier New', Courier, monospace;
+      font-size: 13px;
+      color: var(--text-light);
+      line-height: 1.6;
+    }
+    .timeline-body {}
+    .timeline-role {
+      font-size: 16px;
+      font-weight: 600;
+      color: var(--text);
+      margin-bottom: 4px;
+      line-height: 1.3;
+    }
+    .timeline-company {
+      font-size: 14px;
+      color: var(--text-mid);
+      margin-bottom: 8px;
+    }
+    .timeline-company strong { color: var(--text); font-weight: 500; }
+    .timeline-note {
+      font-size: 13px;
+      color: var(--text-light);
+      margin-bottom: 14px;
+      line-height: 1.5;
+    }
+    .tag-row { display: flex; flex-wrap: wrap; gap: 6px; }
+    .tag {
+      font-size: 11px;
+      background: var(--tag-bg);
+      color: var(--text-mid);
+      padding: 4px 10px;
+      border-radius: 100px;
+    }
+    .tag.accent { background: var(--accent-light); color: var(--accent); }
+
+    /* ── SKILLS ─────────────────────────────────── */
+    .cv-skills {
+      padding: 20px 80px 80px;
+      background: white;
+    }
+    .skills-groups {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 32px;
+      margin-top: 16px;
+    }
+    .skill-group {}
+    .skill-group-title {
+      font-size: 11px; font-weight: 600;
+      text-transform: uppercase; letter-spacing: 0.1em;
+      color: var(--text-light);
+      margin-bottom: 14px;
+    }
+    .skill-tags-row { display: flex; flex-wrap: wrap; gap: 8px; }
+    .skill-chip {
+      display: inline-block;
+      background: var(--tag-bg);
+      color: var(--text-mid);
+      padding: 6px 14px;
+      border-radius: 8px;
+      font-size: 13px; font-weight: 500;
+      transition: background 0.2s, color 0.2s;
+    }
+    .skill-chip:hover { background: var(--accent-light); color: var(--accent); }
+
+    /* ── EDUCATION ──────────────────────────────── */
+    .cv-education {
+      padding: 60px 80px 80px;
+    }
+    .edu-entries {
+      display: flex; flex-direction: column; gap: 0;
+      border-top: 1px solid var(--border);
+      margin-top: 16px;
+    }
+    .edu-entry {
+      display: grid;
+      grid-template-columns: 180px 1fr;
+      gap: 0;
+      padding: 28px 0;
+      border-bottom: 1px solid var(--border);
+    }
+    .edu-year {
+      font-family: 'Courier New', Courier, monospace;
+      font-size: 13px;
+      color: var(--text-light);
+      padding-top: 2px;
+      padding-right: 32px;
+    }
+    .edu-body {}
+    .edu-degree {
+      font-size: 15px; font-weight: 600;
+      color: var(--text); margin-bottom: 4px;
+    }
+    .edu-school {
+      font-size: 14px;
+      color: var(--text-mid);
+    }
+
+    /* Languages */
+    .cv-languages {
+      padding: 0 80px 60px;
+    }
+    .lang-row { display: flex; gap: 12px; flex-wrap: wrap; margin-top: 16px; }
+    .lang-chip {
+      background: white;
+      border: 1px solid var(--border);
+      border-radius: 100px;
+      padding: 8px 20px;
+      font-size: 14px;
+      font-weight: 500;
+    }
+    .lang-chip span {
+      font-size: 12px;
+      color: var(--text-light);
+      font-weight: 400;
+      margin-left: 6px;
+    }
+
+    /* ── FOOTER ─────────────────────────────────── */
+    .cv-footer {
+      background: var(--dark);
+      padding: 48px 80px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      position: relative; z-index: 1;
+    }
+    .cv-footer-breadcrumb {
+      display: flex; align-items: center; gap: 8px;
+      font-size: 12px; color: rgba(255,255,255,0.35);
+    }
+    .cv-footer-links {
+      display: flex; gap: 20px;
+    }
+    .cv-footer-links a {
+      font-size: 13px; color: rgba(255,255,255,0.5);
+      text-decoration: none; font-weight: 500;
+      transition: color 0.2s;
+    }
+    .cv-footer-links a:hover { color: white; }
+
+    /* ── ANIMATIONS ─────────────────────────────── */
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(20px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+    .reveal {
+      opacity: 0; transform: translateY(28px);
+      transition: opacity 0.65s ease, transform 0.65s ease;
+    }
+    .reveal.visible { opacity: 1; transform: translateY(0); }
+
+    /* ── RESPONSIVE ─────────────────────────────── */
+    @media (max-width: 900px) {
+      .cv-hero, .cv-glance, .cv-experience,
+      .cv-skills, .cv-education, .cv-languages { padding-left: 32px; padding-right: 32px; }
+      nav { padding: 14px 24px; }
+      .glance-grid { grid-template-columns: 1fr; }
+      .timeline-entry, .edu-entry { grid-template-columns: 1fr; gap: 8px; }
+      .timeline-period, .edu-year { padding-right: 0; }
+      .skills-groups { grid-template-columns: 1fr; }
+      .cv-footer { flex-direction: column; gap: 20px; text-align: center; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Custom cursor -->
+  <div class="cursor" id="cursor"></div>
+  <div class="cursor-ring" id="cursorRing"></div>
+
+  <!-- ══ NAV ═════════════════════════════════════════════════════ -->
+  <nav>
+    <div class="nav-breadcrumb">
+      <span class="folder-icon">
+        <div class="folder-tab"></div>
+        <div class="folder-body"></div>
+      </span>
+      <span class="sep">›</span>
+      <span>Vivien Evers</span>
+      <span class="sep">›</span>
+      <span>Portfolio</span>
+      <span class="sep">›</span>
+      <span class="active">CV</span>
+    </div>
+    <ul class="nav-links">
+      <li><a href="index.html#work">Work</a></li>
+      <li><a href="index.html#about">About</a></li>
+      <li><a href="index.html#skills">Skills</a></li>
+      <li><a href="cv.html" class="current">CV</a></li>
+      <li><a href="index.html#contact">Contact</a></li>
+    </ul>
+  </nav>
+
+  <div class="cv-content">
+
+    <!-- ══ HERO ═══════════════════════════════════════════════════ -->
+    <section class="cv-hero">
+      <div class="cv-terminal-path"><span>~/vivien/</span>cv</div>
+      <h1 class="cv-hero-title">Vivien<br><em>Evers</em></h1>
+      <p class="cv-hero-sub">Mediengestalterin Digital & Print · Brand & Marketing · Hamburg</p>
+    </section>
+
+    <!-- ══ AT A GLANCE ════════════════════════════════════════════ -->
+    <section class="cv-glance">
+      <div class="section-label">At a Glance</div>
+      <div class="glance-grid">
+        <div class="glance-card reveal">
+          <div class="glance-number">3<span>+</span></div>
+          <div class="glance-label">Jahre<br>Berufserfahrung</div>
+        </div>
+        <div class="glance-card reveal">
+          <div class="glance-number" style="font-size:44px;">Jan&thinsp;'26</div>
+          <div class="glance-label">Ausbildung<br>Abgeschlossen</div>
+        </div>
+        <div class="glance-card reveal">
+          <div class="glance-number">2</div>
+          <div class="glance-label">Eigene<br>Brand-Projekte</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ══ EXPERIENCE ═════════════════════════════════════════════ -->
+    <section class="cv-experience">
+      <h2 class="cv-section-title reveal">Experience</h2>
+      <div class="timeline">
+
+        <div class="timeline-entry">
+          <div class="timeline-period">
+            <div class="timeline-date">2025 – heute</div>
+          </div>
+          <div class="timeline-body">
+            <div class="timeline-role">Brand & Communications · Freiberuflich</div>
+            <div class="timeline-company"><strong>Jewish Chamber Orchestra Hamburg</strong> · Hamburg</div>
+            <div class="tag-row">
+              <span class="tag">Brand Communication</span>
+              <span class="tag">Visual Identity</span>
+              <span class="tag">CI-Design</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="timeline-entry">
+          <div class="timeline-period">
+            <div class="timeline-date">2022 – heute</div>
+          </div>
+          <div class="timeline-body">
+            <div class="timeline-role">Co-Founder & Creative Lead</div>
+            <div class="timeline-company"><strong>Music is for Lovers</strong> · Hamburg</div>
+            <div class="timeline-note">Über 10 Events · bis zu 400 Gäste · Jägermeister & Carlsberg</div>
+            <div class="tag-row">
+              <span class="tag accent">Co-Founder</span>
+              <span class="tag">Brand Development</span>
+              <span class="tag">Art Direction</span>
+              <span class="tag">Print</span>
+              <span class="tag">Event Marketing</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="timeline-entry">
+          <div class="timeline-period">
+            <div class="timeline-date">2023 – 2026</div>
+          </div>
+          <div class="timeline-body">
+            <div class="timeline-role">Ausbildung Mediengestalterin Digital & Print</div>
+            <div class="timeline-company"><strong>ehsmedia</strong> · Schenefeld</div>
+            <div class="tag-row">
+              <span class="tag">Figma</span>
+              <span class="tag">Webflow</span>
+              <span class="tag">Adobe Suite</span>
+              <span class="tag">Corporate Design</span>
+              <span class="tag">Print</span>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ══ SKILLS ═════════════════════════════════════════════════ -->
+    <section class="cv-skills">
+      <div class="section-label">Skills & Tools</div>
+      <div class="skills-groups">
+
+        <div class="skill-group reveal">
+          <div class="skill-group-title">Design</div>
+          <div class="skill-tags-row">
+            <span class="skill-chip">Figma</span>
+            <span class="skill-chip">Adobe Illustrator</span>
+            <span class="skill-chip">Adobe InDesign</span>
+            <span class="skill-chip">Adobe Photoshop</span>
+            <span class="skill-chip">Canva Pro</span>
+          </div>
+        </div>
+
+        <div class="skill-group reveal">
+          <div class="skill-group-title">Web</div>
+          <div class="skill-tags-row">
+            <span class="skill-chip">Figma Sites</span>
+            <span class="skill-chip">Web Design</span>
+            <span class="skill-chip">UI/UX</span>
+          </div>
+        </div>
+
+        <div class="skill-group reveal">
+          <div class="skill-group-title">Brand & Marketing</div>
+          <div class="skill-tags-row">
+            <span class="skill-chip">Brand Strategy</span>
+            <span class="skill-chip">Visual Identity</span>
+            <span class="skill-chip">Art Direction</span>
+            <span class="skill-chip">Campaign Design</span>
+            <span class="skill-chip">Event Marketing</span>
+          </div>
+        </div>
+
+        <div class="skill-group reveal">
+          <div class="skill-group-title">Production</div>
+          <div class="skill-tags-row">
+            <span class="skill-chip">Print Production</span>
+            <span class="skill-chip">Large Format</span>
+            <span class="skill-chip">Druckvorstufe</span>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ══ EDUCATION ══════════════════════════════════════════════ -->
+    <section class="cv-education">
+      <h2 class="cv-section-title reveal">Education</h2>
+      <div class="edu-entries">
+
+        <div class="edu-entry reveal">
+          <div class="edu-year">Jan 2026</div>
+          <div class="edu-body">
+            <div class="edu-degree">Mediengestalterin Digital & Print</div>
+            <div class="edu-school">ehsmedia Schenefeld · Berufsschule Hamburg</div>
+          </div>
+        </div>
+
+        <div class="edu-entry reveal">
+          <div class="edu-year">2019</div>
+          <div class="edu-body">
+            <div class="edu-degree">Abitur · Schwerpunkt Wirtschaft & Politik</div>
+            <div class="edu-school">Stadtteilschule Hamburg-Mitte</div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ══ LANGUAGES ══════════════════════════════════════════════ -->
+    <section class="cv-languages">
+      <div class="section-label">Sprachen</div>
+      <div class="lang-row">
+        <div class="lang-chip">Deutsch <span>Muttersprache</span></div>
+        <div class="lang-chip">Englisch <span>Verhandlungssicher</span></div>
+      </div>
+    </section>
+
+  </div><!-- /cv-content -->
+
+  <!-- ══ FOOTER ═════════════════════════════════════════════════ -->
+  <footer class="cv-footer">
+    <div class="cv-footer-breadcrumb">
+      <span style="opacity:.6;">›</span>
+      <span>Vivien Evers</span>
+      <span style="opacity:.6;">›</span>
+      <span>Portfolio</span>
+      <span style="opacity:.6;">›</span>
+      <span style="color:rgba(255,255,255,0.7);">CV</span>
+    </div>
+    <div class="cv-footer-links">
+      <a href="mailto:hallo@vivienevers.de">✉ hallo@vivienevers.de</a>
+      <a href="https://linkedin.com/in/vivien-victoria-evers" target="_blank">LinkedIn →</a>
+      <a href="index.html">← Portfolio</a>
+    </div>
+  </footer>
+
+  <script>
+    // ── CUSTOM CURSOR ─────────────────────────────────────────────
+    const cursor = document.getElementById('cursor');
+    const ring   = document.getElementById('cursorRing');
+    let mx = 0, my = 0, rx = 0, ry = 0;
+    document.addEventListener('mousemove', e => {
+      mx = e.clientX; my = e.clientY;
+      cursor.style.left = mx + 'px';
+      cursor.style.top  = my + 'px';
+    });
+    (function tick() {
+      rx += (mx - rx) * 0.12;
+      ry += (my - ry) * 0.12;
+      ring.style.left = rx + 'px';
+      ring.style.top  = ry + 'px';
+      requestAnimationFrame(tick);
+    })();
+    document.querySelectorAll('a, button, .glance-card, .skill-chip, .lang-chip').forEach(el => {
+      el.addEventListener('mouseenter', () => {
+        cursor.style.width = cursor.style.height = '20px';
+        ring.style.width = ring.style.height = '56px';
+        ring.style.opacity = '0.3';
+      });
+      el.addEventListener('mouseleave', () => {
+        cursor.style.width = cursor.style.height = '10px';
+        ring.style.width = ring.style.height = '36px';
+        ring.style.opacity = '0.5';
+      });
+    });
+
+    // ── SCROLL REVEAL ─────────────────────────────────────────────
+    const observer = new IntersectionObserver(entries => {
+      entries.forEach((entry, i) => {
+        if (entry.isIntersecting) {
+          setTimeout(() => entry.target.classList.add('visible'), (i % 4) * 80);
+        }
+      });
+    }, { threshold: 0.1 });
+
+    document.querySelectorAll('.reveal, .timeline-entry').forEach(el => observer.observe(el));
+  </script>
+</body>
+</html>
