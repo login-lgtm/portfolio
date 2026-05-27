@@ -218,12 +218,97 @@
       white-space: nowrap;
       margin-bottom: 12px;
       opacity: 0;
-      animation: fadeUp .7s ease .3s forwards;
+      transform: translateY(24px);
+      transition: opacity 0.6s ease, transform 0.6s ease;
+      position: relative;
     }
     @media (max-width: 768px) {
       .hero-name { font-size: clamp(52px, 13vw, 80px); white-space: normal; letter-spacing: -2px; }
     }
     .hero-name em { font-style: italic; color: var(--accent); }
+
+    /* ─────────────────────────────────────────────
+       FIGMA SELECTION DECORATION (hero name)
+    ───────────────────────────────────────────── */
+    .hero-name-intro {
+      font-family: 'DM Sans', sans-serif;
+      font-size: 15px;
+      font-weight: 400;
+      color: var(--text-light);
+      letter-spacing: 0.04em;
+      margin-bottom: 8px;
+      opacity: 0;
+      animation: fadeUp .6s ease .25s forwards;
+    }
+
+    /* Selection bounding box */
+    .figma-wrapper {
+      position: relative;
+      display: inline-block;
+      padding: 4px 10px 6px 8px;
+      border-radius: 3px;
+      background: transparent;
+      transition: background-color 0.4s ease;
+    }
+    .figma-wrapper.selected {
+      background: rgba(221, 217, 247, 0.55);
+    }
+
+    /* Left edge line (like Figma selection border) */
+    .figma-line-left {
+      position: absolute;
+      left: -2px;
+      top: 0;
+      bottom: 0;
+      width: 2px;
+      background: var(--accent);
+      border-radius: 1px;
+      opacity: 0;
+      transform: scaleY(0);
+      transform-origin: top;
+      transition: opacity 0.15s ease, transform 0.28s ease;
+      pointer-events: none;
+    }
+    .figma-line-left.show {
+      opacity: 1;
+      transform: scaleY(1);
+    }
+
+    /* Resize handle dots */
+    .figma-anchor {
+      position: absolute;
+      width: 12px; height: 12px;
+      background: var(--accent);
+      border-radius: 50%;
+      border: 2px solid white;
+      box-shadow: 0 0 0 1.5px var(--accent);
+      transform: scale(0);
+      transition: transform 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
+      z-index: 2;
+      pointer-events: none;
+    }
+    .figma-anchor.show { transform: scale(1); }
+    .figma-anchor-tr { top: -6px; right: -6px; }
+    .figma-anchor-bl { bottom: -6px; left: -6px; }
+
+    /* Blinking text cursor */
+    .figma-cursor {
+      display: inline-block;
+      width: 3px;
+      height: 0.82em;
+      background: var(--accent);
+      margin-left: 4px;
+      vertical-align: text-bottom;
+      opacity: 0;
+      border-radius: 1px;
+    }
+    .figma-cursor.blink {
+      animation: figmaBlink 1s step-end infinite;
+    }
+    @keyframes figmaBlink {
+      0%, 100% { opacity: 1; }
+      50%       { opacity: 0; }
+    }
 
     .hero-sub {
       font-size: clamp(18px, 2.5vw, 26px);
@@ -715,7 +800,15 @@
         <span class="dot"></span>
         Open to new roles
       </div>
-      <h1 class="hero-name">Vivien <em>Evers</em></h1>
+      <div class="hero-name-intro">Hi, my name is</div>
+      <h1 class="hero-name" id="hero-name">
+        <span class="figma-wrapper" id="figma-wrapper">
+          <span class="figma-line-left" id="figma-line"></span>
+          <span id="figma-typed-name"></span><em id="figma-typed-em"></em><span class="figma-cursor" id="figma-cursor"></span>
+          <span class="figma-anchor figma-anchor-tr" id="figma-anchor-tr"></span>
+          <span class="figma-anchor figma-anchor-bl" id="figma-anchor-bl"></span>
+        </span>
+      </h1>
       <p class="hero-sub">Mediengestalterin — Brand, Design & Marketing</p>
       <div class="hero-ctas">
         <a href="#work" class="btn-primary">View my work ▶</a>
@@ -1101,6 +1194,67 @@
     /* Erstes Projekt beim Laden automatisch aktiv */
     renderContent(0);
 
+    /* ── FIGMA HERO NAME ANIMATION ─────────────────────────── */
+    function startHeroNameAnimation() {
+      const nameEl    = document.getElementById('hero-name');
+      const wrapper   = document.getElementById('figma-wrapper');
+      const typedName = document.getElementById('figma-typed-name');
+      const typedEm   = document.getElementById('figma-typed-em');
+      const cursor    = document.getElementById('figma-cursor');
+      const line      = document.getElementById('figma-line');
+      const anchorTR  = document.getElementById('figma-anchor-tr');
+      const anchorBL  = document.getElementById('figma-anchor-bl');
+
+      /* 1. Slide hero name in */
+      nameEl.style.opacity   = '1';
+      nameEl.style.transform = 'translateY(0)';
+
+      /* 2. Blinking cursor appears immediately */
+      cursor.style.opacity = '1';
+      cursor.classList.add('blink');
+
+      /* 3. Typewriter: "Vivien " + italic "Evers" */
+      const part1 = 'Vivien ';
+      const part2 = 'Evers';
+      let i = 0, j = 0;
+
+      function typePart1() {
+        if (i < part1.length) {
+          typedName.textContent = part1.slice(0, ++i);
+          setTimeout(typePart1, 70 + Math.random() * 36);
+        } else {
+          setTimeout(typePart2, 90);
+        }
+      }
+
+      function typePart2() {
+        if (j < part2.length) {
+          typedEm.textContent = part2.slice(0, ++j);
+          setTimeout(typePart2, 72 + Math.random() * 36);
+        } else {
+          setTimeout(showFigmaDecor, 320);
+        }
+      }
+
+      function showFigmaDecor() {
+        /* cursor pauses, then selection + line + anchors appear */
+        cursor.classList.remove('blink');
+        cursor.style.opacity  = '0';
+        wrapper.classList.add('selected');          /* lila bg */
+        line.classList.add('show');                 /* left line */
+        setTimeout(() => anchorTR.classList.add('show'), 200);  /* handle TR */
+        setTimeout(() => anchorBL.classList.add('show'), 320);  /* handle BL */
+        /* cursor blinks again after decoration settles */
+        setTimeout(() => {
+          cursor.style.opacity = '1';
+          cursor.classList.add('blink');
+        }, 480);
+      }
+
+      /* slight initial pause so the slide-in is visible first */
+      setTimeout(typePart1, 200);
+    }
+
     /* ── LOADING SCREEN ────────────────────────────────────── */
     (function() {
       const screen  = document.getElementById('loading-screen');
@@ -1134,6 +1288,8 @@
                   screen.classList.add('fade-out');
                   document.body.classList.remove('is-loading');
                   setTimeout(() => screen.style.display = 'none', 680);
+                  /* kick off the Figma hero animation as screen fades */
+                  setTimeout(startHeroNameAnimation, 250);
                 }, 800);
               }, 120);
             });
