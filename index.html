@@ -327,15 +327,15 @@
     #work { padding: 120px 80px; position: relative; z-index: 1; }
     .work-header { margin-bottom: 48px; }
 
-    /* ── Mac Finder Window ── */
+    /* ── Mac Finder Window (komplett neu) ── */
     .finder-window {
       border-radius: 12px;
       overflow: hidden;
-      box-shadow: 0 28px 70px rgba(0,0,0,.14), 0 0 0 1px rgba(0,0,0,.07);
+      box-shadow: 0 28px 70px rgba(0,0,0,.14), 0 0 0 1px rgba(0,0,0,.08);
       display: flex;
       flex-direction: column;
-      height: 520px;          /* feste Höhe damit flex:1 in fw-body funktioniert */
-      background: #FAFAF8;
+      height: 540px;
+      background: white;
     }
 
     /* Chrome bar */
@@ -356,164 +356,124 @@
     .fw-chrome-title {
       position: absolute; left: 50%; transform: translateX(-50%);
       font-size: 12px; font-weight: 500; color: var(--text-mid);
-      letter-spacing: .01em; pointer-events: none;
+      pointer-events: none;
     }
 
-    /* Body = sidebar + main  (flex:1 fills the remaining height) */
+    /* Body = sidebar + content, fills remaining height */
     .fw-body {
       display: flex;
       flex: 1;
       overflow: hidden;
-      min-height: 0;          /* wichtig: verhindert Overflow in Flex-Spalte */
+      min-height: 0;
     }
 
-    /* Sidebar — 220px, dekorativ */
+    /* ── SIDEBAR (links, 240px, Navigation) ── */
     .fw-sidebar {
-      width: 220px;
+      width: 240px;
       flex-shrink: 0;
       background: #F0EDEA;
       border-right: 1px solid rgba(0,0,0,.07);
       padding: 18px 0;
-      overflow-y: auto;
+      overflow: hidden;       /* Sidebar scrollt NICHT */
     }
     .fw-sidebar-label {
       font-size: 11px; font-weight: 600;
       text-transform: uppercase; letter-spacing: .09em;
       color: var(--text-light);
-      padding: 0 16px 10px;
+      padding: 0 14px 10px;
     }
-    .fw-sidebar-nav { display: flex; flex-direction: column; gap: 2px; padding: 0 8px; }
-    .fw-nav-item {
+    .fw-sidebar-list {
+      display: flex; flex-direction: column; gap: 2px;
+      padding: 0 8px;
+    }
+    .fw-sidebar-item {
       display: flex; align-items: center; gap: 10px;
-      padding: 8px 12px; border-radius: 7px;
-      font-size: 13px; font-weight: 500; color: var(--text-mid);
-      cursor: default;         /* dekorativ, kein Pointer */
-      user-select: none;
-      transition: background .15s, color .15s;
-      white-space: nowrap;
-    }
-    .fw-nav-item.active { background: var(--accent-light); color: var(--accent); }
-    .fw-nav-icon { font-size: 14px; width: 18px; text-align: center; flex-shrink: 0; opacity: .75; }
-
-    /* Main = grid + detail */
-    .fw-main {
-      flex: 1;
-      display: flex;
-      overflow: hidden;
-      min-width: 0;
-      min-height: 0;
-    }
-
-    /* Folder grid */
-    .fw-grid {
-      flex: 1;
-      padding: 24px 20px;
-      display: grid;
-      grid-template-columns: repeat(2, 1fr);
-      gap: 8px;
-      align-content: start;
-      overflow-y: auto;
-      min-width: 0;
-      min-height: 0;
-    }
-
-    .fw-folder {
-      display: flex; flex-direction: column;
-      align-items: center; gap: 8px;
-      padding: 16px 10px 12px;
-      border-radius: 10px;
+      padding: 8px 10px;
+      border-radius: 7px;
       cursor: pointer;
-      border: 2px solid transparent;
-      transition: background .15s, border-color .15s;
       user-select: none;
+      transition: background .12s;
     }
-    .fw-folder:hover { background: rgba(0,0,0,.04); }
-    .fw-folder.selected {
-      background: rgba(107,92,231,.07);
-      border-color: var(--accent);
+    .fw-sidebar-item:hover { background: rgba(0,0,0,.05); }
+    .fw-sidebar-item.active { background: var(--accent-light); }
+    .fw-sidebar-item.active .fw-sidebar-name {
+      color: var(--accent);
+      font-weight: 600;
     }
-    .fw-folder svg { display: block; }   /* verhindert Inline-Whitespace-Bugs */
-    .fw-folder-name {
-      font-size: 12px; font-weight: 500;
-      color: var(--text); text-align: center;
-      line-height: 1.4; max-width: 110px;
+    .fw-sidebar-icon { display: block; flex-shrink: 0; }
+    .fw-sidebar-name {
+      font-size: 13px; color: var(--text-mid);
+      line-height: 1.3;
+      transition: color .12s;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
     }
 
-    /* Detail panel */
-    .fw-detail {
-      width: 280px;
-      flex-shrink: 0;
-      border-left: 1px solid rgba(0,0,0,.07);
-      padding: 16px 16px 20px;
-      background: #FAFAF8;
-      overflow-y: auto;
-      display: flex;
-      flex-direction: column;
-      gap: 0;
-      transition: opacity .18s ease;
-      min-height: 0;
-    }
-    .fw-detail-empty {
+    /* ── CONTENT (rechts, scrollbar) ── */
+    .fw-content {
       flex: 1;
-      display: flex; align-items: center; justify-content: center;
-      color: var(--text-light); font-size: 13px; text-align: center;
-      padding: 20px;
+      overflow-y: auto;
+      background: white;
+      min-width: 0;
+      min-height: 0;
+      transition: opacity .18s ease;
     }
 
-    /* ── Medien-Bereich im Detail-Panel ── */
-    .media-area {
-      margin-bottom: 14px;
+    /* Medien-Bereich */
+    .fw-media {
+      padding: 24px 24px 0;
     }
-    /* Großer Bild-Platzhalter */
-    .media-main-ph {
-      width: 100%; height: 180px;
-      background: #EDEAE7;
+    /* Großes Hauptbild / Platzhalter */
+    .fw-media-main-ph {
+      width: 100%; height: 200px;
+      background: #F0EDEA;
       border-radius: 8px;
       display: flex; align-items: center; justify-content: center;
-      color: #C0BAB5; font-size: 12px;
+      color: #B8B2AC; font-size: 13px; font-style: italic;
       margin-bottom: 8px;
-      font-style: italic;
     }
-    /* 3 kleine Thumbnails nebeneinander */
-    .media-thumbs {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 6px;
+    .fw-media-main-img {
+      width: 100%; height: 200px;
+      object-fit: cover; border-radius: 8px;
+      display: block; margin-bottom: 8px;
     }
-    .media-thumb-ph {
-      height: 72px;
-      background: #EDEAE7;
+    /* 3 kleine Thumbnails */
+    .fw-media-thumbs {
+      display: flex; gap: 8px;
+    }
+    .fw-media-thumb-ph {
+      flex: 1; height: 80px;
+      background: #F0EDEA;
       border-radius: 6px;
+      display: flex; align-items: center; justify-content: center;
+      color: #B8B2AC; font-size: 11px; font-style: italic;
     }
-    /* Echte Bilder (sobald Vivien sie einfügt) */
-    .media-area img {
-      width: 100%; object-fit: cover; border-radius: 8px; display: block;
-    }
-    .media-thumbs img {
-      height: 72px; border-radius: 6px;
+    .fw-media-thumb-img {
+      flex: 1; height: 80px;
+      object-fit: cover; border-radius: 6px; display: block;
     }
 
-    .fw-detail-name {
-      font-family: 'Instrument Serif', serif;
-      font-size: 20px; color: var(--text);
-      line-height: 1.2; letter-spacing: -.3px;
-      margin-bottom: 10px;
+    /* Text-Bereich */
+    .fw-text {
+      padding: 20px 24px 28px;
     }
-    .fw-detail-desc {
-      font-size: 12.5px; color: var(--text-mid);
+    .fw-proj-title {
+      font-family: 'Instrument Serif', serif;
+      font-size: 22px; color: var(--text);
+      line-height: 1.2; margin-bottom: 10px;
+    }
+    .fw-proj-desc {
+      font-size: 14px; color: var(--text-mid);
       line-height: 1.7; margin-bottom: 14px;
     }
-    .fw-detail-tags { display: flex; flex-wrap: wrap; gap: 5px; margin-bottom: 14px; }
-    .fw-detail-tag {
+    .fw-proj-tags { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 12px; }
+    .fw-tag {
       font-size: 11px; background: var(--tag-bg);
-      color: var(--text-mid); padding: 3px 9px; border-radius: 100px;
+      color: var(--text-mid); padding: 4px 10px; border-radius: 100px;
     }
-    .fw-detail-role {
-      font-size: 12px; font-style: italic;
-      color: var(--text-light);
-      padding-top: 12px;
-      border-top: 1px solid var(--border);
-      margin-top: auto;
+    .fw-proj-role {
+      font-size: 12px; font-style: italic; color: var(--text-light);
     }
 
     /* Status bar */
@@ -523,27 +483,23 @@
       padding: 6px 16px;
       font-size: 11px; color: var(--text-light);
       text-align: center; flex-shrink: 0;
-      letter-spacing: .02em;
     }
 
-    /* Responsive finder */
-    @media (max-width: 960px) {
-      .fw-sidebar { width: 170px; }
-      .fw-detail  { width: 240px; }
+    /* ── Responsive ── */
+    @media (max-width: 900px) {
+      .fw-sidebar { width: 180px; }
     }
-    @media (max-width: 768px) {
-      .finder-window { height: auto; min-height: 420px; }
-      .fw-sidebar { display: none; }
-      .fw-main { flex-direction: column; overflow-y: auto; }
-      .fw-grid { overflow: visible; }
-      .fw-detail {
-        width: 100%; border-left: none;
-        border-top: 1px solid rgba(0,0,0,.07);
-        min-height: 300px;
+    @media (max-width: 680px) {
+      .finder-window { height: auto; }
+      .fw-body { flex-direction: column; }
+      .fw-sidebar {
+        width: 100%; border-right: none;
+        border-bottom: 1px solid rgba(0,0,0,.07);
+        padding: 12px 0; overflow-x: auto; overflow-y: hidden;
       }
-    }
-    @media (max-width: 500px) {
-      .fw-grid { grid-template-columns: repeat(2, 1fr); padding: 14px; gap: 6px; }
+      .fw-sidebar-list { flex-direction: row; padding: 0 12px; }
+      .fw-sidebar-item { white-space: nowrap; }
+      .fw-content { min-height: 400px; }
     }
 
     /* ─────────────────────────────────────────────
@@ -847,7 +803,7 @@
 
     <div class="finder-window reveal">
 
-      <!-- Chrome -->
+      <!-- Chrome bar -->
       <div class="fw-chrome">
         <div class="fw-dots">
           <span class="fw-dot r"></span>
@@ -857,83 +813,65 @@
         <span class="fw-chrome-title">~/vivien/portfolio</span>
       </div>
 
-      <!-- Body -->
+      <!-- Body: Sidebar links + Content rechts -->
       <div class="fw-body">
 
-        <!-- Sidebar — dekorativ, keine Navigation -->
+        <!-- ── SIDEBAR: 4 Projekte als klickbare Liste ── -->
         <aside class="fw-sidebar">
           <div class="fw-sidebar-label">Favorites</div>
-          <nav class="fw-sidebar-nav">
-            <div class="fw-nav-item active">
-              <span class="fw-nav-icon">🏠</span> Work
-            </div>
-            <div class="fw-nav-item">
-              <span class="fw-nav-icon">✦</span> About me
-            </div>
-            <div class="fw-nav-item">
-              <span class="fw-nav-icon">★</span> Thinking
-            </div>
-          </nav>
+          <ul class="fw-sidebar-list" id="fw-sidebar-list">
+
+            <!-- Projekt 0 – Music is for Lovers (blau) -->
+            <li class="fw-sidebar-item active" data-idx="0">
+              <svg class="fw-sidebar-icon" width="20" height="16" viewBox="0 0 20 16" fill="none">
+                <path d="M1 5.5 L1 3.5 Q1 3 1.5 3 L6.5 3 Q7.8 3 8.3 4 L9.2 5.5 Z" fill="#96B8E2"/>
+                <rect x="1" y="5" width="18" height="9" rx="2" fill="#7B9FD4"/>
+                <rect x="1" y="5" width="18" height="3" rx="2" fill="rgba(255,255,255,.28)"/>
+              </svg>
+              <span class="fw-sidebar-name">Music is for Lovers</span>
+            </li>
+
+            <!-- Projekt 1 – Studio Liebe & NRG (rosa) -->
+            <li class="fw-sidebar-item" data-idx="1">
+              <svg class="fw-sidebar-icon" width="20" height="16" viewBox="0 0 20 16" fill="none">
+                <path d="M1 5.5 L1 3.5 Q1 3 1.5 3 L6.5 3 Q7.8 3 8.3 4 L9.2 5.5 Z" fill="#E2AE97"/>
+                <rect x="1" y="5" width="18" height="9" rx="2" fill="#D4957B"/>
+                <rect x="1" y="5" width="18" height="3" rx="2" fill="rgba(255,255,255,.28)"/>
+              </svg>
+              <span class="fw-sidebar-name">Studio Liebe & NRG</span>
+            </li>
+
+            <!-- Projekt 2 – Jewish Chamber Orchestra (grün) -->
+            <li class="fw-sidebar-item" data-idx="2">
+              <svg class="fw-sidebar-icon" width="20" height="16" viewBox="0 0 20 16" fill="none">
+                <path d="M1 5.5 L1 3.5 Q1 3 1.5 3 L6.5 3 Q7.8 3 8.3 4 L9.2 5.5 Z" fill="#99D4BB"/>
+                <rect x="1" y="5" width="18" height="9" rx="2" fill="#7BC4A0"/>
+                <rect x="1" y="5" width="18" height="3" rx="2" fill="rgba(255,255,255,.28)"/>
+              </svg>
+              <span class="fw-sidebar-name">Jewish Chamber Orchestra Hamburg</span>
+            </li>
+
+            <!-- Projekt 3 – During my Apprenticeship (lila) -->
+            <li class="fw-sidebar-item" data-idx="3">
+              <svg class="fw-sidebar-icon" width="20" height="16" viewBox="0 0 20 16" fill="none">
+                <path d="M1 5.5 L1 3.5 Q1 3 1.5 3 L6.5 3 Q7.8 3 8.3 4 L9.2 5.5 Z" fill="#BB99E2"/>
+                <rect x="1" y="5" width="18" height="9" rx="2" fill="#A07BD4"/>
+                <rect x="1" y="5" width="18" height="3" rx="2" fill="rgba(255,255,255,.28)"/>
+              </svg>
+              <span class="fw-sidebar-name">During my Apprenticeship</span>
+            </li>
+
+          </ul>
         </aside>
 
-        <!-- Main: grid + detail -->
-        <div class="fw-main">
+        <!-- ── CONTENT: zeigt aktives Projekt ── -->
+        <div class="fw-content" id="fw-content">
+          <!-- wird per JS befüllt -->
+        </div>
 
-          <!-- Folder grid -->
-          <div class="fw-grid" id="fw-grid">
-
-            <!-- Folder 0 – Music is for Lovers: #7B9FD4 -->
-            <div class="fw-folder" data-idx="0">
-              <svg width="72" height="58" viewBox="0 0 72 58" fill="none">
-                <path d="M2 20 L2 13 Q2 11 4 11 L20 11 Q23.2 11 25 13.6 L29 20 Z" fill="#96B8E2"/>
-                <rect x="2" y="18" width="68" height="36" rx="5" fill="#7B9FD4"/>
-                <rect x="2" y="18" width="68" height="11" rx="5" fill="rgba(255,255,255,.24)"/>
-              </svg>
-              <span class="fw-folder-name">Music is for Lovers</span>
-            </div>
-
-            <!-- Folder 1 – Studio Liebe & NRG: #D4957B -->
-            <div class="fw-folder" data-idx="1">
-              <svg width="72" height="58" viewBox="0 0 72 58" fill="none">
-                <path d="M2 20 L2 13 Q2 11 4 11 L20 11 Q23.2 11 25 13.6 L29 20 Z" fill="#E2AE97"/>
-                <rect x="2" y="18" width="68" height="36" rx="5" fill="#D4957B"/>
-                <rect x="2" y="18" width="68" height="11" rx="5" fill="rgba(255,255,255,.24)"/>
-              </svg>
-              <span class="fw-folder-name">Studio Liebe & NRG</span>
-            </div>
-
-            <!-- Folder 2 – Jewish Chamber Orchestra: #7BC4A0 -->
-            <div class="fw-folder" data-idx="2">
-              <svg width="72" height="58" viewBox="0 0 72 58" fill="none">
-                <path d="M2 20 L2 13 Q2 11 4 11 L20 11 Q23.2 11 25 13.6 L29 20 Z" fill="#99D4BB"/>
-                <rect x="2" y="18" width="68" height="36" rx="5" fill="#7BC4A0"/>
-                <rect x="2" y="18" width="68" height="11" rx="5" fill="rgba(255,255,255,.24)"/>
-              </svg>
-              <span class="fw-folder-name">Jewish Chamber Orchestra Hamburg</span>
-            </div>
-
-            <!-- Folder 3 – During my Apprenticeship: #A07BD4 -->
-            <div class="fw-folder" data-idx="3">
-              <svg width="72" height="58" viewBox="0 0 72 58" fill="none">
-                <path d="M2 20 L2 13 Q2 11 4 11 L20 11 Q23.2 11 25 13.6 L29 20 Z" fill="#BB99E2"/>
-                <rect x="2" y="18" width="68" height="36" rx="5" fill="#A07BD4"/>
-                <rect x="2" y="18" width="68" height="11" rx="5" fill="rgba(255,255,255,.24)"/>
-              </svg>
-              <span class="fw-folder-name">During my Apprenticeship</span>
-            </div>
-
-          </div><!-- /fw-grid -->
-
-          <!-- Detail panel -->
-          <div class="fw-detail" id="fw-detail">
-            <div class="fw-detail-empty">← Select a project</div>
-          </div>
-
-        </div><!-- /fw-main -->
       </div><!-- /fw-body -->
 
-      <!-- Status bar -->
-      <div class="fw-statusbar">4 items</div>
+      <div class="fw-statusbar">4 items · ~/vivien/portfolio</div>
 
     </div><!-- /finder-window -->
   </section>
@@ -1058,112 +996,110 @@
   <script>
     /* ═══════════════════════════════════════════════════════════════
        PROJEKT-DATEN
-       Bilder hinzufügen: Trage Bildpfade in das "images"-Array ein.
+       ─────────────────────────────────────────────────────────────
+       BILDER HINZUFÜGEN:
+       Trage den Bildpfad in images[n] ein, z.B.:
+         images: ['images/mifl-hero.jpg', 'images/mifl-2.jpg', 'images/mifl-3.jpg', 'images/mifl-4.jpg']
+       Lasse '' stehen → Platzhalter wird angezeigt.
        Format: [hauptbild, thumbnail1, thumbnail2, thumbnail3]
-       Beispiel: images: ['images/mifl-hero.jpg', 'images/mifl-2.jpg', 'images/mifl-3.jpg', 'images/mifl-4.jpg']
-       Lasse '' wenn das Bild noch nicht vorhanden ist → Platzhalter wird angezeigt.
     ═══════════════════════════════════════════════════════════════ */
     const PROJECTS = [
       {
         name: 'Music is for Lovers',
-        color: '#7B9FD4', colorLight: '#96B8E2',
-        // ↓ Bildpfade hier eintragen (Hauptbild + 3 Thumbnails)
+        // ↓ Bildpfade eintragen (Hauptbild + 3 Thumbnails)
         images: ['', '', '', ''],
-        desc: 'Co-built an electronic music event brand from zero. Full visual system, brand identity and communication across three formats: MIFL, Studio Liebe, NRG. 10+ events, up to 400 guests, partnerships with Jägermeister & Carlsberg.',
+        desc: 'Co-built an electronic music event brand from zero. Full visual system, brand identity and communication across three formats: MIFL, Studio Liebe, NRG. 10+ events, up to 400 guests.',
         tags: ['Brand System','Art Direction','Event Marketing','Print'],
-        role: 'Brand & Creative Lead · 2022 – now'
+        role: 'Co-Founder & Creative Lead · 2022 – now'
       },
       {
         name: 'Studio Liebe & NRG',
-        color: '#D4957B', colorLight: '#E2AE97',
-        // ↓ Bildpfade hier eintragen (Hauptbild + 3 Thumbnails)
+        // ↓ Bildpfade eintragen
         images: ['', '', '', ''],
-        desc: 'Built the complete visual identity and brand communication for two sub-formats of MIFL. Art direction, poster design, large-format print production (OMR 2024) and full digital presence.',
+        desc: 'Visual identity and brand communication for two sub-formats of MIFL. Art direction, poster design and large-format print production for OMR 2024 Hamburg.',
         tags: ['Visual Identity','Art Direction','Print Production','Large Format'],
-        role: 'Art Direction & Brand · 2023 – 2026'
+        role: 'Art Direction & Brand · 2023 – 2024'
       },
       {
         name: 'Jewish Chamber Orchestra Hamburg',
-        color: '#7BC4A0', colorLight: '#99D4BB',
-        // ↓ Bildpfade hier eintragen (Hauptbild + 3 Thumbnails)
+        // ↓ Bildpfade eintragen
         images: ['', '', '', ''],
-        desc: 'Bringing a traditional cultural institution closer to a younger audience without losing depth. Visual communication strategy and brand tone across digital channels.',
+        desc: 'Brand communication strategy for a cultural institution. Translating brand tone and visual identity across digital channels to reach a younger audience.',
         tags: ['Brand Communication','Visual Strategy','Cultural Institution'],
-        role: 'Brand & Communications · 2025 – now'
+        role: 'Brand & Communications · 2023 – 2025'
       },
       {
         name: 'During my Apprenticeship',
-        color: '#A07BD4', colorLight: '#BB99E2',
-        // ↓ Bildpfade hier eintragen (Hauptbild + 3 Thumbnails)
+        // ↓ Bildpfade eintragen
         images: ['', '', '', ''],
-        desc: 'Three years at a Hamburg agency — websites in Figma & Webflow, corporate identity systems, print production and real client projects from brief to delivery.',
-        tags: ['Figma','Corporate Design','Print Production'],
+        desc: 'Three years at a Hamburg agency — websites in Figma & Webflow, corporate identity systems and print production. Real client projects from brief to delivery.',
+        tags: ['Figma','Webflow','Corporate Design','Print Production'],
         role: 'Mediengestalterin Digital & Print · 2023 – 2026'
       }
     ];
 
-    /* Rendert einen Medien-Slot: echtes Bild wenn Pfad vorhanden, sonst Platzhalter */
-    function mediaSlot(src, alt, isMain) {
-      if (src) {
-        /* ── Echtes Bild ─────────────────────────────────────────────
-           Ersetze images[n] im PROJECTS-Array mit deinem Bildpfad. */
-        return isMain
-          ? `<img src="${src}" alt="${alt}" style="width:100%;height:180px;object-fit:cover;border-radius:8px;display:block;margin-bottom:8px;">`
-          : `<img src="${src}" alt="">`;
-      }
-      /* ── Platzhalter (solange kein Bild eingetragen ist) ─────────── */
-      return isMain
-        ? `<div class="media-main-ph">[ Bild / Video kommt hier ]</div>`
-        : `<div class="media-thumb-ph"></div>`;
+    /* Hilfsfunktion: Bild oder Platzhalter rendern */
+    function imgOrPh(src, cssClass, phText) {
+      return src
+        ? `<img src="${src}" class="${cssClass}" alt="">`
+        : `<div class="${cssClass.replace('img','ph')}">${phText}</div>`;
     }
 
-    function renderDetail(idx) {
-      const p   = PROJECTS[idx];
-      const det = document.getElementById('fw-detail');
-      const [img1, img2, img3, img4] = p.images || ['','','',''];
+    /* Rendert den Content-Bereich für Projekt idx */
+    function renderContent(idx) {
+      const p = PROJECTS[idx];
+      const [i0, i1, i2, i3] = p.images;
+      const content = document.getElementById('fw-content');
 
-      det.style.opacity = '0';
+      content.style.opacity = '0';
       setTimeout(() => {
-        det.innerHTML = `
-          <!-- ═══════════════════════════════════════════════════════
-               MEDIEN-BEREICH — Bilder/Videos hier einfügen
-               Trage Pfade in PROJECTS[${idx}].images ein (siehe oben).
-               Oder ersetze die Platzhalter-divs direkt durch:
-               <img src="images/DATEINAME.jpg" alt="...">
-          ═══════════════════════════════════════════════════════ -->
-          <div class="media-area">
+        content.innerHTML = `
+          <!-- ═══════════════════════════════════════════════
+               MEDIEN — Bilder eintragen in PROJECTS[${idx}].images
+               Oder ersetze die Platzhalter-Divs direkt durch:
+               <img src="images/DATEINAME.jpg" alt="…">
+          ═══════════════════════════════════════════════ -->
+          <div class="fw-media">
 
-            <!-- HAUPTBILD (images[0]) — z.B. src="images/projekt-hero.jpg" -->
-            ${mediaSlot(img1, p.name, true)}
+            <!-- HAUPTBILD: images[0] — z.B. 'images/mifl-main.jpg' -->
+            ${i0
+              ? `<img src="${i0}" class="fw-media-main-img" alt="${p.name}">`
+              : `<div class="fw-media-main-ph">[ Hauptbild / Video ]</div>`}
 
-            <!-- 3 THUMBNAILS (images[1–3]) — je ca. 72px hoch -->
-            <div class="media-thumbs">
-              <!-- BILD 2 (images[1]) -->
-              ${mediaSlot(img2, '', false)}
-              <!-- BILD 3 (images[2]) -->
-              ${mediaSlot(img3, '', false)}
-              <!-- BILD 4 (images[3]) -->
-              ${mediaSlot(img4, '', false)}
+            <div class="fw-media-thumbs">
+              <!-- BILD 2: images[1] -->
+              ${i1 ? `<img src="${i1}" class="fw-media-thumb-img" alt="">` : `<div class="fw-media-thumb-ph">[ Bild 2 ]</div>`}
+              <!-- BILD 3: images[2] -->
+              ${i2 ? `<img src="${i2}" class="fw-media-thumb-img" alt="">` : `<div class="fw-media-thumb-ph">[ Bild 3 ]</div>`}
+              <!-- BILD 4: images[3] -->
+              ${i3 ? `<img src="${i3}" class="fw-media-thumb-img" alt="">` : `<div class="fw-media-thumb-ph">[ Bild 4 ]</div>`}
             </div>
+
           </div>
 
-          <div class="fw-detail-name">${p.name}</div>
-          <p class="fw-detail-desc">${p.desc}</p>
-          <div class="fw-detail-tags">${p.tags.map(t=>`<span class="fw-detail-tag">${t}</span>`).join('')}</div>
-          <div class="fw-detail-role">${p.role}</div>`;
-        det.style.transition = 'opacity .18s ease';
-        det.style.opacity = '1';
-      }, 120);
+          <div class="fw-text">
+            <div class="fw-proj-title">${p.name}</div>
+            <p class="fw-proj-desc">${p.desc}</p>
+            <div class="fw-proj-tags">${p.tags.map(t => `<span class="fw-tag">${t}</span>`).join('')}</div>
+            <div class="fw-proj-role">${p.role}</div>
+          </div>`;
+
+        content.style.transition = 'opacity .2s ease';
+        content.style.opacity = '1';
+      }, 110);
     }
 
-    /* Folder click — kein automatischer Startzustand */
-    document.querySelectorAll('.fw-folder').forEach(f => {
-      f.addEventListener('click', () => {
-        document.querySelectorAll('.fw-folder').forEach(x => x.classList.remove('selected'));
-        f.classList.add('selected');
-        renderDetail(+f.dataset.idx);
+    /* Sidebar-Klick */
+    document.querySelectorAll('.fw-sidebar-item').forEach(item => {
+      item.addEventListener('click', () => {
+        document.querySelectorAll('.fw-sidebar-item').forEach(x => x.classList.remove('active'));
+        item.classList.add('active');
+        renderContent(+item.dataset.idx);
       });
     });
+
+    /* Erstes Projekt beim Laden automatisch aktiv */
+    renderContent(0);
 
     /* ── LOADING SCREEN ────────────────────────────────────── */
     (function() {
