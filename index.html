@@ -57,33 +57,32 @@
       user-select: none;
     }
 
-    /* "Vivien Evers" — Instrument Serif, big */
+    /* "Hi, my name is" — DM Sans, klein */
     #load-name {
+      font-family: 'DM Sans', sans-serif;
+      font-size: clamp(15px, 2vw, 22px);
+      font-weight: 400;
+      color: var(--text-light);
+      letter-spacing: 0.03em;
+      min-height: 1.5em;
+      display: block;
+      margin-bottom: 4px;
+      padding: 1px 4px;
+      margin-left: -4px;
+    }
+
+    /* "Vivien Evers" — Instrument Serif, groß */
+    #load-sub {
       font-family: 'Instrument Serif', serif;
-      font-size: clamp(48px, 7vw, 72px);
+      font-size: clamp(42px, 7vw, 68px);
       color: var(--text);
       letter-spacing: -2px;
       line-height: 1.1;
       min-height: 1.2em;
       display: block;
-      margin-bottom: 10px;
       border-radius: 6px;
-      padding: 2px 6px;
-      margin-left: -6px;
-      transition: background-color 0.35s ease;
-    }
-
-    /* "Portfolio" — same family, smaller */
-    #load-sub {
-      font-family: 'Instrument Serif', serif;
-      font-size: clamp(22px, 3vw, 32px);
-      color: var(--text-mid);
-      letter-spacing: -0.5px;
-      min-height: 1.3em;
-      display: block;
-      border-radius: 5px;
-      padding: 1px 6px;
-      margin-left: -6px;
+      padding: 2px 8px;
+      margin-left: -8px;
       transition: background-color 0.35s ease;
     }
 
@@ -98,8 +97,7 @@
       animation: tBlink 0.7s step-end infinite;
     }
 
-    /* selection highlight */
-    #load-name.selected,
+    /* selection highlight — nur auf "Vivien Evers" */
     #load-sub.selected {
       background-color: var(--accent-light);
       color: var(--text);
@@ -230,17 +228,6 @@
     /* ─────────────────────────────────────────────
        FIGMA SELECTION DECORATION (hero name)
     ───────────────────────────────────────────── */
-    .hero-name-intro {
-      font-family: 'DM Sans', sans-serif;
-      font-size: 15px;
-      font-weight: 400;
-      color: var(--text-light);
-      letter-spacing: 0.04em;
-      margin-bottom: 8px;
-      opacity: 0;
-      animation: fadeUp .6s ease .25s forwards;
-    }
-
     /* Selection bounding box */
     .figma-wrapper {
       position: relative;
@@ -800,7 +787,6 @@
         <span class="dot"></span>
         Open to new roles
       </div>
-      <div class="hero-name-intro">Hi, my name is</div>
       <h1 class="hero-name" id="hero-name">
         <span class="figma-wrapper" id="figma-wrapper">
           <span class="figma-line-left" id="figma-line"></span>
@@ -809,7 +795,7 @@
           <span class="figma-anchor figma-anchor-bl" id="figma-anchor-bl"></span>
         </span>
       </h1>
-      <p class="hero-sub">Mediengestalterin — Brand, Design & Marketing</p>
+      <p class="hero-sub">Mediengestalterin Digital & Print — Brand, Design & Marketing</p>
       <div class="hero-ctas">
         <a href="#work" class="btn-primary">View my work ▶</a>
         <a href="#contact" class="btn-secondary">Let's chat ☕</a>
@@ -1273,27 +1259,28 @@
         setTimeout(tick, delay);
       }
 
-      // Wait for Instrument Serif to load, then start
+      // Wait for fonts to load, then start
       document.fonts.ready.then(() => {
-        type(nameEl, 'Vivien Evers', 120, 72, function() {
-          // short pause before "Portfolio"
+        // Zeile 1: "Hi, my name is" in DM Sans
+        type(nameEl, 'Hi, my name is', 120, 52, function() {
+          // kurze Pause, dann Zeile 2
           setTimeout(() => {
-            type(subEl, 'Portfolio', 0, 68, function() {
-              // apply selection highlight
+            // Zeile 2: "Vivien Evers" in Instrument Serif (groß)
+            type(subEl, 'Vivien Evers', 0, 72, function() {
+              // nur Vivien Evers bekommt den lila Highlight
               setTimeout(() => {
-                nameEl.classList.add('selected');
                 subEl.classList.add('selected');
-                // fade out after 0.8s
+                // fade out nach 0.8s
                 setTimeout(() => {
                   screen.classList.add('fade-out');
                   document.body.classList.remove('is-loading');
                   setTimeout(() => screen.style.display = 'none', 680);
-                  /* kick off the Figma hero animation as screen fades */
+                  /* Figma-Animation im Hero starten */
                   setTimeout(startHeroNameAnimation, 250);
                 }, 800);
               }, 120);
             });
-          }, 500);
+          }, 400);
         });
       });
     })();
