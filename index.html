@@ -334,7 +334,7 @@
       box-shadow: 0 28px 70px rgba(0,0,0,.14), 0 0 0 1px rgba(0,0,0,.07);
       display: flex;
       flex-direction: column;
-      min-height: 480px;
+      height: 520px;          /* feste Höhe damit flex:1 in fw-body funktioniert */
       background: #FAFAF8;
     }
 
@@ -342,7 +342,6 @@
     .fw-chrome {
       display: flex;
       align-items: center;
-      gap: 0;
       background: #E8E6E3;
       padding: 13px 16px;
       border-bottom: 1px solid rgba(0,0,0,.09);
@@ -350,22 +349,27 @@
       position: relative;
     }
     .fw-dots { display: flex; gap: 7px; align-items: center; }
-    .fw-dot  { width:12px; height:12px; border-radius:50%; }
-    .fw-dot.r { background:#FF5F57; }
-    .fw-dot.y { background:#FFBD2E; }
-    .fw-dot.g { background:#28C940; }
+    .fw-dot  { width: 12px; height: 12px; border-radius: 50%; flex-shrink: 0; }
+    .fw-dot.r { background: #FF5F57; }
+    .fw-dot.y { background: #FFBD2E; }
+    .fw-dot.g { background: #28C940; }
     .fw-chrome-title {
-      position: absolute; left:50%; transform:translateX(-50%);
+      position: absolute; left: 50%; transform: translateX(-50%);
       font-size: 12px; font-weight: 500; color: var(--text-mid);
-      letter-spacing: .01em;
+      letter-spacing: .01em; pointer-events: none;
     }
 
-    /* Body = sidebar + main */
-    .fw-body { display: flex; flex: 1; overflow: hidden; }
+    /* Body = sidebar + main  (flex:1 fills the remaining height) */
+    .fw-body {
+      display: flex;
+      flex: 1;
+      overflow: hidden;
+      min-height: 0;          /* wichtig: verhindert Overflow in Flex-Spalte */
+    }
 
-    /* Sidebar */
+    /* Sidebar — 220px, dekorativ */
     .fw-sidebar {
-      width: 200px;
+      width: 220px;
       flex-shrink: 0;
       background: #F0EDEA;
       border-right: 1px solid rgba(0,0,0,.07);
@@ -381,35 +385,42 @@
     .fw-sidebar-nav { display: flex; flex-direction: column; gap: 2px; padding: 0 8px; }
     .fw-nav-item {
       display: flex; align-items: center; gap: 10px;
-      padding: 7px 12px; border-radius: 7px;
+      padding: 8px 12px; border-radius: 7px;
       font-size: 13px; font-weight: 500; color: var(--text-mid);
-      cursor: pointer; text-decoration: none;
+      cursor: default;         /* dekorativ, kein Pointer */
+      user-select: none;
       transition: background .15s, color .15s;
       white-space: nowrap;
     }
-    .fw-nav-item:hover { background: rgba(0,0,0,.05); color: var(--text); }
     .fw-nav-item.active { background: var(--accent-light); color: var(--accent); }
-    .fw-nav-icon { font-size: 14px; width: 18px; text-align: center; flex-shrink: 0; opacity: .8; }
+    .fw-nav-icon { font-size: 14px; width: 18px; text-align: center; flex-shrink: 0; opacity: .75; }
 
     /* Main = grid + detail */
-    .fw-main { flex: 1; display: flex; overflow: hidden; min-width: 0; }
+    .fw-main {
+      flex: 1;
+      display: flex;
+      overflow: hidden;
+      min-width: 0;
+      min-height: 0;
+    }
 
     /* Folder grid */
     .fw-grid {
       flex: 1;
-      padding: 28px 24px;
+      padding: 24px 20px;
       display: grid;
       grid-template-columns: repeat(2, 1fr);
-      gap: 12px;
+      gap: 8px;
       align-content: start;
       overflow-y: auto;
       min-width: 0;
+      min-height: 0;
     }
 
     .fw-folder {
       display: flex; flex-direction: column;
       align-items: center; gap: 8px;
-      padding: 18px 10px 14px;
+      padding: 16px 10px 12px;
       border-radius: 10px;
       cursor: pointer;
       border: 2px solid transparent;
@@ -421,6 +432,7 @@
       background: rgba(107,92,231,.07);
       border-color: var(--accent);
     }
+    .fw-folder svg { display: block; }   /* verhindert Inline-Whitespace-Bugs */
     .fw-folder-name {
       font-size: 12px; font-weight: 500;
       color: var(--text); text-align: center;
@@ -429,41 +441,77 @@
 
     /* Detail panel */
     .fw-detail {
-      width: 270px;
+      width: 280px;
       flex-shrink: 0;
       border-left: 1px solid rgba(0,0,0,.07);
-      padding: 28px 22px;
+      padding: 16px 16px 20px;
       background: #FAFAF8;
       overflow-y: auto;
       display: flex;
       flex-direction: column;
+      gap: 0;
       transition: opacity .18s ease;
+      min-height: 0;
     }
     .fw-detail-empty {
       flex: 1;
       display: flex; align-items: center; justify-content: center;
       color: var(--text-light); font-size: 13px; text-align: center;
+      padding: 20px;
     }
-    .fw-detail-icon { margin-bottom: 18px; }
-    .fw-detail-name {
-      font-family: 'Instrument Serif', serif;
-      font-size: 21px; color: var(--text);
-      line-height: 1.2; letter-spacing: -.3px;
+
+    /* ── Medien-Bereich im Detail-Panel ── */
+    .media-area {
       margin-bottom: 14px;
     }
-    .fw-detail-desc {
-      font-size: 13px; color: var(--text-mid);
-      line-height: 1.75; margin-bottom: 18px;
+    /* Großer Bild-Platzhalter */
+    .media-main-ph {
+      width: 100%; height: 180px;
+      background: #EDEAE7;
+      border-radius: 8px;
+      display: flex; align-items: center; justify-content: center;
+      color: #C0BAB5; font-size: 12px;
+      margin-bottom: 8px;
+      font-style: italic;
     }
-    .fw-detail-tags { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 20px; }
+    /* 3 kleine Thumbnails nebeneinander */
+    .media-thumbs {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 6px;
+    }
+    .media-thumb-ph {
+      height: 72px;
+      background: #EDEAE7;
+      border-radius: 6px;
+    }
+    /* Echte Bilder (sobald Vivien sie einfügt) */
+    .media-area img {
+      width: 100%; object-fit: cover; border-radius: 8px; display: block;
+    }
+    .media-thumbs img {
+      height: 72px; border-radius: 6px;
+    }
+
+    .fw-detail-name {
+      font-family: 'Instrument Serif', serif;
+      font-size: 20px; color: var(--text);
+      line-height: 1.2; letter-spacing: -.3px;
+      margin-bottom: 10px;
+    }
+    .fw-detail-desc {
+      font-size: 12.5px; color: var(--text-mid);
+      line-height: 1.7; margin-bottom: 14px;
+    }
+    .fw-detail-tags { display: flex; flex-wrap: wrap; gap: 5px; margin-bottom: 14px; }
     .fw-detail-tag {
       font-size: 11px; background: var(--tag-bg);
-      color: var(--text-mid); padding: 4px 10px; border-radius: 100px;
+      color: var(--text-mid); padding: 3px 9px; border-radius: 100px;
     }
     .fw-detail-role {
       font-size: 12px; font-style: italic;
       color: var(--text-light);
-      padding-top: 16px;
+      padding-top: 12px;
       border-top: 1px solid var(--border);
       margin-top: auto;
     }
@@ -480,19 +528,22 @@
 
     /* Responsive finder */
     @media (max-width: 960px) {
-      .fw-sidebar { width: 160px; }
-      .fw-detail  { width: 220px; }
+      .fw-sidebar { width: 170px; }
+      .fw-detail  { width: 240px; }
     }
     @media (max-width: 768px) {
+      .finder-window { height: auto; min-height: 420px; }
       .fw-sidebar { display: none; }
-      .fw-detail  {
+      .fw-main { flex-direction: column; overflow-y: auto; }
+      .fw-grid { overflow: visible; }
+      .fw-detail {
         width: 100%; border-left: none;
         border-top: 1px solid rgba(0,0,0,.07);
+        min-height: 300px;
       }
-      .fw-main { flex-direction: column; }
     }
     @media (max-width: 500px) {
-      .fw-grid { grid-template-columns: repeat(2, 1fr); padding: 16px; gap: 8px; }
+      .fw-grid { grid-template-columns: repeat(2, 1fr); padding: 14px; gap: 6px; }
     }
 
     /* ─────────────────────────────────────────────
@@ -690,6 +741,7 @@
       <span class="active">Portfolio</span>
     </div>
     <ul class="nav-links">
+      <li><a href="#hero" class="nav-home" onclick="window.scrollTo({top:0,behavior:'smooth'});return false;">↑ Home</a></li>
       <li><a href="#work">Work</a></li>
       <li><a href="#about">About</a></li>
       <li><a href="#skills">Skills</a></li>
@@ -808,22 +860,19 @@
       <!-- Body -->
       <div class="fw-body">
 
-        <!-- Sidebar -->
+        <!-- Sidebar — dekorativ, keine Navigation -->
         <aside class="fw-sidebar">
           <div class="fw-sidebar-label">Favorites</div>
           <nav class="fw-sidebar-nav">
             <div class="fw-nav-item active">
               <span class="fw-nav-icon">🏠</span> Work
             </div>
-            <a href="#about" class="fw-nav-item">
-              <span class="fw-nav-icon">✦</span> About
-            </a>
-            <a href="#skills" class="fw-nav-item">
-              <span class="fw-nav-icon">★</span> Skills
-            </a>
-            <a href="cv.html" class="fw-nav-item">
-              <span class="fw-nav-icon">↓</span> Downloads
-            </a>
+            <div class="fw-nav-item">
+              <span class="fw-nav-icon">✦</span> About me
+            </div>
+            <div class="fw-nav-item">
+              <span class="fw-nav-icon">★</span> Thinking
+            </div>
           </nav>
         </aside>
 
@@ -1007,11 +1056,19 @@
        SCRIPTS
   ══════════════════════════════════════════ -->
   <script>
-    /* ── PROJECT DATA ─────────────────────────────────────── */
+    /* ═══════════════════════════════════════════════════════════════
+       PROJEKT-DATEN
+       Bilder hinzufügen: Trage Bildpfade in das "images"-Array ein.
+       Format: [hauptbild, thumbnail1, thumbnail2, thumbnail3]
+       Beispiel: images: ['images/mifl-hero.jpg', 'images/mifl-2.jpg', 'images/mifl-3.jpg', 'images/mifl-4.jpg']
+       Lasse '' wenn das Bild noch nicht vorhanden ist → Platzhalter wird angezeigt.
+    ═══════════════════════════════════════════════════════════════ */
     const PROJECTS = [
       {
         name: 'Music is for Lovers',
         color: '#7B9FD4', colorLight: '#96B8E2',
+        // ↓ Bildpfade hier eintragen (Hauptbild + 3 Thumbnails)
+        images: ['', '', '', ''],
         desc: 'Co-built an electronic music event brand from zero. Full visual system, brand identity and communication across three formats: MIFL, Studio Liebe, NRG. 10+ events, up to 400 guests, partnerships with Jägermeister & Carlsberg.',
         tags: ['Brand System','Art Direction','Event Marketing','Print'],
         role: 'Brand & Creative Lead · 2022 – now'
@@ -1019,6 +1076,8 @@
       {
         name: 'Studio Liebe & NRG',
         color: '#D4957B', colorLight: '#E2AE97',
+        // ↓ Bildpfade hier eintragen (Hauptbild + 3 Thumbnails)
+        images: ['', '', '', ''],
         desc: 'Built the complete visual identity and brand communication for two sub-formats of MIFL. Art direction, poster design, large-format print production (OMR 2024) and full digital presence.',
         tags: ['Visual Identity','Art Direction','Print Production','Large Format'],
         role: 'Art Direction & Brand · 2023 – 2026'
@@ -1026,6 +1085,8 @@
       {
         name: 'Jewish Chamber Orchestra Hamburg',
         color: '#7BC4A0', colorLight: '#99D4BB',
+        // ↓ Bildpfade hier eintragen (Hauptbild + 3 Thumbnails)
+        images: ['', '', '', ''],
         desc: 'Bringing a traditional cultural institution closer to a younger audience without losing depth. Visual communication strategy and brand tone across digital channels.',
         tags: ['Brand Communication','Visual Strategy','Cultural Institution'],
         role: 'Brand & Communications · 2025 – now'
@@ -1033,27 +1094,59 @@
       {
         name: 'During my Apprenticeship',
         color: '#A07BD4', colorLight: '#BB99E2',
+        // ↓ Bildpfade hier eintragen (Hauptbild + 3 Thumbnails)
+        images: ['', '', '', ''],
         desc: 'Three years at a Hamburg agency — websites in Figma & Webflow, corporate identity systems, print production and real client projects from brief to delivery.',
         tags: ['Figma','Corporate Design','Print Production'],
         role: 'Mediengestalterin Digital & Print · 2023 – 2026'
       }
     ];
 
-    function makeSVG(body, tab) {
-      return `<svg width="64" height="52" viewBox="0 0 72 58" fill="none">
-        <path d="M2 20 L2 13 Q2 11 4 11 L20 11 Q23.2 11 25 13.6 L29 20 Z" fill="${tab}"/>
-        <rect x="2" y="18" width="68" height="36" rx="5" fill="${body}"/>
-        <rect x="2" y="18" width="68" height="11" rx="5" fill="rgba(255,255,255,.24)"/>
-      </svg>`;
+    /* Rendert einen Medien-Slot: echtes Bild wenn Pfad vorhanden, sonst Platzhalter */
+    function mediaSlot(src, alt, isMain) {
+      if (src) {
+        /* ── Echtes Bild ─────────────────────────────────────────────
+           Ersetze images[n] im PROJECTS-Array mit deinem Bildpfad. */
+        return isMain
+          ? `<img src="${src}" alt="${alt}" style="width:100%;height:180px;object-fit:cover;border-radius:8px;display:block;margin-bottom:8px;">`
+          : `<img src="${src}" alt="">`;
+      }
+      /* ── Platzhalter (solange kein Bild eingetragen ist) ─────────── */
+      return isMain
+        ? `<div class="media-main-ph">[ Bild / Video kommt hier ]</div>`
+        : `<div class="media-thumb-ph"></div>`;
     }
 
     function renderDetail(idx) {
       const p   = PROJECTS[idx];
       const det = document.getElementById('fw-detail');
+      const [img1, img2, img3, img4] = p.images || ['','','',''];
+
       det.style.opacity = '0';
       setTimeout(() => {
         det.innerHTML = `
-          <div class="fw-detail-icon">${makeSVG(p.color, p.colorLight)}</div>
+          <!-- ═══════════════════════════════════════════════════════
+               MEDIEN-BEREICH — Bilder/Videos hier einfügen
+               Trage Pfade in PROJECTS[${idx}].images ein (siehe oben).
+               Oder ersetze die Platzhalter-divs direkt durch:
+               <img src="images/DATEINAME.jpg" alt="...">
+          ═══════════════════════════════════════════════════════ -->
+          <div class="media-area">
+
+            <!-- HAUPTBILD (images[0]) — z.B. src="images/projekt-hero.jpg" -->
+            ${mediaSlot(img1, p.name, true)}
+
+            <!-- 3 THUMBNAILS (images[1–3]) — je ca. 72px hoch -->
+            <div class="media-thumbs">
+              <!-- BILD 2 (images[1]) -->
+              ${mediaSlot(img2, '', false)}
+              <!-- BILD 3 (images[2]) -->
+              ${mediaSlot(img3, '', false)}
+              <!-- BILD 4 (images[3]) -->
+              ${mediaSlot(img4, '', false)}
+            </div>
+          </div>
+
           <div class="fw-detail-name">${p.name}</div>
           <p class="fw-detail-desc">${p.desc}</p>
           <div class="fw-detail-tags">${p.tags.map(t=>`<span class="fw-detail-tag">${t}</span>`).join('')}</div>
@@ -1063,7 +1156,7 @@
       }, 120);
     }
 
-    /* Folder click */
+    /* Folder click — kein automatischer Startzustand */
     document.querySelectorAll('.fw-folder').forEach(f => {
       f.addEventListener('click', () => {
         document.querySelectorAll('.fw-folder').forEach(x => x.classList.remove('selected'));
@@ -1071,10 +1164,6 @@
         renderDetail(+f.dataset.idx);
       });
     });
-
-    /* Select first folder by default */
-    const firstFolder = document.querySelector('.fw-folder');
-    if (firstFolder) { firstFolder.classList.add('selected'); renderDetail(0); }
 
     /* ── LOADING SCREEN ────────────────────────────────────── */
     (function() {
