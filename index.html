@@ -736,10 +736,14 @@
        ABOUT
     ───────────────────────────────────────────── */
     /* ── THROUGH MY LENS ── */
+    /* ─────────────────────────────────────────────
+       THROUGH MY LENS — Digital Camera
+    ───────────────────────────────────────────── */
     #about {
       padding: 120px 80px;
       background: var(--bg);
       position: relative; z-index: 1;
+      display: flex; flex-direction: column; align-items: center;
     }
     .lens-label {
       font-size: 11px; font-weight: 600; letter-spacing: .12em;
@@ -748,46 +752,203 @@
     .lens-title {
       font-family: 'Instrument Serif', serif;
       font-size: clamp(36px,4vw,56px); letter-spacing: -1px;
-      line-height: 1.1; margin-bottom: 60px;
+      line-height: 1.1; margin-bottom: 80px; text-align: center;
     }
-    .polaroid-grid {
-      display: flex; flex-wrap: wrap; gap: 32px; justify-content: center;
+
+    /* ── KAMERA WRAPPER ── */
+    .cam-wrap {
+      transform: rotate(-2deg);
+      transition: transform .4s ease;
     }
-    .polaroid-card {
-      background: white; padding: 16px 16px 48px;
-      border-radius: 4px;
-      box-shadow: 0 8px 32px rgba(0,0,0,.10);
-      cursor: default;
-      transition: transform .3s ease, box-shadow .3s ease;
-      opacity: 0; transform: translateY(20px);
+    .cam-wrap:hover { transform: rotate(0deg); }
+
+    .cam-body {
+      width: 580px; height: 360px;
+      background: linear-gradient(145deg, #2A2A2A, #1A1A1A);
+      border-radius: 24px;
+      position: relative;
+      box-shadow:
+        0 20px 60px rgba(0,0,0,.4),
+        0 0 0 1px rgba(255,255,255,.05),
+        inset 0 1px 0 rgba(255,255,255,.1);
     }
-    .polaroid-card.visible { opacity: 1; transform: translateY(0) rotate(var(--rot, 0deg)); }
-    .polaroid-card:hover { transform: rotate(0deg) scale(1.05) !important; box-shadow: 0 16px 48px rgba(0,0,0,.15); z-index: 2; }
-    .polaroid-card:nth-child(1) { --rot: -2deg; }
-    .polaroid-card:nth-child(2) { --rot: 1.5deg; }
-    .polaroid-card:nth-child(3) { --rot: -1deg; }
-    .polaroid-card:nth-child(4) { --rot: 2.5deg; }
-    .polaroid-card:nth-child(5) { --rot: -0.5deg; }
-    .polaroid-card:nth-child(6) { --rot: 1deg; }
-    .polaroid-img {
-      width: 220px; height: 220px;
-      background: #E8E4E0; border-radius: 2px;
+
+    /* ── OBJEKTIV ── */
+    .cam-lens {
+      position: absolute; left: 40px; top: 50%;
+      transform: translateY(-50%);
+      width: 120px; height: 120px; border-radius: 50%;
+      background: linear-gradient(135deg, #333, #111);
+      box-shadow: 0 4px 16px rgba(0,0,0,.5),
+        inset 0 2px 4px rgba(255,255,255,.1);
       display: flex; align-items: center; justify-content: center;
-      font-size: 14px; color: var(--text-light);
     }
-    .polaroid-cap {
-      font-size: 14px; color: var(--text-mid);
-      text-align: center; margin-top: 12px;
+    .cam-lens-mid {
+      width: 90px; height: 90px; border-radius: 50%;
+      background: linear-gradient(135deg, #222, #0A0A0A);
+      border: 2px solid #444;
+      display: flex; align-items: center; justify-content: center;
     }
+    .cam-lens-inner {
+      width: 60px; height: 60px; border-radius: 50%;
+      background: radial-gradient(circle at 35% 35%, #1a3a5c, #0a1a2e, #000510);
+      box-shadow: inset 0 2px 8px rgba(0,0,0,.8);
+      position: relative;
+    }
+    .cam-lens-highlight {
+      position: absolute; top: 12px; left: 14px;
+      width: 18px; height: 10px;
+      background: rgba(255,255,255,.25);
+      border-radius: 50%;
+      transform: rotate(-20deg);
+    }
+
+    /* ── LCD SCREEN ── */
+    .cam-screen-wrap {
+      position: absolute; right: 32px; top: 50%;
+      transform: translateY(-50%);
+      width: 280px; height: 210px;
+      background: #000; border-radius: 4px;
+      border: 3px solid #333;
+      box-shadow: inset 0 0 20px rgba(0,0,0,.8), 0 2px 8px rgba(0,0,0,.4);
+      overflow: hidden;
+    }
+    .cam-screen {
+      position: relative; width: 100%; height: 100%;
+      transition: opacity .15s ease;
+    }
+    .cam-screen img {
+      width: 100%; height: 100%; object-fit: cover; display: block;
+    }
+    .cam-placeholder {
+      width: 100%; height: 100%;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 13px; color: rgba(255,255,255,.4);
+      font-family: monospace;
+    }
+    .cam-scanlines {
+      position: absolute; inset: 0; pointer-events: none;
+      background: repeating-linear-gradient(
+        0deg,
+        rgba(0,0,0,.03) 0px, rgba(0,0,0,.03) 1px,
+        transparent 1px, transparent 3px
+      );
+    }
+    .cam-hud-top {
+      position: absolute; top: 8px; right: 8px;
+      font-family: monospace; font-size: 11px;
+      color: rgba(255,255,255,.7);
+      text-shadow: 0 0 4px rgba(0,0,0,.8);
+    }
+    .cam-hud-bottom {
+      position: absolute; bottom: 0; left: 0; right: 0;
+      background: linear-gradient(transparent, rgba(0,0,0,.6));
+      padding: 20px 10px 8px;
+      color: white; font-size: 12px; font-family: monospace;
+    }
+    .cam-focus-box {
+      position: absolute; inset: 4px;
+      border: 1.5px solid rgba(100,255,100,.6);
+      border-radius: 2px;
+      opacity: 0;
+      transition: opacity .1s;
+      pointer-events: none;
+    }
+
+    /* ── KAMERA DETAILS ── */
+    .cam-model {
+      position: absolute; top: 16px; left: 180px;
+      font-size: 11px; color: #888;
+      letter-spacing: .15em;
+      font-family: 'DM Sans', sans-serif;
+    }
+    .cam-rec {
+      position: absolute; top: 18px; right: 100px;
+      width: 8px; height: 8px; border-radius: 50%;
+      background: #ff3333;
+      box-shadow: 0 0 6px #ff3333;
+      animation: camPulse 2s infinite;
+    }
+    @keyframes camPulse {
+      0%, 100% { opacity: 1; }
+      50% { opacity: .3; }
+    }
+    .cam-flash {
+      position: absolute; top: 12px; right: 32px;
+      width: 40px; height: 20px;
+      background: linear-gradient(135deg, #555, #333);
+      border-radius: 4px;
+      box-shadow: inset 0 1px 0 rgba(255,255,255,.1);
+      transition: background .15s, box-shadow .15s;
+    }
+
+    /* ── NAV BUTTONS ── */
+    .cam-btn {
+      position: absolute; top: 50%;
+      transform: translateY(-50%);
+      width: 32px; height: 32px; border-radius: 50%;
+      background: linear-gradient(135deg, #444, #222);
+      border: 1px solid #555;
+      color: #ccc; font-size: 14px;
+      cursor: pointer;
+      box-shadow: 0 2px 8px rgba(0,0,0,.4);
+      display: flex; align-items: center; justify-content: center;
+      transition: background .15s, color .15s, transform .1s;
+      line-height: 1;
+    }
+    .cam-btn:hover { background: #555; color: white; }
+    .cam-btn:active { transform: translateY(-50%) scale(.92); }
+    .cam-btn-prev { right: 320px; }
+    .cam-btn-next { right: 8px; }
+
+    /* ── STATEMENT ── */
     .lens-statement {
-      margin-top: 80px; text-align: center;
+      margin-top: 60px; text-align: center;
     }
     .lens-statement-main {
       font-family: 'Instrument Serif', serif;
-      font-style: italic; font-size: 32px; color: var(--text-mid);
+      font-style: italic; font-size: 28px; color: #666;
     }
     .lens-statement-sub {
-      font-size: 16px; color: var(--text-light); margin-top: 8px;
+      font-size: 16px; color: #999; margin-top: 8px;
+    }
+
+    /* ── MOBILE: einfache Slideshow ── */
+    .cam-mobile { display: none; }
+    @media (max-width: 768px) {
+      #about { padding: 80px 24px; }
+      .cam-wrap { display: none; }
+      .cam-mobile {
+        display: flex; flex-direction: column; align-items: center; gap: 0;
+        width: 100%; max-width: 360px;
+      }
+      .cam-mobile-screen {
+        width: 100%; aspect-ratio: 4/3;
+        background: #1A1A1A; border-radius: 12px; overflow: hidden;
+        position: relative;
+        box-shadow: 0 8px 32px rgba(0,0,0,.2);
+      }
+      .cam-mobile-screen img {
+        width: 100%; height: 100%; object-fit: cover; display: block;
+      }
+      .cam-mobile-caption {
+        margin-top: 12px; font-size: 13px; color: var(--text-mid);
+        font-family: monospace; text-align: center;
+        min-height: 20px;
+      }
+      .cam-mobile-nav {
+        display: flex; gap: 16px; margin-top: 16px;
+      }
+      .cam-mobile-btn {
+        width: 40px; height: 40px; border-radius: 50%;
+        background: white; border: 1.5px solid var(--border);
+        font-size: 16px; cursor: pointer; color: var(--text);
+        display: flex; align-items: center; justify-content: center;
+        transition: background .15s;
+      }
+      .cam-mobile-btn:hover { background: var(--accent-light); }
+      .lens-title { margin-bottom: 40px; }
+      .lens-statement { margin-top: 40px; }
     }
 
     /* ─────────────────────────────────────────────
@@ -1513,37 +1674,78 @@
   </section>
 
   <!-- ══════════════════════════════════════════
-       THROUGH MY LENS
+       THROUGH MY LENS — Digitalkamera
   ══════════════════════════════════════════ -->
   <section id="about">
     <div class="lens-label">Through My Lens</div>
     <h2 class="lens-title">A few things that make me, me.</h2>
-    <div class="polaroid-grid">
-      <div class="polaroid-card">
-        <div class="polaroid-img">[ Foto ]</div>
-        <div class="polaroid-cap">MI4L — Übel &amp; Gefährlich 🎵</div>
-      </div>
-      <div class="polaroid-card">
-        <div class="polaroid-img">[ Foto ]</div>
-        <div class="polaroid-cap">Studio Liebe × OMR 2024 🖨</div>
-      </div>
-      <div class="polaroid-card">
-        <div class="polaroid-img">[ Foto ]</div>
-        <div class="polaroid-cap">Hamburg, always 🌊</div>
-      </div>
-      <div class="polaroid-card">
-        <div class="polaroid-img">[ Foto ]</div>
-        <div class="polaroid-cap">Details that matter 🔍</div>
-      </div>
-      <div class="polaroid-card">
-        <div class="polaroid-img">[ Foto ]</div>
-        <div class="polaroid-cap">NRG — Bunker Hamburg ⚡</div>
-      </div>
-      <div class="polaroid-card">
-        <div class="polaroid-img">[ Foto ]</div>
-        <div class="polaroid-cap">Coffee first ☕</div>
+
+    <!--
+      FOTOS HINZUFÜGEN:
+      1. Speichere deine Fotos als:
+         images/lens-1.jpg bis images/lens-6.jpg
+      2. Empfohlene Größe: 560x420px (4:3)
+      3. In Photoshop: File > Save for Web
+         Format: JPEG, Quality: 80
+      Bis echte Fotos da sind werden
+      Platzhalter-Farben angezeigt.
+    -->
+
+    <!-- ── DESKTOP: Kamera-Element ── -->
+    <div class="cam-wrap">
+      <div class="cam-body">
+
+        <!-- Modellname -->
+        <div class="cam-model">VIVIEN CAM</div>
+
+        <!-- REC-Dot -->
+        <div class="cam-rec"></div>
+
+        <!-- Blitz -->
+        <div class="cam-flash" id="cam-flash"></div>
+
+        <!-- Objektiv -->
+        <div class="cam-lens">
+          <div class="cam-lens-mid">
+            <div class="cam-lens-inner">
+              <div class="cam-lens-highlight"></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- LCD Screen -->
+        <div class="cam-screen-wrap">
+          <div class="cam-screen" id="cam-screen">
+            <img src="" alt="" style="display:none;">
+            <div class="cam-placeholder" id="cam-placeholder"></div>
+            <div class="cam-scanlines"></div>
+            <div class="cam-hud-top"><span id="cam-counter">1 / 6</span></div>
+            <div class="cam-hud-bottom"><span id="cam-caption"></span></div>
+            <div class="cam-focus-box" id="cam-focus"></div>
+          </div>
+        </div>
+
+        <!-- ◀ Prev -->
+        <button class="cam-btn cam-btn-prev" id="cam-prev" aria-label="Previous photo">&#9664;</button>
+        <!-- ▶ Next -->
+        <button class="cam-btn cam-btn-next" id="cam-next" aria-label="Next photo">&#9654;</button>
+
       </div>
     </div>
+
+    <!-- ── MOBILE: einfache Slideshow ── -->
+    <div class="cam-mobile">
+      <div class="cam-mobile-screen">
+        <img id="mob-img" src="" alt="" style="display:none;">
+        <div class="cam-placeholder" id="mob-placeholder"></div>
+      </div>
+      <div class="cam-mobile-caption" id="mob-caption"></div>
+      <div class="cam-mobile-nav">
+        <button class="cam-mobile-btn" id="mob-prev" aria-label="Previous">&#9664;</button>
+        <button class="cam-mobile-btn" id="mob-next" aria-label="Next">&#9654;</button>
+      </div>
+    </div>
+
     <div class="lens-statement">
       <p class="lens-statement-main">"Curious, observant and always building."</p>
       <p class="lens-statement-sub">I see what others walk past.</p>
@@ -1901,16 +2103,113 @@
       if (tagModal) tagModal.classList.remove('open');
     });
 
-    /* ── POLAROID SCROLL REVEAL ──────────────────────────── */
-    const polaroidObs = new IntersectionObserver(entries => {
-      entries.forEach((entry, i) => {
-        if (entry.isIntersecting) {
-          setTimeout(() => entry.target.classList.add('visible'), i * 150);
-          polaroidObs.unobserve(entry.target);
+    /* ── THROUGH MY LENS — KAMERA ──────────────────────────── */
+    const camPhotos = [
+      { src: 'images/lens-1.jpg', caption: 'MI4L — Übel & Gefährlich 🎵',     placeholder: '#C4A882' },
+      { src: 'images/lens-2.jpg', caption: 'Studio Liebe × OMR 2024 🖨',       placeholder: '#8B9BAD' },
+      { src: 'images/lens-3.jpg', caption: 'Hamburg, always 🌊',                placeholder: '#A8B8C4' },
+      { src: 'images/lens-4.jpg', caption: 'Details that matter 🔍',            placeholder: '#C4B8A8' },
+      { src: 'images/lens-5.jpg', caption: 'NRG — Bunker Hamburg ⚡',           placeholder: '#8A8A9A' },
+      { src: 'images/lens-6.jpg', caption: 'Coffee first ☕',                   placeholder: '#C4A882' },
+    ];
+    let camIdx = 0;
+
+    function camUpdate(dir) {
+      const screen      = document.getElementById('cam-screen');
+      const counter     = document.getElementById('cam-counter');
+      const caption     = document.getElementById('cam-caption');
+      const flashEl     = document.getElementById('cam-flash');
+      const focusBox    = document.getElementById('cam-focus');
+      const img         = screen ? screen.querySelector('img') : null;
+      const placeholder = screen ? screen.querySelector('.cam-placeholder') : null;
+
+      // Blitz
+      if (flashEl) {
+        flashEl.style.background = 'linear-gradient(135deg,#fff,#ddd)';
+        flashEl.style.boxShadow  = '0 0 12px rgba(255,255,255,.8)';
+        setTimeout(() => {
+          flashEl.style.background = 'linear-gradient(135deg,#555,#333)';
+          flashEl.style.boxShadow  = 'none';
+        }, 150);
+      }
+      // Fokus-Rahmen
+      if (focusBox) {
+        focusBox.style.opacity = '1';
+        setTimeout(() => { focusBox.style.opacity = '0'; }, 400);
+      }
+      // Shutter-Effekt
+      if (screen) screen.style.opacity = '0.3';
+
+      setTimeout(() => {
+        const photo = camPhotos[camIdx];
+        if (img) {
+          img.src     = photo.src;
+          img.onerror = () => {
+            img.style.display = 'none';
+            if (placeholder) {
+              placeholder.style.background = photo.placeholder;
+              placeholder.style.display    = 'flex';
+              placeholder.textContent = '📷';
+            }
+          };
+          img.onload = () => {
+            img.style.display = 'block';
+            if (placeholder) placeholder.style.display = 'none';
+          };
         }
-      });
-    }, { threshold: 0.1 });
-    document.querySelectorAll('.polaroid-card').forEach(el => polaroidObs.observe(el));
+        if (caption) caption.textContent = photo.caption;
+        if (counter) counter.textContent = `${camIdx + 1} / ${camPhotos.length}`;
+        if (screen)  screen.style.opacity = '1';
+      }, 150);
+
+      // Klick-Ton
+      try {
+        const ctx = new AudioContext();
+        const osc = ctx.createOscillator(), gain = ctx.createGain();
+        osc.connect(gain); gain.connect(ctx.destination);
+        osc.frequency.value = 800;
+        gain.gain.setValueAtTime(0.1, ctx.currentTime);
+        gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.08);
+        osc.start(ctx.currentTime); osc.stop(ctx.currentTime + 0.08);
+      } catch(e) {}
+
+      // Mobile sync
+      const mobImg  = document.getElementById('mob-img');
+      const mobPh   = document.getElementById('mob-placeholder');
+      const mobCap  = document.getElementById('mob-caption');
+      const photo   = camPhotos[camIdx];
+      if (mobImg) {
+        mobImg.src     = photo.src;
+        mobImg.onerror = () => {
+          mobImg.style.display = 'none';
+          if (mobPh) { mobPh.style.background = photo.placeholder; mobPh.style.display = 'flex'; mobPh.textContent = '📷'; }
+        };
+        mobImg.onload = () => {
+          mobImg.style.display = 'block';
+          if (mobPh) mobPh.style.display = 'none';
+        };
+      }
+      if (mobCap) mobCap.textContent = photo.caption;
+    }
+
+    function camPrev() { camIdx = (camIdx - 1 + camPhotos.length) % camPhotos.length; camUpdate('prev'); }
+    function camNext() { camIdx = (camIdx + 1) % camPhotos.length; camUpdate('next'); }
+
+    const camPrevBtn = document.getElementById('cam-prev');
+    const camNextBtn = document.getElementById('cam-next');
+    const mobPrevBtn = document.getElementById('mob-prev');
+    const mobNextBtn = document.getElementById('mob-next');
+    if (camPrevBtn) camPrevBtn.addEventListener('click', camPrev);
+    if (camNextBtn) camNextBtn.addEventListener('click', camNext);
+    if (mobPrevBtn) mobPrevBtn.addEventListener('click', camPrev);
+    if (mobNextBtn) mobNextBtn.addEventListener('click', camNext);
+
+    document.addEventListener('keydown', e => {
+      if (e.key === 'ArrowLeft')  camPrev();
+      if (e.key === 'ArrowRight') camNext();
+    });
+
+    camUpdate(null);
 
     /* ── LOADING SCREEN ────────────────────────────────────── */
     (function() {
