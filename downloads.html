@@ -121,14 +121,37 @@
       from { opacity: 0; transform: scale(.88) translateY(16px); }
       to   { opacity: 1; transform: scale(1) translateY(0); }
     }
-    @keyframes shake {
-      0%,100% { transform: translateX(0); }
-      20%     { transform: translateX(-8px); }
-      40%     { transform: translateX(8px); }
-      60%     { transform: translateX(-6px); }
-      80%     { transform: translateX(6px); }
+
+    /* cute wrong-password animations */
+    @keyframes wiggle {
+      0%,100% { transform: translateX(0) rotate(0deg); }
+      15%     { transform: translateX(-12px) rotate(-2deg); }
+      30%     { transform: translateX(12px) rotate(2deg); }
+      45%     { transform: translateX(-8px) rotate(-1deg); }
+      60%     { transform: translateX(8px) rotate(1deg); }
+      75%     { transform: translateX(-4px) rotate(0deg); }
+      90%     { transform: translateX(4px) rotate(0deg); }
     }
-    .pw-mac-win.shake { animation: shake .45s ease; }
+    @keyframes iconBounce {
+      0%   { transform: scale(1) rotate(0deg); }
+      20%  { transform: scale(1.5) rotate(-20deg); }
+      40%  { transform: scale(1.4) rotate(22deg); }
+      60%  { transform: scale(1.2) rotate(-12deg); }
+      80%  { transform: scale(1.05) rotate(5deg); }
+      100% { transform: scale(1) rotate(0deg); }
+    }
+    @keyframes inputFlash {
+      0%,100% { border-color: var(--border); background: var(--bg); }
+      35%     { border-color: #FF5F57; background: #FFF0EF; }
+      65%     { border-color: #FF5F57; background: #FFF0EF; }
+    }
+    .pw-mac-win.wiggle  { animation: wiggle .65s cubic-bezier(.36,.07,.19,.97); }
+    .pw-icon.bounce     { display: inline-block; animation: iconBounce .65s cubic-bezier(.34,1.4,.64,1); }
+    #pw-input.wrong     { animation: inputFlash .5s ease; }
+    .pw-escape {
+      font-size: 11px; color: var(--text-light);
+      margin-top: 4px; cursor: default;
+    }
 
     .pw-chrome {
       display: flex; align-items: center; gap: 6px;
@@ -333,6 +356,7 @@
           </div>
           <button type="submit" id="pw-btn">Entsperren →</button>
           <p class="pw-hint" id="pw-hint"></p>
+          <p class="pw-escape">oder klick außerhalb zum Schließen</p>
         </form>
       </div>
     </div>
@@ -417,35 +441,76 @@
     });
 
     /* ── PASSWORD GATE ── */
-    const overlay = document.getElementById('pw-overlay');
-    const pwWin   = document.getElementById('pw-win');
-    const pwInput = document.getElementById('pw-input');
-    const pwHint  = document.getElementById('pw-hint');
+    const overlay  = document.getElementById('pw-overlay');
+    const pwWin    = document.getElementById('pw-win');
+    const pwInput  = document.getElementById('pw-input');
+    const pwHint   = document.getElementById('pw-hint');
+    const pwIcon   = document.querySelector('.pw-icon');
+
+    const wrongMsgs = [
+      'Nope! 🙅‍♀️',
+      'Das war\'s nicht… 😅',
+      'Nice try! 😄',
+      'Hmm, nicht ganz. 🤔',
+      'Komm schon, du schaffst das! 💪',
+    ];
+    let wrongCount = 0;
+
+    function closeOverlay() {
+      overlay.classList.add('fade-out');
+      setTimeout(() => { overlay.style.display = 'none'; }, 520);
+    }
 
     /* Already authenticated in this session? */
     if (sessionStorage.getItem('vivien_dl_auth')) {
       overlay.style.display = 'none';
     } else {
-      /* Focus after a tiny delay so autofocus works on all browsers */
       setTimeout(() => pwInput.focus(), 200);
     }
+
+    /* Click outside the window → close */
+    overlay.addEventListener('click', function(e) {
+      if (e.target === overlay) closeOverlay();
+    });
 
     document.getElementById('pw-form').addEventListener('submit', function(e) {
       e.preventDefault();
       const val = pwInput.value.trim();
+
       if (val === 'vivien2025') {
         sessionStorage.setItem('vivien_dl_auth', '1');
-        overlay.classList.add('fade-out');
-        setTimeout(() => { overlay.style.display = 'none'; }, 520);
+        closeOverlay();
       } else {
-        /* Shake + hint */
-        pwWin.style.animation = 'none';
-        void pwWin.offsetWidth; /* reflow */
-        pwWin.classList.add('shake');
-        pwWin.addEventListener('animationend', () => pwWin.classList.remove('shake'), { once: true });
-        pwHint.textContent = 'Falsches Passwort. Bitte nochmal versuchen.';
+        /* ── cute wrong-password sequence ── */
+
+        /* 1. icon: swap to 🙅‍♀️, bounce, then back to 🔒 */
+        pwIcon.textContent = '🙅‍♀️';
+        pwIcon.classList.remove('bounce');
+        void pwIcon.offsetWidth;
+        pwIcon.classList.add('bounce');
+        pwIcon.addEventListener('animationend', () => {
+          pwIcon.classList.remove('bounce');
+          pwIcon.textContent = '🔒';
+        }, { once: true });
+
+        /* 2. window: wiggle */
+        pwWin.classList.remove('wiggle');
+        void pwWin.offsetWidth;
+        pwWin.classList.add('wiggle');
+        pwWin.addEventListener('animationend', () => pwWin.classList.remove('wiggle'), { once: true });
+
+        /* 3. input: red flash */
+        pwInput.classList.remove('wrong');
+        void pwInput.offsetWidth;
+        pwInput.classList.add('wrong');
+        pwInput.addEventListener('animationend', () => pwInput.classList.remove('wrong'), { once: true });
+
+        /* 4. rotating hint messages */
+        pwHint.textContent = wrongMsgs[wrongCount % wrongMsgs.length];
+        wrongCount++;
+
         pwInput.value = '';
-        pwInput.focus();
+        setTimeout(() => pwInput.focus(), 50);
       }
     });
   </script>
