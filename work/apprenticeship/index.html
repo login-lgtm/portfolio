@@ -12,16 +12,19 @@
       --text: #1A1A1A; --text-mid: #666666; --text-light: #999999;
       --border: #D8D4D0; --tag-bg: #E8E4E0; --dark: #1E1A2E;
     }
-    * { margin: 0; padding: 0; box-sizing: border-box; }
-    html { scroll-behavior: smooth; }
-    body { font-family: 'DM Sans', sans-serif; background: var(--bg); color: var(--text); cursor: none; overflow-x: hidden; }
+    * { margin:0; padding:0; box-sizing:border-box; }
+    html { scroll-behavior:smooth; }
+    body { font-family:'DM Sans',sans-serif; background:var(--bg); color:var(--text); cursor:none; overflow-x:hidden; }
 
+    /* ── GRAIN + GRID ── */
     body::before { content:''; position:fixed; inset:0; background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E"); pointer-events:none; z-index:9990; opacity:.4; }
     body::after { content:''; position:fixed; inset:0; background-image:linear-gradient(rgba(0,0,0,.035) 1px,transparent 1px),linear-gradient(90deg,rgba(0,0,0,.035) 1px,transparent 1px); background-size:40px 40px; pointer-events:none; z-index:0; }
 
+    /* ── CURSOR ── */
     .cursor { width:10px; height:10px; background:var(--accent); border-radius:50%; position:fixed; pointer-events:none; z-index:9999; transform:translate(-50%,-50%); transition:width .2s,height .2s; mix-blend-mode:multiply; }
     .cursor-ring { width:36px; height:36px; border:1.5px solid var(--accent); border-radius:50%; position:fixed; pointer-events:none; z-index:9998; transform:translate(-50%,-50%); opacity:.5; transition:width .25s,height .25s,opacity .2s; }
 
+    /* ── NAV ── */
     nav { position:fixed; top:0; left:0; right:0; z-index:100; padding:16px 40px; display:flex; align-items:center; justify-content:space-between; backdrop-filter:blur(12px); background:rgba(238,236,234,.85); border-bottom:1px solid var(--border); }
     .nav-breadcrumb { display:flex; align-items:center; gap:6px; background:white; padding:6px 14px; border-radius:20px; border:1px solid var(--border); font-size:12px; }
     .folder-icon { display:inline-flex; flex-direction:column; gap:1px; margin-right:2px; }
@@ -29,220 +32,110 @@
     .folder-body { width:18px; height:13px; background:#689DCF; border-radius:0 2px 2px 2px; }
     .nav-breadcrumb .sep { color:var(--text-light); }
     .nav-breadcrumb .active { color:var(--accent); font-weight:500; }
-    .nav-links { display:flex; gap:32px; list-style:none; }
+    .nav-links { display:flex; gap:28px; list-style:none; }
     .nav-links a { font-size:14px; font-weight:500; color:var(--text); text-decoration:none; position:relative; transition:color .2s; }
     .nav-links a:hover { color:var(--accent); }
     .nav-links a::after { content:''; position:absolute; bottom:-2px; left:0; width:0; height:1.5px; background:var(--accent); transition:width .2s; }
     .nav-links a:hover::after, .nav-links a.active::after { width:100%; }
     .nav-links a.active { color:var(--accent); }
-    .nav-links a.nav-dl { color: var(--text-light); }
-    .nav-links a.nav-dl:hover { color: var(--accent); }
+    .nav-links a.nav-dl { color:var(--text-light); }
+    .nav-links a.nav-dl:hover { color:var(--accent); }
 
-    /* HERO */
-    .ap-hero {
-      background: var(--dark);
-      min-height: 100vh;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      padding: 120px 80px 80px;
-      position: relative; z-index: 1; overflow: hidden;
-    }
-    .ap-hero::before {
-      content: '';
-      position: absolute; top: -100px; left: -100px;
-      width: 500px; height: 500px;
-      background: radial-gradient(circle, rgba(107,92,231,.15) 0%, transparent 65%);
-    }
-    .ap-hero::after {
-      content: '';
-      position: absolute; bottom: -100px; right: -100px;
-      width: 400px; height: 400px;
-      background: radial-gradient(circle, rgba(90,174,224,.08) 0%, transparent 65%);
-    }
-    .hero-statement {
-      font-family: 'Instrument Serif', serif;
-      font-style: italic;
-      font-size: clamp(44px, 6.5vw, 88px);
-      color: white;
-      line-height: 1.15;
-      letter-spacing: -2px;
-      margin-bottom: 40px;
-      max-width: 760px;
-      position: relative; z-index: 1;
-    }
-    .hero-meta {
-      font-size: 14px;
-      color: var(--accent-light);
-      font-weight: 300;
-      line-height: 1.6;
-      position: relative; z-index: 1;
-    }
-
-    /* REFRAME */
-    .reframe {
-      background: white;
-      padding: 100px 80px;
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 80px;
-      align-items: start;
-      position: relative; z-index: 1;
-    }
-    .reframe-col-label {
-      font-size: 11px; font-weight: 600;
-      text-transform: uppercase; letter-spacing: .12em;
-      color: var(--text-light); margin-bottom: 24px;
-    }
-    .reframe-col-label.accent { color: var(--accent); }
-    .reframe-text {
-      font-family: 'Instrument Serif', serif;
-      font-size: clamp(22px, 2.8vw, 36px);
-      line-height: 1.4;
-      letter-spacing: -.5px;
-      color: var(--text);
-    }
-    .reframe-list {
-      display: flex;
-      flex-direction: column;
-      gap: 4px;
-    }
-    .reframe-item {
-      font-family: 'Instrument Serif', serif;
-      font-style: italic;
-      font-size: clamp(18px, 2.2vw, 28px);
-      color: var(--accent);
-      line-height: 1.5;
-      letter-spacing: -.3px;
-      padding: 10px 0;
-      border-bottom: 1px solid var(--accent-light);
-      opacity: 0; transform: translateX(-16px);
-      transition: opacity .5s ease, transform .5s ease;
-    }
-    .reframe-item.visible { opacity: 1; transform: translateX(0); }
-
-    /* WEB PROJECTS */
-    .web-projects {
-      padding: 100px 80px;
-      position: relative; z-index: 1;
-    }
-    .section-eyebrow {
-      font-size: 11px; font-weight: 600; letter-spacing: .12em;
-      text-transform: uppercase; color: var(--accent); margin-bottom: 12px;
-    }
-    .section-title {
-      font-family: 'Instrument Serif', serif;
-      font-size: clamp(36px, 5vw, 56px);
-      letter-spacing: -2px; margin-bottom: 10px; line-height: 1.1;
-    }
-    .section-sub {
-      font-family: 'Instrument Serif', serif;
-      font-style: italic; font-size: 18px;
-      color: var(--text-mid); margin-bottom: 56px; line-height: 1.5;
-    }
-    .browser-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 32px; }
-    .browser-mock {
-      background: white;
-      border-radius: 14px;
-      overflow: hidden;
-      box-shadow: 0 8px 40px rgba(0,0,0,.10);
-    }
-    .browser-chrome {
-      display: flex; align-items: center; gap: 6px;
-      padding: 11px 14px; background: #F5F3F1;
-      border-bottom: 1px solid var(--border);
-    }
+    /* ── SHARED ── */
+    .section-label { font-size:11px; font-weight:500; letter-spacing:.12em; text-transform:uppercase; color:var(--accent); margin-bottom:16px; }
+    .section-title { font-family:'Instrument Serif',serif; font-size:clamp(36px,4vw,56px); letter-spacing:-1px; line-height:1.1; margin-bottom:32px; }
+    .tag-pill { border-radius:100px; padding:6px 16px; font-size:13px; font-weight:500; display:inline-block; background:white; color:var(--text); }
+    .tag-pill.mindset { background:var(--accent); color:white; }
+    .mac-win { background:white; border-radius:16px; box-shadow:0 4px 24px rgba(0,0,0,.08); overflow:hidden; }
+    .mac-chrome { display:flex; align-items:center; gap:6px; padding:0 14px; height:36px; background:#F5F3F1; border-bottom:1px solid var(--border); }
     .mac-dot { width:10px; height:10px; border-radius:50%; }
     .mac-dot.r{background:#FF5F57;} .mac-dot.y{background:#FFBD2E;} .mac-dot.g{background:#28C940;}
-    .browser-url {
-      flex: 1; background: #ECEAE7; border-radius: 6px;
-      padding: 4px 10px; font-size: 11px;
-      color: var(--text-light); font-family: 'Courier New', monospace;
-    }
-    .browser-screen {
-      height: 340px; background: var(--tag-bg);
-      display: flex; align-items: center; justify-content: center;
-      font-size: 13px; color: var(--text-light); text-align: center; padding: 20px;
-    }
-    .browser-meta { padding: 20px 24px; }
-    .browser-name { font-family:'Instrument Serif',serif; font-size:20px; margin-bottom:8px; }
-    .tag-row { display:flex; flex-wrap:wrap; gap:6px; }
-    .tag { font-size:11px; background:var(--tag-bg); color:var(--text-mid); padding:4px 12px; border-radius:100px; }
+    .mac-label { font-size:12px; color:var(--text-light); margin-left:8px; }
 
-    /* SELF-TAUGHT */
-    .self-taught {
-      background: var(--dark);
-      padding: 100px 80px;
-      position: relative; z-index: 1;
-    }
-    .self-taught::before {
-      content: ''; position: absolute;
-      top: -80px; right: -80px;
-      width: 380px; height: 380px;
-      background: radial-gradient(circle, rgba(107,92,231,.15) 0%, transparent 65%);
-    }
-    .st-title {
-      font-family: 'Instrument Serif', serif;
-      font-size: clamp(36px, 5vw, 60px);
-      color: white; margin-bottom: 64px;
-      letter-spacing: -1px; position: relative; z-index: 1;
-    }
-    .st-groups { display: grid; grid-template-columns: repeat(2,1fr); gap: 48px; position: relative; z-index: 1; }
-    .st-group-label {
-      font-size: 11px; font-weight: 600;
-      text-transform: uppercase; letter-spacing: .1em;
-      color: rgba(255,255,255,.35); margin-bottom: 16px;
-    }
-    .st-pills { display: flex; flex-wrap: wrap; gap: 8px; }
-    .st-pill {
-      background: rgba(255,255,255,.08);
-      border: 1px solid rgba(255,255,255,.12);
-      color: rgba(255,255,255,.75);
-      padding: 7px 16px; border-radius: 100px;
-      font-size: 13px; font-weight: 400;
-      transition: background .2s, color .2s;
-    }
-    .st-pill:hover { background: var(--accent); color: white; border-color: var(--accent); }
+    /* ── HERO ── */
+    .ap-hero { background:var(--dark); min-height:500px; display:flex; align-items:center; padding:100px 80px 80px; position:relative; z-index:1; margin-top:57px; }
+    .ap-hero-inner { max-width:800px; }
+    .ap-hero-statement { font-family:'Instrument Serif',serif; font-style:italic; font-size:clamp(44px,6vw,72px); color:white; line-height:1.1; }
+    .ap-hero-sub { margin-top:32px; font-size:16px; font-weight:500; color:var(--accent); }
 
-    /* NAV FOOTER */
-    .project-nav-footer {
-      padding: 48px 80px;
-      display: flex; justify-content: space-between; align-items: center;
-      border-top: 1px solid var(--border);
-      position: relative; z-index: 1;
-    }
-    .project-nav-footer a {
-      font-size: 15px; font-weight: 500; color: var(--text);
-      text-decoration: none; display: inline-flex; align-items: center; gap: 8px;
-      transition: color .2s, gap .2s;
-    }
-    .project-nav-footer a:hover { color: var(--accent); gap: 12px; }
+    /* ── REFRAME ── */
+    .reframe-section { background:white; padding:80px; position:relative; z-index:1; }
+    .reframe-grid { display:grid; grid-template-columns:1fr 1fr; }
+    .reframe-left { border-right:1px solid var(--tag-bg); padding-right:60px; }
+    .reframe-right { padding-left:60px; }
+    .reframe-label { font-size:11px; font-weight:500; letter-spacing:.12em; text-transform:uppercase; color:var(--text-light); margin-bottom:16px; }
+    .reframe-label.accent { color:var(--accent); }
+    .reframe-cert { font-family:'Instrument Serif',serif; font-size:clamp(24px,3vw,36px); line-height:1.4; margin-top:16px; }
+    .reframe-item { font-family:'Instrument Serif',serif; font-style:italic; font-size:clamp(18px,2.2vw,28px); color:var(--accent); line-height:1.6; }
+    .reframe-items { margin-top:16px; display:flex; flex-direction:column; gap:4px; }
 
-    .reveal { opacity:0; transform:translateY(32px); transition:opacity .7s ease,transform .7s ease; }
+    /* ── WEB PROJECTS ── */
+    .web-section { padding:80px; position:relative; z-index:1; }
+    .browsers-wrap { display:grid; grid-template-columns:1fr 1fr; gap:24px; margin-top:40px; }
+    .browser-mockup { background:white; border-radius:12px; box-shadow:0 8px 32px rgba(0,0,0,.1); overflow:hidden; }
+    .browser-chrome { display:flex; align-items:center; gap:6px; padding:0 14px; height:36px; background:#F5F3F1; border-bottom:1px solid var(--border); }
+    .url-bar { flex:1; height:22px; background:white; border-radius:4px; border:1px solid var(--border); margin-left:8px; }
+    .browser-content { height:320px; background:var(--tag-bg); display:flex; align-items:center; justify-content:center; font-size:13px; color:var(--text-light); text-align:center; line-height:1.6; padding:16px; }
+    .browser-footer { padding:20px; }
+    .browser-title { font-size:15px; font-weight:500; margin-bottom:10px; }
+    .browser-tags { display:flex; flex-wrap:wrap; gap:6px; }
+    .browser-tag { background:var(--tag-bg); border-radius:100px; padding:4px 12px; font-size:12px; font-weight:500; color:var(--text-mid); }
+
+    /* ── SELF-TAUGHT ── */
+    .self-section { background:var(--dark); padding:80px; position:relative; z-index:1; }
+    .self-title { font-family:'Instrument Serif',serif; font-size:clamp(36px,4vw,56px); color:white; line-height:1.1; letter-spacing:-1px; margin-bottom:48px; }
+    .skill-groups { display:grid; grid-template-columns:repeat(2,1fr); gap:40px; }
+    .skill-group-label { font-size:11px; font-weight:500; letter-spacing:.12em; text-transform:uppercase; color:rgba(255,255,255,.4); margin-bottom:8px; }
+    .skill-pills { display:flex; flex-wrap:wrap; gap:8px; }
+    .skill-pill { background:white; color:var(--text); border-radius:100px; padding:6px 16px; font-size:13px; font-weight:500; }
+    .skill-pill.mindset { background:var(--accent); color:white; }
+
+    /* ── KEY LEARNINGS ── */
+    .learnings-section { background:#F5F3F1; padding:80px; position:relative; z-index:1; }
+    .learnings-grid { display:grid; grid-template-columns:1fr 1fr; gap:24px; margin-top:40px; }
+    .learning-win { background:white; border-radius:16px; box-shadow:0 2px 16px rgba(0,0,0,.06); overflow:hidden; }
+    .learning-body { padding:28px; font-size:15px; color:var(--text-mid); line-height:1.7; font-family:'Instrument Serif',serif; font-style:italic; }
+
+    /* ── NAV FOOTER ── */
+    .nav-footer { padding:48px 80px; border-top:1px solid var(--tag-bg); display:flex; justify-content:space-between; align-items:center; position:relative; z-index:1; }
+    .nav-footer a { font-size:15px; font-weight:500; color:var(--text-mid); text-decoration:none; transition:color .2s; }
+    .nav-footer a:hover { color:var(--accent); }
+    .nav-footer a.accent { color:var(--accent); }
+
+    /* ── REVEAL ── */
+    .reveal { opacity:0; transform:translateY(28px); transition:opacity .7s ease,transform .7s ease; }
     .reveal.visible { opacity:1; transform:translateY(0); }
 
-    @media (max-width: 900px) {
-      .ap-hero, .web-projects, .self-taught, .project-nav-footer { padding-left: 32px; padding-right: 32px; }
-      .reframe { padding: 80px 32px; grid-template-columns: 1fr; gap: 48px; }
-      .browser-grid { grid-template-columns: 1fr; }
-      .st-groups { grid-template-columns: 1fr; gap: 36px; }
+    /* Stagger */
+    .reveal[data-delay="1"] { transition-delay:.1s; }
+    .reveal[data-delay="2"] { transition-delay:.2s; }
+    .reveal[data-delay="3"] { transition-delay:.3s; }
+    .reveal[data-delay="4"] { transition-delay:.4s; }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width:900px) {
+      .ap-hero { padding:80px 32px 60px; }
+      .reframe-section { padding:48px 32px; }
+      .reframe-grid { grid-template-columns:1fr; gap:40px; }
+      .reframe-left { border-right:none; border-bottom:1px solid var(--tag-bg); padding-right:0; padding-bottom:40px; }
+      .reframe-right { padding-left:0; }
+      .web-section,.self-section,.learnings-section { padding:48px 32px; }
+      .browsers-wrap { grid-template-columns:1fr; }
+      .skill-groups { grid-template-columns:1fr; gap:32px; }
+      .learnings-grid { grid-template-columns:1fr; }
+      .nav-footer { padding:32px; flex-direction:column; gap:16px; align-items:flex-start; }
     }
-    @media (max-width: 640px) {
-      nav { padding: 10px 16px; }
-      .nav-breadcrumb { display: none; }
-      .nav-links { gap: 16px; }
-      .nav-links a { font-size: 12px; }
-      .ap-hero, .web-projects, .self-taught, .project-nav-footer { padding-left: 20px; padding-right: 20px; }
-      .reframe { padding: 60px 20px; }
-      .hero-statement { font-size: 36px; letter-spacing: -1px; }
-      .project-nav-footer { flex-direction: column; gap: 20px; }
+    @media (max-width:640px) {
+      nav { padding:10px 16px; }
+      .nav-breadcrumb { display:none; }
+      .nav-links { gap:14px; }
+      .nav-links a { font-size:12px; }
+      .ap-hero { padding:80px 20px 48px; }
+      .reframe-section,.web-section,.self-section,.learnings-section { padding:40px 20px; }
+      .nav-footer { padding:24px 20px; }
     }
-    @media (max-width: 390px) {
-      nav { padding: 8px 12px; }
-      .nav-links { gap: 10px; }
-      .nav-links a { font-size: 11px; }
-    }
-    @media (hover: none) { body { cursor: auto; } .cursor, .cursor-ring { display: none; } }
+    @media (max-width:390px) { .nav-links { gap:10px; } .nav-links a { font-size:11px; } }
+    @media (hover:none) { body { cursor:auto; } .cursor,.cursor-ring { display:none; } }
   </style>
 </head>
 <body>
@@ -250,11 +143,12 @@
   <div class="cursor" id="cursor"></div>
   <div class="cursor-ring" id="cursorRing"></div>
 
+  <!-- ══ NAV ══ -->
   <nav>
     <div class="nav-breadcrumb">
-      <span class="folder-icon"><div class="folder-tab"></div><div class="folder-body"></div></span>
-      <span class="sep">›</span><span>Vivien Evers</span>
-      <span class="sep">›</span><span><a href="../../index.html#work" style="color:inherit;text-decoration:none;">Work</a></span>
+      <span class="folder-icon"><span class="folder-tab"></span><span class="folder-body"></span></span>
+      <span>Vivien Evers</span><span class="sep">›</span>
+      <span><a href="../../index.html" style="color:inherit;text-decoration:none;">Portfolio</a></span>
       <span class="sep">›</span><span class="active">Apprenticeship</span>
     </div>
     <ul class="nav-links">
@@ -269,60 +163,66 @@
 
   <!-- ══ HERO ══ -->
   <section class="ap-hero">
-    <h1 class="hero-statement">"I didn't wait to be taught.<br>I built while I learned."</h1>
-    <p class="hero-meta">Mediengestalterin Digital &amp; Print · ehsmedia Schenefeld · Aug 2023 – Jan 2026</p>
+    <div class="ap-hero-inner">
+      <div class="ap-hero-statement reveal">
+        "I didn't wait<br>to be taught.<br>I built while<br>I learned."
+      </div>
+      <div class="ap-hero-sub reveal">Mediengestalterin Digital &amp; Print · ehsmedia Schenefeld · Aug 2023 – Jan 2026</div>
+    </div>
   </section>
 
   <!-- ══ REFRAME ══ -->
-  <section class="reframe">
-    <div>
-      <div class="reframe-col-label">What the certificate says</div>
-      <div class="reframe-text reveal">
-        Mediengestalterin<br>Digital &amp; Print.<br>
-        Fachrichtung Print.<br>
-        Abschluss Januar 2026.
+  <section class="reframe-section">
+    <div class="reframe-grid">
+      <div class="reframe-left">
+        <div class="reframe-label reveal">What the Certificate Says</div>
+        <div class="reframe-cert reveal">Mediengestalterin<br>Digital &amp; Print.<br>Fachrichtung Print.<br>Abschluss Januar 2026.</div>
       </div>
-    </div>
-    <div>
-      <div class="reframe-col-label accent">What actually happened</div>
-      <div class="reframe-list">
-        <div class="reframe-item">→ Taught myself Figma and web design</div>
-        <div class="reframe-item">→ Built MI4L, JCO and freelance in parallel</div>
-        <div class="reframe-item">→ Learned by doing, not by waiting</div>
-        <div class="reframe-item">→ Graduated — already working for 2 years</div>
+      <div class="reframe-right">
+        <div class="reframe-label accent reveal">What Actually Happened</div>
+        <div class="reframe-items">
+          <div class="reframe-item reveal" data-delay="1">→ Taught myself Figma and web design</div>
+          <div class="reframe-item reveal" data-delay="2">→ Built MI4L, JCO and freelance in parallel</div>
+          <div class="reframe-item reveal" data-delay="3">→ Learned by doing, not by waiting</div>
+          <div class="reframe-item reveal" data-delay="4">→ Graduated — already working for 2 years</div>
+        </div>
       </div>
     </div>
   </section>
 
   <!-- ══ WEB PROJECTS ══ -->
-  <section class="web-projects">
-    <div class="section-eyebrow">During the Apprenticeship</div>
-    <h2 class="section-title reveal">Web Design</h2>
-    <p class="section-sub reveal">Designed and built for real clients, during the apprenticeship.</p>
-    <div class="browser-grid">
-      <div class="browser-mock reveal">
+  <section class="web-section">
+    <div class="section-label reveal">Web Design</div>
+    <div class="section-title reveal">Designed and built for real clients.</div>
+    <p class="reveal" style="font-family:'Instrument Serif',serif;font-style:italic;font-size:20px;color:var(--text-mid);margin-top:-16px;margin-bottom:8px;">During the apprenticeship — independent, from brief to delivery.</p>
+    <div class="browsers-wrap">
+      <div class="browser-mockup reveal">
         <div class="browser-chrome">
           <span class="mac-dot r"></span><span class="mac-dot y"></span><span class="mac-dot g"></span>
-          <div class="browser-url">client-website-01.de</div>
+          <div class="url-bar"></div>
         </div>
-        <div class="browser-screen">[ Website Projekt 1 — Screenshot kommt ]</div>
-        <div class="browser-meta">
-          <div class="browser-name">Client Website 01</div>
-          <div class="tag-row">
-            <span class="tag">Figma</span><span class="tag">Webdesign</span><span class="tag">Corporate</span>
+        <div class="browser-content">[ Website Projekt 1 —<br>Screenshot kommt ]</div>
+        <div class="browser-footer">
+          <div class="browser-title">Client Website 01</div>
+          <div class="browser-tags">
+            <span class="browser-tag">Figma</span>
+            <span class="browser-tag">Webdesign</span>
+            <span class="browser-tag">Corporate</span>
           </div>
         </div>
       </div>
-      <div class="browser-mock reveal">
+      <div class="browser-mockup reveal">
         <div class="browser-chrome">
           <span class="mac-dot r"></span><span class="mac-dot y"></span><span class="mac-dot g"></span>
-          <div class="browser-url">client-website-02.de</div>
+          <div class="url-bar"></div>
         </div>
-        <div class="browser-screen">[ Website Projekt 2 — Screenshot kommt ]</div>
-        <div class="browser-meta">
-          <div class="browser-name">Client Website 02</div>
-          <div class="tag-row">
-            <span class="tag">Figma</span><span class="tag">Webdesign</span><span class="tag">E-Commerce</span>
+        <div class="browser-content">[ Website Projekt 2 —<br>Screenshot kommt ]</div>
+        <div class="browser-footer">
+          <div class="browser-title">Client Website 02</div>
+          <div class="browser-tags">
+            <span class="browser-tag">Figma</span>
+            <span class="browser-tag">Webdesign</span>
+            <span class="browser-tag">E-Commerce</span>
           </div>
         </div>
       </div>
@@ -330,55 +230,71 @@
   </section>
 
   <!-- ══ SELF-TAUGHT ══ -->
-  <section class="self-taught">
-    <h2 class="st-title reveal">Self-taught.<br>Battle-tested.</h2>
-    <div class="st-groups">
+  <section class="self-section">
+    <div class="self-title reveal">Self-taught.<br>Battle-tested.</div>
+    <div class="skill-groups">
       <div class="reveal">
-        <div class="st-group-label">Design</div>
-        <div class="st-pills">
-          <span class="st-pill">Figma</span>
-          <span class="st-pill">Adobe Illustrator</span>
-          <span class="st-pill">Adobe InDesign</span>
-          <span class="st-pill">Adobe Photoshop</span>
-          <span class="st-pill">Canva Pro</span>
+        <div class="skill-group-label">Design</div>
+        <div class="skill-pills">
+          <span class="skill-pill">Figma</span>
+          <span class="skill-pill">Adobe Illustrator</span>
+          <span class="skill-pill">Adobe InDesign</span>
+          <span class="skill-pill">Adobe Photoshop</span>
+          <span class="skill-pill">Canva Pro</span>
         </div>
       </div>
       <div class="reveal">
-        <div class="st-group-label">Web</div>
-        <div class="st-pills">
-          <span class="st-pill">Web Design</span>
-          <span class="st-pill">UI/UX</span>
-          <span class="st-pill">Figma Sites</span>
+        <div class="skill-group-label">Web</div>
+        <div class="skill-pills">
+          <span class="skill-pill">Web Design</span>
+          <span class="skill-pill">UI/UX</span>
+          <span class="skill-pill">Figma Sites</span>
         </div>
       </div>
       <div class="reveal">
-        <div class="st-group-label">Print</div>
-        <div class="st-pills">
-          <span class="st-pill">Print Production</span>
-          <span class="st-pill">Large Format</span>
-          <span class="st-pill">Druckvorstufe</span>
+        <div class="skill-group-label">Print</div>
+        <div class="skill-pills">
+          <span class="skill-pill">Print Production</span>
+          <span class="skill-pill">Large Format</span>
+          <span class="skill-pill">Druckvorstufe</span>
         </div>
       </div>
       <div class="reveal">
-        <div class="st-group-label">Mindset</div>
-        <div class="st-pills">
-          <span class="st-pill">Brand Thinking</span>
-          <span class="st-pill">Self-direction</span>
-          <span class="st-pill">Learning by doing</span>
-          <span class="st-pill">Curious by default</span>
+        <div class="skill-group-label">Mindset</div>
+        <div class="skill-pills">
+          <span class="skill-pill mindset">Brand Thinking</span>
+          <span class="skill-pill mindset">Self-direction</span>
+          <span class="skill-pill mindset">Learning by doing</span>
+          <span class="skill-pill mindset">Curious by default</span>
         </div>
       </div>
     </div>
   </section>
 
+  <!-- ══ KEY LEARNINGS ══ -->
+  <section class="learnings-section">
+    <div class="section-label reveal">Key Learnings</div>
+    <div class="section-title reveal">What this project taught me.</div>
+    <div class="learnings-grid">
+      <div class="learning-win reveal">
+        <div class="mac-chrome"><span class="mac-dot r"></span><span class="mac-dot y"></span><span class="mac-dot g"></span></div>
+        <div class="learning-body">"The best education is real work. I had both — and used the real work to fill the gaps."</div>
+      </div>
+      <div class="learning-win reveal">
+        <div class="mac-chrome"><span class="mac-dot r"></span><span class="mac-dot y"></span><span class="mac-dot g"></span></div>
+        <div class="learning-body">"Building something while learning is harder. It's also the only way I know how to grow."</div>
+      </div>
+    </div>
+  </section>
+
   <!-- ══ NAV FOOTER ══ -->
-  <div class="project-nav-footer">
-    <a href="../../index.html#work">← Back to all work</a>
-    <a href="../../index.html#contact">Let's talk →</a>
+  <div class="nav-footer">
+    <a href="../jco/index.html">← JCO Hamburg</a>
+    <a href="../../index.html#contact" class="accent">Let's talk →</a>
   </div>
 
   <script>
-    const cur=document.getElementById('cursor'), ring=document.getElementById('cursorRing');
+    const cur=document.getElementById('cursor'),ring=document.getElementById('cursorRing');
     let mx=0,my=0,rx=0,ry=0;
     document.addEventListener('mousemove',e=>{mx=e.clientX;my=e.clientY;cur.style.left=mx+'px';cur.style.top=my+'px';});
     (function loop(){rx+=(mx-rx)*.12;ry+=(my-ry)*.12;ring.style.left=rx+'px';ring.style.top=ry+'px';requestAnimationFrame(loop);})();
@@ -386,12 +302,8 @@
       el.addEventListener('mouseenter',()=>{cur.style.width=cur.style.height='20px';ring.style.width=ring.style.height='56px';ring.style.opacity='.3';});
       el.addEventListener('mouseleave',()=>{cur.style.width=cur.style.height='10px';ring.style.width=ring.style.height='36px';ring.style.opacity='.5';});
     });
-    const obs=new IntersectionObserver(entries=>entries.forEach(e=>{if(e.isIntersecting)setTimeout(()=>e.target.classList.add('visible'),+e.target.dataset.delay||0);}),{threshold:.12});
-    document.querySelectorAll('.reveal').forEach((el,i)=>{el.dataset.delay=(i%4)*80;obs.observe(el);});
-    /* Reframe items stagger */
-    const obsR=new IntersectionObserver(entries=>entries.forEach(e=>{if(e.isIntersecting){document.querySelectorAll('.reframe-item').forEach((el,i)=>setTimeout(()=>el.classList.add('visible'),i*120));obsR.unobserve(e.target);}}),{threshold:.2});
-    const rl=document.querySelector('.reframe-list');
-    if(rl) obsR.observe(rl);
+    const obs=new IntersectionObserver(entries=>entries.forEach(e=>{if(e.isIntersecting){e.target.classList.add('visible');obs.unobserve(e.target);}}),{threshold:.12});
+    document.querySelectorAll('.reveal').forEach(el=>obs.observe(el));
   </script>
 </body>
 </html>

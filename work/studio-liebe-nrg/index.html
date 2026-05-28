@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>JCO Hamburg — Vivien Evers</title>
+  <title>Studio Liebe & NRG — Vivien Evers</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
   <style>
@@ -43,7 +43,7 @@
 
     /* ── SHARED ── */
     .section-label { font-size:11px; font-weight:500; letter-spacing:.12em; text-transform:uppercase; color:var(--accent); margin-bottom:16px; }
-    .section-title { font-family:'Instrument Serif',serif; font-size:clamp(36px,4vw,48px); letter-spacing:-1px; line-height:1.1; margin-bottom:32px; }
+    .section-title { font-family:'Instrument Serif',serif; font-size:clamp(36px,4vw,56px); letter-spacing:-1px; line-height:1.1; margin-bottom:32px; }
     .tag-pill { background:var(--tag-bg); border-radius:100px; padding:6px 16px; font-size:13px; font-weight:500; display:inline-block; }
     .tags-row { display:flex; flex-wrap:wrap; gap:8px; margin:24px 0; }
     .mac-win { background:white; border-radius:16px; box-shadow:0 4px 24px rgba(0,0,0,.08); overflow:hidden; }
@@ -52,41 +52,46 @@
     .mac-dot.r{background:#FF5F57;} .mac-dot.y{background:#FFBD2E;} .mac-dot.g{background:#28C940;}
     .mac-label { font-size:12px; color:var(--text-light); margin-left:8px; }
 
-    /* ── HERO ── */
-    .project-hero { position:relative; width:100%; height:500px; background:var(--tag-bg); display:flex; align-items:center; justify-content:center; margin-top:57px; }
-    .hero-ph { font-size:16px; color:var(--text-light); text-align:center; line-height:1.6; }
-    .hero-mac-label { position:absolute; top:32px; left:32px; display:flex; align-items:center; gap:6px; background:white; border-radius:20px; padding:8px 16px; box-shadow:0 2px 12px rgba(0,0,0,.08); }
-    .hero-mac-label .mac-dot { width:8px; height:8px; }
-    .hero-mac-label span { font-size:13px; font-weight:500; color:var(--text); }
+    /* ── SPLIT HERO ── */
+    .split-hero { display:flex; height:520px; margin-top:57px; position:relative; z-index:1; }
+    .split-half { flex:1; position:relative; display:flex; align-items:center; justify-content:center; }
+    .split-ph { font-size:14px; color:rgba(255,255,255,.35); text-align:center; line-height:1.6; padding:16px; }
+    .split-label { position:absolute; bottom:24px; left:24px; background:rgba(255,255,255,.15); color:white; font-size:13px; font-weight:500; padding:6px 12px; border-radius:100px; backdrop-filter:blur(8px); }
 
     /* ── PROJEKT-HEADER ── */
     .proj-header { padding:80px; position:relative; z-index:1; }
-    .proj-name { font-family:'Instrument Serif',serif; font-size:clamp(40px,5vw,72px); letter-spacing:-2px; line-height:1.05; margin-bottom:24px; }
-    .proj-opinion { font-family:'Instrument Serif',serif; font-style:italic; font-size:clamp(18px,2vw,26px); color:var(--accent); line-height:1.45; margin-bottom:24px; }
+    .proj-name { font-family:'Instrument Serif',serif; font-size:clamp(44px,5vw,80px); letter-spacing:-2px; line-height:1.05; margin-bottom:24px; }
+    .proj-opinion { font-family:'Instrument Serif',serif; font-style:italic; font-size:clamp(18px,2.2vw,28px); color:var(--accent); line-height:1.45; margin-bottom:24px; }
     .proj-role { font-size:15px; color:var(--text-mid); }
+    .context-link { display:inline-block; margin-top:16px; font-size:14px; color:var(--text-mid); text-decoration:none; transition:color .2s; }
+    .context-link:hover { color:var(--accent); }
 
-    /* ── INFO 2-COL ── */
-    .info-grid { display:grid; grid-template-columns:1fr 1fr; gap:48px; padding:0 80px 80px; align-items:start; position:relative; z-index:1; }
+    /* ── KONTEXT MAC ── */
+    .kontext-section { padding:0 80px 80px; position:relative; z-index:1; }
     .mac-win-body { padding:28px; }
     .mac-win-title { font-family:'Instrument Serif',serif; font-size:22px; margin-bottom:12px; }
     .mac-win-text { font-size:15px; color:var(--text-mid); line-height:1.7; }
-    .mac-win-text p+p { margin-top:12px; }
-    .big-quote { font-family:'Instrument Serif',serif; font-style:italic; font-size:clamp(28px,3.5vw,40px); color:var(--accent); line-height:1.3; padding-top:24px; }
 
-    /* ── APPROACH CARDS ── */
-    .approach-section { padding:80px; position:relative; z-index:1; }
-    .approach-grid { display:grid; grid-template-columns:1fr 1fr; gap:24px; margin-top:40px; }
-    .approach-card { background:white; border-radius:16px; box-shadow:0 4px 24px rgba(0,0,0,.07); overflow:hidden; }
-    .approach-card-body { padding:28px; }
-    .approach-num { font-family:'Instrument Serif',serif; font-size:40px; color:var(--accent-light); line-height:1; margin-bottom:12px; }
-    .approach-title { font-size:15px; font-weight:600; margin-bottom:8px; }
-    .approach-text { font-size:14px; color:var(--text-mid); line-height:1.6; }
+    /* ── DIVIDER LABEL ── */
+    .divider-label { display:flex; align-items:center; gap:16px; margin-bottom:32px; }
+    .divider-label .dl-text { font-size:13px; font-weight:500; color:var(--text-light); letter-spacing:.1em; text-transform:uppercase; white-space:nowrap; }
+    .divider-label::before,.divider-label::after { content:''; flex:1; height:1px; background:var(--border); }
 
-    /* ── IPHONE MOCKUPS ── */
-    .visuals-section { padding:80px; position:relative; z-index:1; }
-    .iphones-wrap { display:flex; justify-content:center; gap:32px; margin-top:48px; flex-wrap:wrap; }
-    .iphone-mockup { width:280px; height:560px; border-radius:44px; border:3px solid var(--text); box-shadow:0 16px 48px rgba(0,0,0,.2); overflow:hidden; background:#F5F3F1; display:flex; align-items:center; justify-content:center; flex-shrink:0; }
-    .iphone-ph { font-size:14px; color:var(--text-light); text-align:center; line-height:1.6; padding:20px; }
+    /* ── CONTENT SECTIONS ── */
+    .content-section { padding:80px; position:relative; z-index:1; }
+    .section-desc { font-family:'Instrument Serif',serif; font-style:italic; font-size:clamp(22px,2.5vw,32px); color:var(--text-mid); line-height:1.4; margin-bottom:32px; }
+    .img-row { display:flex; gap:24px; margin-bottom:32px; }
+    .img-ph { border-radius:12px; background:var(--tag-bg); display:flex; align-items:center; justify-content:center; font-size:13px; color:var(--text-light); text-align:center; padding:16px; line-height:1.5; }
+    .img-ph.wide { flex:580; height:320px; }
+    .img-ph.narrow { flex:380; height:320px; }
+
+    /* ── OMR SECTION ── */
+    .omr-section { background:var(--dark); padding:80px; position:relative; z-index:1; }
+    .omr-label { font-size:11px; font-weight:500; letter-spacing:.12em; text-transform:uppercase; color:var(--accent); margin-bottom:16px; }
+    .omr-title { font-family:'Instrument Serif',serif; font-size:clamp(32px,4vw,52px); color:white; letter-spacing:-1px; line-height:1.1; margin-bottom:12px; }
+    .omr-sub { font-family:'Instrument Serif',serif; font-style:italic; font-size:22px; color:var(--accent); margin-bottom:32px; }
+    .omr-img { width:100%; max-width:900px; height:420px; border-radius:12px; background:#2A2A3E; display:flex; align-items:center; justify-content:center; font-size:14px; color:rgba(255,255,255,.3); text-align:center; padding:16px; }
+    .omr-caption { font-size:14px; color:rgba(255,255,255,.55); line-height:1.6; margin-top:24px; max-width:640px; }
 
     /* ── KEY LEARNINGS ── */
     .learnings-section { background:#F5F3F1; padding:80px; position:relative; z-index:1; }
@@ -106,10 +111,12 @@
 
     /* ── RESPONSIVE ── */
     @media (max-width:900px) {
-      .proj-header,.approach-section,.visuals-section,.learnings-section { padding:48px 32px; }
-      .info-grid { grid-template-columns:1fr; padding:0 32px 48px; gap:32px; }
-      .big-quote { padding-top:0; font-size:clamp(24px,4vw,36px); }
-      .approach-grid { grid-template-columns:1fr; }
+      .split-hero { flex-direction:column; height:auto; }
+      .split-half { height:280px; }
+      .proj-header,.kontext-section,.content-section,.omr-section,.learnings-section { padding:48px 32px; }
+      .kontext-section { padding:0 32px 48px; }
+      .img-row { flex-direction:column; }
+      .img-ph.wide,.img-ph.narrow { flex:none; height:240px; }
       .learnings-grid { grid-template-columns:1fr; }
       .nav-footer { padding:32px; flex-direction:column; gap:16px; align-items:flex-start; }
     }
@@ -118,9 +125,8 @@
       .nav-breadcrumb { display:none; }
       .nav-links { gap:14px; }
       .nav-links a { font-size:12px; }
-      .proj-header,.approach-section,.visuals-section,.learnings-section { padding:40px 20px; }
-      .info-grid { padding:0 20px 40px; }
-      .iphone-mockup { width:240px; height:480px; }
+      .proj-header,.kontext-section,.content-section,.omr-section,.learnings-section { padding:40px 20px; }
+      .kontext-section { padding:0 20px 40px; }
       .nav-footer { padding:24px 20px; }
     }
     @media (max-width:390px) { .nav-links { gap:10px; } .nav-links a { font-size:11px; } }
@@ -138,7 +144,7 @@
       <span class="folder-icon"><span class="folder-tab"></span><span class="folder-body"></span></span>
       <span>Vivien Evers</span><span class="sep">›</span>
       <span><a href="../../index.html" style="color:inherit;text-decoration:none;">Portfolio</a></span>
-      <span class="sep">›</span><span class="active">JCO Hamburg</span>
+      <span class="sep">›</span><span class="active">Studio Liebe &amp; NRG</span>
     </div>
     <ul class="nav-links">
       <li><a href="../../index.html">↑ Home</a></li>
@@ -150,100 +156,103 @@
     </ul>
   </nav>
 
-  <!-- ══ HERO ══ -->
-  <div class="project-hero">
-    <div class="hero-ph">[ JCO Hamburg — Instagram Screenshot<br>oder Event-Foto ]</div>
-    <div class="hero-mac-label">
-      <span class="mac-dot r"></span>
-      <span class="mac-dot y"></span>
-      <span class="mac-dot g"></span>
-      <span>~/vivien/work/jco</span>
+  <!-- ══ SPLIT HERO ══ -->
+  <div class="split-hero">
+    <div class="split-half" style="background:#1E1A2E;">
+      <div class="split-ph">[ Studio Liebe — Poster oder Event ]</div>
+      <span class="split-label">Studio Liebe</span>
+    </div>
+    <div class="split-half" style="background:#2A1A1A;">
+      <div class="split-ph">[ NRG — Poster oder Bunker-Foto ]</div>
+      <span class="split-label">NRG</span>
     </div>
   </div>
 
   <!-- ══ PROJEKT-HEADER ══ -->
   <section class="proj-header reveal">
-    <div class="proj-name">Jewish Chamber Orchestra Hamburg</div>
-    <div class="proj-opinion">Culture doesn't need to be simplified to be understood.<br>It needs to be translated.</div>
+    <div class="proj-name">Studio Liebe &amp; NRG</div>
+    <div class="proj-opinion">Two formats. Two visual worlds.<br>Both built to feel distinct —<br>and unmistakably connected.</div>
     <div class="tags-row">
-      <span class="tag-pill">Brand Communication</span>
-      <span class="tag-pill">Visual Strategy</span>
-      <span class="tag-pill">Cultural Institution</span>
+      <span class="tag-pill">Visual Identity</span>
+      <span class="tag-pill">Art Direction</span>
+      <span class="tag-pill">Poster Design</span>
+      <span class="tag-pill">Print Production</span>
+      <span class="tag-pill">Event Branding</span>
+      <span class="tag-pill">Large Format</span>
     </div>
-    <div class="proj-role">Brand &amp; Communications · 2023 – present · Freelance</div>
+    <div class="proj-role">Art Direction &amp; Brand · Sub-formats of MI4L · 2023 – 2024</div>
+    <a href="../mi4l/index.html" class="context-link">← Part of MI4L — Music is for Lovers</a>
   </section>
 
-  <!-- ══ PROJEKT-INFO ══ -->
-  <div class="info-grid">
-    <div class="mac-win reveal">
+  <!-- ══ KONTEXT MAC-FENSTER ══ -->
+  <div class="kontext-section">
+    <div class="mac-win reveal" style="max-width:700px;">
       <div class="mac-chrome">
         <span class="mac-dot r"></span><span class="mac-dot y"></span><span class="mac-dot g"></span>
-        <span class="mac-label">jco — project info</span>
+        <span class="mac-label">studio-liebe-nrg — context</span>
       </div>
       <div class="mac-win-body">
-        <div class="mac-win-title">Translating culture.</div>
-        <div class="mac-win-text">
-          <p>Bringing a traditional cultural institution closer to a younger audience — without losing depth or meaning.</p>
-          <p>Responsible for visual communication strategy and brand tone across Instagram. Working within existing CI to evolve the brand's digital presence.</p>
-          <p>Currently developing towards a more UGC-driven approach — thinking about how audiences create meaning, not just how institutions communicate.</p>
-        </div>
+        <div class="mac-win-title">Where they come from.</div>
+        <div class="mac-win-text">Studio Liebe and NRG are two sub-formats of MI4L — Music is for Lovers. Each format has its own visual identity, audience and feeling. My role: developing and owning the visual language for both — from poster design to large-format print production.</div>
       </div>
-    </div>
-    <div class="big-quote reveal">
-      "Making culture<br>more accessible,<br>without simplifying<br>what matters."
     </div>
   </div>
 
-  <!-- ══ APPROACH ══ -->
-  <section class="approach-section">
-    <div class="section-label reveal">Approach</div>
-    <div class="section-title reveal">How I think about this project.</div>
-    <div class="approach-grid">
-      <div class="approach-card reveal">
-        <div class="mac-chrome"><span class="mac-dot r"></span><span class="mac-dot y"></span><span class="mac-dot g"></span></div>
-        <div class="approach-card-body">
-          <div class="approach-num">01</div>
-          <div class="approach-title">Visual direction within existing CI</div>
-          <div class="approach-text">Working with what exists, not against it.</div>
-        </div>
+  <!-- ══ STUDIO LIEBE SECTION ══ -->
+  <section class="content-section">
+    <div class="divider-label reveal"><div class="dl-text">Studio Liebe — Disco &amp; House</div></div>
+    <div class="section-desc reveal">Warmer. More intimate.<br>A feeling you want to stay in.</div>
+    <div class="img-row reveal">
+      <div class="img-ph wide">[ Studio Liebe Poster ]</div>
+      <div class="img-ph narrow">[ Studio Liebe — Haus 73 ]</div>
+    </div>
+    <div class="mac-win reveal">
+      <div class="mac-chrome">
+        <span class="mac-dot r"></span><span class="mac-dot y"></span><span class="mac-dot g"></span>
+        <span class="mac-label">studio-liebe — details</span>
       </div>
-      <div class="approach-card reveal">
-        <div class="mac-chrome"><span class="mac-dot r"></span><span class="mac-dot y"></span><span class="mac-dot g"></span></div>
-        <div class="approach-card-body">
-          <div class="approach-num">02</div>
-          <div class="approach-title">Brand tone for a younger audience</div>
-          <div class="approach-text">Speaking their language without losing the institution's voice.</div>
-        </div>
-      </div>
-      <div class="approach-card reveal">
-        <div class="mac-chrome"><span class="mac-dot r"></span><span class="mac-dot y"></span><span class="mac-dot g"></span></div>
-        <div class="approach-card-body">
-          <div class="approach-num">03</div>
-          <div class="approach-title">Cultural depth meets accessibility</div>
-          <div class="approach-text">Depth and accessibility are not opposites.</div>
-        </div>
-      </div>
-      <div class="approach-card reveal">
-        <div class="mac-chrome"><span class="mac-dot r"></span><span class="mac-dot y"></span><span class="mac-dot g"></span></div>
-        <div class="approach-card-body">
-          <div class="approach-num">04</div>
-          <div class="approach-title">Evolving towards UGC</div>
-          <div class="approach-text">Thinking about how audiences create meaning — not just consume it.</div>
+      <div class="mac-win-body">
+        <div class="mac-win-text">Events at Haus 73, Hamburg. Kollaboration mit der Künstlerbörse — kuratiert von Leo. Poster, digital assets und visuelle Kommunikation.</div>
+        <div class="tags-row" style="margin-top:20px;margin-bottom:0;">
+          <span class="tag-pill">Haus 73</span>
+          <span class="tag-pill">Künstlerbörse</span>
+          <span class="tag-pill">Disco &amp; House</span>
+          <span class="tag-pill">Kollaboration</span>
         </div>
       </div>
     </div>
   </section>
 
-  <!-- ══ VISUALS ══ -->
-  <section class="visuals-section">
-    <div class="section-label reveal">Instagram · @jcohamburg</div>
-    <div class="section-title reveal">Bringing it to life.</div>
-    <div class="iphones-wrap">
-      <div class="iphone-mockup reveal">
-        <div class="iphone-ph">[ Instagram Post<br>@jcohamburg ]</div>
+  <!-- ══ OMR 2024 ══ -->
+  <section class="omr-section">
+    <div class="omr-label reveal">Highlight · 2024</div>
+    <div class="omr-title reveal">Studio Liebe × OMR 2024</div>
+    <div class="omr-sub reveal">From design file to large format wall.</div>
+    <div class="omr-img reveal">[ OMR Afterparty Plakat Großformat ]</div>
+    <div class="omr-caption reveal">Designed, prepared for large format print and produced for installation at OMR Hamburg 2024. Collaboration with Jägermeister.</div>
+  </section>
+
+  <!-- ══ NRG SECTION ══ -->
+  <section class="content-section">
+    <div class="divider-label reveal"><div class="dl-text">NRG — Tech House</div></div>
+    <div class="section-desc reveal">Harder. Darker. More intense —<br>visually and sonically.</div>
+    <div class="img-row reveal">
+      <div class="img-ph wide">[ NRG Poster ]</div>
+      <div class="img-ph narrow">[ NRG Event — Bunker Hamburg ]</div>
+    </div>
+    <div class="mac-win reveal">
+      <div class="mac-chrome">
+        <span class="mac-dot r"></span><span class="mac-dot y"></span><span class="mac-dot g"></span>
+        <span class="mac-label">nrg — details</span>
       </div>
-      <div class="iphone-mockup reveal">
-        <div class="iphone-ph">[ Instagram Post<br>@jcohamburg ]</div>
+      <div class="mac-win-body">
+        <div class="mac-win-text">Events at Übel &amp; Gefährlich and Hamburger Bunker. UGC content — real moments, real energy.</div>
+        <div class="tags-row" style="margin-top:20px;margin-bottom:0;">
+          <span class="tag-pill">Bunker Hamburg</span>
+          <span class="tag-pill">Übel &amp; Gefährlich</span>
+          <span class="tag-pill">Tech House</span>
+          <span class="tag-pill">UGC</span>
+        </div>
       </div>
     </div>
   </section>
@@ -255,19 +264,19 @@
     <div class="learnings-grid">
       <div class="learning-win reveal">
         <div class="mac-chrome"><span class="mac-dot r"></span><span class="mac-dot y"></span><span class="mac-dot g"></span></div>
-        <div class="learning-body">"Balancing accessibility and depth in a sensitive cultural context requires listening before designing."</div>
+        <div class="learning-body">"Two brands, one system — visual consistency across formats that feel completely different."</div>
       </div>
       <div class="learning-win reveal">
         <div class="mac-chrome"><span class="mac-dot r"></span><span class="mac-dot y"></span><span class="mac-dot g"></span></div>
-        <div class="learning-body">"Brand communication is most effective when it respects both the brand and its audience."</div>
+        <div class="learning-body">"Print is not just a file. It's a spatial experience — from screen to wall."</div>
       </div>
     </div>
   </section>
 
   <!-- ══ NAV FOOTER ══ -->
   <div class="nav-footer">
-    <a href="../studio-liebe-nrg/index.html">← Studio Liebe &amp; NRG</a>
-    <a href="../apprenticeship/index.html" class="accent">Next: Apprenticeship →</a>
+    <a href="../mi4l/index.html">← MI4L — Music is for Lovers</a>
+    <a href="../jco/index.html" class="accent">Next: JCO Hamburg →</a>
   </div>
 
   <script>
