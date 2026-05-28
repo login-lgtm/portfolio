@@ -616,39 +616,39 @@
     /* ─────────────────────────────────────────────
        SKILLS
     ───────────────────────────────────────────── */
-    #skills { padding: 120px 80px; position: relative; z-index: 1; }
+    #skills { padding: 72px 80px; position: relative; z-index: 1; }
     /* ── Statement Lines ── */
     .stmt-block {
-      margin-top: 64px;
+      margin-top: 28px;
       margin-left: -80px;
       margin-right: -80px;
     }
     .stmt-line {
       display: flex;
-      align-items: baseline;
+      align-items: center;
       gap: 24px;
-      padding: 20px 80px;
+      padding: 6px 80px;
       border-bottom: 1px solid #F0EDE9;
     }
     .stmt-line:first-child { border-top: 1px solid #F0EDE9; }
     .stmt-word {
       font-family: 'Instrument Serif', serif;
-      font-size: 64px;
+      font-size: 56px;
       font-weight: 400;
       color: var(--text);
       letter-spacing: -2px;
-      line-height: 1;
-      min-width: 290px;
+      line-height: 1.1;
+      min-width: 260px;
       flex-shrink: 0;
       white-space: nowrap;
     }
     .stmt-line.italic .stmt-word {
       font-style: italic;
-      font-size: 52px;
-      min-width: 250px;
+      font-size: 46px;
+      min-width: 220px;
     }
     .stmt-arrow {
-      font-size: 28px;
+      font-size: 20px;
       color: var(--accent);
       opacity: 0;
       transform: translateX(-10px);
@@ -659,10 +659,10 @@
     .stmt-arrow.show { opacity: 1; transform: translateX(0); }
     .stmt-tags {
       font-family: 'DM Sans', sans-serif;
-      font-size: 18px;
+      font-size: 16px;
       font-weight: 300;
       color: var(--text-mid);
-      line-height: 1.4;
+      line-height: 1.1;
       opacity: 0;
       transition: opacity 0.3s ease;
       display: flex;
@@ -681,7 +681,7 @@
     .skills-dock-divider {
       height: 1px;
       background: #E8E4E0;
-      margin: 48px 0;
+      margin: 32px 0;
     }
 
     /* Dock-Icon Bounce (via Tag-Hover) */
@@ -896,11 +896,11 @@
       #work, #about, #skills, #contact { padding:80px 32px; }
       .about-inner { grid-template-columns:1fr; gap:40px; }
       .stmt-block { margin-left: -32px; margin-right: -32px; }
-      .stmt-line { padding: 16px 32px; gap: 12px; }
-      .stmt-word { font-size: 36px !important; min-width: 170px !important; }
-      .stmt-line.italic .stmt-word { font-size: 30px !important; min-width: 150px !important; }
-      .stmt-tags { font-size: 14px; }
-      .skills-dock-divider { margin: 32px 0; }
+      .stmt-line { padding: 8px 32px; gap: 12px; }
+      .stmt-word { font-size: 32px !important; min-width: 150px !important; }
+      .stmt-line.italic .stmt-word { font-size: 26px !important; min-width: 130px !important; }
+      .stmt-tags { font-size: 13px; }
+      .skills-dock-divider { margin: 24px 0; }
     }
   </style>
 </head>
