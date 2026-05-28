@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="de">
+<html lang="en">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -85,7 +85,7 @@
     .folder-body { width: 18px; height: 13px; background: #689DCF; border-radius: 0 2px 2px 2px; }
     .nav-breadcrumb .sep { color: var(--text-light); }
     .nav-breadcrumb .active { color: var(--accent); font-weight: 500; }
-    .nav-links { display: flex; gap: 32px; list-style: none; }
+    .nav-links { display: flex; gap: 32px; list-style: none; align-items: center; }
     .nav-links a {
       font-size: 14px; font-weight: 500;
       color: var(--text); text-decoration: none;
@@ -99,10 +99,41 @@
       background: var(--accent); transition: width 0.2s;
     }
     .nav-links a:hover::after { width: 100%; }
-    .nav-links a.current { color: var(--accent); }
-    .nav-links a.current::after { width: 100%; }
-    .nav-links a.nav-dl { color: var(--text-light); }
-    .nav-links a.nav-dl:hover { color: var(--accent); }
+    .nav-links a.nav-active { color: var(--accent); }
+    .nav-links a.nav-active::after { width: 100%; }
+    .nav-has-dropdown { position: relative; }
+    .nav-has-dropdown > a .nav-caret { display: inline-block; font-size: 10px; margin-left: 3px; transition: transform .2s; }
+    .nav-has-dropdown:hover > a .nav-caret { transform: rotate(180deg); }
+    .nav-dropdown {
+      position: absolute; top: calc(100% + 14px); left: 50%;
+      transform: translateX(-50%) translateY(-6px);
+      background: white; border: 1px solid var(--border);
+      border-radius: 12px; padding: 6px; min-width: 200px;
+      box-shadow: 0 8px 32px rgba(0,0,0,.10);
+      opacity: 0; pointer-events: none;
+      transition: opacity .18s ease, transform .18s ease;
+    }
+    .nav-has-dropdown:hover .nav-dropdown { opacity: 1; pointer-events: auto; transform: translateX(-50%) translateY(0); }
+    .nav-dropdown a { display: block; padding: 8px 12px; font-size: 13px; font-weight: 500; color: var(--text); border-radius: 7px; white-space: nowrap; text-decoration: none; transition: background .15s, color .15s; }
+    .nav-dropdown a::after { display: none; }
+    .nav-dropdown a:hover { background: var(--accent-light); color: var(--accent); }
+    .nav-dropdown-divider { height: 1px; background: var(--border); margin: 4px 6px; }
+    .nav-dropdown-all { color: var(--text-mid) !important; font-size: 12px !important; }
+    .nav-dropdown-all:hover { color: var(--accent) !important; }
+    .nav-hamburger { display: none; flex-direction: column; gap: 5px; background: none; border: none; cursor: pointer; padding: 4px; }
+    .nav-hamburger span { display: block; width: 22px; height: 2px; background: var(--text); border-radius: 2px; transition: transform .25s ease, opacity .25s ease; }
+    .nav-overlay { position: fixed; inset: 0; z-index: 999; background: var(--bg); display: flex; flex-direction: column; align-items: center; justify-content: center; opacity: 0; pointer-events: none; transition: opacity .3s ease; }
+    .nav-overlay.open { opacity: 1; pointer-events: auto; }
+    .nav-overlay-close { position: absolute; top: 20px; right: 24px; background: none; border: none; font-size: 22px; cursor: pointer; color: var(--text); line-height: 1; }
+    .nav-overlay-links { display: flex; flex-direction: column; align-items: center; gap: 32px; }
+    .nav-overlay-links a { font-family: 'Instrument Serif', serif; font-size: 32px; color: var(--text); text-decoration: none; transition: color .2s; }
+    .nav-overlay-links a:hover { color: var(--accent); }
+    @media (max-width: 768px) {
+      nav { padding: 12px 20px; }
+      .nav-breadcrumb { display: none; }
+      .nav-links { display: none; }
+      .nav-hamburger { display: flex; }
+    }
 
     /* ── CV HERO (dark) ─────────────────────────── */
     .cv-hero {
@@ -143,6 +174,11 @@
       line-height: 1.05;
       letter-spacing: -2px;
       margin-bottom: 18px;
+      display: flex;
+      flex-direction: row;
+      flex-wrap: nowrap;
+      align-items: baseline;
+      gap: 12px;
     }
     .cv-hero-title em { font-style: italic; color: var(--accent-light); }
     .cv-hero-sub {
@@ -465,23 +501,43 @@
       <span class="active">CV</span>
     </div>
     <ul class="nav-links">
-      <li><a href="index.html">↑ Home</a></li>
-      <li><a href="index.html#work">Work</a></li>
-      <li><a href="index.html#about">About</a></li>
-      <li><a href="index.html#skills">Skills</a></li>
-      <li><a href="cv.html" class="current">CV</a></li>
-      <li><a href="downloads.html" class="nav-dl">🔒 Downloads</a></li>
-      <li><a href="index.html#contact">Contact</a></li>
+      <li class="nav-has-dropdown">
+        <a href="index.html#work">Work <span class="nav-caret">▾</span></a>
+        <div class="nav-dropdown">
+          <a href="work/mi4l/index.html">MI4L</a>
+          <a href="work/studio-liebe-nrg/index.html">Studio Liebe / NRG</a>
+          <a href="work/jco/index.html">JCO</a>
+          <a href="work/apprenticeship/index.html">Apprenticeship</a>
+          <div class="nav-dropdown-divider"></div>
+          <a href="index.html#work" class="nav-dropdown-all">View all →</a>
+        </div>
+      </li>
+      <li><a href="about.html">About</a></li>
+      <li><a href="cv.html" class="nav-active">CV</a></li>
+      <li><a href="mailto:hallo@vivienevers.de">✉ Contact</a></li>
     </ul>
+    <button class="nav-hamburger" id="nav-hamburger" aria-label="Open menu">
+      <span></span><span></span><span></span>
+    </button>
   </nav>
+
+  <div class="nav-overlay" id="nav-overlay">
+    <button class="nav-overlay-close" id="nav-overlay-close">✕</button>
+    <nav class="nav-overlay-links">
+      <a href="index.html#work">Work</a>
+      <a href="about.html">About</a>
+      <a href="cv.html" style="color:var(--accent)">CV</a>
+      <a href="mailto:hallo@vivienevers.de">✉ Contact</a>
+    </nav>
+  </div>
 
   <div class="cv-content">
 
     <!-- ══ HERO ═══════════════════════════════════════════════════ -->
     <section class="cv-hero">
       <div class="cv-terminal-path"><span>~/vivien/</span>cv</div>
-      <h1 class="cv-hero-title">Vivien<br><em>Evers</em></h1>
-      <p class="cv-hero-sub">Mediengestalterin Digital & Print · Brand & Marketing · Hamburg</p>
+      <h1 class="cv-hero-title">Vivien <em>Evers</em></h1>
+      <p class="cv-hero-sub">Digital & Print Designer · Brand & Marketing · Hamburg</p>
     </section>
 
     <!-- ══ AT A GLANCE ════════════════════════════════════════════ -->
@@ -490,15 +546,15 @@
       <div class="glance-grid">
         <div class="glance-card reveal">
           <div class="glance-number">3<span>+</span></div>
-          <div class="glance-label">Jahre<br>Berufserfahrung</div>
+          <div class="glance-label">Years of<br>Experience</div>
         </div>
         <div class="glance-card reveal">
-          <div class="glance-number" style="font-size:44px;">Jan&thinsp;'26</div>
-          <div class="glance-label">Ausbildung<br>Abgeschlossen</div>
+          <div class="glance-number" style="font-size:38px;">✓</div>
+          <div class="glance-label">Graduated<br>Jan 2026</div>
         </div>
         <div class="glance-card reveal">
           <div class="glance-number">2</div>
-          <div class="glance-label">Eigene<br>Brand-Projekte</div>
+          <div class="glance-label">Own Brand<br>Projects</div>
         </div>
       </div>
     </section>
@@ -510,10 +566,10 @@
 
         <div class="timeline-entry">
           <div class="timeline-period">
-            <div class="timeline-date">2025 – heute</div>
+            <div class="timeline-date">2025 – present</div>
           </div>
           <div class="timeline-body">
-            <div class="timeline-role">Brand & Communications · Freiberuflich</div>
+            <div class="timeline-role">Brand & Communications · Freelance</div>
             <div class="timeline-company"><strong>Jewish Chamber Orchestra Hamburg</strong> · Hamburg</div>
             <div class="tag-row">
               <span class="tag">Brand Communication</span>
@@ -525,12 +581,12 @@
 
         <div class="timeline-entry">
           <div class="timeline-period">
-            <div class="timeline-date">2022 – heute</div>
+            <div class="timeline-date">2022 – present</div>
           </div>
           <div class="timeline-body">
             <div class="timeline-role">Co-Founder & Creative Lead</div>
             <div class="timeline-company"><strong>Music is for Lovers</strong> · Hamburg</div>
-            <div class="timeline-note">Über 10 Events · bis zu 400 Gäste · Jägermeister & Carlsberg</div>
+            <div class="timeline-note">10+ Events · up to 400 guests · Jägermeister & Carlsberg</div>
             <div class="tag-row">
               <span class="tag accent">Co-Founder</span>
               <span class="tag">Brand Development</span>
@@ -546,7 +602,7 @@
             <div class="timeline-date">2023 – 2026</div>
           </div>
           <div class="timeline-body">
-            <div class="timeline-role">Ausbildung Mediengestalterin Digital & Print</div>
+            <div class="timeline-role">Apprenticeship — Digital & Print Designer</div>
             <div class="timeline-company"><strong>ehsmedia</strong> · Schenefeld</div>
             <div class="tag-row">
               <span class="tag">Figma</span>
@@ -580,7 +636,7 @@
         <div class="skill-group reveal">
           <div class="skill-group-title">Web</div>
           <div class="skill-tags-row">
-            <span class="skill-chip">Figma Sites</span>
+            <span class="skill-chip">UI Design</span>
             <span class="skill-chip">Web Design</span>
             <span class="skill-chip">UI/UX</span>
           </div>
@@ -602,7 +658,7 @@
           <div class="skill-tags-row">
             <span class="skill-chip">Print Production</span>
             <span class="skill-chip">Large Format</span>
-            <span class="skill-chip">Druckvorstufe</span>
+            <span class="skill-chip">Print Prepress</span>
           </div>
         </div>
 
@@ -617,15 +673,15 @@
         <div class="edu-entry reveal">
           <div class="edu-year">Jan 2026</div>
           <div class="edu-body">
-            <div class="edu-degree">Mediengestalterin Digital & Print</div>
-            <div class="edu-school">ehsmedia Schenefeld · Berufsschule Hamburg</div>
+            <div class="edu-degree">Digital & Print Designer</div>
+            <div class="edu-school">ehsmedia Schenefeld · Vocational School Hamburg</div>
           </div>
         </div>
 
         <div class="edu-entry reveal">
           <div class="edu-year">2019</div>
           <div class="edu-body">
-            <div class="edu-degree">Abitur · Schwerpunkt Wirtschaft & Politik</div>
+            <div class="edu-degree">Abitur · Focus: Business & Politics</div>
             <div class="edu-school">Stadtteilschule Hamburg-Mitte</div>
           </div>
         </div>
@@ -635,10 +691,10 @@
 
     <!-- ══ LANGUAGES ══════════════════════════════════════════════ -->
     <section class="cv-languages">
-      <div class="section-label">Sprachen</div>
+      <div class="section-label">Languages</div>
       <div class="lang-row">
-        <div class="lang-chip">Deutsch <span>Muttersprache</span></div>
-        <div class="lang-chip">Englisch <span>Verhandlungssicher</span></div>
+        <div class="lang-chip">German <span>(native)</span></div>
+        <div class="lang-chip">English <span>(business fluent)</span></div>
       </div>
     </section>
 
@@ -690,6 +746,16 @@
         ring.style.opacity = '0.5';
       });
     });
+
+    // ── HAMBURGER NAV ─────────────────────────────────────────────
+    const hamburger = document.getElementById('nav-hamburger');
+    const overlay   = document.getElementById('nav-overlay');
+    const overlayClose = document.getElementById('nav-overlay-close');
+    function openOverlay()  { overlay.classList.add('open'); document.body.style.overflow = 'hidden'; }
+    function closeOverlay() { overlay.classList.remove('open'); document.body.style.overflow = ''; }
+    if (hamburger) hamburger.addEventListener('click', openOverlay);
+    if (overlayClose) overlayClose.addEventListener('click', closeOverlay);
+    if (overlay) overlay.addEventListener('click', e => { if (e.target === overlay) closeOverlay(); });
 
     // ── SCROLL REVEAL ─────────────────────────────────────────────
     const observer = new IntersectionObserver(entries => {

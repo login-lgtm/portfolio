@@ -169,7 +169,7 @@
     .folder-body { width: 18px; height: 13px; background: #689DCF; border-radius: 0 2px 2px 2px; }
     .nav-breadcrumb .sep    { color: var(--text-light); }
     .nav-breadcrumb .active { color: var(--accent); font-weight: 500; }
-    .nav-links { display: flex; gap: 32px; list-style: none; }
+    .nav-links { display: flex; gap: 32px; list-style: none; align-items: center; }
     .nav-links a {
       font-size: 14px; font-weight: 500; color: var(--text);
       text-decoration: none; position: relative; transition: color .2s;
@@ -180,8 +180,157 @@
       width: 0; height: 1.5px; background: var(--accent); transition: width .2s;
     }
     .nav-links a:hover::after { width: 100%; }
-    .nav-links a.nav-dl { color: var(--text-light); }
-    .nav-links a.nav-dl:hover { color: var(--accent); }
+    .nav-links a.nav-active { color: var(--accent); }
+    .nav-links a.nav-active::after { width: 100%; }
+
+    /* Work dropdown */
+    .nav-has-dropdown { position: relative; }
+    .nav-has-dropdown > a .nav-caret {
+      display: inline-block; font-size: 10px; margin-left: 3px;
+      transition: transform .2s;
+    }
+    .nav-has-dropdown:hover > a .nav-caret { transform: rotate(180deg); }
+    .nav-dropdown {
+      position: absolute; top: calc(100% + 14px); left: 50%;
+      transform: translateX(-50%);
+      background: white; border: 1px solid var(--border);
+      border-radius: 12px; padding: 6px;
+      min-width: 200px;
+      box-shadow: 0 8px 32px rgba(0,0,0,.10);
+      opacity: 0; pointer-events: none;
+      transform: translateX(-50%) translateY(-6px);
+      transition: opacity .18s ease, transform .18s ease;
+    }
+    .nav-has-dropdown:hover .nav-dropdown {
+      opacity: 1; pointer-events: auto;
+      transform: translateX(-50%) translateY(0);
+    }
+    .nav-dropdown a {
+      display: block; padding: 8px 12px;
+      font-size: 13px; font-weight: 500; color: var(--text);
+      border-radius: 7px; white-space: nowrap;
+      text-decoration: none; transition: background .15s, color .15s;
+    }
+    .nav-dropdown a::after { display: none; }
+    .nav-dropdown a:hover { background: var(--accent-light); color: var(--accent); }
+    .nav-dropdown-divider { height: 1px; background: var(--border); margin: 4px 6px; }
+    .nav-dropdown-all { color: var(--text-mid) !important; font-size: 12px !important; }
+    .nav-dropdown-all:hover { color: var(--accent) !important; }
+
+    /* Hamburger button */
+    .nav-hamburger {
+      display: none; flex-direction: column; gap: 5px;
+      background: none; border: none; cursor: pointer; padding: 4px;
+    }
+    .nav-hamburger span {
+      display: block; width: 22px; height: 2px;
+      background: var(--text); border-radius: 2px;
+      transition: transform .25s ease, opacity .25s ease;
+    }
+
+    /* Mobile overlay */
+    .nav-overlay {
+      position: fixed; inset: 0; z-index: 999;
+      background: var(--bg);
+      display: flex; flex-direction: column;
+      align-items: center; justify-content: center;
+      opacity: 0; pointer-events: none;
+      transition: opacity .3s ease;
+    }
+    .nav-overlay.open { opacity: 1; pointer-events: auto; }
+    .nav-overlay-close {
+      position: absolute; top: 20px; right: 24px;
+      background: none; border: none; font-size: 22px;
+      cursor: pointer; color: var(--text); line-height: 1;
+    }
+    .nav-overlay-links {
+      display: flex; flex-direction: column; align-items: center; gap: 32px;
+    }
+    .nav-overlay-links a {
+      font-family: 'Instrument Serif', serif;
+      font-size: 32px; color: var(--text);
+      text-decoration: none; transition: color .2s;
+    }
+    .nav-overlay-links a:hover { color: var(--accent); }
+
+    /* Open to New Roles tag */
+    .hero-tag {
+      display: inline-flex; align-items: center; gap: 8px;
+      background: var(--accent-light); color: var(--accent);
+      padding: 6px 16px; border-radius: 20px;
+      font-size: 13px; font-weight: 500; margin-bottom: 28px;
+      opacity: 0; animation: fadeUp .6s ease .2s forwards;
+      cursor: pointer;
+      transition: transform .2s ease, box-shadow .2s ease;
+      user-select: none;
+    }
+    .hero-tag:hover {
+      transform: scale(1.05);
+      box-shadow: 0 4px 16px rgba(107,92,231,.25);
+    }
+    .hero-tag .dot {
+      width: 6px; height: 6px; background: var(--accent); border-radius: 50%;
+      animation: pulse 2s infinite;
+      flex-shrink: 0;
+    }
+    .hero-tag:hover .dot { animation: pulse .8s infinite; }
+    .hero-tag-text { transition: opacity .15s ease; }
+    @keyframes pulse {
+      0%,100% { opacity:1; transform:scale(1); }
+      50%      { opacity:.5; transform:scale(.8); }
+    }
+
+    /* Open to New Roles modal */
+    .tag-modal-backdrop {
+      position: fixed; inset: 0; z-index: 500;
+      background: rgba(0,0,0,.35); backdrop-filter: blur(4px);
+      opacity: 0; pointer-events: none;
+      transition: opacity .25s ease;
+    }
+    .tag-modal-backdrop.open { opacity: 1; pointer-events: auto; }
+    .tag-modal {
+      position: absolute; top: 50%; left: 50%;
+      transform: translate(-50%, -50%) scale(.92);
+      width: 340px;
+      background: white; border-radius: 14px;
+      box-shadow: 0 24px 64px rgba(0,0,0,.18);
+      overflow: hidden;
+      transition: transform .25s cubic-bezier(0.34,1.56,0.64,1);
+    }
+    .tag-modal-backdrop.open .tag-modal { transform: translate(-50%, -50%) scale(1); }
+    .tag-modal-chrome {
+      display: flex; align-items: center; gap: 6px;
+      padding: 10px 14px; background: #F5F3F1;
+      border-bottom: 1px solid var(--border);
+    }
+    .tag-modal-chrome-title { font-size: 11px; color: var(--text-light); margin-left: 6px; }
+    .tag-modal-body { padding: 28px 24px 24px; text-align: center; }
+    .tag-modal-avatar {
+      width: 56px; height: 56px; border-radius: 50%;
+      background: var(--accent-light); color: var(--accent);
+      font-family: 'Instrument Serif', serif; font-size: 22px;
+      display: flex; align-items: center; justify-content: center;
+      margin: 0 auto 14px;
+    }
+    .tag-modal-title {
+      font-family: 'Instrument Serif', serif;
+      font-size: 20px; margin-bottom: 6px;
+    }
+    .tag-modal-sub {
+      font-size: 13px; color: var(--text-mid); margin-bottom: 20px; line-height: 1.5;
+    }
+    .tag-modal-btns { display: flex; flex-direction: column; gap: 10px; }
+    .tag-modal-btn {
+      display: flex; align-items: center; justify-content: center; gap: 8px;
+      padding: 12px 20px; border-radius: 100px;
+      font-size: 14px; font-weight: 500; text-decoration: none;
+      transition: transform .15s ease, box-shadow .15s ease;
+    }
+    .tag-modal-btn:hover { transform: translateY(-1px); box-shadow: 0 4px 12px rgba(0,0,0,.1); }
+    .tag-modal-btn.primary { background: var(--accent); color: white; }
+    .tag-modal-btn.secondary {
+      background: var(--tag-bg); color: var(--text);
+    }
 
     /* ─────────────────────────────────────────────
        HERO
@@ -193,22 +342,6 @@
       position: relative; z-index: 1;
     }
     .hero-left { flex: 1; }
-
-    .hero-tag {
-      display: inline-flex; align-items: center; gap: 8px;
-      background: var(--accent-light); color: var(--accent);
-      padding: 6px 16px; border-radius: 20px;
-      font-size: 13px; font-weight: 500; margin-bottom: 28px;
-      opacity: 0; animation: fadeUp .6s ease .2s forwards;
-    }
-    .hero-tag .dot {
-      width: 6px; height: 6px; background: var(--accent); border-radius: 50%;
-      animation: pulse 2s infinite;
-    }
-    @keyframes pulse {
-      0%,100% { opacity:1; transform:scale(1); }
-      50%      { opacity:.5; transform:scale(.8); }
-    }
 
     .hero-name {
       font-family: 'Instrument Serif', serif;
@@ -907,16 +1040,32 @@
       .skills-dock-divider { margin: 24px 0; }
     }
 
-    /* ── 640px — mobile ─────────────────────── */
-    @media (max-width: 640px) {
-      /* Nav: hide breadcrumb, compact links */
-      nav { padding: 10px 16px; }
+    /* ── 768px — mobile hero ────────────────── */
+    @media (max-width: 768px) {
+      /* Nav: show hamburger, hide links */
+      nav { padding: 12px 20px; }
       .nav-breadcrumb { display: none; }
-      .nav-links { gap: 16px; }
-      .nav-links a { font-size: 12px; }
+      .nav-links { display: none; }
+      .nav-hamburger { display: flex; }
 
       /* Hero */
-      #hero { padding: 76px 20px 48px; }
+      #hero {
+        padding-top: 80px;
+        min-height: 100svh;
+        align-items: flex-end;
+        padding-bottom: 48px;
+        padding-left: 24px;
+        padding-right: 24px;
+        flex-direction: column;
+      }
+      .hero-right { display: none; }
+      .float-card { display: none; }
+    }
+
+    /* ── 640px — mobile ─────────────────────── */
+    @media (max-width: 640px) {
+      /* Hero */
+      #hero { padding: 76px 20px 48px; min-height: 100svh; }
       .hero-sub { font-size: 15px; margin-bottom: 28px; }
       .btn-primary, .btn-secondary { padding: 12px 20px; font-size: 13px; }
 
@@ -1009,34 +1158,76 @@
       <span class="active">Portfolio</span>
     </div>
     <ul class="nav-links">
-      <li><a href="#hero" class="nav-home" onclick="window.scrollTo({top:0,behavior:'smooth'});return false;">↑ Home</a></li>
-      <li><a href="#work">Work</a></li>
+      <li class="nav-has-dropdown">
+        <a href="#work">Work <span class="nav-caret">▾</span></a>
+        <div class="nav-dropdown">
+          <a href="work/mi4l/index.html">MI4L</a>
+          <a href="work/studio-liebe-nrg/index.html">Studio Liebe / NRG</a>
+          <a href="work/jco/index.html">JCO</a>
+          <a href="work/apprenticeship/index.html">Apprenticeship</a>
+          <div class="nav-dropdown-divider"></div>
+          <a href="#work" class="nav-dropdown-all">View all →</a>
+        </div>
+      </li>
       <li><a href="about.html">About</a></li>
-      <li><a href="#skills">Skills</a></li>
       <li><a href="cv.html">CV</a></li>
-      <li><a href="downloads.html" class="nav-dl">🔒 Downloads</a></li>
-      <li><a href="#contact">Contact</a></li>
+      <li><a href="mailto:hallo@vivienevers.de">✉ Contact</a></li>
     </ul>
+    <button class="nav-hamburger" id="nav-hamburger" aria-label="Open menu">
+      <span></span><span></span><span></span>
+    </button>
   </nav>
+
+  <!-- Mobile nav overlay -->
+  <div class="nav-overlay" id="nav-overlay">
+    <button class="nav-overlay-close" id="nav-overlay-close">✕</button>
+    <nav class="nav-overlay-links">
+      <a href="#work" onclick="closeOverlay()">Work</a>
+      <a href="about.html">About</a>
+      <a href="cv.html">CV</a>
+      <a href="mailto:hallo@vivienevers.de">✉ Contact</a>
+    </nav>
+  </div>
 
   <!-- ══════════════════════════════════════════
        HERO
   ══════════════════════════════════════════ -->
+  <!-- Open to New Roles modal -->
+  <div class="tag-modal-backdrop" id="tag-modal-backdrop">
+    <div class="tag-modal">
+      <div class="tag-modal-chrome">
+        <span class="mac-dot red"></span>
+        <span class="mac-dot yellow"></span>
+        <span class="mac-dot green"></span>
+        <span class="tag-modal-chrome-title">vivien-evers — hello</span>
+      </div>
+      <div class="tag-modal-body">
+        <div class="tag-modal-avatar">VE</div>
+        <div class="tag-modal-title">Let's work together ♡</div>
+        <div class="tag-modal-sub">I'm open to new roles in brand, design & marketing. Drop me a line — I'd love to connect.</div>
+        <div class="tag-modal-btns">
+          <a href="mailto:hallo@vivienevers.de" class="tag-modal-btn primary">✉ hallo@vivienevers.de</a>
+          <a href="https://linkedin.com/in/vivien-victoria-evers" class="tag-modal-btn secondary" target="_blank">LinkedIn →</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
   <section id="hero">
     <div class="hero-left">
-      <div class="hero-tag">
+      <div class="hero-tag" id="hero-tag">
         <span class="dot"></span>
-        Open to new roles
+        <span class="hero-tag-text">Open to new roles</span>
       </div>
       <h1 class="hero-name" id="hero-name">
-        <span class="figma-wrapper" id="figma-wrapper">
-          <span class="figma-line-left" id="figma-line"></span>
-          <span id="figma-typed-name"></span><em id="figma-typed-em"></em><span class="figma-cursor" id="figma-cursor"></span>
-          <span class="figma-anchor figma-anchor-tr" id="figma-anchor-tr"></span>
-          <span class="figma-anchor figma-anchor-bl" id="figma-anchor-bl"></span>
+        <span class="figma-wrapper selected" id="figma-wrapper">
+          <span class="figma-line-left show" id="figma-line"></span>
+          Vivien <em>Evers</em>
+          <span class="figma-anchor figma-anchor-tr show" id="figma-anchor-tr"></span>
+          <span class="figma-anchor figma-anchor-bl show" id="figma-anchor-bl"></span>
         </span>
       </h1>
-      <p class="hero-sub">Mediengestalterin Digital & Print — Brand, Design & Marketing</p>
+      <p class="hero-sub">Digital & Print Designer — Brand, Design & Marketing</p>
       <div class="hero-ctas">
         <a href="#work" class="btn-primary">View my work ▶</a>
         <a href="#contact" class="btn-secondary">Let's chat ☕</a>
@@ -1090,24 +1281,28 @@
     <div class="marquee-track">
       <div class="marquee-item"><span class="marquee-dot"></span>Brand Development</div>
       <div class="marquee-item"><span class="marquee-dot"></span>Art Direction</div>
-      <div class="marquee-item"><span class="marquee-dot"></span>Print Production</div>
-      <div class="marquee-item"><span class="marquee-dot"></span>Figma</div>
       <div class="marquee-item"><span class="marquee-dot"></span>Visual Identity</div>
-      <div class="marquee-item"><span class="marquee-dot"></span>Webdesign</div>
-      <div class="marquee-item"><span class="marquee-dot"></span>Adobe Suite</div>
+      <div class="marquee-item"><span class="marquee-dot"></span>Print Production</div>
       <div class="marquee-item"><span class="marquee-dot"></span>Event Marketing</div>
-      <div class="marquee-item"><span class="marquee-dot"></span>Webflow</div>
+      <div class="marquee-item"><span class="marquee-dot"></span>Figma</div>
+      <div class="marquee-item"><span class="marquee-dot"></span>Adobe Suite</div>
+      <div class="marquee-item"><span class="marquee-dot"></span>Web Design</div>
       <div class="marquee-item"><span class="marquee-dot"></span>Brand Communication</div>
+      <div class="marquee-item"><span class="marquee-dot"></span>Creative Direction</div>
+      <div class="marquee-item"><span class="marquee-dot"></span>Large Format</div>
+      <div class="marquee-item"><span class="marquee-dot"></span>Campaign Design</div>
       <div class="marquee-item"><span class="marquee-dot"></span>Brand Development</div>
       <div class="marquee-item"><span class="marquee-dot"></span>Art Direction</div>
-      <div class="marquee-item"><span class="marquee-dot"></span>Print Production</div>
-      <div class="marquee-item"><span class="marquee-dot"></span>Figma</div>
       <div class="marquee-item"><span class="marquee-dot"></span>Visual Identity</div>
-      <div class="marquee-item"><span class="marquee-dot"></span>Webdesign</div>
-      <div class="marquee-item"><span class="marquee-dot"></span>Adobe Suite</div>
+      <div class="marquee-item"><span class="marquee-dot"></span>Print Production</div>
       <div class="marquee-item"><span class="marquee-dot"></span>Event Marketing</div>
-      <div class="marquee-item"><span class="marquee-dot"></span>Webflow</div>
+      <div class="marquee-item"><span class="marquee-dot"></span>Figma</div>
+      <div class="marquee-item"><span class="marquee-dot"></span>Adobe Suite</div>
+      <div class="marquee-item"><span class="marquee-dot"></span>Web Design</div>
       <div class="marquee-item"><span class="marquee-dot"></span>Brand Communication</div>
+      <div class="marquee-item"><span class="marquee-dot"></span>Creative Direction</div>
+      <div class="marquee-item"><span class="marquee-dot"></span>Large Format</div>
+      <div class="marquee-item"><span class="marquee-dot"></span>Campaign Design</div>
     </div>
   </div>
 
@@ -1260,7 +1455,7 @@
         <div class="stmt-tags">
           <span class="stmt-tag" data-tool="figma">Web Design</span><span class="stmt-comma">,</span>
           <span class="stmt-tag" data-tool="figma">UI/UX</span><span class="stmt-comma">,</span>
-          <span class="stmt-tag" data-tool="figma">Figma Sites</span>
+          <span class="stmt-tag" data-tool="figma">UI Design</span>
         </div>
       </div>
 
@@ -1328,7 +1523,7 @@
           <div class="dock-icon" data-tool="id">
             <img src="images/icons/indesign.png" alt="InDesign" draggable="false" style="width:100%;height:100%;object-fit:cover;">
           </div>
-          <div class="dock-tip">Print layouts · Editorial · Druckvorstufe</div>
+          <div class="dock-tip">Print layouts · Editorial · Prepress</div>
         </div>
 
         <div class="dock-sep"></div>
@@ -1411,7 +1606,7 @@
           </span>
           <span>›</span><span>Vivien Evers</span><span>›</span><span>Portfolio</span>
         </div>
-        <span>© 2025 Vivien Evers · vivienevers.de</span>
+        <span>© 2026 Vivien Evers · vivienevers.de</span>
       </div>
     </div>
   </section>
@@ -1460,7 +1655,7 @@
         images: ['', '', '', ''],
         desc: 'Three years at a Hamburg agency — websites in Figma & Webflow, corporate identity systems and print production. Real client projects from brief to delivery.',
         tags: ['Figma','Webflow','Corporate Design','Print Production'],
-        role: 'Mediengestalterin Digital & Print · 2023 – 2026'
+        role: 'Digital & Print Designer · 2023 – 2026'
       }
     ];
 
@@ -1530,65 +1725,45 @@
     /* Erstes Projekt beim Laden automatisch aktiv */
     renderContent(0);
 
-    /* ── FIGMA HERO NAME ANIMATION ─────────────────────────── */
+    /* ── HERO NAME FADE-IN ─────────────────────────────────── */
     function startHeroNameAnimation() {
-      const nameEl    = document.getElementById('hero-name');
-      const wrapper   = document.getElementById('figma-wrapper');
-      const typedName = document.getElementById('figma-typed-name');
-      const typedEm   = document.getElementById('figma-typed-em');
-      const cursor    = document.getElementById('figma-cursor');
-      const line      = document.getElementById('figma-line');
-      const anchorTR  = document.getElementById('figma-anchor-tr');
-      const anchorBL  = document.getElementById('figma-anchor-bl');
-
-      /* 1. Slide hero name in */
+      const nameEl = document.getElementById('hero-name');
       nameEl.style.opacity   = '1';
       nameEl.style.transform = 'translateY(0)';
+    }
 
-      /* 2. Blinking cursor appears immediately */
-      cursor.style.opacity = '1';
-      cursor.classList.add('blink');
+    /* ── HAMBURGER NAV ─────────────────────────────────────── */
+    const hamburger = document.getElementById('nav-hamburger');
+    const overlay   = document.getElementById('nav-overlay');
+    const overlayClose = document.getElementById('nav-overlay-close');
 
-      /* 3. Typewriter: "Vivien " + italic "Evers" */
-      const part1 = 'Vivien ';
-      const part2 = 'Evers';
-      let i = 0, j = 0;
+    function openOverlay()  { overlay.classList.add('open'); document.body.style.overflow = 'hidden'; }
+    function closeOverlay() { overlay.classList.remove('open'); document.body.style.overflow = ''; }
 
-      function typePart1() {
-        if (i < part1.length) {
-          typedName.textContent = part1.slice(0, ++i);
-          setTimeout(typePart1, 70 + Math.random() * 36);
-        } else {
-          setTimeout(typePart2, 90);
-        }
-      }
+    if (hamburger) hamburger.addEventListener('click', openOverlay);
+    if (overlayClose) overlayClose.addEventListener('click', closeOverlay);
+    if (overlay) overlay.addEventListener('click', e => { if (e.target === overlay) closeOverlay(); });
 
-      function typePart2() {
-        if (j < part2.length) {
-          typedEm.textContent = part2.slice(0, ++j);
-          setTimeout(typePart2, 72 + Math.random() * 36);
-        } else {
-          setTimeout(showFigmaDecor, 320);
-        }
-      }
+    /* ── OPEN TO NEW ROLES MODAL ───────────────────────────── */
+    const heroTag   = document.getElementById('hero-tag');
+    const tagModal  = document.getElementById('tag-modal-backdrop');
+    const tagText   = heroTag ? heroTag.querySelector('.hero-tag-text') : null;
 
-      function showFigmaDecor() {
-        /* cursor pauses, then selection + line + anchors appear */
-        cursor.classList.remove('blink');
-        cursor.style.opacity  = '0';
-        wrapper.classList.add('selected');          /* lila bg */
-        line.classList.add('show');                 /* left line */
-        setTimeout(() => anchorTR.classList.add('show'), 200);  /* handle TR */
-        setTimeout(() => anchorBL.classList.add('show'), 320);  /* handle BL */
-        /* cursor blinks again after decoration settles */
-        setTimeout(() => {
-          cursor.style.opacity = '1';
-          cursor.classList.add('blink');
-        }, 480);
-      }
-
-      /* slight initial pause so the slide-in is visible first */
-      setTimeout(typePart1, 200);
+    if (heroTag) {
+      heroTag.addEventListener('mouseenter', () => {
+        if (tagText) tagText.textContent = 'Say hello? 👋';
+      });
+      heroTag.addEventListener('mouseleave', () => {
+        if (tagText) tagText.textContent = 'Open to new roles';
+      });
+      heroTag.addEventListener('click', () => {
+        if (tagModal) tagModal.classList.add('open');
+      });
+    }
+    if (tagModal) {
+      tagModal.addEventListener('click', e => {
+        if (e.target === tagModal) tagModal.classList.remove('open');
+      });
     }
 
     /* ── LOADING SCREEN ────────────────────────────────────── */
