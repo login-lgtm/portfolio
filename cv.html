@@ -384,6 +384,8 @@
     .reveal.visible { opacity: 1; transform: translateY(0); }
 
     /* ── RESPONSIVE ─────────────────────────────── */
+
+    /* ── 900px — tablet ─────────────────────── */
     @media (max-width: 900px) {
       .cv-hero, .cv-glance, .cv-experience,
       .cv-skills, .cv-education, .cv-languages { padding-left: 32px; padding-right: 32px; }
@@ -393,6 +395,50 @@
       .timeline-period, .edu-year { padding-right: 0; }
       .skills-groups { grid-template-columns: 1fr; }
       .cv-footer { flex-direction: column; gap: 20px; text-align: center; }
+    }
+
+    /* ── 640px — mobile ─────────────────────── */
+    @media (max-width: 640px) {
+      /* Nav: hide breadcrumb, compact links */
+      nav { padding: 10px 16px; }
+      .nav-breadcrumb { display: none; }
+      .nav-links { gap: 14px; }
+      .nav-links a { font-size: 12px; }
+
+      /* CV Hero */
+      .cv-hero { padding: 80px 20px 48px; }
+      .cv-hero-title { font-size: 44px; letter-spacing: -1px; }
+      .cv-hero-sub { font-size: 15px; }
+
+      /* Sections */
+      .cv-glance, .cv-experience,
+      .cv-skills, .cv-education, .cv-languages { padding-left: 20px; padding-right: 20px; }
+      .cv-glance { padding-top: 48px; padding-bottom: 40px; }
+
+      /* Cards */
+      .glance-card { padding: 24px 20px; }
+      .glance-number { font-size: 44px; }
+
+      /* Timeline */
+      .timeline-entry { padding: 24px 0; }
+      .cv-section-title { font-size: 28px; margin-bottom: 32px; }
+
+      /* Footer */
+      .cv-footer { padding: 32px 20px; }
+      .cv-footer-links { gap: 14px; }
+    }
+
+    /* ── 390px — small phones ─────────────────── */
+    @media (max-width: 390px) {
+      nav { padding: 8px 12px; }
+      .nav-links { gap: 10px; }
+      .nav-links a { font-size: 11px; }
+    }
+
+    /* ── Touch devices: hide custom cursor ── */
+    @media (hover: none) {
+      body { cursor: auto; }
+      .cursor, .cursor-ring { display: none; }
     }
   </style>
 </head>
@@ -417,6 +463,7 @@
       <span class="active">CV</span>
     </div>
     <ul class="nav-links">
+      <li><a href="index.html">↑ Home</a></li>
       <li><a href="index.html#work">Work</a></li>
       <li><a href="index.html#about">About</a></li>
       <li><a href="index.html#skills">Skills</a></li>
