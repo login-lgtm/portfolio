@@ -152,72 +152,94 @@
     ───────────────────────────────────────────── */
     nav {
       position: fixed; top: 0; left: 0; right: 0; z-index: 100;
-      padding: 16px 40px;
+      height: 64px; padding: 0 40px;
       display: flex; align-items: center; justify-content: space-between;
       backdrop-filter: blur(12px);
-      background: rgba(238,236,234,.85);
+      background: rgba(238,236,234,.92);
       border-bottom: 1px solid var(--border);
     }
-    .nav-breadcrumb {
-      display: flex; align-items: center; gap: 6px;
+
+    /* Breadcrumb pill — now a clickable home link */
+    a.nav-breadcrumb {
+      display: inline-flex; align-items: center; gap: 6px;
       background: white; padding: 6px 14px;
       border-radius: 20px; border: 1px solid var(--border);
-      font-size: 12px;
+      font-size: 12px; font-weight: 500; color: var(--text);
+      text-decoration: none; cursor: pointer;
+      transition: box-shadow .2s;
     }
+    a.nav-breadcrumb:hover { box-shadow: 0 2px 12px rgba(0,0,0,.08); }
     .nav-breadcrumb .folder-icon { display: inline-flex; flex-direction: column; gap: 1px; margin-right: 2px; }
     .folder-tab  { width: 12px; height: 4px; background: #90BEDD; border-radius: 2px 2px 0 0; }
     .folder-body { width: 18px; height: 13px; background: #689DCF; border-radius: 0 2px 2px 2px; }
     .nav-breadcrumb .sep    { color: var(--text-light); }
-    .nav-breadcrumb .active { color: var(--accent); font-weight: 500; }
-    .nav-links { display: flex; gap: 32px; list-style: none; align-items: center; }
-    .nav-links a {
+    .nav-breadcrumb .crumb  { color: var(--text-mid); }
+    .nav-breadcrumb .crumb-active { color: var(--accent); }
+
+    /* Nav links list */
+    .nav-links { display: flex; gap: 28px; list-style: none; align-items: center; }
+    .nav-links > li > a {
       font-size: 14px; font-weight: 500; color: var(--text);
       text-decoration: none; position: relative; transition: color .2s;
     }
-    .nav-links a:hover { color: var(--accent); }
-    .nav-links a::after {
+    .nav-links > li > a:hover { color: var(--accent); }
+    .nav-links > li > a::after {
       content: ''; position: absolute; bottom: -2px; left: 0;
       width: 0; height: 1.5px; background: var(--accent); transition: width .2s;
     }
-    .nav-links a:hover::after { width: 100%; }
-    .nav-links a.nav-active { color: var(--accent); }
-    .nav-links a.nav-active::after { width: 100%; }
+    .nav-links > li > a:hover::after { width: 100%; }
+    .nav-links > li > a.nav-active { color: var(--accent); }
+    .nav-links > li > a.nav-active::after { width: 100%; }
 
-    /* Work dropdown */
-    .nav-has-dropdown { position: relative; }
-    .nav-has-dropdown > a .nav-caret {
+    /* Work dropdown wrapper with delay trick */
+    .nav-work-wrapper { position: relative; }
+    .nav-work-wrapper > a .nav-caret {
       display: inline-block; font-size: 10px; margin-left: 3px;
       transition: transform .2s;
     }
-    .nav-has-dropdown:hover > a .nav-caret { transform: rotate(180deg); }
-    .nav-dropdown {
-      position: absolute; top: calc(100% + 14px); left: 50%;
-      transform: translateX(-50%);
-      background: white; border: 1px solid var(--border);
-      border-radius: 12px; padding: 6px;
-      min-width: 200px;
-      box-shadow: 0 8px 32px rgba(0,0,0,.10);
-      opacity: 0; pointer-events: none;
-      transform: translateX(-50%) translateY(-6px);
-      transition: opacity .18s ease, transform .18s ease;
-    }
-    .nav-has-dropdown:hover .nav-dropdown {
-      opacity: 1; pointer-events: auto;
-      transform: translateX(-50%) translateY(0);
-    }
-    .nav-dropdown a {
-      display: block; padding: 8px 12px;
-      font-size: 13px; font-weight: 500; color: var(--text);
-      border-radius: 7px; white-space: nowrap;
-      text-decoration: none; transition: background .15s, color .15s;
-    }
-    .nav-dropdown a::after { display: none; }
-    .nav-dropdown a:hover { background: var(--accent-light); color: var(--accent); }
-    .nav-dropdown-divider { height: 1px; background: var(--border); margin: 4px 6px; }
-    .nav-dropdown-all { color: var(--text-mid) !important; font-size: 12px !important; }
-    .nav-dropdown-all:hover { color: var(--accent) !important; }
+    .nav-work-wrapper:hover > a .nav-caret { transform: rotate(180deg); }
 
-    /* Hamburger button */
+    .nav-dropdown {
+      position: absolute; top: 52px; right: 0;
+      background: white; border: 1px solid #E8E4E0;
+      border-radius: 16px; padding: 8px;
+      min-width: 280px;
+      box-shadow: 0 8px 40px rgba(0,0,0,.12);
+      opacity: 0; pointer-events: none;
+      transform: translateY(-4px);
+      /* delay hide so cursor can reach it */
+      transition: opacity .2s ease .15s, transform .2s ease .15s;
+      padding-top: 8px;
+    }
+    .nav-work-wrapper:hover .nav-dropdown {
+      opacity: 1; pointer-events: auto;
+      transform: translateY(0);
+      transition: opacity .15s ease 0s, transform .15s ease 0s;
+    }
+    .nav-dropdown-item {
+      display: flex; align-items: center; gap: 12px;
+      padding: 10px 14px; border-radius: 10px;
+      text-decoration: none; transition: background .15s;
+    }
+    .nav-dropdown-item:hover { background: #F5F3F1; }
+    .nav-dropdown-item-icon {
+      width: 20px; height: 20px; flex-shrink: 0;
+      display: flex; align-items: center; justify-content: center;
+    }
+    .nav-dropdown-item-icon svg { width: 18px; height: 18px; }
+    .nav-dropdown-item-text { display: flex; flex-direction: column; }
+    .nav-dropdown-item-name { font-size: 14px; font-weight: 500; color: var(--text); }
+    .nav-dropdown-item-sub  { font-size: 12px; color: var(--text-light); margin-top: 1px; }
+    .nav-dropdown-item.active-project .nav-dropdown-item-name { color: var(--accent); }
+    .nav-dropdown-divider { height: 1px; background: #E8E4E0; margin: 4px 0; }
+    .nav-dropdown-viewall {
+      display: block; padding: 10px 14px; border-radius: 10px;
+      font-size: 13px; color: var(--accent); text-decoration: none;
+      transition: background .15s;
+    }
+    .nav-dropdown-viewall:hover { background: #F0EDFF; }
+
+    /* Hamburger */
     .nav-hamburger {
       display: none; flex-direction: column; gap: 5px;
       background: none; border: none; cursor: pointer; padding: 4px;
@@ -228,37 +250,55 @@
       transition: transform .25s ease, opacity .25s ease;
     }
 
-    /* Mobile overlay */
+    /* Mobile overlay — slides from top */
     .nav-overlay {
-      position: fixed; inset: 0; z-index: 999;
-      background: var(--bg);
-      display: flex; flex-direction: column;
-      align-items: center; justify-content: center;
-      opacity: 0; pointer-events: none;
-      transition: opacity .3s ease;
+      position: fixed; inset: 0; z-index: 200;
+      background: white;
+      transform: translateY(-100%);
+      transition: transform .3s cubic-bezier(.4,0,.2,1);
+      overflow-y: auto;
     }
-    .nav-overlay.open { opacity: 1; pointer-events: auto; }
+    .nav-overlay.open { transform: translateY(0); }
+    .nav-overlay-header {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 20px 24px; border-bottom: 1px solid var(--border);
+    }
     .nav-overlay-close {
-      position: absolute; top: 20px; right: 24px;
       background: none; border: none; font-size: 22px;
-      cursor: pointer; color: var(--text); line-height: 1;
+      cursor: pointer; color: var(--text); line-height: 1; padding: 4px;
     }
-    .nav-overlay-links {
-      display: flex; flex-direction: column; align-items: center; gap: 32px;
+    .nav-overlay-list { padding: 8px 0 32px; }
+    .nav-overlay-item {
+      border-bottom: 1px solid var(--border);
     }
-    .nav-overlay-links a {
+    .nav-overlay-label {
       font-family: 'Instrument Serif', serif;
       font-size: 32px; color: var(--text);
-      text-decoration: none; transition: color .2s;
+      padding: 20px 24px; display: block;
+      text-decoration: none;
+      transition: color .2s;
     }
-    .nav-overlay-links a:hover { color: var(--accent); }
+    .nav-overlay-label:hover { color: var(--accent); }
+    .nav-overlay-label.is-label { cursor: default; }
+    .nav-overlay-sub {
+      padding: 0 24px 12px;
+      display: flex; flex-direction: column; gap: 4px;
+    }
+    .nav-overlay-sub a {
+      display: flex; align-items: center; gap: 10px;
+      padding: 10px 0; font-size: 16px; font-weight: 500;
+      color: var(--text-mid); text-decoration: none;
+      padding-left: 24px; transition: color .15s;
+    }
+    .nav-overlay-sub a:hover { color: var(--accent); }
+    .nav-overlay-sub a.ov-active { color: var(--accent); }
 
     /* Open to New Roles tag */
     .hero-tag {
       display: inline-flex; align-items: center; gap: 8px;
       background: var(--accent-light); color: var(--accent);
       padding: 6px 16px; border-radius: 20px;
-      font-size: 13px; font-weight: 500; margin-bottom: 28px;
+      font-size: 13px; font-weight: 500; margin-bottom: 0;
       opacity: 0; animation: fadeUp .6s ease .2s forwards;
       cursor: pointer;
       transition: transform .2s ease, box-shadow .2s ease;
@@ -280,57 +320,40 @@
       50%      { opacity:.5; transform:scale(.8); }
     }
 
-    /* Open to New Roles modal */
-    .tag-modal-backdrop {
-      position: fixed; inset: 0; z-index: 500;
-      background: rgba(0,0,0,.35); backdrop-filter: blur(4px);
-      opacity: 0; pointer-events: none;
-      transition: opacity .25s ease;
-    }
-    .tag-modal-backdrop.open { opacity: 1; pointer-events: auto; }
+    /* Open to New Roles mini-modal — positioned below tag */
+    .hero-tag-wrapper { position: relative; display: inline-block; margin-bottom: 28px; }
     .tag-modal {
-      position: absolute; top: 50%; left: 50%;
-      transform: translate(-50%, -50%) scale(.92);
-      width: 340px;
-      background: white; border-radius: 14px;
-      box-shadow: 0 24px 64px rgba(0,0,0,.18);
-      overflow: hidden;
-      transition: transform .25s cubic-bezier(0.34,1.56,0.64,1);
+      position: absolute; top: calc(100% + 12px); left: 0; z-index: 500;
+      width: 340px; background: white; border-radius: 20px;
+      box-shadow: 0 16px 48px rgba(0,0,0,.15); border: 1px solid #E8E4E0;
+      overflow: hidden; opacity: 0; transform: scale(0.8); transform-origin: top left;
+      pointer-events: none; transition: opacity .25s ease, transform .25s ease;
     }
-    .tag-modal-backdrop.open .tag-modal { transform: translate(-50%, -50%) scale(1); }
+    .tag-modal.open { opacity: 1; transform: scale(1); pointer-events: auto; }
     .tag-modal-chrome {
       display: flex; align-items: center; gap: 6px;
-      padding: 10px 14px; background: #F5F3F1;
-      border-bottom: 1px solid var(--border);
+      padding: 10px 14px; background: #F5F3F1; border-bottom: 1px solid var(--border);
     }
+    .tag-modal-chrome .mac-dot.red { cursor: pointer; }
     .tag-modal-chrome-title { font-size: 11px; color: var(--text-light); margin-left: 6px; }
-    .tag-modal-body { padding: 28px 24px 24px; text-align: center; }
+    .tag-modal-body { padding: 20px 20px 18px; }
     .tag-modal-avatar {
-      width: 56px; height: 56px; border-radius: 50%;
-      background: var(--accent-light); color: var(--accent);
-      font-family: 'Instrument Serif', serif; font-size: 22px;
-      display: flex; align-items: center; justify-content: center;
-      margin: 0 auto 14px;
+      width: 40px; height: 40px; border-radius: 50%;
+      background: var(--accent); color: white;
+      font-family: 'DM Sans', sans-serif; font-size: 14px; font-weight: 600;
+      display: flex; align-items: center; justify-content: center; margin-bottom: 12px;
     }
-    .tag-modal-title {
-      font-family: 'Instrument Serif', serif;
-      font-size: 20px; margin-bottom: 6px;
-    }
-    .tag-modal-sub {
-      font-size: 13px; color: var(--text-mid); margin-bottom: 20px; line-height: 1.5;
-    }
-    .tag-modal-btns { display: flex; flex-direction: column; gap: 10px; }
+    .tag-modal-text { font-size: 13px; color: var(--text); line-height: 1.55; margin-bottom: 16px; }
+    .tag-modal-btns { display: flex; flex-direction: column; gap: 8px; }
     .tag-modal-btn {
-      display: flex; align-items: center; justify-content: center; gap: 8px;
-      padding: 12px 20px; border-radius: 100px;
-      font-size: 14px; font-weight: 500; text-decoration: none;
+      display: flex; align-items: center; justify-content: center;
+      padding: 10px 16px; border-radius: 100px; font-family: 'DM Sans', sans-serif;
+      font-size: 13px; font-weight: 500; cursor: pointer; border: none; width: 100%;
       transition: transform .15s ease, box-shadow .15s ease;
     }
     .tag-modal-btn:hover { transform: translateY(-1px); box-shadow: 0 4px 12px rgba(0,0,0,.1); }
-    .tag-modal-btn.primary { background: var(--accent); color: white; }
-    .tag-modal-btn.secondary {
-      background: var(--tag-bg); color: var(--text);
-    }
+    .tag-modal-btn.primary { background: #1A1A1A; color: white; }
+    .tag-modal-btn.secondary { background: transparent; color: var(--text); border: 1.5px solid var(--border); }
 
     /* ─────────────────────────────────────────────
        HERO
@@ -633,7 +656,7 @@
     }
     /* Großes Hauptbild / Platzhalter */
     .fw-media-main-ph {
-      width: 100%; height: 200px;
+      width: 100%; height: 220px;
       background: #F0EDEA;
       border-radius: 8px;
       display: flex; align-items: center; justify-content: center;
@@ -641,7 +664,7 @@
       margin-bottom: 8px;
     }
     .fw-media-main-img {
-      width: 100%; height: 200px;
+      width: 100%; height: 220px;
       object-fit: cover; border-radius: 8px;
       display: block; margin-bottom: 8px;
     }
@@ -712,75 +735,125 @@
     /* ─────────────────────────────────────────────
        ABOUT
     ───────────────────────────────────────────── */
+    /* ── THROUGH MY LENS ── */
     #about {
       padding: 120px 80px;
-      background: #1E1A2E;
-      position: relative; z-index: 1; overflow: hidden;
+      background: var(--bg);
+      position: relative; z-index: 1;
     }
-    #about::before {
-      content: '';
-      position: absolute; top:-200px; right:-200px;
-      width:600px; height:600px;
-      background: radial-gradient(circle, rgba(107,92,231,.15) 0%, transparent 70%);
-      pointer-events: none;
+    .lens-label {
+      font-size: 11px; font-weight: 600; letter-spacing: .12em;
+      text-transform: uppercase; color: var(--accent); margin-bottom: 16px;
     }
-    .about-inner { display: grid; grid-template-columns: 1fr 1fr; gap: 80px; align-items: start; }
-    .about-statement {
+    .lens-title {
       font-family: 'Instrument Serif', serif;
-      font-size: clamp(36px,4vw,52px);
-      color: white; line-height: 1.2; letter-spacing: -.5px;
+      font-size: clamp(36px,4vw,56px); letter-spacing: -1px;
+      line-height: 1.1; margin-bottom: 60px;
     }
-    .about-statement em { color: var(--accent-light); font-style: italic; }
-    .sticky-note {
-      background: #FFF8C5; padding: 28px 32px; border-radius: 4px;
-      margin-bottom: 32px; transform: rotate(-1.5deg);
-      box-shadow: 4px 4px 16px rgba(0,0,0,.15);
-      font-family: 'Courier New', monospace;
-      font-size: 14px; line-height: 1.8; color: #333;
+    .polaroid-grid {
+      display: flex; flex-wrap: wrap; gap: 32px; justify-content: center;
     }
-    .sticky-pins { display: flex; justify-content: space-around; margin-bottom: 14px; }
-    .sticky-pin  { width:8px; height:8px; background:rgba(0,0,0,.2); border-radius:50%; }
-    .values-list { display: flex; flex-direction: column; gap: 12px; }
-    .value-item  {
-      display: flex; align-items: center; gap: 12px;
-      color: rgba(255,255,255,.6); font-size: 15px; transition: color .2s;
+    .polaroid-card {
+      background: white; padding: 16px 16px 48px;
+      border-radius: 4px;
+      box-shadow: 0 8px 32px rgba(0,0,0,.10);
+      cursor: default;
+      transition: transform .3s ease, box-shadow .3s ease;
+      opacity: 0; transform: translateY(20px);
     }
-    .value-item:hover { color: rgba(255,255,255,.95); }
-    .value-arrow { color: var(--accent-light); font-size: 16px; }
+    .polaroid-card.visible { opacity: 1; transform: translateY(0) rotate(var(--rot, 0deg)); }
+    .polaroid-card:hover { transform: rotate(0deg) scale(1.05) !important; box-shadow: 0 16px 48px rgba(0,0,0,.15); z-index: 2; }
+    .polaroid-card:nth-child(1) { --rot: -2deg; }
+    .polaroid-card:nth-child(2) { --rot: 1.5deg; }
+    .polaroid-card:nth-child(3) { --rot: -1deg; }
+    .polaroid-card:nth-child(4) { --rot: 2.5deg; }
+    .polaroid-card:nth-child(5) { --rot: -0.5deg; }
+    .polaroid-card:nth-child(6) { --rot: 1deg; }
+    .polaroid-img {
+      width: 220px; height: 220px;
+      background: #E8E4E0; border-radius: 2px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 14px; color: var(--text-light);
+    }
+    .polaroid-cap {
+      font-size: 14px; color: var(--text-mid);
+      text-align: center; margin-top: 12px;
+    }
+    .lens-statement {
+      margin-top: 80px; text-align: center;
+    }
+    .lens-statement-main {
+      font-family: 'Instrument Serif', serif;
+      font-style: italic; font-size: 32px; color: var(--text-mid);
+    }
+    .lens-statement-sub {
+      font-size: 16px; color: var(--text-light); margin-top: 8px;
+    }
 
     /* ─────────────────────────────────────────────
-       SKILLS
+       SKILLS — 2-column desktop layout
     ───────────────────────────────────────────── */
     #skills { padding: 72px 80px; position: relative; z-index: 1; }
+
+    /* 2-col wrapper: left = label+title+dock, right = statements */
+    .skills-inner {
+      display: flex;
+      gap: 0;
+      align-items: flex-start;
+    }
+    .skills-left {
+      flex: 0 0 340px;
+      padding-right: 0;
+    }
+    .skills-left .section-label { margin-bottom: 12px; }
+    .skills-left .section-title { font-size: clamp(28px,3vw,40px); margin-bottom: 0; }
+    .skills-right {
+      flex: 1;
+      padding-left: 80px;
+    }
+    /* On desktop, dock goes below the label/title in the left col */
+    .dock-wrapper { margin-top: 40px; align-items: flex-start; }
+
+    /* Divider between Statements and Dock (hide in 2-col) */
+    .skills-dock-divider { display: none; }
+
+    @media (max-width: 768px) {
+      .skills-inner { flex-direction: column; }
+      .skills-left { flex: none; width: 100%; padding-right: 0; }
+      .skills-right { padding-left: 0; }
+      .skills-dock-divider { display: block; }
+      .dock-wrapper { align-items: center; margin-top: 32px; }
+    }
+
     /* ── Statement Lines ── */
     .stmt-block {
-      margin-top: 28px;
-      margin-left: -80px;
-      margin-right: -80px;
+      margin-top: 0;
+      margin-left: 0;
+      margin-right: 0;
     }
     .stmt-line {
       display: flex;
       align-items: center;
       gap: 24px;
-      padding: 6px 80px;
+      padding: 6px 0;
       border-bottom: 1px solid #F0EDE9;
     }
     .stmt-line:first-child { border-top: 1px solid #F0EDE9; }
     .stmt-word {
       font-family: 'Instrument Serif', serif;
-      font-size: 56px;
+      font-size: clamp(36px,3.5vw,52px);
       font-weight: 400;
       color: var(--text);
       letter-spacing: -2px;
       line-height: 1.1;
-      min-width: 260px;
+      min-width: 180px;
       flex-shrink: 0;
       white-space: nowrap;
     }
     .stmt-line.italic .stmt-word {
       font-style: italic;
-      font-size: 46px;
-      min-width: 220px;
+      font-size: clamp(30px,3vw,44px);
+      min-width: 160px;
     }
     .stmt-arrow {
       font-size: 20px;
@@ -1060,6 +1133,8 @@
       }
       .hero-right { display: none; }
       .float-card { display: none; }
+      /* Tag modal: stay within viewport on mobile */
+      .tag-modal { width: min(340px, calc(100vw - 40px)); }
     }
 
     /* ── 640px — mobile ─────────────────────── */
@@ -1125,6 +1200,11 @@
       body { cursor: auto; }
       .cursor, .cursor-ring { display: none; }
     }
+    /* ── Mobile: hide custom cursor ── */
+    @media (max-width: 768px) {
+      body { cursor: auto !important; }
+      .cursor, .cursor-ring { display: none !important; }
+    }
   </style>
 </head>
 <body class="is-loading">
@@ -1147,31 +1227,55 @@
        NAV
   ══════════════════════════════════════════ -->
   <nav>
-    <div class="nav-breadcrumb">
+    <a class="nav-breadcrumb" href="index.html">
       <span class="folder-icon">
         <div class="folder-tab"></div>
         <div class="folder-body"></div>
       </span>
       <span class="sep">›</span>
-      <span>Vivien Evers</span>
+      <span class="crumb">Vivien Evers</span>
       <span class="sep">›</span>
-      <span class="active">Portfolio</span>
-    </div>
+      <span class="crumb-active">Portfolio</span>
+    </a>
     <ul class="nav-links">
-      <li class="nav-has-dropdown">
+      <li class="nav-work-wrapper">
         <a href="#work">Work <span class="nav-caret">▾</span></a>
         <div class="nav-dropdown">
-          <a href="work/mi4l/index.html">MI4L</a>
-          <a href="work/studio-liebe-nrg/index.html">Studio Liebe / NRG</a>
-          <a href="work/jco/index.html">JCO</a>
-          <a href="work/apprenticeship/index.html">Apprenticeship</a>
+          <a class="nav-dropdown-item" href="work/mi4l/index.html">
+            <span class="nav-dropdown-item-icon"><svg viewBox="0 0 20 20" fill="none"><path d="M3 5a2 2 0 012-2h4l2 2h6a2 2 0 012 2v8a2 2 0 01-2 2H5a2 2 0 01-2-2V5z" fill="#90BEDD"/></svg></span>
+            <span class="nav-dropdown-item-text">
+              <span class="nav-dropdown-item-name">MI4L</span>
+              <span class="nav-dropdown-item-sub">Brand Development · Art Direction</span>
+            </span>
+          </a>
+          <a class="nav-dropdown-item" href="work/studio-liebe-nrg/index.html">
+            <span class="nav-dropdown-item-icon"><svg viewBox="0 0 20 20" fill="none"><path d="M3 5a2 2 0 012-2h4l2 2h6a2 2 0 012 2v8a2 2 0 01-2 2H5a2 2 0 01-2-2V5z" fill="#90BEDD"/></svg></span>
+            <span class="nav-dropdown-item-text">
+              <span class="nav-dropdown-item-name">Studio Liebe &amp; NRG</span>
+              <span class="nav-dropdown-item-sub">Visual Identity · Print Production</span>
+            </span>
+          </a>
+          <a class="nav-dropdown-item" href="work/jco/index.html">
+            <span class="nav-dropdown-item-icon"><svg viewBox="0 0 20 20" fill="none"><path d="M3 5a2 2 0 012-2h4l2 2h6a2 2 0 012 2v8a2 2 0 01-2 2H5a2 2 0 01-2-2V5z" fill="#90BEDD"/></svg></span>
+            <span class="nav-dropdown-item-text">
+              <span class="nav-dropdown-item-name">JCO Hamburg</span>
+              <span class="nav-dropdown-item-sub">Brand Communication · Visual Strategy</span>
+            </span>
+          </a>
+          <a class="nav-dropdown-item" href="work/apprenticeship/index.html">
+            <span class="nav-dropdown-item-icon"><svg viewBox="0 0 20 20" fill="none"><path d="M3 5a2 2 0 012-2h4l2 2h6a2 2 0 012 2v8a2 2 0 01-2 2H5a2 2 0 01-2-2V5z" fill="#90BEDD"/></svg></span>
+            <span class="nav-dropdown-item-text">
+              <span class="nav-dropdown-item-name">During my Apprenticeship</span>
+              <span class="nav-dropdown-item-sub">Web Design · Corporate Design · Print</span>
+            </span>
+          </a>
           <div class="nav-dropdown-divider"></div>
-          <a href="#work" class="nav-dropdown-all">View all →</a>
+          <a class="nav-dropdown-viewall" href="#work">→ View all work</a>
         </div>
       </li>
       <li><a href="about.html">About</a></li>
       <li><a href="cv.html">CV</a></li>
-      <li><a href="mailto:hallo@vivienevers.de">✉ Contact</a></li>
+      <li><a href="downloads.html">Downloads</a></li>
     </ul>
     <button class="nav-hamburger" id="nav-hamburger" aria-label="Open menu">
       <span></span><span></span><span></span>
@@ -1180,44 +1284,61 @@
 
   <!-- Mobile nav overlay -->
   <div class="nav-overlay" id="nav-overlay">
-    <button class="nav-overlay-close" id="nav-overlay-close">✕</button>
-    <nav class="nav-overlay-links">
-      <a href="#work" onclick="closeOverlay()">Work</a>
-      <a href="about.html">About</a>
-      <a href="cv.html">CV</a>
-      <a href="mailto:hallo@vivienevers.de">✉ Contact</a>
-    </nav>
+    <div class="nav-overlay-header">
+      <a class="nav-breadcrumb" href="index.html" style="background:var(--tag-bg);">
+        <span class="folder-icon"><div class="folder-tab"></div><div class="folder-body"></div></span>
+        <span class="sep">›</span><span class="crumb">Vivien Evers</span>
+      </a>
+      <button class="nav-overlay-close" id="nav-overlay-close">✕</button>
+    </div>
+    <div class="nav-overlay-list">
+      <div class="nav-overlay-item">
+        <span class="nav-overlay-label is-label">Work</span>
+        <div class="nav-overlay-sub">
+          <a href="work/mi4l/index.html">📁 MI4L</a>
+          <a href="work/studio-liebe-nrg/index.html">📁 Studio Liebe &amp; NRG</a>
+          <a href="work/jco/index.html">📁 JCO Hamburg</a>
+          <a href="work/apprenticeship/index.html">📁 During my Apprenticeship</a>
+        </div>
+      </div>
+      <div class="nav-overlay-item">
+        <a class="nav-overlay-label" href="about.html">About</a>
+      </div>
+      <div class="nav-overlay-item">
+        <a class="nav-overlay-label" href="cv.html">CV</a>
+      </div>
+      <div class="nav-overlay-item">
+        <a class="nav-overlay-label" href="downloads.html">Downloads</a>
+      </div>
+    </div>
   </div>
 
   <!-- ══════════════════════════════════════════
        HERO
   ══════════════════════════════════════════ -->
-  <!-- Open to New Roles modal -->
-  <div class="tag-modal-backdrop" id="tag-modal-backdrop">
-    <div class="tag-modal">
-      <div class="tag-modal-chrome">
-        <span class="mac-dot red"></span>
-        <span class="mac-dot yellow"></span>
-        <span class="mac-dot green"></span>
-        <span class="tag-modal-chrome-title">vivien-evers — hello</span>
-      </div>
-      <div class="tag-modal-body">
-        <div class="tag-modal-avatar">VE</div>
-        <div class="tag-modal-title">Let's work together ♡</div>
-        <div class="tag-modal-sub">I'm open to new roles in brand, design & marketing. Drop me a line — I'd love to connect.</div>
-        <div class="tag-modal-btns">
-          <a href="mailto:hallo@vivienevers.de" class="tag-modal-btn primary">✉ hallo@vivienevers.de</a>
-          <a href="https://linkedin.com/in/vivien-victoria-evers" class="tag-modal-btn secondary" target="_blank">LinkedIn →</a>
-        </div>
-      </div>
-    </div>
-  </div>
-
   <section id="hero">
     <div class="hero-left">
-      <div class="hero-tag" id="hero-tag">
-        <span class="dot"></span>
-        <span class="hero-tag-text">Open to new roles</span>
+      <div class="hero-tag-wrapper">
+        <div class="hero-tag" id="hero-tag">
+          <span class="dot"></span>
+          <span class="hero-tag-text">Open to new roles</span>
+        </div>
+        <div class="tag-modal" id="tag-modal">
+          <div class="tag-modal-chrome">
+            <span class="mac-dot red" id="tag-modal-close"></span>
+            <span class="mac-dot yellow"></span>
+            <span class="mac-dot green"></span>
+            <span class="tag-modal-chrome-title">new-message.txt</span>
+          </div>
+          <div class="tag-modal-body">
+            <div class="tag-modal-avatar">VE</div>
+            <div class="tag-modal-text">Hi! I'm Vivien. Let's talk brands, design and what we could build together.</div>
+            <div class="tag-modal-btns">
+              <button class="tag-modal-btn primary" onclick="window.location='mailto:hallo@vivienevers.de'">hallo@vivienevers.de</button>
+              <button class="tag-modal-btn secondary" onclick="window.open('https://linkedin.com/in/vivien-victoria-evers','_blank')">→ LinkedIn</button>
+            </div>
+          </div>
+        </div>
       </div>
       <h1 class="hero-name" id="hero-name">
         <span class="figma-wrapper selected" id="figma-wrapper">
@@ -1392,38 +1513,40 @@
   </section>
 
   <!-- ══════════════════════════════════════════
-       ABOUT
+       THROUGH MY LENS
   ══════════════════════════════════════════ -->
   <section id="about">
-    <div class="about-inner">
-      <div>
-        <p class="about-statement reveal">I'm not a<br>content creator.<br>I'm a <em>brand builder.</em></p>
-        <div class="values-list" style="margin-top:48px;">
-          <div class="value-item reveal"><span class="value-arrow">→</span> Atmosphere over aesthetics</div>
-          <div class="value-item reveal"><span class="value-arrow">→</span> Perception over output</div>
-          <div class="value-item reveal"><span class="value-arrow">→</span> Consistency over noise</div>
-          <div class="value-item reveal"><span class="value-arrow">→</span> Experience over execution</div>
-        </div>
+    <div class="lens-label">Through My Lens</div>
+    <h2 class="lens-title">A few things that make me, me.</h2>
+    <div class="polaroid-grid">
+      <div class="polaroid-card">
+        <div class="polaroid-img">[ Foto ]</div>
+        <div class="polaroid-cap">MI4L — Übel &amp; Gefährlich 🎵</div>
       </div>
-      <div>
-        <div class="sticky-note reveal">
-          <div class="sticky-pins">
-            <div class="sticky-pin"></div>
-            <div class="sticky-pin"></div>
-            <div class="sticky-pin"></div>
-            <div class="sticky-pin"></div>
-          </div>
-          I care about how brands feel,<br>
-          how they communicate and<br>
-          how people connect to them.<br><br>
-          Curious, observant<br>
-          and always building.
-        </div>
-        <p class="reveal" style="color:rgba(255,255,255,.5);font-size:15px;line-height:1.8;">
-          Coming from a design background, I've been building brands through events, print and digital work — with real projects, real audiences and real impact.<br><br>
-          Now I'm looking for an in-house role at a <strong style="color:rgba(255,255,255,.85);">Lifestyle or Consumer Brand</strong> where design thinking and marketing strategy come together.
-        </p>
+      <div class="polaroid-card">
+        <div class="polaroid-img">[ Foto ]</div>
+        <div class="polaroid-cap">Studio Liebe × OMR 2024 🖨</div>
       </div>
+      <div class="polaroid-card">
+        <div class="polaroid-img">[ Foto ]</div>
+        <div class="polaroid-cap">Hamburg, always 🌊</div>
+      </div>
+      <div class="polaroid-card">
+        <div class="polaroid-img">[ Foto ]</div>
+        <div class="polaroid-cap">Details that matter 🔍</div>
+      </div>
+      <div class="polaroid-card">
+        <div class="polaroid-img">[ Foto ]</div>
+        <div class="polaroid-cap">NRG — Bunker Hamburg ⚡</div>
+      </div>
+      <div class="polaroid-card">
+        <div class="polaroid-img">[ Foto ]</div>
+        <div class="polaroid-cap">Coffee first ☕</div>
+      </div>
+    </div>
+    <div class="lens-statement">
+      <p class="lens-statement-main">"Curious, observant and always building."</p>
+      <p class="lens-statement-sub">I see what others walk past.</p>
     </div>
   </section>
 
@@ -1431,60 +1554,16 @@
        SKILLS
   ══════════════════════════════════════════ -->
   <section id="skills">
-    <div class="reveal">
-      <div class="section-label">Skills & Tools</div>
-      <h2 class="section-title">What I work with</h2>
-    </div>
-    <!-- ── STATEMENT LINES ──────────────────────────────────── -->
-    <div class="stmt-block">
-
-      <div class="stmt-line" id="stmt-0">
-        <div class="stmt-word"></div>
-        <div class="stmt-arrow">→</div>
-        <div class="stmt-tags">
-          <span class="stmt-tag" data-tool="figma">Figma</span><span class="stmt-comma">,</span>
-          <span class="stmt-tag" data-tool="ps">Adobe Suite</span><span class="stmt-comma">,</span>
-          <span class="stmt-tag" data-tool="canva">Canva</span><span class="stmt-comma">,</span>
-          <span class="stmt-tag" data-tool="id">Print</span>
+    <div class="skills-inner">
+      <!-- LEFT: label + title + dock -->
+      <div class="skills-left">
+        <div class="reveal">
+          <div class="section-label">Skills &amp; Tools</div>
+          <h2 class="section-title">What I work with</h2>
         </div>
-      </div>
-
-      <div class="stmt-line" id="stmt-1">
-        <div class="stmt-word"></div>
-        <div class="stmt-arrow">→</div>
-        <div class="stmt-tags">
-          <span class="stmt-tag" data-tool="figma">Web Design</span><span class="stmt-comma">,</span>
-          <span class="stmt-tag" data-tool="figma">UI/UX</span><span class="stmt-comma">,</span>
-          <span class="stmt-tag" data-tool="figma">UI Design</span>
-        </div>
-      </div>
-
-      <div class="stmt-line" id="stmt-2">
-        <div class="stmt-word"></div>
-        <div class="stmt-arrow">→</div>
-        <div class="stmt-tags">
-          <span class="stmt-tag" data-tool="ai">Brand Strategy</span><span class="stmt-comma">,</span>
-          <span class="stmt-tag" data-tool="ai">Visual Identity</span><span class="stmt-comma">,</span>
-          <span class="stmt-tag" data-tool="meta">Communication</span>
-        </div>
-      </div>
-
-      <div class="stmt-line italic" id="stmt-3">
-        <div class="stmt-word"></div>
-        <div class="stmt-arrow">→</div>
-        <div class="stmt-tags">
-          <span class="stmt-tag" data-tool="claude">Claude</span><span class="stmt-comma">,</span>
-          <span class="stmt-tag" data-tool="chatgpt">ChatGPT</span><span class="stmt-comma">,</span>
-          <span class="stmt-tag" data-tool="chatgpt">AI-assisted workflows</span>
-        </div>
-      </div>
-
-    </div><!-- /stmt-block -->
-
-    <div class="skills-dock-divider"></div>
-
-    <!-- ── MAC DOCK ──────────────────────────────────────── -->
-    <div class="dock-wrapper">
+        <div class="skills-dock-divider"></div>
+        <!-- ── MAC DOCK ──────────────────────────────────────── -->
+        <div class="dock-wrapper">
       <div class="dock" id="mac-dock">
 
         <!-- GRUPPE 1 · Mac System -->
@@ -1578,9 +1657,59 @@
         </div>
 
       </div><!-- /dock -->
-      <p class="dock-hint">Hover over a tool to see how I use it</p>
-    </div><!-- /dock-wrapper -->
+        <p class="dock-hint">Hover over a tool to see how I use it</p>
+      </div><!-- /dock-wrapper -->
+      </div><!-- /skills-left -->
 
+      <!-- RIGHT: statement lines -->
+      <div class="skills-right">
+        <div class="stmt-block">
+
+          <div class="stmt-line" id="stmt-0">
+            <div class="stmt-word"></div>
+            <div class="stmt-arrow">→</div>
+            <div class="stmt-tags">
+              <span class="stmt-tag" data-tool="figma">Figma</span><span class="stmt-comma">,</span>
+              <span class="stmt-tag" data-tool="ps">Adobe Suite</span><span class="stmt-comma">,</span>
+              <span class="stmt-tag" data-tool="canva">Canva</span><span class="stmt-comma">,</span>
+              <span class="stmt-tag" data-tool="id">Print</span>
+            </div>
+          </div>
+
+          <div class="stmt-line" id="stmt-1">
+            <div class="stmt-word"></div>
+            <div class="stmt-arrow">→</div>
+            <div class="stmt-tags">
+              <span class="stmt-tag" data-tool="figma">Web Design</span><span class="stmt-comma">,</span>
+              <span class="stmt-tag" data-tool="figma">UI/UX</span><span class="stmt-comma">,</span>
+              <span class="stmt-tag" data-tool="figma">UI Design</span>
+            </div>
+          </div>
+
+          <div class="stmt-line" id="stmt-2">
+            <div class="stmt-word"></div>
+            <div class="stmt-arrow">→</div>
+            <div class="stmt-tags">
+              <span class="stmt-tag" data-tool="ai">Brand Strategy</span><span class="stmt-comma">,</span>
+              <span class="stmt-tag" data-tool="ai">Visual Identity</span><span class="stmt-comma">,</span>
+              <span class="stmt-tag" data-tool="meta">Communication</span>
+            </div>
+          </div>
+
+          <div class="stmt-line italic" id="stmt-3">
+            <div class="stmt-word"></div>
+            <div class="stmt-arrow">→</div>
+            <div class="stmt-tags">
+              <span class="stmt-tag" data-tool="claude">Claude</span><span class="stmt-comma">,</span>
+              <span class="stmt-tag" data-tool="chatgpt">ChatGPT</span><span class="stmt-comma">,</span>
+              <span class="stmt-tag" data-tool="chatgpt">AI-assisted workflows</span>
+            </div>
+          </div>
+
+        </div><!-- /stmt-block -->
+      </div><!-- /skills-right -->
+
+    </div><!-- /skills-inner -->
   </section>
 
   <!-- ══════════════════════════════════════════
@@ -1595,7 +1724,7 @@
       </div>
       <h2 class="contact-title">Ready when you are.</h2>
       <div class="contact-btns">
-        <a href="mailto:hallo@vivienevers.de" class="contact-btn-white">✉ hallo@vivienevers.de</a>
+        <a href="mailto:hallo@vivienevers.de" class="contact-btn-white">hallo@vivienevers.de</a>
         <a href="https://linkedin.com/in/vivien-victoria-evers" class="contact-btn-outline" target="_blank">LinkedIn →</a>
       </div>
       <div class="footer-bar">
@@ -1647,7 +1776,7 @@
         images: ['', '', '', ''],
         desc: 'Brand communication strategy for a cultural institution. Translating brand tone and visual identity across digital channels to reach a younger audience.',
         tags: ['Brand Communication','Visual Strategy','Cultural Institution'],
-        role: 'Brand & Communications · 2023 – 2025'
+        role: 'Brand & Communications · 2023 – present'
       },
       {
         name: 'During my Apprenticeship',
@@ -1685,15 +1814,12 @@
             <!-- HAUPTBILD: images[0] — z.B. 'images/mifl-main.jpg' -->
             ${i0
               ? `<img src="${i0}" class="fw-media-main-img" alt="${p.name}">`
-              : `<div class="fw-media-main-ph">[ Hauptbild / Video ]</div>`}
+              : `<div class="fw-media-main-ph">[ Cover image ]</div>`}
 
             <div class="fw-media-thumbs">
-              <!-- BILD 2: images[1] -->
-              ${i1 ? `<img src="${i1}" class="fw-media-thumb-img" alt="">` : `<div class="fw-media-thumb-ph">[ Bild 2 ]</div>`}
-              <!-- BILD 3: images[2] -->
-              ${i2 ? `<img src="${i2}" class="fw-media-thumb-img" alt="">` : `<div class="fw-media-thumb-ph">[ Bild 3 ]</div>`}
-              <!-- BILD 4: images[3] -->
-              ${i3 ? `<img src="${i3}" class="fw-media-thumb-img" alt="">` : `<div class="fw-media-thumb-ph">[ Bild 4 ]</div>`}
+              ${i1 ? `<img src="${i1}" class="fw-media-thumb-img" alt="">` : `<div class="fw-media-thumb-ph">[ 2 ]</div>`}
+              ${i2 ? `<img src="${i2}" class="fw-media-thumb-img" alt="">` : `<div class="fw-media-thumb-ph">[ 3 ]</div>`}
+              ${i3 ? `<img src="${i3}" class="fw-media-thumb-img" alt="">` : `<div class="fw-media-thumb-ph">[ 4 ]</div>`}
             </div>
 
           </div>
@@ -1732,7 +1858,7 @@
       nameEl.style.transform = 'translateY(0)';
     }
 
-    /* ── HAMBURGER NAV ─────────────────────────────────────── */
+    /* ── HAMBURGER NAV (slides from top) ──────────────────── */
     const hamburger = document.getElementById('nav-hamburger');
     const overlay   = document.getElementById('nav-overlay');
     const overlayClose = document.getElementById('nav-overlay-close');
@@ -1742,12 +1868,11 @@
 
     if (hamburger) hamburger.addEventListener('click', openOverlay);
     if (overlayClose) overlayClose.addEventListener('click', closeOverlay);
-    if (overlay) overlay.addEventListener('click', e => { if (e.target === overlay) closeOverlay(); });
 
-    /* ── OPEN TO NEW ROLES MODAL ───────────────────────────── */
-    const heroTag   = document.getElementById('hero-tag');
-    const tagModal  = document.getElementById('tag-modal-backdrop');
-    const tagText   = heroTag ? heroTag.querySelector('.hero-tag-text') : null;
+    /* ── OPEN TO NEW ROLES MODAL (positioned below tag) ──── */
+    const heroTag  = document.getElementById('hero-tag');
+    const tagModal = document.getElementById('tag-modal');
+    const tagText  = heroTag ? heroTag.querySelector('.hero-tag-text') : null;
 
     if (heroTag) {
       heroTag.addEventListener('mouseenter', () => {
@@ -1756,15 +1881,36 @@
       heroTag.addEventListener('mouseleave', () => {
         if (tagText) tagText.textContent = 'Open to new roles';
       });
-      heroTag.addEventListener('click', () => {
-        if (tagModal) tagModal.classList.add('open');
+      heroTag.addEventListener('click', (e) => {
+        e.stopPropagation();
+        if (tagModal) {
+          const isOpen = tagModal.classList.contains('open');
+          tagModal.classList.toggle('open', !isOpen);
+        }
       });
     }
-    if (tagModal) {
-      tagModal.addEventListener('click', e => {
-        if (e.target === tagModal) tagModal.classList.remove('open');
+    /* Close modal on outside click */
+    document.addEventListener('click', () => {
+      if (tagModal) tagModal.classList.remove('open');
+    });
+    if (tagModal) tagModal.addEventListener('click', e => e.stopPropagation());
+    /* Close modal on red dot click */
+    const tagModalClose = document.getElementById('tag-modal-close');
+    if (tagModalClose) tagModalClose.addEventListener('click', (e) => {
+      e.stopPropagation();
+      if (tagModal) tagModal.classList.remove('open');
+    });
+
+    /* ── POLAROID SCROLL REVEAL ──────────────────────────── */
+    const polaroidObs = new IntersectionObserver(entries => {
+      entries.forEach((entry, i) => {
+        if (entry.isIntersecting) {
+          setTimeout(() => entry.target.classList.add('visible'), i * 150);
+          polaroidObs.unobserve(entry.target);
+        }
       });
-    }
+    }, { threshold: 0.1 });
+    document.querySelectorAll('.polaroid-card').forEach(el => polaroidObs.observe(el));
 
     /* ── LOADING SCREEN ────────────────────────────────────── */
     (function() {
@@ -1777,7 +1923,7 @@
         startHeroNameAnimation();
         return;
       }
-      sessionStorage.setItem('vivien_loaded', '1');
+      sessionStorage.setItem('vivien_loaded', 'true');
 
       const nameEl  = document.getElementById('load-name');
       const subEl   = document.getElementById('load-sub');
@@ -1836,6 +1982,31 @@
     document.querySelectorAll('a,button,.fw-folder,.skill-tag').forEach(el => {
       el.addEventListener('mouseenter',()=>{ cur.style.width=cur.style.height='20px'; ring.style.width=ring.style.height='56px'; ring.style.opacity='.3'; });
       el.addEventListener('mouseleave',()=>{ cur.style.width=cur.style.height='10px'; ring.style.width=ring.style.height='36px'; ring.style.opacity='.5'; });
+    });
+
+    /* ── CLICK PARTICLES ───────────────────────────────────── */
+    document.addEventListener('click', (e) => {
+      if (window.innerWidth <= 768) return;
+      const emojis = ['🌸','⭐','🤍','✨','💜'];
+      for (let i = 0; i < 7; i++) {
+        const p = document.createElement('div');
+        p.textContent = emojis[Math.floor(Math.random() * emojis.length)];
+        p.style.cssText = `
+          position:fixed;left:${e.clientX}px;top:${e.clientY}px;
+          pointer-events:none;z-index:9999;
+          font-size:${12+Math.random()*10}px;
+          transition:all 0.6s ease-out;
+          transform:translate(-50%,-50%);
+        `;
+        document.body.appendChild(p);
+        const angle = (Math.PI*2/7)*i + Math.random();
+        const dist = 40 + Math.random()*50;
+        requestAnimationFrame(() => {
+          p.style.transform = `translate(calc(-50% + ${Math.cos(angle)*dist}px), calc(-50% + ${Math.sin(angle)*dist}px)) scale(0)`;
+          p.style.opacity = '0';
+        });
+        setTimeout(() => p.remove(), 650);
+      }
     });
 
     /* ── SCROLL REVEAL ─────────────────────────────────────── */

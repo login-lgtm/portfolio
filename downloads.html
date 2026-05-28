@@ -15,6 +15,7 @@
       --text-mid: #666666;
       --text-light: #999999;
       --border: #D8D4D0;
+      --tag-bg: #E8E4E0;
       --dark: #1E1A2E;
     }
     * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -63,59 +64,144 @@
       transition: width .25s, height .25s, opacity .2s;
     }
 
-    /* ── NAV ── */
+    /* ─────────────────────────────────────────────
+       NAV
+    ───────────────────────────────────────────── */
     nav {
       position: fixed; top: 0; left: 0; right: 0; z-index: 100;
-      padding: 16px 40px;
+      height: 64px; padding: 0 40px;
       display: flex; align-items: center; justify-content: space-between;
       backdrop-filter: blur(12px);
-      background: rgba(238,236,234,.85);
+      background: rgba(238,236,234,.92);
       border-bottom: 1px solid var(--border);
     }
-    .nav-breadcrumb {
-      display: flex; align-items: center; gap: 6px;
+
+    a.nav-breadcrumb {
+      display: inline-flex; align-items: center; gap: 6px;
       background: white; padding: 6px 14px;
       border-radius: 20px; border: 1px solid var(--border);
-      font-size: 12px;
+      font-size: 12px; font-weight: 500; color: var(--text);
+      text-decoration: none; cursor: pointer;
+      transition: box-shadow .2s;
     }
-    .folder-icon { display: inline-flex; flex-direction: column; gap: 1px; margin-right: 2px; }
-    .folder-tab { width: 12px; height: 4px; background: #90BEDD; border-radius: 2px 2px 0 0; }
+    a.nav-breadcrumb:hover { box-shadow: 0 2px 12px rgba(0,0,0,.08); }
+    .nav-breadcrumb .folder-icon { display: inline-flex; flex-direction: column; gap: 1px; margin-right: 2px; }
+    .folder-tab  { width: 12px; height: 4px; background: #90BEDD; border-radius: 2px 2px 0 0; }
     .folder-body { width: 18px; height: 13px; background: #689DCF; border-radius: 0 2px 2px 2px; }
-    .nav-breadcrumb .sep { color: var(--text-light); }
-    .nav-breadcrumb .active { color: var(--accent); font-weight: 500; }
-    .nav-links { display: flex; gap: 32px; list-style: none; align-items: center; }
-    .nav-links a { font-size: 14px; font-weight: 500; color: var(--text); text-decoration: none; position: relative; transition: color .2s; }
-    .nav-links a:hover { color: var(--accent); }
-    .nav-links a::after { content: ''; position: absolute; bottom: -2px; left: 0; width: 0; height: 1.5px; background: var(--accent); transition: width .2s; }
-    .nav-links a:hover::after { width: 100%; }
-    .nav-links a.nav-active { color: var(--accent); }
-    .nav-links a.nav-active::after { width: 100%; }
-    .nav-has-dropdown { position: relative; }
-    .nav-has-dropdown > a .nav-caret { display: inline-block; font-size: 10px; margin-left: 3px; transition: transform .2s; }
-    .nav-has-dropdown:hover > a .nav-caret { transform: rotate(180deg); }
-    .nav-dropdown { position: absolute; top: calc(100% + 14px); left: 50%; transform: translateX(-50%) translateY(-6px); background: white; border: 1px solid var(--border); border-radius: 12px; padding: 6px; min-width: 200px; box-shadow: 0 8px 32px rgba(0,0,0,.10); opacity: 0; pointer-events: none; transition: opacity .18s ease, transform .18s ease; }
-    .nav-has-dropdown:hover .nav-dropdown { opacity: 1; pointer-events: auto; transform: translateX(-50%) translateY(0); }
-    .nav-dropdown a { display: block; padding: 8px 12px; font-size: 13px; font-weight: 500; color: var(--text); border-radius: 7px; white-space: nowrap; text-decoration: none; transition: background .15s, color .15s; }
-    .nav-dropdown a::after { display: none; }
-    .nav-dropdown a:hover { background: var(--accent-light); color: var(--accent); }
-    .nav-dropdown-divider { height: 1px; background: var(--border); margin: 4px 6px; }
-    .nav-dropdown-all { color: var(--text-mid) !important; font-size: 12px !important; }
-    .nav-dropdown-all:hover { color: var(--accent) !important; }
-    .nav-hamburger { display: none; flex-direction: column; gap: 5px; background: none; border: none; cursor: pointer; padding: 4px; }
-    .nav-hamburger span { display: block; width: 22px; height: 2px; background: var(--text); border-radius: 2px; }
-    .nav-overlay-m { position: fixed; inset: 0; z-index: 998; background: var(--bg); display: flex; flex-direction: column; align-items: center; justify-content: center; opacity: 0; pointer-events: none; transition: opacity .3s ease; }
-    .nav-overlay-m.open { opacity: 1; pointer-events: auto; }
-    .nav-overlay-close { position: absolute; top: 20px; right: 24px; background: none; border: none; font-size: 22px; cursor: pointer; color: var(--text); }
-    .nav-overlay-links { display: flex; flex-direction: column; align-items: center; gap: 32px; }
-    .nav-overlay-links a { font-family: 'Instrument Serif', serif; font-size: 32px; color: var(--text); text-decoration: none; transition: color .2s; }
-    .nav-overlay-links a:hover { color: var(--accent); }
-    @media (max-width: 768px) { nav { padding: 12px 20px; } .nav-breadcrumb { display: none; } .nav-links { display: none; } .nav-hamburger { display: flex; } }
+    .nav-breadcrumb .sep    { color: var(--text-light); }
+    .nav-breadcrumb .crumb  { color: var(--text-mid); }
+    .nav-breadcrumb .crumb-active { color: var(--accent); }
 
-    /* ── PASSWORD OVERLAY ── */
+    .nav-links { display: flex; gap: 28px; list-style: none; align-items: center; }
+    .nav-links > li > a {
+      font-size: 14px; font-weight: 500; color: var(--text);
+      text-decoration: none; position: relative; transition: color .2s;
+    }
+    .nav-links > li > a:hover { color: var(--accent); }
+    .nav-links > li > a::after {
+      content: ''; position: absolute; bottom: -2px; left: 0;
+      width: 0; height: 1.5px; background: var(--accent); transition: width .2s;
+    }
+    .nav-links > li > a:hover::after { width: 100%; }
+    .nav-links > li > a.nav-active { color: var(--accent); }
+    .nav-links > li > a.nav-active::after { width: 100%; }
+
+    .nav-work-wrapper { position: relative; }
+    .nav-work-wrapper > a .nav-caret {
+      display: inline-block; font-size: 10px; margin-left: 3px;
+      transition: transform .2s;
+    }
+    .nav-work-wrapper:hover > a .nav-caret { transform: rotate(180deg); }
+
+    .nav-dropdown {
+      position: absolute; top: 52px; right: 0;
+      background: white; border: 1px solid #E8E4E0;
+      border-radius: 16px; padding: 8px;
+      min-width: 280px;
+      box-shadow: 0 8px 40px rgba(0,0,0,.12);
+      opacity: 0; pointer-events: none;
+      transform: translateY(-4px);
+      transition: opacity .2s ease .15s, transform .2s ease .15s;
+    }
+    .nav-work-wrapper:hover .nav-dropdown {
+      opacity: 1; pointer-events: auto; transform: translateY(0);
+      transition: opacity .15s ease 0s, transform .15s ease 0s;
+    }
+    .nav-dropdown-item {
+      display: flex; align-items: center; gap: 12px;
+      padding: 10px 14px; border-radius: 10px;
+      text-decoration: none; transition: background .15s;
+    }
+    .nav-dropdown-item:hover { background: #F5F3F1; }
+    .nav-dropdown-item-icon { width: 20px; height: 20px; flex-shrink: 0; display: flex; align-items: center; justify-content: center; }
+    .nav-dropdown-item-icon svg { width: 18px; height: 18px; }
+    .nav-dropdown-item-text { display: flex; flex-direction: column; }
+    .nav-dropdown-item-name { font-size: 14px; font-weight: 500; color: var(--text); }
+    .nav-dropdown-item-sub  { font-size: 12px; color: var(--text-light); margin-top: 1px; }
+    .nav-dropdown-divider { height: 1px; background: #E8E4E0; margin: 4px 0; }
+    .nav-dropdown-viewall {
+      display: block; padding: 10px 14px; border-radius: 10px;
+      font-size: 13px; color: var(--accent); text-decoration: none;
+      transition: background .15s;
+    }
+    .nav-dropdown-viewall:hover { background: #F0EDFF; }
+
+    .nav-hamburger {
+      display: none; flex-direction: column; gap: 5px;
+      background: none; border: none; cursor: pointer; padding: 4px;
+    }
+    .nav-hamburger span {
+      display: block; width: 22px; height: 2px;
+      background: var(--text); border-radius: 2px;
+      transition: transform .25s ease, opacity .25s ease;
+    }
+
+    /* Mobile overlay — slides from top */
+    .nav-overlay {
+      position: fixed; inset: 0; z-index: 200;
+      background: white;
+      transform: translateY(-100%);
+      transition: transform .3s cubic-bezier(.4,0,.2,1);
+      overflow-y: auto;
+    }
+    .nav-overlay.open { transform: translateY(0); }
+    .nav-overlay-header {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 20px 24px; border-bottom: 1px solid var(--border);
+    }
+    .nav-overlay-close {
+      background: none; border: none; font-size: 22px;
+      cursor: pointer; color: var(--text); line-height: 1; padding: 4px;
+    }
+    .nav-overlay-list { padding: 8px 0 32px; }
+    .nav-overlay-item { border-bottom: 1px solid var(--border); }
+    .nav-overlay-label {
+      font-family: 'Instrument Serif', serif;
+      font-size: 32px; color: var(--text);
+      padding: 20px 24px; display: block;
+      text-decoration: none; transition: color .2s;
+    }
+    .nav-overlay-label:hover { color: var(--accent); }
+    .nav-overlay-label.is-label { cursor: default; }
+    .nav-overlay-sub {
+      padding: 0 24px 12px;
+      display: flex; flex-direction: column; gap: 4px;
+    }
+    .nav-overlay-sub a {
+      display: flex; align-items: center; gap: 10px;
+      padding: 10px 0; font-size: 16px; font-weight: 500;
+      color: var(--text-mid); text-decoration: none;
+      padding-left: 24px; transition: color .15s;
+    }
+    .nav-overlay-sub a:hover { color: var(--accent); }
+
+    /* ─────────────────────────────────────────────
+       PASSWORD OVERLAY
+    ───────────────────────────────────────────── */
     #pw-overlay {
       position: fixed; inset: 0; z-index: 5000;
       display: flex; align-items: center; justify-content: center;
-      background: rgba(238,236,234,.92);
+      background: rgba(238,236,234,.95);
       backdrop-filter: blur(8px);
       transition: opacity .5s ease;
     }
@@ -123,10 +209,10 @@
 
     .pw-mac-win {
       background: white;
-      border-radius: 14px;
-      box-shadow: 0 24px 80px rgba(0,0,0,.18), 0 2px 8px rgba(0,0,0,.08);
+      border-radius: 16px;
+      box-shadow: 0 24px 80px rgba(0,0,0,.18), 0 2px 8px rgba(0,0,0,.06);
       overflow: hidden;
-      width: 400px;
+      width: 380px;
       max-width: calc(100vw - 40px);
       animation: winAppear .35s cubic-bezier(.34,1.56,.64,1) both;
     }
@@ -135,36 +221,16 @@
       to   { opacity: 1; transform: scale(1) translateY(0); }
     }
 
-    /* cute wrong-password animations */
-    @keyframes wiggle {
-      0%,100% { transform: translateX(0) rotate(0deg); }
-      15%     { transform: translateX(-12px) rotate(-2deg); }
-      30%     { transform: translateX(12px) rotate(2deg); }
-      45%     { transform: translateX(-8px) rotate(-1deg); }
-      60%     { transform: translateX(8px) rotate(1deg); }
-      75%     { transform: translateX(-4px) rotate(0deg); }
-      90%     { transform: translateX(4px) rotate(0deg); }
+    @keyframes shake {
+      0%,100% { transform: translateX(0); }
+      15%     { transform: translateX(-10px); }
+      30%     { transform: translateX(10px); }
+      45%     { transform: translateX(-6px); }
+      60%     { transform: translateX(6px); }
+      75%     { transform: translateX(-3px); }
+      90%     { transform: translateX(3px); }
     }
-    @keyframes iconBounce {
-      0%   { transform: scale(1) rotate(0deg); }
-      20%  { transform: scale(1.5) rotate(-20deg); }
-      40%  { transform: scale(1.4) rotate(22deg); }
-      60%  { transform: scale(1.2) rotate(-12deg); }
-      80%  { transform: scale(1.05) rotate(5deg); }
-      100% { transform: scale(1) rotate(0deg); }
-    }
-    @keyframes inputFlash {
-      0%,100% { border-color: var(--border); background: var(--bg); }
-      35%     { border-color: #FF5F57; background: #FFF0EF; }
-      65%     { border-color: #FF5F57; background: #FFF0EF; }
-    }
-    .pw-mac-win.wiggle  { animation: wiggle .65s cubic-bezier(.36,.07,.19,.97); }
-    .pw-icon.bounce     { display: inline-block; animation: iconBounce .65s cubic-bezier(.34,1.4,.64,1); }
-    #pw-input.wrong     { animation: inputFlash .5s ease; }
-    .pw-escape {
-      font-size: 11px; color: var(--text-light);
-      margin-top: 4px; cursor: default;
-    }
+    .pw-mac-win.shake { animation: shake .55s cubic-bezier(.36,.07,.19,.97); }
 
     .pw-chrome {
       display: flex; align-items: center; gap: 6px;
@@ -176,19 +242,22 @@
     .mac-dot.r { background: #FF5F57; }
     .mac-dot.y { background: #FFBD2E; }
     .mac-dot.g { background: #28C940; }
-    .pw-title {
+    .pw-chrome-title {
       flex: 1; text-align: center;
       font-size: 12px; font-weight: 500; color: var(--text-mid);
-      margin-right: 33px; /* offset the 3 dots */
+      margin-right: 33px;
     }
 
-    .pw-body {
-      padding: 32px 28px 28px;
-      text-align: center;
+    .pw-body { padding: 32px 28px 28px; text-align: center; }
+
+    .pw-folder-icon {
+      width: 56px; height: 46px; margin: 0 auto 20px;
+      display: flex; flex-direction: column; align-items: flex-start; gap: 0;
     }
-    .pw-icon {
-      font-size: 40px; margin-bottom: 16px; display: block;
-    }
+    .pw-folder-tab  { width: 22px; height: 8px; background: #90BEDD; border-radius: 4px 4px 0 0; }
+    .pw-folder-body { width: 56px; height: 42px; background: #5B9BD5; border-radius: 0 4px 4px 4px; display: flex; align-items: center; justify-content: center; }
+    .pw-folder-body svg { width: 22px; height: 22px; opacity: .85; }
+
     .pw-headline {
       font-family: 'Instrument Serif', serif;
       font-size: 26px; font-weight: 400;
@@ -198,12 +267,8 @@
       font-size: 13px; color: var(--text-mid);
       margin-bottom: 24px; line-height: 1.5;
     }
-    .pw-form {
-      display: flex; flex-direction: column; gap: 12px;
-    }
-    .pw-input-wrap {
-      position: relative;
-    }
+    .pw-form { display: flex; flex-direction: column; gap: 10px; }
+
     #pw-input {
       width: 100%;
       padding: 12px 16px;
@@ -211,141 +276,143 @@
       border-radius: 10px;
       font-family: 'DM Sans', sans-serif;
       font-size: 14px;
-      background: var(--bg);
+      background: #FAFAF9;
       color: var(--text);
       outline: none;
       transition: border-color .2s;
       text-align: center;
-      letter-spacing: 2px;
     }
-    #pw-input:focus { border-color: var(--accent); }
-    #pw-input::placeholder { letter-spacing: 0; color: var(--text-light); }
+    #pw-input:focus { border-color: #6B5CE7; }
+    #pw-input::placeholder { color: var(--text-light); }
+
     #pw-btn {
       width: 100%;
       padding: 12px;
-      background: var(--accent);
+      background: #1A1A1A;
       color: white;
       border: none;
       border-radius: 10px;
       font-family: 'DM Sans', sans-serif;
       font-size: 14px;
       font-weight: 600;
-      cursor: none;
+      cursor: pointer;
       transition: background .2s, transform .15s;
     }
-    #pw-btn:hover { background: #5648cc; transform: translateY(-1px); }
+    #pw-btn:hover { background: #333; transform: translateY(-1px); }
+
     #pw-hint {
       font-size: 12px; color: #FF5F57;
-      min-height: 16px; margin-top: 4px;
+      min-height: 16px;
       transition: opacity .2s;
     }
 
-    /* ── MAIN CONTENT ── */
-    .dl-hero {
-      padding: 140px 80px 60px;
+    /* ─────────────────────────────────────────────
+       MAIN CONTENT
+    ───────────────────────────────────────────── */
+    .dl-page {
+      padding: 120px 80px 80px;
       position: relative; z-index: 1;
     }
     .dl-label {
-      font-size: 12px; font-weight: 600; letter-spacing: 2px;
-      text-transform: uppercase; color: var(--text-light);
-      margin-bottom: 16px;
+      font-size: 11px; font-weight: 600; letter-spacing: .12em;
+      text-transform: uppercase; color: var(--accent); margin-bottom: 16px;
     }
-    .dl-hero h1 {
+    .dl-title {
       font-family: 'Instrument Serif', serif;
-      font-size: clamp(48px, 6vw, 80px);
+      font-size: clamp(44px, 5.5vw, 72px);
       letter-spacing: -2px; line-height: 1.05;
-      color: var(--text); margin-bottom: 16px;
-    }
-    .dl-hero p {
-      font-size: 17px; color: var(--text-mid);
-      font-weight: 300; max-width: 480px; line-height: 1.6;
+      margin-bottom: 64px;
     }
 
-    /* ── DOWNLOAD CARDS ── */
-    .dl-section {
-      padding: 0 80px 120px;
-      position: relative; z-index: 1;
-    }
+    /* ── Download Cards (Mac-chrome style) ── */
     .dl-grid {
       display: grid;
       grid-template-columns: repeat(3, 1fr);
       gap: 24px;
-      max-width: 900px;
+      max-width: 880px;
     }
     .dl-card {
       background: white;
-      border-radius: 20px;
-      padding: 32px 28px;
-      border: 1px solid var(--border);
-      box-shadow: 0 4px 20px rgba(0,0,0,.05);
-      display: flex; flex-direction: column; gap: 12px;
-      transition: transform .2s, box-shadow .2s;
+      border-radius: 14px;
+      overflow: hidden;
+      box-shadow: 0 6px 28px rgba(0,0,0,.09), 0 0 0 1px rgba(0,0,0,.06);
+      transition: transform .2s ease, box-shadow .2s ease;
     }
     .dl-card:hover {
       transform: translateY(-4px);
-      box-shadow: 0 12px 40px rgba(0,0,0,.1);
+      box-shadow: 0 16px 48px rgba(0,0,0,.14), 0 0 0 1px rgba(0,0,0,.06);
     }
-    .dl-card-icon {
-      font-size: 36px; line-height: 1;
+    .dl-card-chrome {
+      display: flex; align-items: center; gap: 6px;
+      padding: 10px 14px;
+      background: #F0EDEA;
+      border-bottom: 1px solid rgba(0,0,0,.07);
+    }
+    .dl-chrome-dot { width: 10px; height: 10px; border-radius: 50%; flex-shrink: 0; }
+    .dl-chrome-dot.r { background: #FF5F57; }
+    .dl-chrome-dot.y { background: #FFBD2E; }
+    .dl-chrome-dot.g { background: #28C940; }
+    .dl-card-chrome-title {
+      flex: 1; text-align: center;
+      font-size: 11px; color: var(--text-light);
+      margin-right: 30px;
+    }
+    .dl-card-body { padding: 24px 20px 22px; }
+    .dl-card-type {
+      font-size: 10px; font-weight: 600; letter-spacing: .1em;
+      text-transform: uppercase; color: var(--accent); margin-bottom: 10px;
     }
     .dl-card-name {
       font-family: 'Instrument Serif', serif;
-      font-size: 22px; letter-spacing: -.3px;
-    }
-    .dl-card-meta {
-      font-size: 12px; color: var(--text-light);
-      font-weight: 500; text-transform: uppercase; letter-spacing: 1px;
+      font-size: 20px; line-height: 1.2; margin-bottom: 8px;
     }
     .dl-card-desc {
       font-size: 13px; color: var(--text-mid);
-      line-height: 1.5; flex: 1;
+      line-height: 1.55; margin-bottom: 20px;
     }
     .dl-btn {
       display: inline-flex; align-items: center; gap: 6px;
-      margin-top: 8px;
-      background: var(--accent);
-      color: white;
-      padding: 10px 20px;
-      border-radius: 100px;
-      font-size: 13px; font-weight: 600;
+      background: var(--text); color: white;
+      padding: 9px 18px; border-radius: 100px;
+      font-size: 13px; font-weight: 500;
       text-decoration: none;
-      width: fit-content;
-      transition: background .2s, transform .15s;
+      transition: transform .15s, box-shadow .15s;
     }
-    .dl-btn:hover { background: #5648cc; transform: translateY(-1px); }
+    .dl-btn:hover { transform: translateY(-1px); box-shadow: 0 4px 14px rgba(0,0,0,.18); }
 
-    /* Note card — no file yet */
-    .dl-card.coming {
-      opacity: .6;
-      pointer-events: none;
+    /* Confidentiality notice */
+    .dl-notice {
+      margin-top: 48px;
+      max-width: 560px;
+      padding: 16px 20px;
+      background: white;
+      border-radius: 10px;
+      border: 1px solid var(--border);
+      font-size: 12px; color: var(--text-light); line-height: 1.6;
     }
-    .dl-card.coming .dl-btn {
-      background: var(--border); color: var(--text-light);
-    }
+    .dl-notice strong { color: var(--text-mid); }
 
     /* ── RESPONSIVE ── */
     @media (max-width: 900px) {
-      .dl-hero { padding: 120px 40px 48px; }
-      .dl-section { padding: 0 40px 80px; }
+      .dl-page { padding: 100px 40px 60px; }
       .dl-grid { grid-template-columns: 1fr 1fr; }
     }
-    @media (max-width: 640px) {
-      nav { padding: 10px 16px; }
+    @media (max-width: 768px) {
+      nav { padding: 12px 20px; }
       .nav-breadcrumb { display: none; }
-      .nav-links { gap: 14px; }
-      .nav-links a { font-size: 12px; }
-      .dl-hero { padding: 100px 20px 40px; }
-      .dl-section { padding: 0 20px 60px; }
-      .dl-grid { grid-template-columns: 1fr; gap: 16px; }
+      .nav-links { display: none; }
+      .nav-hamburger { display: flex; }
+      body { cursor: auto !important; }
+      .cursor, .cursor-ring { display: none !important; }
     }
-    @media (max-width: 390px) {
-      .nav-links { gap: 10px; }
-      .nav-links a { font-size: 11px; }
+    @media (max-width: 640px) {
+      .dl-page { padding: 80px 20px 48px; }
+      .dl-grid { grid-template-columns: 1fr; gap: 16px; }
     }
     @media (hover: none) { body { cursor: auto; } .cursor, .cursor-ring { display: none; } }
   </style>
 </head>
-<body class="is-loading">
+<body>
 
   <div class="cursor" id="cursor"></div>
   <div class="cursor-ring" id="cursorRing"></div>
@@ -357,19 +424,23 @@
         <span class="mac-dot r"></span>
         <span class="mac-dot y"></span>
         <span class="mac-dot g"></span>
-        <span class="pw-title">Protected Downloads</span>
+        <span class="pw-chrome-title">Private Downloads</span>
       </div>
       <div class="pw-body">
-        <span class="pw-icon">🔒</span>
-        <div class="pw-headline">Password Protected</div>
-        <p class="pw-desc">This page is for recruiters and hiring managers only. Password available on request.</p>
-        <form class="pw-form" id="pw-form">
-          <div class="pw-input-wrap">
-            <input type="password" id="pw-input" placeholder="Enter password" autocomplete="off" />
+        <div class="pw-folder-icon">
+          <div class="pw-folder-tab"></div>
+          <div class="pw-folder-body">
+            <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M12 1C9.24 1 7 3.24 7 6v1H5a2 2 0 00-2 2v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-2V6c0-2.76-2.24-5-5-5zm0 2c1.65 0 3 1.35 3 3v1H9V6c0-1.65 1.35-3 3-3zm0 9a2 2 0 110 4 2 2 0 010-4z" fill="white"/>
+            </svg>
           </div>
-          <button type="submit" id="pw-btn">Unlock →</button>
+        </div>
+        <div class="pw-headline">Private Downloads</div>
+        <p class="pw-desc">This area is for recruiters and HR only.</p>
+        <form class="pw-form" id="pw-form">
+          <input type="password" id="pw-input" placeholder="Access code" autocomplete="off" />
+          <button type="submit" id="pw-btn">Enter →</button>
           <p class="pw-hint" id="pw-hint"></p>
-          <p class="pw-escape">or click outside to close</p>
         </form>
       </div>
     </div>
@@ -377,83 +448,153 @@
 
   <!-- ══ NAV ══ -->
   <nav>
-    <div class="nav-breadcrumb">
+    <a class="nav-breadcrumb" href="index.html">
       <span class="folder-icon">
-        <span class="folder-tab"></span>
-        <span class="folder-body"></span>
+        <div class="folder-tab"></div>
+        <div class="folder-body"></div>
       </span>
-      <span>Vivien Evers</span>
       <span class="sep">›</span>
-      <span class="active">Downloads</span>
-    </div>
+      <span class="crumb">Vivien Evers</span>
+      <span class="sep">›</span>
+      <span class="crumb-active">Downloads</span>
+    </a>
     <ul class="nav-links">
-      <li class="nav-has-dropdown">
+      <li class="nav-work-wrapper">
         <a href="index.html#work">Work <span class="nav-caret">▾</span></a>
         <div class="nav-dropdown">
-          <a href="work/mi4l/index.html">MI4L</a>
-          <a href="work/studio-liebe-nrg/index.html">Studio Liebe / NRG</a>
-          <a href="work/jco/index.html">JCO</a>
-          <a href="work/apprenticeship/index.html">Apprenticeship</a>
+          <a class="nav-dropdown-item" href="work/mi4l/index.html">
+            <span class="nav-dropdown-item-icon"><svg viewBox="0 0 20 20" fill="none"><path d="M3 5a2 2 0 012-2h4l2 2h6a2 2 0 012 2v8a2 2 0 01-2 2H5a2 2 0 01-2-2V5z" fill="#90BEDD"/></svg></span>
+            <span class="nav-dropdown-item-text">
+              <span class="nav-dropdown-item-name">MI4L</span>
+              <span class="nav-dropdown-item-sub">Brand Development · Art Direction</span>
+            </span>
+          </a>
+          <a class="nav-dropdown-item" href="work/studio-liebe-nrg/index.html">
+            <span class="nav-dropdown-item-icon"><svg viewBox="0 0 20 20" fill="none"><path d="M3 5a2 2 0 012-2h4l2 2h6a2 2 0 012 2v8a2 2 0 01-2 2H5a2 2 0 01-2-2V5z" fill="#90BEDD"/></svg></span>
+            <span class="nav-dropdown-item-text">
+              <span class="nav-dropdown-item-name">Studio Liebe &amp; NRG</span>
+              <span class="nav-dropdown-item-sub">Visual Identity · Print Production</span>
+            </span>
+          </a>
+          <a class="nav-dropdown-item" href="work/jco/index.html">
+            <span class="nav-dropdown-item-icon"><svg viewBox="0 0 20 20" fill="none"><path d="M3 5a2 2 0 012-2h4l2 2h6a2 2 0 012 2v8a2 2 0 01-2 2H5a2 2 0 01-2-2V5z" fill="#90BEDD"/></svg></span>
+            <span class="nav-dropdown-item-text">
+              <span class="nav-dropdown-item-name">JCO Hamburg</span>
+              <span class="nav-dropdown-item-sub">Brand Communication · Visual Strategy</span>
+            </span>
+          </a>
+          <a class="nav-dropdown-item" href="work/apprenticeship/index.html">
+            <span class="nav-dropdown-item-icon"><svg viewBox="0 0 20 20" fill="none"><path d="M3 5a2 2 0 012-2h4l2 2h6a2 2 0 012 2v8a2 2 0 01-2 2H5a2 2 0 01-2-2V5z" fill="#90BEDD"/></svg></span>
+            <span class="nav-dropdown-item-text">
+              <span class="nav-dropdown-item-name">During my Apprenticeship</span>
+              <span class="nav-dropdown-item-sub">Web Design · Corporate Design · Print</span>
+            </span>
+          </a>
           <div class="nav-dropdown-divider"></div>
-          <a href="index.html#work" class="nav-dropdown-all">View all →</a>
+          <a class="nav-dropdown-viewall" href="index.html#work">→ View all work</a>
         </div>
       </li>
       <li><a href="about.html">About</a></li>
       <li><a href="cv.html">CV</a></li>
-      <li><a href="mailto:hallo@vivienevers.de">✉ Contact</a></li>
+      <li><a href="downloads.html" class="nav-active">Downloads</a></li>
     </ul>
     <button class="nav-hamburger" id="nav-hamburger" aria-label="Open menu">
       <span></span><span></span><span></span>
     </button>
   </nav>
 
-  <div class="nav-overlay-m" id="nav-overlay-m">
-    <button class="nav-overlay-close" id="nav-overlay-close">✕</button>
-    <nav class="nav-overlay-links">
-      <a href="index.html#work">Work</a>
-      <a href="about.html">About</a>
-      <a href="cv.html">CV</a>
-      <a href="mailto:hallo@vivienevers.de">✉ Contact</a>
-    </nav>
+  <!-- Mobile nav overlay -->
+  <div class="nav-overlay" id="nav-overlay">
+    <div class="nav-overlay-header">
+      <a class="nav-breadcrumb" href="index.html" style="background:var(--tag-bg);">
+        <span class="folder-icon"><div class="folder-tab"></div><div class="folder-body"></div></span>
+        <span class="sep">›</span><span class="crumb">Vivien Evers</span>
+      </a>
+      <button class="nav-overlay-close" id="nav-overlay-close">✕</button>
+    </div>
+    <div class="nav-overlay-list">
+      <div class="nav-overlay-item">
+        <span class="nav-overlay-label is-label">Work</span>
+        <div class="nav-overlay-sub">
+          <a href="work/mi4l/index.html">📁 MI4L</a>
+          <a href="work/studio-liebe-nrg/index.html">📁 Studio Liebe &amp; NRG</a>
+          <a href="work/jco/index.html">📁 JCO Hamburg</a>
+          <a href="work/apprenticeship/index.html">📁 During my Apprenticeship</a>
+        </div>
+      </div>
+      <div class="nav-overlay-item">
+        <a class="nav-overlay-label" href="about.html">About</a>
+      </div>
+      <div class="nav-overlay-item">
+        <a class="nav-overlay-label" href="cv.html">CV</a>
+      </div>
+      <div class="nav-overlay-item">
+        <a class="nav-overlay-label nav-active" href="downloads.html" style="color:var(--accent)">Downloads</a>
+      </div>
+    </div>
   </div>
 
-  <!-- ══ HERO ══ -->
-  <section class="dl-hero">
-    <div class="dl-label">For Recruiters &amp; Hiring Managers</div>
-    <h1>Downloads</h1>
-    <p>Current documents as PDF — quick and direct.</p>
-  </section>
+  <!-- ══ PAGE CONTENT ══ -->
+  <main class="dl-page">
+    <div class="dl-label">For Recruiters &amp; HR</div>
+    <h1 class="dl-title">Everything you need.</h1>
 
-  <!-- ══ DOWNLOAD CARDS ══ -->
-  <section class="dl-section">
     <div class="dl-grid">
 
+      <!-- Card 1: CV -->
       <div class="dl-card">
-        <div class="dl-card-icon">📄</div>
-        <div class="dl-card-name">CV</div>
-        <div class="dl-card-meta">PDF · current</div>
-        <div class="dl-card-desc">Full CV with experience, skills and projects.</div>
-        <a href="downloads/cv.pdf" class="dl-btn" download>↓ Download</a>
+        <div class="dl-card-chrome">
+          <span class="dl-chrome-dot r"></span>
+          <span class="dl-chrome-dot y"></span>
+          <span class="dl-chrome-dot g"></span>
+          <span class="dl-card-chrome-title">cv.pdf</span>
+        </div>
+        <div class="dl-card-body">
+          <div class="dl-card-type">PDF · Current</div>
+          <div class="dl-card-name">Curriculum Vitae</div>
+          <div class="dl-card-desc">Full CV with experience, skills and projects. Up to date as of January 2026.</div>
+          <a href="downloads/cv.pdf" class="dl-btn" download>↓ Download</a>
+        </div>
       </div>
 
+      <!-- Card 2: Apprenticeship Certificate (EHS Media) -->
       <div class="dl-card">
-        <div class="dl-card-icon">🎓</div>
-        <div class="dl-card-name">Apprenticeship Certificate</div>
-        <div class="dl-card-meta">PDF · 2026</div>
-        <div class="dl-card-desc">Certificate of apprenticeship — Digital & Print Designer.</div>
-        <a href="downloads/zeugnis.pdf" class="dl-btn" download>↓ Download</a>
+        <div class="dl-card-chrome">
+          <span class="dl-chrome-dot r"></span>
+          <span class="dl-chrome-dot y"></span>
+          <span class="dl-chrome-dot g"></span>
+          <span class="dl-card-chrome-title">zeugnis-ehsmedia.pdf</span>
+        </div>
+        <div class="dl-card-body">
+          <div class="dl-card-type">PDF · 2026</div>
+          <div class="dl-card-name">Apprenticeship Certificate</div>
+          <div class="dl-card-desc">Agency certificate from EHS Media — Digital &amp; Print Designer, Specialisation: Print.</div>
+          <a href="downloads/zeugnis-ehsmedia.pdf" class="dl-btn" download>↓ Download</a>
+        </div>
       </div>
 
+      <!-- Card 3: IHK Certificate -->
       <div class="dl-card">
-        <div class="dl-card-icon">🗂</div>
-        <div class="dl-card-name">Portfolio PDF</div>
-        <div class="dl-card-meta">PDF · complete</div>
-        <div class="dl-card-desc">All projects at a glance — perfect for printing or meetings.</div>
-        <a href="downloads/portfolio.pdf" class="dl-btn" download>↓ Download</a>
+        <div class="dl-card-chrome">
+          <span class="dl-chrome-dot r"></span>
+          <span class="dl-chrome-dot y"></span>
+          <span class="dl-chrome-dot g"></span>
+          <span class="dl-card-chrome-title">zeugnis-ihk.pdf</span>
+        </div>
+        <div class="dl-card-body">
+          <div class="dl-card-type">PDF · 2026</div>
+          <div class="dl-card-name">IHK Certificate</div>
+          <div class="dl-card-desc">Official qualification certificate from Handelskammer Hamburg — Digital &amp; Print Designer.</div>
+          <a href="downloads/zeugnis-ihk.pdf" class="dl-btn" download>↓ Download</a>
+        </div>
       </div>
 
     </div>
-  </section>
+
+    <p class="dl-notice">
+      <strong>Confidential.</strong> These documents are shared exclusively with recruiters and HR professionals for application purposes. Please do not redistribute without prior consent.
+    </p>
+  </main>
 
   <script>
     /* ── CURSOR ── */
@@ -474,85 +615,49 @@
       el.addEventListener('mouseleave', () => { cur.style.width = cur.style.height = '10px'; ring.style.width = ring.style.height = '36px'; ring.style.opacity = '.5'; });
     });
 
-    /* ── HAMBURGER NAV ── */
-    const navHamburger = document.getElementById('nav-hamburger');
-    const navOverlayM  = document.getElementById('nav-overlay-m');
-    const navOverlayClose = document.getElementById('nav-overlay-close');
-    function openNavOverlay()  { navOverlayM.classList.add('open'); document.body.style.overflow='hidden'; }
-    function closeNavOverlay() { navOverlayM.classList.remove('open'); document.body.style.overflow=''; }
-    if (navHamburger) navHamburger.addEventListener('click', openNavOverlay);
-    if (navOverlayClose) navOverlayClose.addEventListener('click', closeNavOverlay);
-    if (navOverlayM) navOverlayM.addEventListener('click', e => { if (e.target===navOverlayM) closeNavOverlay(); });
+    /* ── HAMBURGER NAV (slides from top) ── */
+    const hamburger   = document.getElementById('nav-hamburger');
+    const navOverlay  = document.getElementById('nav-overlay');
+    const overlayClose = document.getElementById('nav-overlay-close');
+    function openOverlay()  { navOverlay.classList.add('open'); document.body.style.overflow = 'hidden'; }
+    function closeOverlay() { navOverlay.classList.remove('open'); document.body.style.overflow = ''; }
+    if (hamburger)    hamburger.addEventListener('click', openOverlay);
+    if (overlayClose) overlayClose.addEventListener('click', closeOverlay);
 
     /* ── PASSWORD GATE ── */
-    const overlay  = document.getElementById('pw-overlay');
-    const pwWin    = document.getElementById('pw-win');
-    const pwInput  = document.getElementById('pw-input');
-    const pwHint   = document.getElementById('pw-hint');
-    const pwIcon   = document.querySelector('.pw-icon');
+    const pwOverlay = document.getElementById('pw-overlay');
+    const pwWin     = document.getElementById('pw-win');
+    const pwInput   = document.getElementById('pw-input');
+    const pwHint    = document.getElementById('pw-hint');
 
-    const wrongMsgs = [
-      'Nope! 🙅‍♀️',
-      'Not quite… 😅',
-      'Nice try! 😄',
-      'Hmm, not that one. 🤔',
-      'Come on, you can do it! 💪',
-    ];
-    let wrongCount = 0;
-
-    function closeOverlay() {
-      overlay.classList.add('fade-out');
-      setTimeout(() => { overlay.style.display = 'none'; }, 520);
+    function dismissOverlay() {
+      pwOverlay.classList.add('fade-out');
+      setTimeout(() => { pwOverlay.style.display = 'none'; }, 520);
     }
 
-    /* Already authenticated in this session? */
+    /* Already authenticated this session? */
     if (sessionStorage.getItem('vivien_dl_auth')) {
-      overlay.style.display = 'none';
+      pwOverlay.style.display = 'none';
     } else {
-      setTimeout(() => pwInput.focus(), 200);
+      setTimeout(() => pwInput.focus(), 250);
     }
-
-    /* Click outside the window → close */
-    overlay.addEventListener('click', function(e) {
-      if (e.target === overlay) closeOverlay();
-    });
 
     document.getElementById('pw-form').addEventListener('submit', function(e) {
       e.preventDefault();
       const val = pwInput.value.trim();
 
-      if (val === 'vivien2025') {
-        sessionStorage.setItem('vivien_dl_auth', '1');
-        closeOverlay();
+      if (val === 'vivien2026') {
+        sessionStorage.setItem('vivien_dl_auth', 'true');
+        dismissOverlay();
       } else {
-        /* ── cute wrong-password sequence ── */
-
-        /* 1. icon: swap to 🙅‍♀️, bounce, then back to 🔒 */
-        pwIcon.textContent = '🙅‍♀️';
-        pwIcon.classList.remove('bounce');
-        void pwIcon.offsetWidth;
-        pwIcon.classList.add('bounce');
-        pwIcon.addEventListener('animationend', () => {
-          pwIcon.classList.remove('bounce');
-          pwIcon.textContent = '🔒';
-        }, { once: true });
-
-        /* 2. window: wiggle */
-        pwWin.classList.remove('wiggle');
+        /* Shake the window */
+        pwWin.classList.remove('shake');
         void pwWin.offsetWidth;
-        pwWin.classList.add('wiggle');
-        pwWin.addEventListener('animationend', () => pwWin.classList.remove('wiggle'), { once: true });
+        pwWin.classList.add('shake');
+        pwWin.addEventListener('animationend', () => pwWin.classList.remove('shake'), { once: true });
 
-        /* 3. input: red flash */
-        pwInput.classList.remove('wrong');
-        void pwInput.offsetWidth;
-        pwInput.classList.add('wrong');
-        pwInput.addEventListener('animationend', () => pwInput.classList.remove('wrong'), { once: true });
-
-        /* 4. rotating hint messages */
-        pwHint.textContent = wrongMsgs[wrongCount % wrongMsgs.length];
-        wrongCount++;
-
+        /* Red hint */
+        pwHint.textContent = 'Incorrect code. Try again.';
         pwInput.value = '';
         setTimeout(() => pwInput.focus(), 50);
       }

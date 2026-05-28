@@ -25,40 +25,52 @@
     .cursor-ring { width:36px; height:36px; border:1.5px solid var(--accent); border-radius:50%; position:fixed; pointer-events:none; z-index:9998; transform:translate(-50%,-50%); opacity:.5; transition:width .25s,height .25s,opacity .2s; }
 
     /* ── NAV ── */
-    nav { position:fixed; top:0; left:0; right:0; z-index:100; padding:16px 40px; display:flex; align-items:center; justify-content:space-between; backdrop-filter:blur(12px); background:rgba(238,236,234,.85); border-bottom:1px solid var(--border); }
-    .nav-breadcrumb { display:flex; align-items:center; gap:6px; background:white; padding:6px 14px; border-radius:20px; border:1px solid var(--border); font-size:12px; }
-    .folder-icon { display:inline-flex; flex-direction:column; gap:1px; margin-right:2px; }
+    nav { position:fixed; top:0; left:0; right:0; z-index:100; height:64px; padding:0 40px; display:flex; align-items:center; justify-content:space-between; backdrop-filter:blur(12px); background:rgba(238,236,234,.92); border-bottom:1px solid var(--border); }
+    a.nav-breadcrumb { display:inline-flex; align-items:center; gap:6px; background:white; padding:6px 14px; border-radius:20px; border:1px solid var(--border); font-size:12px; font-weight:500; color:var(--text); text-decoration:none; cursor:pointer; transition:box-shadow .2s; }
+    a.nav-breadcrumb:hover { box-shadow:0 2px 12px rgba(0,0,0,.08); }
+    .nav-breadcrumb .folder-icon { display:inline-flex; flex-direction:column; gap:1px; margin-right:2px; }
     .folder-tab { width:12px; height:4px; background:#90BEDD; border-radius:2px 2px 0 0; }
     .folder-body { width:18px; height:13px; background:#689DCF; border-radius:0 2px 2px 2px; }
     .nav-breadcrumb .sep { color:var(--text-light); }
-    .nav-breadcrumb .active { color:var(--accent); font-weight:500; }
-    .nav-links { display:flex; gap:32px; list-style:none; align-items:center; }
-    .nav-links a { font-size:14px; font-weight:500; color:var(--text); text-decoration:none; position:relative; transition:color .2s; }
-    .nav-links a:hover { color:var(--accent); }
-    .nav-links a::after { content:''; position:absolute; bottom:-2px; left:0; width:0; height:1.5px; background:var(--accent); transition:width .2s; }
-    .nav-links a:hover::after { width:100%; }
-    .nav-links a.nav-active { color:var(--accent); }
-    .nav-links a.nav-active::after { width:100%; }
-    .nav-has-dropdown { position:relative; }
-    .nav-has-dropdown > a .nav-caret { display:inline-block; font-size:10px; margin-left:3px; transition:transform .2s; }
-    .nav-has-dropdown:hover > a .nav-caret { transform:rotate(180deg); }
-    .nav-dropdown { position:absolute; top:calc(100% + 14px); left:50%; transform:translateX(-50%) translateY(-6px); background:white; border:1px solid var(--border); border-radius:12px; padding:6px; min-width:200px; box-shadow:0 8px 32px rgba(0,0,0,.10); opacity:0; pointer-events:none; transition:opacity .18s ease,transform .18s ease; }
-    .nav-has-dropdown:hover .nav-dropdown { opacity:1; pointer-events:auto; transform:translateX(-50%) translateY(0); }
-    .nav-dropdown a { display:block; padding:8px 12px; font-size:13px; font-weight:500; color:var(--text); border-radius:7px; white-space:nowrap; text-decoration:none; transition:background .15s,color .15s; }
-    .nav-dropdown a::after { display:none; }
-    .nav-dropdown a:hover { background:var(--accent-light); color:var(--accent); }
-    .nav-dropdown-divider { height:1px; background:var(--border); margin:4px 6px; }
-    .nav-dropdown-all { color:var(--text-mid) !important; font-size:12px !important; }
-    .nav-dropdown-all:hover { color:var(--accent) !important; }
+    .nav-breadcrumb .crumb { color:var(--text-mid); }
+    .nav-breadcrumb .crumb-active { color:var(--accent); }
+    .nav-links { display:flex; gap:28px; list-style:none; align-items:center; }
+    .nav-links > li > a { font-size:14px; font-weight:500; color:var(--text); text-decoration:none; position:relative; transition:color .2s; }
+    .nav-links > li > a:hover { color:var(--accent); }
+    .nav-links > li > a::after { content:''; position:absolute; bottom:-2px; left:0; width:0; height:1.5px; background:var(--accent); transition:width .2s; }
+    .nav-links > li > a:hover::after { width:100%; }
+    .nav-links > li > a.nav-active { color:var(--accent); }
+    .nav-links > li > a.nav-active::after { width:100%; }
+    .nav-work-wrapper { position:relative; }
+    .nav-work-wrapper > a .nav-caret { display:inline-block; font-size:10px; margin-left:3px; transition:transform .2s; }
+    .nav-work-wrapper:hover > a .nav-caret { transform:rotate(180deg); }
+    .nav-dropdown { position:absolute; top:52px; right:0; background:white; border:1px solid #E8E4E0; border-radius:16px; padding:8px; min-width:280px; box-shadow:0 8px 40px rgba(0,0,0,.12); opacity:0; pointer-events:none; transform:translateY(-4px); transition:opacity .2s ease .15s,transform .2s ease .15s; }
+    .nav-work-wrapper:hover .nav-dropdown { opacity:1; pointer-events:auto; transform:translateY(0); transition:opacity .15s ease 0s,transform .15s ease 0s; }
+    .nav-dropdown-item { display:flex; align-items:center; gap:12px; padding:10px 14px; border-radius:10px; text-decoration:none; transition:background .15s; }
+    .nav-dropdown-item:hover { background:#F5F3F1; }
+    .nav-dropdown-item-icon { width:20px; height:20px; flex-shrink:0; display:flex; align-items:center; justify-content:center; }
+    .nav-dropdown-item-icon svg { width:18px; height:18px; }
+    .nav-dropdown-item-text { display:flex; flex-direction:column; }
+    .nav-dropdown-item-name { font-size:14px; font-weight:500; color:var(--text); }
+    .nav-dropdown-item-sub { font-size:12px; color:var(--text-light); margin-top:1px; }
+    .nav-dropdown-divider { height:1px; background:#E8E4E0; margin:4px 0; }
+    .nav-dropdown-viewall { display:block; padding:10px 14px; border-radius:10px; font-size:13px; color:var(--accent); text-decoration:none; transition:background .15s; }
+    .nav-dropdown-viewall:hover { background:#F0EDFF; }
     .nav-hamburger { display:none; flex-direction:column; gap:5px; background:none; border:none; cursor:pointer; padding:4px; }
-    .nav-hamburger span { display:block; width:22px; height:2px; background:var(--text); border-radius:2px; }
-    .nav-overlay { position:fixed; inset:0; z-index:999; background:var(--bg); display:flex; flex-direction:column; align-items:center; justify-content:center; opacity:0; pointer-events:none; transition:opacity .3s ease; }
-    .nav-overlay.open { opacity:1; pointer-events:auto; }
-    .nav-overlay-close { position:absolute; top:20px; right:24px; background:none; border:none; font-size:22px; cursor:pointer; color:var(--text); }
-    .nav-overlay-links { display:flex; flex-direction:column; align-items:center; gap:32px; }
-    .nav-overlay-links a { font-family:'Instrument Serif',serif; font-size:32px; color:var(--text); text-decoration:none; transition:color .2s; }
-    .nav-overlay-links a:hover { color:var(--accent); }
-    @media (max-width:768px) { nav { padding:12px 20px; } .nav-breadcrumb { display:none; } .nav-links { display:none; } .nav-hamburger { display:flex; } }
+    .nav-hamburger span { display:block; width:22px; height:2px; background:var(--text); border-radius:2px; transition:transform .25s ease,opacity .25s ease; }
+    .nav-overlay { position:fixed; inset:0; z-index:200; background:white; transform:translateY(-100%); transition:transform .3s cubic-bezier(.4,0,.2,1); overflow-y:auto; }
+    .nav-overlay.open { transform:translateY(0); }
+    .nav-overlay-header { display:flex; align-items:center; justify-content:space-between; padding:20px 24px; border-bottom:1px solid var(--border); }
+    .nav-overlay-close { background:none; border:none; font-size:22px; cursor:pointer; color:var(--text); line-height:1; padding:4px; }
+    .nav-overlay-list { padding:8px 0 32px; }
+    .nav-overlay-item { border-bottom:1px solid var(--border); }
+    .nav-overlay-label { font-family:'Instrument Serif',serif; font-size:32px; color:var(--text); padding:20px 24px; display:block; text-decoration:none; transition:color .2s; }
+    .nav-overlay-label:hover { color:var(--accent); }
+    .nav-overlay-label.is-label { cursor:default; }
+    .nav-overlay-sub { padding:0 24px 12px; display:flex; flex-direction:column; gap:4px; }
+    .nav-overlay-sub a { display:flex; align-items:center; gap:10px; padding:10px 0; font-size:16px; font-weight:500; color:var(--text-mid); text-decoration:none; padding-left:24px; transition:color .15s; }
+    .nav-overlay-sub a:hover { color:var(--accent); }
+    @media (max-width:768px) { nav { padding:12px 20px; } .nav-breadcrumb { display:none; } .nav-links { display:none; } .nav-hamburger { display:flex; } body { cursor:auto !important; } .cursor,.cursor-ring { display:none !important; } }
 
     /* ── HERO ── */
     .about-hero {
@@ -374,31 +386,43 @@
   <div class="cursor-ring" id="cursorRing"></div>
 
   <nav>
-    <div class="nav-breadcrumb">
+    <a class="nav-breadcrumb" href="index.html">
       <span class="folder-icon">
         <div class="folder-tab"></div>
         <div class="folder-body"></div>
       </span>
       <span class="sep">›</span>
-      <span>Vivien Evers</span>
+      <span class="crumb">Vivien Evers</span>
       <span class="sep">›</span>
-      <span class="active">About</span>
-    </div>
+      <span class="crumb-active">About</span>
+    </a>
     <ul class="nav-links">
-      <li class="nav-has-dropdown">
+      <li class="nav-work-wrapper">
         <a href="index.html#work">Work <span class="nav-caret">▾</span></a>
         <div class="nav-dropdown">
-          <a href="work/mi4l/index.html">MI4L</a>
-          <a href="work/studio-liebe-nrg/index.html">Studio Liebe / NRG</a>
-          <a href="work/jco/index.html">JCO</a>
-          <a href="work/apprenticeship/index.html">Apprenticeship</a>
+          <a class="nav-dropdown-item" href="work/mi4l/index.html">
+            <span class="nav-dropdown-item-icon"><svg viewBox="0 0 20 20" fill="none"><path d="M3 5a2 2 0 012-2h4l2 2h6a2 2 0 012 2v8a2 2 0 01-2 2H5a2 2 0 01-2-2V5z" fill="#90BEDD"/></svg></span>
+            <span class="nav-dropdown-item-text"><span class="nav-dropdown-item-name">MI4L</span><span class="nav-dropdown-item-sub">Brand Development · Art Direction</span></span>
+          </a>
+          <a class="nav-dropdown-item" href="work/studio-liebe-nrg/index.html">
+            <span class="nav-dropdown-item-icon"><svg viewBox="0 0 20 20" fill="none"><path d="M3 5a2 2 0 012-2h4l2 2h6a2 2 0 012 2v8a2 2 0 01-2 2H5a2 2 0 01-2-2V5z" fill="#90BEDD"/></svg></span>
+            <span class="nav-dropdown-item-text"><span class="nav-dropdown-item-name">Studio Liebe &amp; NRG</span><span class="nav-dropdown-item-sub">Visual Identity · Print Production</span></span>
+          </a>
+          <a class="nav-dropdown-item" href="work/jco/index.html">
+            <span class="nav-dropdown-item-icon"><svg viewBox="0 0 20 20" fill="none"><path d="M3 5a2 2 0 012-2h4l2 2h6a2 2 0 012 2v8a2 2 0 01-2 2H5a2 2 0 01-2-2V5z" fill="#90BEDD"/></svg></span>
+            <span class="nav-dropdown-item-text"><span class="nav-dropdown-item-name">JCO Hamburg</span><span class="nav-dropdown-item-sub">Brand Communication · Visual Strategy</span></span>
+          </a>
+          <a class="nav-dropdown-item" href="work/apprenticeship/index.html">
+            <span class="nav-dropdown-item-icon"><svg viewBox="0 0 20 20" fill="none"><path d="M3 5a2 2 0 012-2h4l2 2h6a2 2 0 012 2v8a2 2 0 01-2 2H5a2 2 0 01-2-2V5z" fill="#90BEDD"/></svg></span>
+            <span class="nav-dropdown-item-text"><span class="nav-dropdown-item-name">During my Apprenticeship</span><span class="nav-dropdown-item-sub">Web Design · Corporate Design · Print</span></span>
+          </a>
           <div class="nav-dropdown-divider"></div>
-          <a href="index.html#work" class="nav-dropdown-all">View all →</a>
+          <a class="nav-dropdown-viewall" href="index.html#work">→ View all work</a>
         </div>
       </li>
       <li><a href="about.html" class="nav-active">About</a></li>
       <li><a href="cv.html">CV</a></li>
-      <li><a href="mailto:hallo@vivienevers.de">✉ Contact</a></li>
+      <li><a href="downloads.html">Downloads</a></li>
     </ul>
     <button class="nav-hamburger" id="nav-hamburger" aria-label="Open menu">
       <span></span><span></span><span></span>
@@ -406,13 +430,27 @@
   </nav>
 
   <div class="nav-overlay" id="nav-overlay">
-    <button class="nav-overlay-close" id="nav-overlay-close">✕</button>
-    <nav class="nav-overlay-links">
-      <a href="index.html#work">Work</a>
-      <a href="about.html" style="color:var(--accent)">About</a>
-      <a href="cv.html">CV</a>
-      <a href="mailto:hallo@vivienevers.de">✉ Contact</a>
-    </nav>
+    <div class="nav-overlay-header">
+      <a class="nav-breadcrumb" href="index.html" style="background:var(--tag-bg);">
+        <span class="folder-icon"><div class="folder-tab"></div><div class="folder-body"></div></span>
+        <span class="sep">›</span><span class="crumb">Vivien Evers</span>
+      </a>
+      <button class="nav-overlay-close" id="nav-overlay-close">✕</button>
+    </div>
+    <div class="nav-overlay-list">
+      <div class="nav-overlay-item">
+        <span class="nav-overlay-label is-label">Work</span>
+        <div class="nav-overlay-sub">
+          <a href="work/mi4l/index.html">📁 MI4L</a>
+          <a href="work/studio-liebe-nrg/index.html">📁 Studio Liebe &amp; NRG</a>
+          <a href="work/jco/index.html">📁 JCO Hamburg</a>
+          <a href="work/apprenticeship/index.html">📁 During my Apprenticeship</a>
+        </div>
+      </div>
+      <div class="nav-overlay-item"><a class="nav-overlay-label" href="about.html" style="color:var(--accent)">About</a></div>
+      <div class="nav-overlay-item"><a class="nav-overlay-label" href="cv.html">CV</a></div>
+      <div class="nav-overlay-item"><a class="nav-overlay-label" href="downloads.html">Downloads</a></div>
+    </div>
   </div>
 
   <!-- ══ HERO: Two photos + floating card ══ -->
@@ -519,19 +557,19 @@
     <div class="values-list">
       <div class="value-row">
         <span class="value-arrow">→</span>
-        <span class="value-text">Ganzheitlich denken — vom <em>großen Ganzen</em> bis zum kleinsten Detail.</span>
+        <span class="value-text">Thinking holistically — from the <em>big picture</em> to the smallest detail.</span>
       </div>
       <div class="value-row">
         <span class="value-arrow">→</span>
-        <span class="value-text">Mit Herz dabei — in jedem Projekt, für <em>jeden Menschen</em> im Team.</span>
+        <span class="value-text">All in — for every project, for <em>every person</em> on the team.</span>
       </div>
       <div class="value-row">
         <span class="value-arrow">→</span>
-        <span class="value-text">Aufmerksamkeit als <em>Superpower</em> — ich sehe was andere übersehen.</span>
+        <span class="value-text">Attention as a <em>superpower</em> — I see what others walk past.</span>
       </div>
       <div class="value-row">
         <span class="value-arrow">→</span>
-        <span class="value-text">Kreativität als <em>Lebenshaltung</em> — nicht nur als Job.</span>
+        <span class="value-text">Creativity as a <em>way of life</em> — not just a job.</span>
       </div>
     </div>
   </section>
@@ -545,7 +583,7 @@
         <div class="imessage-bubble second">I'd love to hear about your project.</div>
       </div>
       <h2 class="cta-title">Let's connect.</h2>
-      <a href="mailto:hallo@vivienevers.de" class="cta-btn">hallo@vivienevers.de ✉</a>
+      <a href="mailto:hallo@vivienevers.de" class="cta-btn">hallo@vivienevers.de</a>
     </div>
   </section>
 
@@ -569,7 +607,6 @@
     function closeOverlay() { overlay.classList.remove('open'); document.body.style.overflow=''; }
     if (hamburger) hamburger.addEventListener('click', openOverlay);
     if (overlayClose) overlayClose.addEventListener('click', closeOverlay);
-    if (overlay) overlay.addEventListener('click', e => { if (e.target===overlay) closeOverlay(); });
 
     /* ── SCROLL REVEAL ── */
     const obs = new IntersectionObserver(entries => {
