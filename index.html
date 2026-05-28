@@ -1009,7 +1009,7 @@
     <ul class="nav-links">
       <li><a href="#hero" class="nav-home" onclick="window.scrollTo({top:0,behavior:'smooth'});return false;">↑ Home</a></li>
       <li><a href="#work">Work</a></li>
-      <li><a href="#about">About</a></li>
+      <li><a href="about.html">About</a></li>
       <li><a href="#skills">Skills</a></li>
       <li><a href="cv.html">CV</a></li>
       <li><a href="#contact">Contact</a></li>
@@ -1139,7 +1139,7 @@
           <ul class="fw-sidebar-list" id="fw-sidebar-list">
 
             <!-- Projekt 0 – Music is for Lovers (blau) -->
-            <li class="fw-sidebar-item active" data-idx="0">
+            <li class="fw-sidebar-item active" data-idx="0" data-url="work/mi4l/index.html">
               <svg class="fw-sidebar-icon" width="20" height="16" viewBox="0 0 20 16" fill="none">
                 <path d="M1 5.5 L1 3.5 Q1 3 1.5 3 L6.5 3 Q7.8 3 8.3 4 L9.2 5.5 Z" fill="#96B8E2"/>
                 <rect x="1" y="5" width="18" height="9" rx="2" fill="#7B9FD4"/>
@@ -1149,7 +1149,7 @@
             </li>
 
             <!-- Projekt 1 – Studio Liebe & NRG (rosa) -->
-            <li class="fw-sidebar-item" data-idx="1">
+            <li class="fw-sidebar-item" data-idx="1" data-url="work/mi4l/index.html">
               <svg class="fw-sidebar-icon" width="20" height="16" viewBox="0 0 20 16" fill="none">
                 <path d="M1 5.5 L1 3.5 Q1 3 1.5 3 L6.5 3 Q7.8 3 8.3 4 L9.2 5.5 Z" fill="#E2AE97"/>
                 <rect x="1" y="5" width="18" height="9" rx="2" fill="#D4957B"/>
@@ -1159,7 +1159,7 @@
             </li>
 
             <!-- Projekt 2 – Jewish Chamber Orchestra (grün) -->
-            <li class="fw-sidebar-item" data-idx="2">
+            <li class="fw-sidebar-item" data-idx="2" data-url="work/jco/index.html">
               <svg class="fw-sidebar-icon" width="20" height="16" viewBox="0 0 20 16" fill="none">
                 <path d="M1 5.5 L1 3.5 Q1 3 1.5 3 L6.5 3 Q7.8 3 8.3 4 L9.2 5.5 Z" fill="#99D4BB"/>
                 <rect x="1" y="5" width="18" height="9" rx="2" fill="#7BC4A0"/>
@@ -1169,7 +1169,7 @@
             </li>
 
             <!-- Projekt 3 – During my Apprenticeship (lila) -->
-            <li class="fw-sidebar-item" data-idx="3">
+            <li class="fw-sidebar-item" data-idx="3" data-url="work/apprenticeship/index.html">
               <svg class="fw-sidebar-icon" width="20" height="16" viewBox="0 0 20 16" fill="none">
                 <path d="M1 5.5 L1 3.5 Q1 3 1.5 3 L6.5 3 Q7.8 3 8.3 4 L9.2 5.5 Z" fill="#BB99E2"/>
                 <rect x="1" y="5" width="18" height="9" rx="2" fill="#A07BD4"/>
@@ -1188,7 +1188,7 @@
 
       </div><!-- /fw-body -->
 
-      <div class="fw-statusbar">4 items · ~/vivien/portfolio</div>
+      <div class="fw-statusbar">4 items · ~/vivien/portfolio <span style="margin-left:16px;opacity:.6;">⌘ Double-click a folder to open the project</span></div>
 
     </div><!-- /finder-window -->
   </section>
@@ -1512,12 +1512,15 @@
       }, 110);
     }
 
-    /* Sidebar-Klick */
+    /* Sidebar-Klick (single) + Doppelklick → Projektseite */
     document.querySelectorAll('.fw-sidebar-item').forEach(item => {
       item.addEventListener('click', () => {
         document.querySelectorAll('.fw-sidebar-item').forEach(x => x.classList.remove('active'));
         item.classList.add('active');
         renderContent(+item.dataset.idx);
+      });
+      item.addEventListener('dblclick', () => {
+        if (item.dataset.url) window.location.href = item.dataset.url;
       });
     });
 
@@ -1733,6 +1736,43 @@
         c.style.transform=`translate(${x*f}px,${y*f}px) rotate(var(--rot,0deg))`;
       });
     });
+
+    /* ── KONAMI CODE EASTER EGG ───────────────────────────── */
+    (function() {
+      const KONAMI = [38,38,40,40,37,39,37,39,66,65];
+      let idx = 0;
+      document.addEventListener('keydown', function(e) {
+        if (e.keyCode === KONAMI[idx]) { idx++; } else { idx = e.keyCode === KONAMI[0] ? 1 : 0; }
+        if (idx === KONAMI.length) { idx = 0; fireEasterEgg(); }
+      });
+
+      function fireEasterEgg() {
+        /* Toast */
+        const toast = document.createElement('div');
+        toast.style.cssText = 'position:fixed;bottom:32px;left:50%;transform:translateX(-50%) translateY(20px);background:white;border-radius:16px;padding:18px 28px;box-shadow:0 8px 48px rgba(0,0,0,.2);font-family:"DM Sans",sans-serif;font-size:14px;z-index:99999;text-align:center;max-width:380px;opacity:0;transition:opacity .4s ease,transform .4s cubic-bezier(.34,1.56,.64,1);pointer-events:none;';
+        toast.innerHTML = '🥚 <strong style="color:#1A1A1A">Easter Egg found!</strong><br><span style="color:#666;font-size:13px;">You\'re exactly the kind of person Vivien wants to work with.</span>';
+        document.body.appendChild(toast);
+        requestAnimationFrame(() => { toast.style.opacity = '1'; toast.style.transform = 'translateX(-50%) translateY(0)'; });
+        setTimeout(() => { toast.style.opacity = '0'; toast.style.transform = 'translateX(-50%) translateY(20px)'; setTimeout(() => toast.remove(), 500); }, 4500);
+
+        /* Confetti */
+        const colors = ['#6B5CE7','#DDD9F7','#1E1A2E','#FF6B9D','#FFD93D','#A3E4D7'];
+        for (let i = 0; i < 120; i++) {
+          setTimeout(() => {
+            const p = document.createElement('div');
+            const size = 5 + Math.random() * 9;
+            p.style.cssText = `position:fixed;left:${Math.random()*100}vw;top:-12px;width:${size}px;height:${size}px;background:${colors[Math.floor(Math.random()*colors.length)]};border-radius:${Math.random()>.5?'50%':'3px'};z-index:99998;pointer-events:none;animation:konfettiFall ${1.4+Math.random()*1.8}s ease-in ${Math.random()*.6}s forwards;transform:rotate(${Math.random()*360}deg);`;
+            document.body.appendChild(p);
+            setTimeout(() => p.remove(), 3500);
+          }, i * 16);
+        }
+      }
+    })();
   </script>
+  <style>
+    @keyframes konfettiFall {
+      to { transform: translateY(110vh) rotate(720deg); opacity: 0; }
+    }
+  </style>
 </body>
 </html>

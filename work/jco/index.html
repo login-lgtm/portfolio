@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>JCO Hamburg — Vivien Evers</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #EEECEA; --accent: #6B5CE7; --accent-light: #DDD9F7;
+      --text: #1A1A1A; --text-mid: #666666; --text-light: #999999;
+      --border: #D8D4D0; --tag-bg: #E8E4E0; --dark: #1E1A2E;
+    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body { font-family: 'DM Sans', sans-serif; background: var(--bg); color: var(--text); cursor: none; overflow-x: hidden; }
+
+    body::before { content:''; position:fixed; inset:0; background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E"); pointer-events:none; z-index:9990; opacity:.4; }
+    body::after { content:''; position:fixed; inset:0; background-image:linear-gradient(rgba(0,0,0,.035) 1px,transparent 1px),linear-gradient(90deg,rgba(0,0,0,.035) 1px,transparent 1px); background-size:40px 40px; pointer-events:none; z-index:0; }
+
+    .cursor { width:10px; height:10px; background:var(--accent); border-radius:50%; position:fixed; pointer-events:none; z-index:9999; transform:translate(-50%,-50%); transition:width .2s,height .2s; mix-blend-mode:multiply; }
+    .cursor-ring { width:36px; height:36px; border:1.5px solid var(--accent); border-radius:50%; position:fixed; pointer-events:none; z-index:9998; transform:translate(-50%,-50%); opacity:.5; transition:width .25s,height .25s,opacity .2s; }
+
+    nav { position:fixed; top:0; left:0; right:0; z-index:100; padding:16px 40px; display:flex; align-items:center; justify-content:space-between; backdrop-filter:blur(12px); background:rgba(238,236,234,.85); border-bottom:1px solid var(--border); }
+    .nav-breadcrumb { display:flex; align-items:center; gap:6px; background:white; padding:6px 14px; border-radius:20px; border:1px solid var(--border); font-size:12px; }
+    .folder-icon { display:inline-flex; flex-direction:column; gap:1px; margin-right:2px; }
+    .folder-tab { width:12px; height:4px; background:#90BEDD; border-radius:2px 2px 0 0; }
+    .folder-body { width:18px; height:13px; background:#689DCF; border-radius:0 2px 2px 2px; }
+    .nav-breadcrumb .sep { color:var(--text-light); }
+    .nav-breadcrumb .active { color:var(--accent); font-weight:500; }
+    .nav-links { display:flex; gap:32px; list-style:none; }
+    .nav-links a { font-size:14px; font-weight:500; color:var(--text); text-decoration:none; position:relative; transition:color .2s; }
+    .nav-links a:hover { color:var(--accent); }
+    .nav-links a::after { content:''; position:absolute; bottom:-2px; left:0; width:0; height:1.5px; background:var(--accent); transition:width .2s; }
+    .nav-links a:hover::after, .nav-links a.active::after { width:100%; }
+    .nav-links a.active { color:var(--accent); }
+
+    /* HERO */
+    .project-hero {
+      padding-top: 80px;
+      position: relative; z-index: 1;
+    }
+    .hero-img-ph {
+      width: 100%; height: 460px;
+      background: #E8E4E0;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 14px; color: var(--text-light); text-align: center; padding: 20px;
+    }
+    .project-intro { padding: 72px 80px 0; position: relative; z-index: 1; }
+    .project-name {
+      font-family: 'Instrument Serif', serif;
+      font-size: clamp(40px, 6vw, 80px);
+      line-height: 1.0; letter-spacing: -2px; margin-bottom: 20px;
+    }
+    .project-opinion {
+      font-family: 'Instrument Serif', serif;
+      font-style: italic; font-size: clamp(16px, 2vw, 24px);
+      color: var(--accent); line-height: 1.6; margin-bottom: 28px; max-width: 640px;
+    }
+    .tag-row { display:flex; flex-wrap:wrap; gap:8px; margin-bottom:20px; }
+    .tag { font-size:12px; background:var(--tag-bg); color:var(--text-mid); padding:5px 14px; border-radius:100px; }
+    .tag.accent { background:var(--accent-light); color:var(--accent); }
+    .project-role { font-size:14px; color:var(--text-light); font-weight:300; }
+
+    /* PROJECT INFO */
+    .project-info {
+      padding: 72px 80px;
+      display: grid; grid-template-columns: 1fr 1fr;
+      gap: 64px; align-items: start;
+      position: relative; z-index: 1;
+    }
+    .mac-card { background:white; border-radius:16px; box-shadow:0 8px 40px rgba(0,0,0,.10); overflow:hidden; }
+    .mac-chrome { display:flex; align-items:center; gap:6px; padding:10px 14px; background:#F5F3F1; border-bottom:1px solid var(--border); }
+    .mac-dot { width:10px; height:10px; border-radius:50%; }
+    .mac-dot.r{background:#FF5F57;} .mac-dot.y{background:#FFBD2E;} .mac-dot.g{background:#28C940;}
+    .mac-title { font-size:11px; color:var(--text-light); margin-left:6px; }
+    .mac-body { padding:28px 32px; }
+    .mac-body p { font-size:15px; color:var(--text-mid); line-height:1.8; font-weight:300; }
+    .mac-body p+p { margin-top:14px; }
+    .big-quote {
+      font-family: 'Instrument Serif', serif;
+      font-style: italic;
+      font-size: clamp(28px, 3.5vw, 44px);
+      color: var(--accent);
+      line-height: 1.35;
+      letter-spacing: -.5px;
+      padding-top: 16px;
+    }
+
+    /* APPROACH CARDS */
+    .approach {
+      padding: 0 80px 80px;
+      position: relative; z-index: 1;
+    }
+    .approach-title {
+      font-family: 'Instrument Serif', serif;
+      font-size: clamp(32px, 4vw, 48px);
+      letter-spacing: -1px; margin-bottom: 40px;
+    }
+    .approach-grid { display: grid; grid-template-columns: repeat(4,1fr); gap: 20px; }
+    .approach-card {
+      background: white; border-radius: 14px;
+      overflow: hidden; box-shadow: 0 4px 20px rgba(0,0,0,.07);
+    }
+    .approach-body {
+      padding: 24px 20px;
+      font-size: 14px; font-weight: 300;
+      color: var(--text-mid); line-height: 1.6;
+    }
+    .approach-num {
+      font-family: 'Instrument Serif', serif;
+      font-size: 36px; color: var(--accent-light);
+      line-height: 1; margin-bottom: 12px;
+    }
+    .approach-label { font-size: 14px; color: var(--text); font-weight: 500; line-height: 1.4; }
+
+    /* IPHONE MOCKUPS */
+    .visuals {
+      background: var(--dark);
+      padding: 80px 80px;
+      position: relative; z-index: 1; text-align: center;
+    }
+    .visuals-title {
+      font-family: 'Instrument Serif', serif;
+      font-size: clamp(32px, 4vw, 48px);
+      color: white; margin-bottom: 12px; letter-spacing: -1px;
+    }
+    .visuals-sub { font-size: 14px; color: rgba(255,255,255,.4); margin-bottom: 56px; }
+    .iphone-row { display: flex; gap: 40px; justify-content: center; align-items: center; }
+    .iphone-mock {
+      width: 280px; height: 540px;
+      border: 3px solid rgba(255,255,255,.15);
+      border-radius: 40px;
+      background: rgba(255,255,255,.04);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 12px; color: rgba(255,255,255,.25); text-align: center; padding: 20px;
+    }
+    .iphone-handle {
+      width: 60px; height: 5px;
+      background: rgba(255,255,255,.15);
+      border-radius: 3px;
+      margin: 0 auto 12px;
+    }
+    .visuals-credit { margin-top: 32px; font-size: 13px; color: rgba(255,255,255,.3); }
+
+    /* NAV FOOTER */
+    .project-nav-footer {
+      padding: 48px 80px;
+      display: flex; justify-content: space-between; align-items: center;
+      border-top: 1px solid var(--border);
+      position: relative; z-index: 1;
+    }
+    .project-nav-footer a {
+      font-size: 15px; font-weight: 500; color: var(--text);
+      text-decoration: none; display: inline-flex; align-items: center; gap: 8px;
+      transition: color .2s, gap .2s;
+    }
+    .project-nav-footer a:hover { color: var(--accent); gap: 12px; }
+
+    .reveal { opacity:0; transform:translateY(32px); transition:opacity .7s ease,transform .7s ease; }
+    .reveal.visible { opacity:1; transform:translateY(0); }
+
+    @media (max-width: 900px) {
+      .project-intro, .project-info, .approach, .visuals, .project-nav-footer { padding-left: 32px; padding-right: 32px; }
+      .project-info { grid-template-columns: 1fr; gap: 40px; }
+      .approach-grid { grid-template-columns: repeat(2,1fr); }
+      .iphone-row { gap: 20px; }
+      .iphone-mock { width: 220px; height: 420px; }
+    }
+    @media (max-width: 640px) {
+      nav { padding: 10px 16px; }
+      .nav-breadcrumb { display: none; }
+      .nav-links { gap: 16px; }
+      .nav-links a { font-size: 12px; }
+      .project-intro, .project-info, .approach, .visuals, .project-nav-footer { padding-left: 20px; padding-right: 20px; }
+      .approach-grid { grid-template-columns: 1fr 1fr; }
+      .iphone-row { flex-wrap: wrap; }
+      .project-nav-footer { flex-direction: column; gap: 20px; }
+    }
+    @media (max-width: 390px) {
+      nav { padding: 8px 12px; }
+      .nav-links { gap: 10px; }
+      .nav-links a { font-size: 11px; }
+    }
+    @media (hover: none) { body { cursor: auto; } .cursor, .cursor-ring { display: none; } }
+  </style>
+</head>
+<body>
+
+  <div class="cursor" id="cursor"></div>
+  <div class="cursor-ring" id="cursorRing"></div>
+
+  <nav>
+    <div class="nav-breadcrumb">
+      <span class="folder-icon"><div class="folder-tab"></div><div class="folder-body"></div></span>
+      <span class="sep">›</span><span>Vivien Evers</span>
+      <span class="sep">›</span><span><a href="../../index.html#work" style="color:inherit;text-decoration:none;">Work</a></span>
+      <span class="sep">›</span><span class="active">JCO Hamburg</span>
+    </div>
+    <ul class="nav-links">
+      <li><a href="../../index.html">↑ Home</a></li>
+      <li><a href="../../index.html#work" class="active">Work</a></li>
+      <li><a href="../../about.html">About</a></li>
+      <li><a href="../../cv.html">CV</a></li>
+      <li><a href="../../index.html#contact">Contact</a></li>
+    </ul>
+  </nav>
+
+  <!-- ══ HERO ══ -->
+  <section class="project-hero">
+    <div class="hero-img-ph">[ JCO Hamburg — Instagram Screenshot oder Event-Foto ]</div>
+  </section>
+
+  <!-- ══ INTRO ══ -->
+  <section class="project-intro">
+    <h1 class="project-name reveal">Jewish Chamber Orchestra Hamburg</h1>
+    <p class="project-opinion reveal">"Culture doesn't need to be simplified to be understood.<br>It needs to be translated."</p>
+    <div class="tag-row reveal">
+      <span class="tag accent">Brand Communication</span>
+      <span class="tag">Visual Strategy</span>
+      <span class="tag">Cultural Institution</span>
+    </div>
+    <div class="project-role reveal">Brand &amp; Communications · 2023 – present · Freelance</div>
+  </section>
+
+  <!-- ══ PROJECT INFO ══ -->
+  <section class="project-info">
+    <div class="mac-card reveal">
+      <div class="mac-chrome">
+        <span class="mac-dot r"></span><span class="mac-dot y"></span><span class="mac-dot g"></span>
+        <span class="mac-title">~/vivien/work/jco</span>
+      </div>
+      <div class="mac-body">
+        <p>Bringing a traditional cultural institution closer to a younger audience — without losing depth or meaning.</p>
+        <p>Responsible for visual communication strategy and brand tone across Instagram. Working within existing CI to evolve the brand's digital presence.</p>
+        <p>Currently developing towards a more UGC-driven approach — thinking about how audiences create meaning, not just how institutions communicate.</p>
+      </div>
+    </div>
+    <div class="reveal">
+      <div class="big-quote">"Making culture more accessible, without simplifying what matters."</div>
+    </div>
+  </section>
+
+  <!-- ══ APPROACH ══ -->
+  <section class="approach">
+    <h2 class="approach-title reveal">How I approach it.</h2>
+    <div class="approach-grid">
+      <div class="approach-card reveal">
+        <div class="mac-chrome"><span class="mac-dot r"></span><span class="mac-dot y"></span><span class="mac-dot g"></span></div>
+        <div class="approach-body">
+          <div class="approach-num">01</div>
+          <div class="approach-label">Visual direction within existing CI</div>
+        </div>
+      </div>
+      <div class="approach-card reveal">
+        <div class="mac-chrome"><span class="mac-dot r"></span><span class="mac-dot y"></span><span class="mac-dot g"></span></div>
+        <div class="approach-body">
+          <div class="approach-num">02</div>
+          <div class="approach-label">Brand tone for a younger audience</div>
+        </div>
+      </div>
+      <div class="approach-card reveal">
+        <div class="mac-chrome"><span class="mac-dot r"></span><span class="mac-dot y"></span><span class="mac-dot g"></span></div>
+        <div class="approach-body">
+          <div class="approach-num">03</div>
+          <div class="approach-label">Cultural depth meets accessibility</div>
+        </div>
+      </div>
+      <div class="approach-card reveal">
+        <div class="mac-chrome"><span class="mac-dot r"></span><span class="mac-dot y"></span><span class="mac-dot g"></span></div>
+        <div class="approach-body">
+          <div class="approach-num">04</div>
+          <div class="approach-label">Evolving towards UGC thinking</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══ VISUALS ══ -->
+  <section class="visuals">
+    <h2 class="visuals-title reveal">@jcohamburg</h2>
+    <p class="visuals-sub">Instagram presence · Visual communication · Brand tone</p>
+    <div class="iphone-row">
+      <div class="iphone-mock">
+        <div>
+          <div class="iphone-handle"></div>
+          [ Instagram Post ]
+        </div>
+      </div>
+      <div class="iphone-mock">
+        <div>
+          <div class="iphone-handle"></div>
+          [ Instagram Post ]
+        </div>
+      </div>
+    </div>
+    <p class="visuals-credit">Screenshots folgen — Bildmaterial wird ergänzt</p>
+  </section>
+
+  <!-- ══ NAV FOOTER ══ -->
+  <div class="project-nav-footer">
+    <a href="../../index.html#work">← Back to all work</a>
+    <a href="../apprenticeship/index.html">Next: Apprenticeship →</a>
+  </div>
+
+  <script>
+    const cur=document.getElementById('cursor'), ring=document.getElementById('cursorRing');
+    let mx=0,my=0,rx=0,ry=0;
+    document.addEventListener('mousemove',e=>{mx=e.clientX;my=e.clientY;cur.style.left=mx+'px';cur.style.top=my+'px';});
+    (function loop(){rx+=(mx-rx)*.12;ry+=(my-ry)*.12;ring.style.left=rx+'px';ring.style.top=ry+'px';requestAnimationFrame(loop);})();
+    document.querySelectorAll('a,button').forEach(el=>{
+      el.addEventListener('mouseenter',()=>{cur.style.width=cur.style.height='20px';ring.style.width=ring.style.height='56px';ring.style.opacity='.3';});
+      el.addEventListener('mouseleave',()=>{cur.style.width=cur.style.height='10px';ring.style.width=ring.style.height='36px';ring.style.opacity='.5';});
+    });
+    const obs=new IntersectionObserver(entries=>entries.forEach(e=>{if(e.isIntersecting)setTimeout(()=>e.target.classList.add('visible'),+e.target.dataset.delay||0);}),{threshold:.12});
+    document.querySelectorAll('.reveal').forEach((el,i)=>{el.dataset.delay=(i%4)*80;obs.observe(el);});
+  </script>
+</body>
+</html>
