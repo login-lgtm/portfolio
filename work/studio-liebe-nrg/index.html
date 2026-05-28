@@ -54,9 +54,13 @@
 
     /* ── SPLIT HERO ── */
     .split-hero { display:flex; height:520px; margin-top:57px; position:relative; z-index:1; }
-    .split-half { flex:1; position:relative; display:flex; align-items:center; justify-content:center; }
+    .split-half { flex:1; position:relative; display:flex; align-items:center; justify-content:center; overflow:hidden; }
     .split-ph { font-size:14px; color:rgba(255,255,255,.35); text-align:center; line-height:1.6; padding:16px; }
-    .split-label { position:absolute; bottom:24px; left:24px; background:rgba(255,255,255,.15); color:white; font-size:13px; font-weight:500; padding:6px 12px; border-radius:100px; backdrop-filter:blur(8px); }
+    .split-vid { position:absolute; inset:0; width:100%; height:100%; object-fit:cover; opacity:.8; pointer-events:none; }
+    .split-label { position:absolute; bottom:24px; left:24px; background:rgba(255,255,255,.15); color:white; font-size:13px; font-weight:500; padding:6px 12px; border-radius:100px; backdrop-filter:blur(8px); z-index:2; }
+    /* ── MEDIA ── */
+    .img-ph video,.img-ph img { width:100%; height:100%; object-fit:cover; display:block; border-radius:12px; }
+    .img-ph { overflow:hidden; border-radius:12px; }
 
     /* ── PROJEKT-HEADER ── */
     .proj-header { padding:80px; position:relative; z-index:1; }
@@ -159,11 +163,15 @@
   <!-- ══ SPLIT HERO ══ -->
   <div class="split-hero">
     <div class="split-half" style="background:#1E1A2E;">
-      <div class="split-ph">[ Studio Liebe — Poster oder Event ]</div>
+      <video class="split-vid" autoplay muted loop playsinline>
+        <source src="media/studio-liebe/h73-reel.mp4" type="video/mp4">
+      </video>
       <span class="split-label">Studio Liebe</span>
     </div>
-    <div class="split-half" style="background:#2A1A1A;">
-      <div class="split-ph">[ NRG — Poster oder Bunker-Foto ]</div>
+    <div class="split-half" style="background:#0A0A0A;">
+      <video class="split-vid" autoplay muted loop playsinline>
+        <source src="media/nrg/nrg-slide.mp4" type="video/mp4">
+      </video>
       <span class="split-label">NRG</span>
     </div>
   </div>
@@ -203,8 +211,16 @@
     <div class="divider-label reveal"><div class="dl-text">Studio Liebe — Disco &amp; House</div></div>
     <div class="section-desc reveal">Warmer. More intimate.<br>A feeling you want to stay in.</div>
     <div class="img-row reveal">
-      <div class="img-ph wide">[ Studio Liebe Poster ]</div>
-      <div class="img-ph narrow">[ Studio Liebe — Haus 73 ]</div>
+      <div class="img-ph wide">
+        <video autoplay muted loop playsinline style="height:320px;">
+          <source src="media/studio-liebe/magazin-reel.mp4" type="video/mp4">
+        </video>
+      </div>
+      <div class="img-ph narrow">
+        <video autoplay muted loop playsinline style="height:320px;">
+          <source src="media/studio-liebe/info-slide.mp4" type="video/mp4">
+        </video>
+      </div>
     </div>
     <div class="mac-win reveal">
       <div class="mac-chrome">
@@ -237,8 +253,14 @@
     <div class="divider-label reveal"><div class="dl-text">NRG — Tech House</div></div>
     <div class="section-desc reveal">Harder. Darker. More intense —<br>visually and sonically.</div>
     <div class="img-row reveal">
-      <div class="img-ph wide">[ NRG Poster ]</div>
-      <div class="img-ph narrow">[ NRG Event — Bunker Hamburg ]</div>
+      <div class="img-ph wide">
+        <video autoplay muted loop playsinline style="height:320px;">
+          <source src="media/nrg/timetable.mp4" type="video/mp4">
+        </video>
+      </div>
+      <div class="img-ph narrow">
+        <img src="media/nrg/announcement.png" alt="NRG Announcement" style="height:320px;">
+      </div>
     </div>
     <div class="mac-win reveal">
       <div class="mac-chrome">
