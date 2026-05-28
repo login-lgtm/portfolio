@@ -38,6 +38,8 @@
     .nav-links a::after { content:''; position:absolute; bottom:-2px; left:0; width:0; height:1.5px; background:var(--accent); transition:width .2s; }
     .nav-links a:hover::after, .nav-links a.active::after { width:100%; }
     .nav-links a.active { color:var(--accent); }
+    .nav-links a.nav-dl { color: var(--text-light); }
+    .nav-links a.nav-dl:hover { color: var(--accent); }
 
     /* ── HERO ── */
     .about-hero {
@@ -94,6 +96,36 @@
       box-shadow: 0 12px 48px rgba(0,0,0,.13);
       transform: rotate(-2deg);
       flex-shrink: 0;
+      position: relative;
+    }
+    /* iMessage floating bubble near coffee polaroid */
+    .coffee-bubbles {
+      position: absolute;
+      top: 20px;
+      right: -148px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      z-index: 10;
+      animation: floatSlow 3.5s ease-in-out infinite;
+    }
+    .coffee-bubble {
+      background: #4FC3F7;
+      color: #fff;
+      border-radius: 18px 18px 18px 4px;
+      padding: 10px 16px;
+      font-size: 13px;
+      font-weight: 500;
+      white-space: nowrap;
+      box-shadow: 0 6px 24px rgba(79,195,247,.35);
+      line-height: 1.4;
+    }
+    .coffee-bubble.second {
+      font-size: 11px;
+      background: #7DD3F5;
+      opacity: 0.92;
+      align-self: flex-start;
+      animation-delay: .5s;
     }
     .photo-polaroid-inner {
       width: 100%;
@@ -285,6 +317,7 @@
       .photo-right-col { flex-direction: row; flex-wrap: wrap; justify-content: center; padding-top: 0; gap: 16px; }
       .photo-polaroid { width: 280px; }
       .photo-polaroid-inner { height: 300px; }
+      .coffee-bubbles { display: none; }
       .floating-mac { width: 260px; }
       .statements { padding: 60px 32px; }
       .values { padding: 80px 32px; }
@@ -337,6 +370,7 @@
       <li><a href="index.html#work">Work</a></li>
       <li><a href="about.html" class="active">About</a></li>
       <li><a href="cv.html">CV</a></li>
+      <li><a href="downloads.html" class="nav-dl">🔒 Downloads</a></li>
       <li><a href="index.html#contact">Contact</a></li>
     </ul>
   </nav>
@@ -372,6 +406,11 @@
               ☕<br><br>
               [ Foto: Vivien mit Kaffee<br>— Coffee Chat Foto ]
             </div>
+          </div>
+          <!-- iMessage bubble floating to the right of the polaroid -->
+          <div class="coffee-bubbles">
+            <div class="coffee-bubble">Let's have a coffee chat ☕</div>
+            <div class="coffee-bubble second">I'd love to get to know you.</div>
           </div>
         </div>
       </div>

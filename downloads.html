@@ -1,0 +1,454 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Downloads — Vivien Evers</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #EEECEA;
+      --accent: #6B5CE7;
+      --accent-light: #DDD9F7;
+      --text: #1A1A1A;
+      --text-mid: #666666;
+      --text-light: #999999;
+      --border: #D8D4D0;
+      --dark: #1E1A2E;
+    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: 'DM Sans', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      cursor: none;
+      overflow-x: hidden;
+      min-height: 100vh;
+    }
+
+    /* ── GRAIN + GRID ── */
+    body::before {
+      content: '';
+      position: fixed; inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+      pointer-events: none; z-index: 9990; opacity: .4;
+    }
+    body::after {
+      content: '';
+      position: fixed; inset: 0;
+      background-image:
+        linear-gradient(rgba(0,0,0,.035) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(0,0,0,.035) 1px, transparent 1px);
+      background-size: 40px 40px;
+      pointer-events: none; z-index: 0;
+    }
+
+    /* ── CURSOR ── */
+    .cursor {
+      width: 10px; height: 10px;
+      background: var(--accent); border-radius: 50%;
+      position: fixed; pointer-events: none; z-index: 9999;
+      transform: translate(-50%,-50%);
+      transition: width .2s, height .2s;
+      mix-blend-mode: multiply;
+    }
+    .cursor-ring {
+      width: 36px; height: 36px;
+      border: 1.5px solid var(--accent); border-radius: 50%;
+      position: fixed; pointer-events: none; z-index: 9998;
+      transform: translate(-50%,-50%);
+      opacity: .5;
+      transition: width .25s, height .25s, opacity .2s;
+    }
+
+    /* ── NAV ── */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      padding: 16px 40px;
+      display: flex; align-items: center; justify-content: space-between;
+      backdrop-filter: blur(12px);
+      background: rgba(238,236,234,.85);
+      border-bottom: 1px solid var(--border);
+    }
+    .nav-breadcrumb {
+      display: flex; align-items: center; gap: 6px;
+      background: white; padding: 6px 14px;
+      border-radius: 20px; border: 1px solid var(--border);
+      font-size: 12px;
+    }
+    .folder-icon { display: inline-flex; flex-direction: column; gap: 1px; margin-right: 2px; }
+    .folder-tab { width: 12px; height: 4px; background: #90BEDD; border-radius: 2px 2px 0 0; }
+    .folder-body { width: 18px; height: 13px; background: #689DCF; border-radius: 0 2px 2px 2px; }
+    .nav-breadcrumb .sep { color: var(--text-light); }
+    .nav-breadcrumb .active { color: var(--accent); font-weight: 500; }
+    .nav-links { display: flex; gap: 32px; list-style: none; }
+    .nav-links a {
+      font-size: 14px; font-weight: 500; color: var(--text);
+      text-decoration: none; position: relative; transition: color .2s;
+    }
+    .nav-links a:hover { color: var(--accent); }
+    .nav-links a::after {
+      content: ''; position: absolute; bottom: -2px; left: 0;
+      width: 0; height: 1.5px; background: var(--accent); transition: width .2s;
+    }
+    .nav-links a:hover::after, .nav-links a.active::after { width: 100%; }
+    .nav-links a.active { color: var(--accent); }
+    .nav-links a.nav-dl { color: var(--accent); font-weight: 600; }
+    .nav-links a.nav-dl:hover { color: var(--accent); }
+
+    /* ── PASSWORD OVERLAY ── */
+    #pw-overlay {
+      position: fixed; inset: 0; z-index: 5000;
+      display: flex; align-items: center; justify-content: center;
+      background: rgba(238,236,234,.92);
+      backdrop-filter: blur(8px);
+      transition: opacity .5s ease;
+    }
+    #pw-overlay.fade-out { opacity: 0; pointer-events: none; }
+
+    .pw-mac-win {
+      background: white;
+      border-radius: 14px;
+      box-shadow: 0 24px 80px rgba(0,0,0,.18), 0 2px 8px rgba(0,0,0,.08);
+      overflow: hidden;
+      width: 400px;
+      max-width: calc(100vw - 40px);
+      animation: winAppear .35s cubic-bezier(.34,1.56,.64,1) both;
+    }
+    @keyframes winAppear {
+      from { opacity: 0; transform: scale(.88) translateY(16px); }
+      to   { opacity: 1; transform: scale(1) translateY(0); }
+    }
+    @keyframes shake {
+      0%,100% { transform: translateX(0); }
+      20%     { transform: translateX(-8px); }
+      40%     { transform: translateX(8px); }
+      60%     { transform: translateX(-6px); }
+      80%     { transform: translateX(6px); }
+    }
+    .pw-mac-win.shake { animation: shake .45s ease; }
+
+    .pw-chrome {
+      display: flex; align-items: center; gap: 6px;
+      padding: 12px 16px;
+      background: #F5F3F1;
+      border-bottom: 1px solid var(--border);
+    }
+    .mac-dot { width: 11px; height: 11px; border-radius: 50%; }
+    .mac-dot.r { background: #FF5F57; }
+    .mac-dot.y { background: #FFBD2E; }
+    .mac-dot.g { background: #28C940; }
+    .pw-title {
+      flex: 1; text-align: center;
+      font-size: 12px; font-weight: 500; color: var(--text-mid);
+      margin-right: 33px; /* offset the 3 dots */
+    }
+
+    .pw-body {
+      padding: 32px 28px 28px;
+      text-align: center;
+    }
+    .pw-icon {
+      font-size: 40px; margin-bottom: 16px; display: block;
+    }
+    .pw-headline {
+      font-family: 'Instrument Serif', serif;
+      font-size: 26px; font-weight: 400;
+      margin-bottom: 8px; letter-spacing: -.5px;
+    }
+    .pw-desc {
+      font-size: 13px; color: var(--text-mid);
+      margin-bottom: 24px; line-height: 1.5;
+    }
+    .pw-form {
+      display: flex; flex-direction: column; gap: 12px;
+    }
+    .pw-input-wrap {
+      position: relative;
+    }
+    #pw-input {
+      width: 100%;
+      padding: 12px 16px;
+      border: 1.5px solid var(--border);
+      border-radius: 10px;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 14px;
+      background: var(--bg);
+      color: var(--text);
+      outline: none;
+      transition: border-color .2s;
+      text-align: center;
+      letter-spacing: 2px;
+    }
+    #pw-input:focus { border-color: var(--accent); }
+    #pw-input::placeholder { letter-spacing: 0; color: var(--text-light); }
+    #pw-btn {
+      width: 100%;
+      padding: 12px;
+      background: var(--accent);
+      color: white;
+      border: none;
+      border-radius: 10px;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 14px;
+      font-weight: 600;
+      cursor: none;
+      transition: background .2s, transform .15s;
+    }
+    #pw-btn:hover { background: #5648cc; transform: translateY(-1px); }
+    #pw-hint {
+      font-size: 12px; color: #FF5F57;
+      min-height: 16px; margin-top: 4px;
+      transition: opacity .2s;
+    }
+
+    /* ── MAIN CONTENT ── */
+    .dl-hero {
+      padding: 140px 80px 60px;
+      position: relative; z-index: 1;
+    }
+    .dl-label {
+      font-size: 12px; font-weight: 600; letter-spacing: 2px;
+      text-transform: uppercase; color: var(--text-light);
+      margin-bottom: 16px;
+    }
+    .dl-hero h1 {
+      font-family: 'Instrument Serif', serif;
+      font-size: clamp(48px, 6vw, 80px);
+      letter-spacing: -2px; line-height: 1.05;
+      color: var(--text); margin-bottom: 16px;
+    }
+    .dl-hero p {
+      font-size: 17px; color: var(--text-mid);
+      font-weight: 300; max-width: 480px; line-height: 1.6;
+    }
+
+    /* ── DOWNLOAD CARDS ── */
+    .dl-section {
+      padding: 0 80px 120px;
+      position: relative; z-index: 1;
+    }
+    .dl-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 24px;
+      max-width: 900px;
+    }
+    .dl-card {
+      background: white;
+      border-radius: 20px;
+      padding: 32px 28px;
+      border: 1px solid var(--border);
+      box-shadow: 0 4px 20px rgba(0,0,0,.05);
+      display: flex; flex-direction: column; gap: 12px;
+      transition: transform .2s, box-shadow .2s;
+    }
+    .dl-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 12px 40px rgba(0,0,0,.1);
+    }
+    .dl-card-icon {
+      font-size: 36px; line-height: 1;
+    }
+    .dl-card-name {
+      font-family: 'Instrument Serif', serif;
+      font-size: 22px; letter-spacing: -.3px;
+    }
+    .dl-card-meta {
+      font-size: 12px; color: var(--text-light);
+      font-weight: 500; text-transform: uppercase; letter-spacing: 1px;
+    }
+    .dl-card-desc {
+      font-size: 13px; color: var(--text-mid);
+      line-height: 1.5; flex: 1;
+    }
+    .dl-btn {
+      display: inline-flex; align-items: center; gap: 6px;
+      margin-top: 8px;
+      background: var(--accent);
+      color: white;
+      padding: 10px 20px;
+      border-radius: 100px;
+      font-size: 13px; font-weight: 600;
+      text-decoration: none;
+      width: fit-content;
+      transition: background .2s, transform .15s;
+    }
+    .dl-btn:hover { background: #5648cc; transform: translateY(-1px); }
+
+    /* Note card — no file yet */
+    .dl-card.coming {
+      opacity: .6;
+      pointer-events: none;
+    }
+    .dl-card.coming .dl-btn {
+      background: var(--border); color: var(--text-light);
+    }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 900px) {
+      .dl-hero { padding: 120px 40px 48px; }
+      .dl-section { padding: 0 40px 80px; }
+      .dl-grid { grid-template-columns: 1fr 1fr; }
+    }
+    @media (max-width: 640px) {
+      nav { padding: 10px 16px; }
+      .nav-breadcrumb { display: none; }
+      .nav-links { gap: 14px; }
+      .nav-links a { font-size: 12px; }
+      .dl-hero { padding: 100px 20px 40px; }
+      .dl-section { padding: 0 20px 60px; }
+      .dl-grid { grid-template-columns: 1fr; gap: 16px; }
+    }
+    @media (max-width: 390px) {
+      .nav-links { gap: 10px; }
+      .nav-links a { font-size: 11px; }
+    }
+    @media (hover: none) { body { cursor: auto; } .cursor, .cursor-ring { display: none; } }
+  </style>
+</head>
+<body class="is-loading">
+
+  <div class="cursor" id="cursor"></div>
+  <div class="cursor-ring" id="cursorRing"></div>
+
+  <!-- ══ PASSWORD OVERLAY ══ -->
+  <div id="pw-overlay">
+    <div class="pw-mac-win" id="pw-win">
+      <div class="pw-chrome">
+        <span class="mac-dot r"></span>
+        <span class="mac-dot y"></span>
+        <span class="mac-dot g"></span>
+        <span class="pw-title">Geschützte Downloads</span>
+      </div>
+      <div class="pw-body">
+        <span class="pw-icon">🔒</span>
+        <div class="pw-headline">Passwortgeschützt</div>
+        <p class="pw-desc">Diese Seite ist nur für Recruiter und Hiring Manager. Passwort auf Anfrage.</p>
+        <form class="pw-form" id="pw-form">
+          <div class="pw-input-wrap">
+            <input type="password" id="pw-input" placeholder="Passwort eingeben" autocomplete="off" />
+          </div>
+          <button type="submit" id="pw-btn">Entsperren →</button>
+          <p class="pw-hint" id="pw-hint"></p>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══ NAV ══ -->
+  <nav>
+    <div class="nav-breadcrumb">
+      <span class="folder-icon">
+        <span class="folder-tab"></span>
+        <span class="folder-body"></span>
+      </span>
+      <span>Vivien Evers</span>
+      <span class="sep">›</span>
+      <span class="active">Downloads</span>
+    </div>
+    <ul class="nav-links">
+      <li><a href="index.html">↑ Home</a></li>
+      <li><a href="index.html#work">Work</a></li>
+      <li><a href="about.html">About</a></li>
+      <li><a href="cv.html">CV</a></li>
+      <li><a href="downloads.html" class="nav-dl active">🔒 Downloads</a></li>
+      <li><a href="index.html#contact">Contact</a></li>
+    </ul>
+  </nav>
+
+  <!-- ══ HERO ══ -->
+  <section class="dl-hero">
+    <div class="dl-label">Für Recruiter &amp; Hiring Manager</div>
+    <h1>Downloads</h1>
+    <p>Aktuelle Unterlagen als PDF — direkt, ohne Umwege.</p>
+  </section>
+
+  <!-- ══ DOWNLOAD CARDS ══ -->
+  <section class="dl-section">
+    <div class="dl-grid">
+
+      <div class="dl-card">
+        <div class="dl-card-icon">📄</div>
+        <div class="dl-card-name">Lebenslauf</div>
+        <div class="dl-card-meta">PDF · aktuell</div>
+        <div class="dl-card-desc">Vollständiger Lebenslauf mit Erfahrung, Skills und Projekten.</div>
+        <a href="downloads/cv.pdf" class="dl-btn" download>↓ Download</a>
+      </div>
+
+      <div class="dl-card">
+        <div class="dl-card-icon">🎓</div>
+        <div class="dl-card-name">Ausbildungszeugnis</div>
+        <div class="dl-card-meta">PDF · 2023</div>
+        <div class="dl-card-desc">Abschlusszeugnis der Ausbildung zur Kauffrau für Marketingkommunikation.</div>
+        <a href="downloads/zeugnis.pdf" class="dl-btn" download>↓ Download</a>
+      </div>
+
+      <div class="dl-card">
+        <div class="dl-card-icon">🗂</div>
+        <div class="dl-card-name">Portfolio PDF</div>
+        <div class="dl-card-meta">PDF · komplett</div>
+        <div class="dl-card-desc">Alle Projekte auf einen Blick — ausgedruckt oder im Meeting.</div>
+        <a href="downloads/portfolio.pdf" class="dl-btn" download>↓ Download</a>
+      </div>
+
+    </div>
+  </section>
+
+  <script>
+    /* ── CURSOR ── */
+    const cur  = document.getElementById('cursor');
+    const ring = document.getElementById('cursorRing');
+    let mx=0, my=0, rx=0, ry=0;
+    document.addEventListener('mousemove', e => {
+      mx = e.clientX; my = e.clientY;
+      cur.style.left = mx + 'px'; cur.style.top = my + 'px';
+    });
+    (function loop() {
+      rx += (mx - rx) * .12; ry += (my - ry) * .12;
+      ring.style.left = rx + 'px'; ring.style.top = ry + 'px';
+      requestAnimationFrame(loop);
+    })();
+    document.querySelectorAll('a, button').forEach(el => {
+      el.addEventListener('mouseenter', () => { cur.style.width = cur.style.height = '20px'; ring.style.width = ring.style.height = '56px'; ring.style.opacity = '.3'; });
+      el.addEventListener('mouseleave', () => { cur.style.width = cur.style.height = '10px'; ring.style.width = ring.style.height = '36px'; ring.style.opacity = '.5'; });
+    });
+
+    /* ── PASSWORD GATE ── */
+    const overlay = document.getElementById('pw-overlay');
+    const pwWin   = document.getElementById('pw-win');
+    const pwInput = document.getElementById('pw-input');
+    const pwHint  = document.getElementById('pw-hint');
+
+    /* Already authenticated in this session? */
+    if (sessionStorage.getItem('vivien_dl_auth')) {
+      overlay.style.display = 'none';
+    } else {
+      /* Focus after a tiny delay so autofocus works on all browsers */
+      setTimeout(() => pwInput.focus(), 200);
+    }
+
+    document.getElementById('pw-form').addEventListener('submit', function(e) {
+      e.preventDefault();
+      const val = pwInput.value.trim();
+      if (val === 'vivien2025') {
+        sessionStorage.setItem('vivien_dl_auth', '1');
+        overlay.classList.add('fade-out');
+        setTimeout(() => { overlay.style.display = 'none'; }, 520);
+      } else {
+        /* Shake + hint */
+        pwWin.style.animation = 'none';
+        void pwWin.offsetWidth; /* reflow */
+        pwWin.classList.add('shake');
+        pwWin.addEventListener('animationend', () => pwWin.classList.remove('shake'), { once: true });
+        pwHint.textContent = 'Falsches Passwort. Bitte nochmal versuchen.';
+        pwInput.value = '';
+        pwInput.focus();
+      }
+    });
+  </script>
+
+</body>
+</html>
