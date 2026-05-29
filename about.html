@@ -74,90 +74,72 @@
 
     /* ── HERO ── */
     .about-hero {
-      min-height: 100vh;
-      padding: 120px 80px 80px;
-      display: flex;
-      align-items: center;
+      padding: 100px 80px 60px;
       position: relative;
       z-index: 1;
     }
     .photos-wrap {
       display: flex;
-      gap: 32px;
       align-items: flex-start;
       position: relative;
-      width: 100%;
-      max-width: 1000px;
+      width: fit-content;
+      min-height: 600px;
       margin: 0 auto;
-      justify-content: center;
     }
-    .photo-large {
-      width: 520px;
-      height: 620px;
+    .photo-left {
+      width: 460px;
+      height: 560px;
       border-radius: 20px;
+      overflow: hidden;
       box-shadow: 0 20px 60px rgba(0,0,0,.12);
-      background: #E8E4E0;
-      flex-shrink: 0;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      overflow: hidden;
-      position: relative;
-    }
-    .photo-large img { width:100%; height:100%; object-fit:cover; }
-    .photo-ph {
-      text-align: center;
-      padding: 32px;
-      color: var(--text-light);
-      font-size: 13px;
-      line-height: 1.6;
-    }
-    .photo-right-col {
-      display: flex;
-      flex-direction: column;
-      gap: 20px;
-      align-items: center;
-      padding-top: 40px;
-    }
-    .photo-polaroid {
-      width: 420px;
-      background: white;
-      border-radius: 16px;
-      padding: 16px 16px 48px;
-      box-shadow: 0 12px 48px rgba(0,0,0,.13);
-      transform: rotate(-2deg);
-      flex-shrink: 0;
-      position: relative;
-    }
-    .photo-polaroid-inner {
-      width: 100%;
-      height: 488px;
-      background: #E0DBD5;
-      border-radius: 8px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      overflow: hidden;
-    }
-    .photo-polaroid-inner img { width:100%; height:100%; object-fit:cover; border-radius:8px; }
-    .floating-mac {
-      background: white;
-      border-radius: 14px;
-      box-shadow: 0 8px 32px rgba(0,0,0,.14);
-      overflow: hidden;
-      width: 320px;
-      animation: floatSlow 5s ease-in-out infinite;
-      align-self: center;
-      margin-top: -20px;
       position: relative;
       z-index: 2;
+      flex-shrink: 0;
+    }
+    .photo-left img { width:100%; height:100%; object-fit:cover; display:block; }
+    .photo-right {
+      width: 380px;
+      height: 480px;
+      border-radius: 20px;
+      overflow: hidden;
+      box-shadow: 0 20px 60px rgba(0,0,0,.15);
+      margin-left: -60px;
+      margin-top: 80px;
+      position: relative;
+      z-index: 1;
+      flex-shrink: 0;
+    }
+    .photo-right img { width:100%; height:100%; object-fit:cover; display:block; }
+    .intro-card {
+      position: absolute;
+      bottom: 40px;
+      left: 60px;
+      z-index: 3;
+      background: white;
+      border-radius: 16px;
+      padding: 16px 20px;
+      box-shadow: 0 8px 32px rgba(0,0,0,.12);
+      max-width: 260px;
+      opacity: 0;
+      transform: translateY(10px);
+      animation: introFadeUp .6s ease .4s forwards;
+    }
+    @keyframes introFadeUp { to { opacity: 1; transform: translateY(0); } }
+    .intro-name {
+      font-family: 'Instrument Serif', serif;
+      font-style: italic;
+      font-size: 22px;
+      color: var(--text);
+      line-height: 1.2;
+    }
+    .intro-sub {
+      font-size: 13px;
+      color: var(--text-mid);
+      margin-top: 4px;
     }
     @keyframes floatSlow { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-8px)} }
-    .floating-mac .mac-chrome { display:flex; align-items:center; gap:6px; padding:9px 12px; background:#F5F3F1; border-bottom:1px solid var(--border); }
     .mac-dot { width:10px; height:10px; border-radius:50%; }
     .mac-dot.r{background:#FF5F57;} .mac-dot.y{background:#FFBD2E;} .mac-dot.g{background:#28C940;}
-    .floating-mac-body { padding:14px 16px; font-size:13px; color:var(--text-mid); line-height:1.5; }
-    .floating-mac-body strong { color:var(--text); font-weight:500; }
 
     /* ── STATEMENTS ── */
     .statements {
@@ -311,17 +293,17 @@
     .reveal { opacity:0; transform:translateY(32px); transition:opacity .7s ease,transform .7s ease; }
     .reveal.visible { opacity:1; transform:translateY(0); }
 
-    /* ── IMESSAGE CARD (next to polaroid) ── */
+    /* ── IMESSAGE CARD (floating over right photo) ── */
     .about-imessage {
       position: absolute;
-      top: 16px;
-      right: -168px;
+      top: 100px;
+      right: 60px;
       width: 220px;
       background: white;
       border-radius: 16px;
       box-shadow: 0 8px 32px rgba(0,0,0,.12);
       padding: 14px 16px;
-      z-index: 10;
+      z-index: 4;
       animation: floatSlow 3.5s ease-in-out infinite;
     }
     .ai-timestamp { text-align: right; font-size: 10px; color: #999; margin-bottom: 8px; }
@@ -348,29 +330,46 @@
 
     /* ── RESPONSIVE ── */
     @media (max-width: 900px) {
-      .about-hero { padding: 100px 32px 60px; }
-      .photos-wrap { flex-direction: column; align-items: center; gap: 24px; }
-      .photo-large { width: 100%; max-width: 520px; height: 400px; }
-      .photo-right-col { flex-direction: row; flex-wrap: wrap; justify-content: center; padding-top: 0; gap: 16px; }
-      .photo-polaroid { width: 280px; }
-      .photo-polaroid-inner { height: 300px; }
-      .about-imessage { display: none; }
-      .floating-mac { width: 260px; }
       .statements { padding: 60px 32px; }
       .values { padding: 80px 32px; }
       #contact-cta { padding: 80px 32px; }
       .egg-section { padding: 32px 32px 60px; }
     }
-    @media (max-width: 640px) {
-      nav { padding: 10px 16px; }
-      .nav-breadcrumb { display: none; }
-      .nav-links { gap: 16px; }
-      .nav-links a { font-size: 12px; }
-      .about-hero { padding: 80px 20px 48px; }
-      .photo-right-col { flex-direction: column; align-items: center; }
-      .photo-polaroid { width: 100%; max-width: 340px; }
-      .photo-polaroid-inner { height: 280px; }
-      .floating-mac { width: 100%; max-width: 300px; }
+    @media (max-width: 768px) {
+      .about-hero { padding: 80px 24px 40px; }
+      .photos-wrap {
+        flex-direction: column;
+        align-items: center;
+        width: 100%;
+        min-height: auto;
+      }
+      .photo-left { width: 100%; max-width: 400px; height: 400px; }
+      .photo-right {
+        width: 85%;
+        max-width: 340px;
+        height: 340px;
+        margin-left: auto;
+        margin-right: 20px;
+        margin-top: -40px;
+      }
+      .intro-card {
+        position: relative;
+        bottom: auto;
+        left: auto;
+        margin: 16px auto 0;
+        width: calc(100% - 40px);
+        max-width: 400px;
+        opacity: 1;
+        transform: none;
+        animation: none;
+      }
+      .about-imessage {
+        position: relative;
+        top: auto;
+        right: auto;
+        margin: 12px 20px 0 auto;
+        animation: none;
+      }
       .statements { padding: 48px 20px; }
       .values { padding: 60px 20px; }
       .values-list { gap: 0; }
@@ -459,57 +458,44 @@
     </div>
   </div>
 
-  <!-- ══ HERO: Two photos + floating card ══ -->
+  <!-- ══ HERO: Two overlapping photos + intro card + iMessage ══ -->
   <section class="about-hero">
     <div class="photos-wrap">
 
-      <!-- Left: big portrait photo -->
-      <div class="photo-large reveal">
+      <!-- Left: portrait photo -->
+      <div class="photo-left reveal">
         <img src="images/about/portrait.jpeg" alt="Vivien Evers">
       </div>
 
-      <!-- Right column: polaroid + floating mac card -->
-      <div class="photo-right-col reveal">
-        <div class="floating-mac">
-          <div class="mac-chrome">
-            <span class="mac-dot r"></span>
-            <span class="mac-dot y"></span>
-            <span class="mac-dot g"></span>
-          </div>
-          <div class="floating-mac-body">
-            <strong>Hamburg · 26 · always building something</strong>
-          </div>
-        </div>
+      <!-- Right: coffee chat photo (overlaps left) -->
+      <div class="photo-right reveal">
+        <img src="images/about/coffeechat.png" alt="Vivien — Coffee Chat">
+      </div>
 
-        <div class="photo-polaroid">
-          <div class="photo-polaroid-inner">
-            <img src="images/about/coffeechat.png" alt="Vivien — Coffee Chat">
-          </div>
-          <!-- iMessage card floating to the right of the polaroid -->
-          <div class="about-imessage" id="about-imessage">
-            <div class="ai-timestamp">just now</div>
-            <div class="ai-typing" id="ai-typing">
-              <div class="ai-tdot"></div>
-              <div class="ai-tdot"></div>
-              <div class="ai-tdot"></div>
-            </div>
-            <div class="ai-bubble" id="ai-b1">Let's have a coffee chat ☕</div>
-            <div class="ai-bubble" id="ai-b2">I'd love to get to know you. 🤍</div>
-            <div class="ai-delivered" id="ai-delivered">Delivered</div>
-          </div>
+      <!-- Intro card: bottom-left of photos area -->
+      <div class="intro-card">
+        <div class="intro-name">I'm Vivien.</div>
+        <div class="intro-sub">26 · Hamburg · always building something</div>
+      </div>
+
+      <!-- iMessage: floating over right photo -->
+      <div class="about-imessage" id="about-imessage">
+        <div class="ai-timestamp">just now</div>
+        <div class="ai-typing" id="ai-typing">
+          <div class="ai-tdot"></div>
+          <div class="ai-tdot"></div>
+          <div class="ai-tdot"></div>
         </div>
+        <div class="ai-bubble" id="ai-b1">Let's have a coffee chat ☕</div>
+        <div class="ai-bubble" id="ai-b2">I'd love to get to know you. 🤍</div>
+        <div class="ai-delivered" id="ai-delivered">Delivered</div>
       </div>
 
     </div>
   </section>
 
-  <!-- ══ THREE STATEMENT BLOCKS ══ -->
+  <!-- ══ STATEMENT BLOCKS ══ -->
   <section class="statements">
-
-    <div class="stmt reveal">
-      <div class="stmt-headline">I'm Vivien.</div>
-      <div class="stmt-sub">26, Hamburg-based, always building something.</div>
-    </div>
 
     <div class="stmt reveal">
       <div class="stmt-headline italic">I think in systems.</div>
