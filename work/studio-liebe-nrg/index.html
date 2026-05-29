@@ -144,6 +144,9 @@
     .nav-footer a { font-size:15px; font-weight:500; color:var(--text-mid); text-decoration:none; transition:color .2s; }
     .nav-footer a:hover { color:var(--accent); }
     .nav-footer a.accent { color:var(--accent); }
+    .site-foot { text-align:center; font-size:13px; color:var(--text-light); padding:20px 40px; position:relative; z-index:1; }
+    .impr-link { color:inherit; opacity:.6; text-decoration:none; transition:opacity .2s; }
+    .impr-link:hover { opacity:1; text-decoration:underline; }
 
     /* ── REVEAL ── */
     .reveal { opacity:0; transform:translateY(28px); transition:opacity .7s ease,transform .7s ease; }
@@ -388,6 +391,10 @@
     <a href="../mi4l/index.html">← MI4L — Music is for Lovers</a>
     <a href="../jco/index.html" class="accent">Next: JCO Hamburg →</a>
   </div>
+
+  <footer class="site-foot">
+    © 2026 Vivien Evers · vivienevers.de · <a href="../../impressum.html" class="impr-link">Impressum</a>
+  </footer>
 
   <script>
     const cur=document.getElementById('cursor'),ring=document.getElementById('cursorRing');
