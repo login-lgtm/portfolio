@@ -129,35 +129,6 @@
       flex-shrink: 0;
       position: relative;
     }
-    /* iMessage floating bubble near coffee polaroid */
-    .coffee-bubbles {
-      position: absolute;
-      top: 20px;
-      right: -148px;
-      display: flex;
-      flex-direction: column;
-      gap: 8px;
-      z-index: 10;
-      animation: floatSlow 3.5s ease-in-out infinite;
-    }
-    .coffee-bubble {
-      background: #4FC3F7;
-      color: #fff;
-      border-radius: 18px 18px 18px 4px;
-      padding: 10px 16px;
-      font-size: 13px;
-      font-weight: 500;
-      white-space: nowrap;
-      box-shadow: 0 6px 24px rgba(79,195,247,.35);
-      line-height: 1.4;
-    }
-    .coffee-bubble.second {
-      font-size: 11px;
-      background: #7DD3F5;
-      opacity: 0.92;
-      align-self: flex-start;
-      animation-delay: .5s;
-    }
     .photo-polaroid-inner {
       width: 100%;
       height: 488px;
@@ -340,6 +311,41 @@
     .reveal { opacity:0; transform:translateY(32px); transition:opacity .7s ease,transform .7s ease; }
     .reveal.visible { opacity:1; transform:translateY(0); }
 
+    /* ── IMESSAGE CARD (next to polaroid) ── */
+    .about-imessage {
+      position: absolute;
+      top: 16px;
+      right: -168px;
+      width: 220px;
+      background: white;
+      border-radius: 16px;
+      box-shadow: 0 8px 32px rgba(0,0,0,.12);
+      padding: 14px 16px;
+      z-index: 10;
+      animation: floatSlow 3.5s ease-in-out infinite;
+    }
+    .ai-timestamp { text-align: right; font-size: 10px; color: #999; margin-bottom: 8px; }
+    .ai-typing {
+      display: inline-flex; gap: 4px; align-items: center;
+      background: #E8E8E8; border-radius: 14px 14px 14px 2px; padding: 8px 14px;
+      overflow: hidden; transition: opacity .3s, max-height .3s, padding .3s; max-height: 40px;
+    }
+    .ai-typing.hidden { opacity: 0; max-height: 0; padding: 0; }
+    @keyframes aiTypingDot { 0%,60%,100%{transform:translateY(0);opacity:.4} 30%{transform:translateY(-4px);opacity:1} }
+    .ai-tdot { width: 8px; height: 8px; border-radius: 50%; background: #999; animation: aiTypingDot 1.2s ease-in-out infinite; }
+    .ai-tdot:nth-child(2) { animation-delay: .2s; }
+    .ai-tdot:nth-child(3) { animation-delay: .4s; }
+    .ai-bubble {
+      display: block; background: #0B93F6; border-radius: 14px 14px 2px 14px;
+      padding: 8px 12px; color: white; font-size: 13px; font-weight: 500;
+      margin-top: 6px; opacity: 0; transform: scale(.8); transform-origin: left bottom;
+      transition: opacity .3s ease, transform .3s ease;
+    }
+    .ai-bubble.shown { opacity: 1; transform: scale(1); }
+    .ai-delivered { font-size: 10px; color: #999; text-align: right; margin-top: 4px; opacity: 0; transition: opacity .3s; }
+    .ai-delivered.shown { opacity: 1; }
+    .ai-delivered.read { color: #0B93F6; }
+
     /* ── RESPONSIVE ── */
     @media (max-width: 900px) {
       .about-hero { padding: 100px 32px 60px; }
@@ -348,7 +354,7 @@
       .photo-right-col { flex-direction: row; flex-wrap: wrap; justify-content: center; padding-top: 0; gap: 16px; }
       .photo-polaroid { width: 280px; }
       .photo-polaroid-inner { height: 300px; }
-      .coffee-bubbles { display: none; }
+      .about-imessage { display: none; }
       .floating-mac { width: 260px; }
       .statements { padding: 60px 32px; }
       .values { padding: 80px 32px; }
@@ -479,10 +485,17 @@
           <div class="photo-polaroid-inner">
             <img src="images/about/coffeechat.png" alt="Vivien — Coffee Chat">
           </div>
-          <!-- iMessage bubble floating to the right of the polaroid -->
-          <div class="coffee-bubbles">
-            <div class="coffee-bubble">Let's have a coffee chat ☕</div>
-            <div class="coffee-bubble second">I'd love to get to know you.</div>
+          <!-- iMessage card floating to the right of the polaroid -->
+          <div class="about-imessage" id="about-imessage">
+            <div class="ai-timestamp">just now</div>
+            <div class="ai-typing" id="ai-typing">
+              <div class="ai-tdot"></div>
+              <div class="ai-tdot"></div>
+              <div class="ai-tdot"></div>
+            </div>
+            <div class="ai-bubble" id="ai-b1">Let's have a coffee chat ☕</div>
+            <div class="ai-bubble" id="ai-b2">I'd love to get to know you. 🤍</div>
+            <div class="ai-delivered" id="ai-delivered">Delivered</div>
           </div>
         </div>
       </div>
@@ -619,6 +632,33 @@
       entries.forEach(e => { if (e.isIntersecting) setTimeout(() => e.target.classList.add('visible'), +e.target.dataset.delay || 0); });
     }, { threshold: .15 });
     document.querySelectorAll('.value-row').forEach((el, i) => { el.dataset.delay = i * 100; obsV.observe(el); });
+
+    /* ── IMESSAGE TYPING SEQUENCE ── */
+    (function() {
+      const aiTyping   = document.getElementById('ai-typing');
+      const aiB1       = document.getElementById('ai-b1');
+      const aiB2       = document.getElementById('ai-b2');
+      const aiDelivered = document.getElementById('ai-delivered');
+      if (!aiTyping) return;
+      setTimeout(() => {
+        aiTyping.classList.add('hidden');
+        setTimeout(() => {
+          if (aiB1) aiB1.classList.add('shown');
+          setTimeout(() => {
+            if (aiB2) aiB2.classList.add('shown');
+            setTimeout(() => {
+              if (aiDelivered) {
+                aiDelivered.classList.add('shown');
+                setTimeout(() => {
+                  aiDelivered.textContent = 'Read ✓✓';
+                  aiDelivered.classList.add('read');
+                }, 1000);
+              }
+            }, 800);
+          }, 700);
+        }, 200);
+      }, 1500);
+    })();
 
     /* ── EASTER EGG: hover "psst." → staggered mac windows ── */
     (function() {

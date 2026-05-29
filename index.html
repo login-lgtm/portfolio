@@ -546,31 +546,6 @@
     .fc-sprout { font-size:20px; margin-top:10px; display:inline-block; transform:scale(0); transition:transform .5s cubic-bezier(.34,1.56,.64,1); }
     .fc-sprout.shown { transform:scale(1); }
 
-    /* ── CARD 2 — iMessage ── */
-    .fc-imessage { width:230px; top:200px; right:380px; z-index:6; padding:14px 16px; }
-    .fc-timestamp { text-align:right; font-size:10px; color:#999; margin-bottom:8px; }
-    .fc-typing {
-      display:inline-flex; gap:4px; align-items:center;
-      background:#E8E8E8; border-radius:14px 14px 14px 2px; padding:8px 14px;
-      overflow:hidden; transition:opacity .3s, max-height .3s, padding .3s; max-height:40px;
-    }
-    .fc-typing.hidden { opacity:0; max-height:0; padding:0; }
-    @keyframes typingDot { 0%,60%,100%{transform:translateY(0);opacity:.4} 30%{transform:translateY(-4px);opacity:1} }
-    .fc-tdot { width:8px; height:8px; border-radius:50%; background:#999; animation:typingDot 1.2s ease-in-out infinite; }
-    .fc-tdot:nth-child(2){animation-delay:.2s} .fc-tdot:nth-child(3){animation-delay:.4s}
-    .fc-bubble {
-      display:block; background:#0B93F6; border-radius:14px 14px 2px 14px;
-      padding:8px 12px; color:white; font-size:14px; font-weight:500;
-      margin-top:6px; opacity:0; transform:scale(.8); transform-origin:left bottom;
-      transition:opacity .3s ease, transform .3s ease;
-    }
-    .fc-bubble.shown { opacity:1; transform:scale(1); }
-    .fc-delivered { font-size:10px; color:#999; text-align:right; margin-top:4px; opacity:0; transition:opacity .3s; }
-    .fc-delivered.shown { opacity:1; }
-    .fc-delivered.read { color:#0B93F6; }
-    @keyframes wiggle { 0%,100%{rotate:0deg} 25%{rotate:-1.5deg} 75%{rotate:1.5deg} }
-    .fc-imessage:hover { animation:wiggle .4s ease; }
-
     /* ── CARD 3 — Spotify ── */
     .fc-spotify { width:280px; bottom:100px; right:40px; z-index:1; padding:14px; background:#121212; border-radius:16px; color:white; }
     .fc-sp-nowplaying { display:block; font-size:9px; color:#1DB954; letter-spacing:.1em; text-transform:uppercase; margin-bottom:10px; font-weight:600; }
@@ -1704,19 +1679,6 @@
         </div>
       </div>
 
-      <!-- CARD 2: iMessage -->
-      <div class="float-card fc-imessage" id="fc-c2">
-        <div class="fc-timestamp">just now</div>
-        <div class="fc-typing" id="fc-typing">
-          <div class="fc-tdot"></div>
-          <div class="fc-tdot"></div>
-          <div class="fc-tdot"></div>
-        </div>
-        <div class="fc-bubble" id="fc-b1">hi, it's me 👋</div>
-        <div class="fc-bubble" id="fc-b2">let's build something! 🤍</div>
-        <div class="fc-delivered" id="fc-delivered">Delivered</div>
-      </div>
-
       <!-- CARD 3: Spotify -->
       <div class="float-card fc-spotify" id="fc-c3">
         <span class="fc-sp-nowplaying">Now Playing</span>
@@ -2659,32 +2621,6 @@
           card.style.setProperty('--parallax-y', (y * f) + 'px');
         });
       });
-
-      /* iMessage typing sequence */
-      const typingEl  = document.getElementById('fc-typing');
-      const bubble1   = document.getElementById('fc-b1');
-      const bubble2   = document.getElementById('fc-b2');
-      const delivered = document.getElementById('fc-delivered');
-      if (typingEl) {
-        setTimeout(() => {
-          typingEl.classList.add('hidden');
-          setTimeout(() => {
-            if (bubble1) bubble1.classList.add('shown');
-            setTimeout(() => {
-              if (bubble2) bubble2.classList.add('shown');
-              setTimeout(() => {
-                if (delivered) {
-                  delivered.classList.add('shown');
-                  setTimeout(() => {
-                    delivered.textContent = 'Read ✓✓';
-                    delivered.classList.add('read');
-                  }, 1000);
-                }
-              }, 800);
-            }, 700);
-          }, 200);
-        }, 1500);
-      }
 
       /* Sprout pop-in after short delay */
       setTimeout(() => {
