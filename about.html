@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Vivien Evers — About</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@400;600&family=Instrument+Serif:ital@0;1&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
   <style>
     :root {
       --bg: #EEECEA; --accent: #6B5CE7; --accent-light: #DDD9F7;
@@ -83,48 +83,58 @@
       align-items: flex-start;
       position: relative;
       width: fit-content;
-      min-height: 600px;
       margin: 0 auto;
+      gap: 40px;
     }
     .photo-left {
-      width: 460px;
-      height: 560px;
+      width: 420px;
+      height: 520px;
       border-radius: 20px;
       overflow: hidden;
       box-shadow: 0 20px 60px rgba(0,0,0,.12);
       position: relative;
       z-index: 2;
       flex-shrink: 0;
+      rotate: -2deg;
+      will-change: transform;
     }
     .photo-left img { width:100%; height:100%; object-fit:cover; display:block; }
     .photo-right {
-      width: 380px;
-      height: 480px;
-      border-radius: 20px;
-      overflow: hidden;
-      box-shadow: 0 20px 60px rgba(0,0,0,.15);
-      margin-left: -60px;
-      margin-top: 80px;
+      width: 420px;
+      background: white;
+      padding: 14px 14px 52px 14px;
+      border-radius: 4px;
+      box-shadow: 0 8px 32px rgba(0,0,0,.15), 0 2px 8px rgba(0,0,0,.08);
+      rotate: 2.5deg;
+      transform-origin: bottom center;
       position: relative;
       z-index: 1;
       flex-shrink: 0;
+      will-change: transform;
     }
-    .photo-right img { width:100%; height:100%; object-fit:cover; display:block; }
+    .photo-right img { width:100%; height:360px; object-fit:cover; border-radius:2px; display:block; }
+    .photo-right-label {
+      text-align: center;
+      font-family: 'Caveat', cursive;
+      font-size: 16px;
+      color: #666;
+      margin-top: 8px;
+    }
     .intro-card {
       position: absolute;
-      bottom: 40px;
-      left: 60px;
-      z-index: 3;
+      bottom: -20px;
+      left: 20px;
+      z-index: 5;
       background: white;
       border-radius: 16px;
       padding: 16px 20px;
-      box-shadow: 0 8px 32px rgba(0,0,0,.12);
+      box-shadow: 0 12px 40px rgba(0,0,0,.14);
       max-width: 260px;
       opacity: 0;
-      transform: translateY(10px);
+      transform: translateY(10px) rotate(-1deg);
       animation: introFadeUp .6s ease .4s forwards;
     }
-    @keyframes introFadeUp { to { opacity: 1; transform: translateY(0); } }
+    @keyframes introFadeUp { to { opacity: 1; transform: translateY(0) rotate(-1deg); } }
     .intro-name {
       font-family: 'Instrument Serif', serif;
       font-style: italic;
@@ -138,12 +148,13 @@
       margin-top: 4px;
     }
     @keyframes floatSlow { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-8px)} }
+    @keyframes floatTilted { 0%,100%{transform:rotate(1deg) translateY(0)} 50%{transform:rotate(1deg) translateY(-8px)} }
     .mac-dot { width:10px; height:10px; border-radius:50%; }
     .mac-dot.r{background:#FF5F57;} .mac-dot.y{background:#FFBD2E;} .mac-dot.g{background:#28C940;}
 
     /* ── STATEMENTS ── */
     .statements {
-      padding: 100px 80px 60px;
+      padding: 60px 80px 60px;
       position: relative;
       z-index: 1;
     }
@@ -293,18 +304,18 @@
     .reveal { opacity:0; transform:translateY(32px); transition:opacity .7s ease,transform .7s ease; }
     .reveal.visible { opacity:1; transform:translateY(0); }
 
-    /* ── IMESSAGE CARD (floating over right photo) ── */
+    /* ── IMESSAGE CARD (floating right of coffee photo) ── */
     .about-imessage {
       position: absolute;
-      top: 100px;
-      right: 60px;
+      top: 20px;
+      right: -10px;
       width: 220px;
       background: white;
       border-radius: 16px;
       box-shadow: 0 8px 32px rgba(0,0,0,.12);
       padding: 14px 16px;
-      z-index: 4;
-      animation: floatSlow 3.5s ease-in-out infinite;
+      z-index: 6;
+      animation: floatTilted 3.5s ease-in-out infinite;
     }
     .ai-timestamp { text-align: right; font-size: 10px; color: #999; margin-bottom: 8px; }
     .ai-typing {
@@ -330,34 +341,24 @@
 
     /* ── RESPONSIVE ── */
     @media (max-width: 900px) {
-      .statements { padding: 60px 32px; }
-      .values { padding: 80px 32px; }
-      #contact-cta { padding: 80px 32px; }
-      .egg-section { padding: 32px 32px 60px; }
-    }
-    @media (max-width: 768px) {
-      .about-hero { padding: 80px 24px 40px; }
+      /* Hero: column layout (fixes clipping on 769–900px screens) */
+      .about-hero { padding: 80px 32px 60px; }
       .photos-wrap {
         flex-direction: column;
         align-items: center;
         width: 100%;
-        min-height: auto;
+        gap: 24px;
       }
-      .photo-left { width: 100%; max-width: 400px; height: 400px; }
-      .photo-right {
-        width: 85%;
-        max-width: 340px;
-        height: 340px;
-        margin-left: auto;
-        margin-right: 20px;
-        margin-top: -40px;
-      }
+      .photo-left { width: 100%; height: auto; rotate: 0deg; }
+      .photo-left img { height: 400px; }
+      .photo-right { width: 100%; padding: 10px 10px 40px 10px; rotate: 0deg; transform-origin: center; }
+      .photo-right img { height: 300px; }
       .intro-card {
         position: relative;
         bottom: auto;
         left: auto;
         margin: 16px auto 0;
-        width: calc(100% - 40px);
+        width: calc(100% - 64px);
         max-width: 400px;
         opacity: 1;
         transform: none;
@@ -367,15 +368,26 @@
         position: relative;
         top: auto;
         right: auto;
-        margin: 12px 20px 0 auto;
+        align-self: flex-end;
+        margin-top: -20px;
+        transform: none;
         animation: none;
       }
+      /* Section padding */
+      .statements { padding: 48px 32px; }
+      .values { padding: 60px 32px; }
+      .values-list { gap: 0; }
+      #contact-cta { padding: 60px 32px; }
+      .egg-section { padding: 24px 32px 48px; }
+      .egg-windows { flex-wrap: wrap; }
+    }
+    @media (max-width: 480px) {
+      .about-hero { padding: 80px 20px 60px; }
+      .intro-card { width: calc(100% - 40px); }
       .statements { padding: 48px 20px; }
       .values { padding: 60px 20px; }
-      .values-list { gap: 0; }
       #contact-cta { padding: 60px 20px; }
       .egg-section { padding: 24px 20px 48px; }
-      .egg-windows { flex-wrap: wrap; }
     }
     @media (max-width: 390px) {
       nav { padding: 8px 12px; }
@@ -464,12 +476,13 @@
 
       <!-- Left: portrait photo -->
       <div class="photo-left reveal">
-        <img src="images/about/portrait.jpeg" alt="Vivien Evers">
+        <img src="images/about/portrait.jpeg" alt="Vivien Evers" loading="lazy">
       </div>
 
-      <!-- Right: coffee chat photo (overlaps left) -->
+      <!-- Right: coffee chat photo (Polaroid) -->
       <div class="photo-right reveal">
-        <img src="images/about/coffeechat.png" alt="Vivien — Coffee Chat">
+        <img src="images/about/coffeechat.png" alt="Vivien — Coffee Chat" loading="lazy">
+        <div class="photo-right-label">coffee first ☕</div>
       </div>
 
       <!-- Intro card: bottom-left of photos area -->
@@ -621,29 +634,38 @@
 
     /* ── IMESSAGE TYPING SEQUENCE ── */
     (function() {
-      const aiTyping   = document.getElementById('ai-typing');
-      const aiB1       = document.getElementById('ai-b1');
-      const aiB2       = document.getElementById('ai-b2');
+      const aiTyping    = document.getElementById('ai-typing');
+      const aiB1        = document.getElementById('ai-b1');
+      const aiB2        = document.getElementById('ai-b2');
       const aiDelivered = document.getElementById('ai-delivered');
-      if (!aiTyping) return;
-      setTimeout(() => {
-        aiTyping.classList.add('hidden');
+      const container   = document.getElementById('about-imessage');
+      if (!aiTyping || !container) return;
+
+      function runSequence() {
         setTimeout(() => {
-          if (aiB1) aiB1.classList.add('shown');
+          aiTyping.classList.add('hidden');
           setTimeout(() => {
-            if (aiB2) aiB2.classList.add('shown');
+            if (aiB1) aiB1.classList.add('shown');
             setTimeout(() => {
-              if (aiDelivered) {
-                aiDelivered.classList.add('shown');
-                setTimeout(() => {
-                  aiDelivered.textContent = 'Read ✓✓';
-                  aiDelivered.classList.add('read');
-                }, 1000);
-              }
-            }, 800);
-          }, 700);
-        }, 200);
-      }, 1500);
+              if (aiB2) aiB2.classList.add('shown');
+              setTimeout(() => {
+                if (aiDelivered) {
+                  aiDelivered.classList.add('shown');
+                  setTimeout(() => {
+                    aiDelivered.textContent = 'Read ✓✓';
+                    aiDelivered.classList.add('read');
+                  }, 1000);
+                }
+              }, 800);
+            }, 700);
+          }, 200);
+        }, 1500);
+      }
+
+      const obsIM = new IntersectionObserver(entries => {
+        if (entries[0].isIntersecting) { obsIM.disconnect(); runSequence(); }
+      }, { threshold: 0.3 });
+      obsIM.observe(container);
     })();
 
     /* ── EASTER EGG: hover "psst." → staggered mac windows ── */
