@@ -484,20 +484,14 @@
     .btn-secondary:hover { border-color: var(--accent); color: var(--accent); transform: translateY(-2px); }
 
     /* floating hero cards */
-    .hero-right {
-      flex: 1; position: relative; height: 500px;
-      display: flex; align-items: center; justify-content: center;
-    }
+    /* ─── HERO FLOATING CARDS ────────────────────────────── */
+    .hero-right { flex:1; position:relative; height:600px; }
     .float-card {
-      position: absolute; background: white;
-      border-radius: 16px; box-shadow: 0 8px 40px rgba(0,0,0,.10);
-      overflow: hidden;
-      animation: floatAnim var(--dur,4s) ease-in-out infinite;
-      animation-delay: var(--delay,0s);
-    }
-    @keyframes floatAnim {
-      0%,100% { transform: translateY(0) rotate(var(--rot,0deg)); }
-      50%      { transform: translateY(-12px) rotate(var(--rot,0deg)); }
+      position:absolute; background:white;
+      border-radius:16px; box-shadow:0 8px 32px rgba(0,0,0,.10);
+      transform:translateX(var(--parallax-x,0px))
+                translateY(calc(var(--float-y,0px) + var(--parallax-y,0px)));
+      will-change:transform;
     }
     .mac-chrome {
       display: flex; align-items: center; gap: 6px;
@@ -510,31 +504,137 @@
     .mac-dot.yellow { background:#FFBD2E; }
     .mac-dot.green  { background:#28C940; }
     .mac-chrome-title { font-size:11px; color:var(--text-light); margin-left:6px; }
-    .card-content { padding: 20px 24px; }
-    .card-main {
-      width:380px; top:40px; right:60px;
-      opacity:0;
-      animation: fadeUp .7s ease .5s forwards, floatAnim 5s ease-in-out 1.2s infinite;
-      --rot:-1deg;
+    /* ── Shared card chrome ── */
+    .fc-chrome {
+      display:flex; align-items:center; gap:5px;
+      padding:0 12px; height:28px;
+      background:#F5F3F1; border-bottom:1px solid rgba(0,0,0,.06);
     }
-    .card-main .card-label { font-size:11px; color:var(--accent); font-weight:600; text-transform:uppercase; letter-spacing:.08em; margin-bottom:6px; }
-    .card-main .card-title { font-family:'Instrument Serif',serif; font-size:20px; margin-bottom:8px; }
-    .card-main .card-desc  { font-size:13px; color:var(--text-mid); line-height:1.6; margin-bottom:14px; }
-    .tag-row { display:flex; gap:6px; flex-wrap:wrap; }
-    .tag { font-size:11px; background:var(--tag-bg); color:var(--text-mid); padding:4px 10px; border-radius:100px; }
-    .tag.accent { background:var(--accent-light); color:var(--accent); }
-    .card-small {
-      width:200px; bottom:80px; right:20px;
-      opacity:0;
-      animation: fadeUp .7s ease .8s forwards, floatAnim 4s ease-in-out 1.5s infinite;
-      --rot:2deg; --dur:4s; --delay:.5s;
+    .fc-dot { width:6px; height:6px; border-radius:50%; flex-shrink:0; }
+    .fc-dot.r{background:#FF5F57;} .fc-dot.y{background:#FFBD2E;} .fc-dot.g{background:#28C940;}
+    .fc-chrome-label { font-size:10px; color:#999; margin-left:6px; }
+
+    /* ── CARD 1 — About / Vines ── */
+    .float-card.fc-about { width:260px; top:60px; right:60px; z-index:5; overflow:visible; background:transparent; box-shadow:none; }
+    .fc-about-wrap { background:white; border-radius:16px; box-shadow:0 8px 32px rgba(0,0,0,.10); overflow:hidden; position:relative; z-index:1; }
+    .fc-about-wrap .fc-chrome { border-radius:16px 16px 0 0; }
+    .vine-svg {
+      position:absolute; overflow:visible;
+      top:-40px; left:-40px; width:calc(100% + 80px); height:calc(100% + 80px);
+      pointer-events:none; z-index:0;
     }
-    .card-location {
-      width:190px; top:200px; left:20px;
-      opacity:0;
-      animation: fadeUp .7s ease 1s forwards, floatAnim 6s ease-in-out 1.8s infinite;
-      --rot:-2deg; --dur:6s;
+    .vine-path {
+      fill:none; stroke:#6B8F5E; stroke-width:1.5; stroke-linecap:round;
+      stroke-dasharray:300; stroke-dashoffset:300;
+      transition:stroke-dashoffset 2s ease-in-out;
     }
+    .vine-path.drawn { stroke-dashoffset:0; }
+    .vine-leaf { fill:#81C784; opacity:0; transition:opacity .5s ease 1.5s; }
+    .vine-leaf.shown { opacity:0.8; }
+    .fc-about-body { padding:24px 20px 20px; text-align:center; }
+    .fc-about-text { font-family:'Instrument Serif',serif; font-style:italic; font-size:22px; color:#1A1A1A; line-height:1.4; }
+    .fc-sprout { font-size:20px; margin-top:12px; display:inline-block; transform:scale(0); transition:transform .4s cubic-bezier(.34,1.56,.64,1) 2.5s; }
+    .fc-sprout.shown { transform:scale(1); }
+    @keyframes sway { 0%,100%{transform:rotate(0deg)} 50%{transform:rotate(5deg)} }
+    .fc-about:hover .vine-leaf.shown { animation:sway 2s ease-in-out infinite; }
+
+    /* ── CARD 2 — iMessage ── */
+    .fc-imessage { width:230px; top:300px; right:380px; z-index:6; padding:14px 16px; }
+    .fc-timestamp { text-align:right; font-size:10px; color:#999; margin-bottom:8px; }
+    .fc-typing {
+      display:inline-flex; gap:4px; align-items:center;
+      background:#E8E8E8; border-radius:14px 14px 14px 2px; padding:8px 14px;
+      overflow:hidden; transition:opacity .3s, max-height .3s, padding .3s; max-height:40px;
+    }
+    .fc-typing.hidden { opacity:0; max-height:0; padding:0; }
+    @keyframes typingDot { 0%,60%,100%{transform:translateY(0);opacity:.4} 30%{transform:translateY(-4px);opacity:1} }
+    .fc-tdot { width:8px; height:8px; border-radius:50%; background:#999; animation:typingDot 1.2s ease-in-out infinite; }
+    .fc-tdot:nth-child(2){animation-delay:.2s} .fc-tdot:nth-child(3){animation-delay:.4s}
+    .fc-bubble {
+      display:block; background:#0B93F6; border-radius:14px 14px 2px 14px;
+      padding:8px 12px; color:white; font-size:14px; font-weight:500;
+      margin-top:6px; opacity:0; transform:scale(.8); transform-origin:left bottom;
+      transition:opacity .3s ease, transform .3s ease;
+    }
+    .fc-bubble.shown { opacity:1; transform:scale(1); }
+    .fc-delivered { font-size:10px; color:#999; text-align:right; margin-top:4px; opacity:0; transition:opacity .3s; }
+    .fc-delivered.shown { opacity:1; }
+    .fc-delivered.read { color:#0B93F6; }
+    @keyframes wiggle { 0%,100%{rotate:0deg} 25%{rotate:-1.5deg} 75%{rotate:1.5deg} }
+    .fc-imessage:hover { animation:wiggle .4s ease; }
+
+    /* ── CARD 3 — Spotify ── */
+    .fc-spotify { width:280px; bottom:140px; right:60px; z-index:1; padding:14px; background:#121212; border-radius:16px; color:white; }
+    .fc-sp-top { display:flex; align-items:center; gap:12px; position:relative; margin-bottom:10px; }
+    .fc-sp-album {
+      width:52px; height:52px; border-radius:6px; flex-shrink:0;
+      background:linear-gradient(135deg,#1a1a2e,#16213e,#0f3460);
+      display:flex; align-items:center; justify-content:center; position:relative; overflow:hidden;
+    }
+    .fc-sp-art { font-size:18px; color:#E8D5A3; font-family:Georgia,serif; font-weight:bold; letter-spacing:-2px; text-shadow:0 0 10px rgba(232,213,163,.5); }
+    .fc-sp-album::after { content:''; position:absolute; inset:-2px; border:1px solid rgba(232,213,163,.2); border-radius:50%; animation:spinRing 4s linear infinite; }
+    @keyframes spinRing{to{transform:rotate(360deg)}}
+    .fc-sp-info { flex:1; overflow:hidden; }
+    .fc-sp-song { font-size:13px; font-weight:600; color:white; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+    .fc-sp-artist { font-size:11px; color:#B3B3B3; margin-top:2px; }
+    .fc-sp-heart { position:absolute; right:0; top:50%; transform:translateY(-50%); font-size:16px; color:#B3B3B3; cursor:pointer; transition:color .15s; }
+    .fc-sp-heart:hover { color:#1DB954; }
+    .fc-sp-controls { display:flex; justify-content:center; align-items:center; gap:16px; margin-bottom:8px; }
+    .fc-sp-ctrl { font-size:14px; color:#B3B3B3; cursor:pointer; }
+    .fc-sp-play { width:28px; height:28px; border-radius:50%; background:white; color:#121212; border:none; cursor:pointer; display:flex; align-items:center; justify-content:center; font-size:10px; flex-shrink:0; }
+    .fc-sp-progress { display:flex; align-items:center; gap:6px; }
+    .fc-sp-time { font-size:10px; color:#B3B3B3; }
+    .fc-sp-bar { flex:1; height:3px; background:#535353; border-radius:100px; position:relative; cursor:pointer; }
+    .fc-sp-fill { position:absolute; left:0; top:0; height:100%; background:#1DB954; border-radius:100px; animation:spProg 30s linear infinite; }
+    @keyframes spProg{0%{width:30%}100%{width:100%}}
+    .fc-sp-dot { position:absolute; right:-4px; top:-3px; width:8px; height:8px; border-radius:50%; background:white; opacity:0; transition:opacity .15s; }
+    .fc-sp-bar:hover .fc-sp-dot { opacity:1; }
+    .fc-spotify:hover .fc-sp-fill { animation-play-state:paused; }
+
+    /* ── CARD 4 — Sticky Note ── */
+    .fc-sticky {
+      width:170px; top:180px; right:300px; z-index:4;
+      background:#FFF8C5; border-radius:3px; padding:16px 14px 24px; position:relative;
+      box-shadow:2px 4px 12px rgba(0,0,0,.15), 0 0 0 1px rgba(0,0,0,.03);
+      rotate:-3deg; transition:rotate .3s ease, scale .3s ease, box-shadow .3s ease;
+    }
+    .fc-sticky:hover { rotate:0deg; scale:1.05; box-shadow:4px 8px 20px rgba(0,0,0,.2); }
+    .fc-sticky::after { content:''; position:absolute; bottom:0; right:0; width:20px; height:20px; background:linear-gradient(225deg,#EEE8B5 50%,transparent 50%); }
+    .fc-sticky-holes { display:flex; gap:10px; margin-bottom:12px; }
+    .fc-sticky-holes span { width:5px; height:5px; border-radius:50%; background:rgba(0,0,0,.15); }
+    .fc-sticky-num { font-family:'Instrument Serif',serif; font-size:48px; color:#1A1A1A; line-height:1; }
+    .fc-sticky-text { font-size:13px; font-weight:500; color:#666; line-height:1.4; margin-top:4px; }
+    .fc-sticky-sub { font-size:10px; color:#999; margin-top:8px; }
+
+    /* ── CARD 5 — Hamburg Weather (live) ── */
+    .fc-weather { width:200px; bottom:80px; right:320px; z-index:2; padding:16px 18px; }
+    .fc-weather-header { display:flex; justify-content:space-between; align-items:center; margin-bottom:8px; }
+    .fc-weather-city { font-weight:500; font-size:13px; color:#666; }
+    .fc-live-dot { width:6px; height:6px; border-radius:50%; background:#ff4444; animation:livePulse 2s infinite; }
+    @keyframes livePulse { 0%{box-shadow:0 0 0 0 rgba(255,68,68,.4)} 70%{box-shadow:0 0 0 6px rgba(255,68,68,0)} 100%{box-shadow:0 0 0 0 rgba(255,68,68,0)} }
+    .fc-weather-icon { font-size:40px; text-align:center; display:block; margin:8px 0; line-height:1; }
+    .fc-weather-temp { font-family:'Instrument Serif',serif; font-size:36px; color:#1A1A1A; text-align:center; line-height:1; }
+    .fc-weather-quote { font-style:italic; font-size:12px; color:#666; text-align:center; margin-top:8px; line-height:1.4; min-height:34px; }
+    @keyframes shimmer{0%{background-position:-200% 0}100%{background-position:200% 0}}
+    .fc-skel { background:linear-gradient(90deg,#F0EDEA 25%,#E8E4E0 50%,#F0EDEA 75%); background-size:200% 100%; animation:shimmer 1.5s infinite; border-radius:4px; display:block; }
+    .fc-skel-icon { width:40px; height:40px; border-radius:50%; margin:8px auto; }
+    .fc-skel-temp { width:80px; height:36px; margin:4px auto; }
+    .fc-skel-quote { width:140px; height:32px; margin:8px auto; }
+
+    /* ── CARD 6 — Coffee ── */
+    .fc-coffee { width:190px; top:80px; right:360px; z-index:3; padding:16px 18px; transition:background .3s; }
+    .fc-coffee:hover { background:#FFF8F0; }
+    .fc-coffee-header { font-weight:500; font-size:12px; color:#999; margin-bottom:10px; }
+    .fc-coffee-cups { display:flex; gap:8px; font-size:22px; margin-bottom:8px; }
+    .fc-cup-full { position:relative; display:inline-block; }
+    .fc-cup-full::after { content:'~'; position:absolute; top:-8px; left:50%; transform:translateX(-50%); font-size:10px; color:#ccc; animation:steam 2s ease-in-out infinite; }
+    .fc-cup-full:nth-child(2)::after { animation-delay:.7s; }
+    @keyframes steam { 0%,100%{opacity:0;transform:translateX(-50%) translateY(0)} 50%{opacity:1;transform:translateX(-50%) translateY(-6px)} }
+    .fc-cup-empty { opacity:.3; transition:opacity .4s, transform .4s; display:inline-block; }
+    @keyframes cupPop { 0%{transform:scale(0)} 80%{transform:scale(1.3)} 100%{transform:scale(1)} }
+    .fc-cup-empty.popped { opacity:1; animation:cupPop .4s cubic-bezier(.34,1.56,.64,1); }
+    .fc-coffee-count { font-size:13px; color:#666; margin-top:6px; }
+    .fc-coffee-quote { font-style:italic; font-size:12px; color:#999; margin-top:4px; line-height:1.4; }
 
     /* ─────────────────────────────────────────────
        SECTION HEADERS
@@ -1517,42 +1617,99 @@
     </div>
 
     <div class="hero-right">
-      <div class="float-card card-main">
-        <div class="mac-chrome">
-          <span class="mac-dot red"></span>
-          <span class="mac-dot yellow"></span>
-          <span class="mac-dot green"></span>
-          <span class="mac-chrome-title">vivien-evers — about</span>
-        </div>
-        <div class="card-content">
-          <div class="card-label">About me</div>
-          <div class="card-title">Brand builder. Design thinker.</div>
-          <div class="card-desc">I design how brands look, feel and communicate — from visual identity to campaign.</div>
-          <div class="tag-row">
-            <span class="tag accent">Brand & Marketing</span>
-            <span class="tag">Figma</span>
-            <span class="tag">Adobe Suite</span>
-            <span class="tag">Print</span>
+
+      <!-- CARD 1: About / Vines -->
+      <div class="float-card fc-about" id="fc-c1">
+        <svg class="vine-svg" viewBox="0 0 340 300" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path class="vine-path" id="vine1" d="M 20 220 C 0 180 -30 140 -20 80 C -15 40 10 20 -10 -10"/>
+          <path class="vine-path" id="vine2" d="M 240 220 C 260 180 280 130 270 70 C 265 30 240 10 260 -20"/>
+          <path class="vine-path" id="vine3" d="M 10 20 C -20 0 -40 -20 -30 -50"/>
+          <path class="vine-path" id="vine4" d="M 250 20 C 275 -10 285 -30 270 -55"/>
+          <ellipse class="vine-leaf" cx="-5" cy="60" rx="8" ry="5" transform="rotate(-30,-5,60)"/>
+          <ellipse class="vine-leaf" cx="-25" cy="100" rx="7" ry="4" transform="rotate(20,-25,100)"/>
+          <ellipse class="vine-leaf" cx="-15" cy="145" rx="9" ry="5" transform="rotate(-15,-15,145)"/>
+          <ellipse class="vine-leaf" cx="260" cy="50" rx="8" ry="5" transform="rotate(30,260,50)"/>
+          <ellipse class="vine-leaf" cx="272" cy="95" rx="7" ry="4" transform="rotate(-20,272,95)"/>
+          <ellipse class="vine-leaf" cx="265" cy="145" rx="9" ry="5" transform="rotate(15,265,145)"/>
+        </svg>
+        <div class="fc-about-wrap">
+          <div class="fc-chrome">
+            <span class="fc-dot r"></span><span class="fc-dot y"></span><span class="fc-dot g"></span>
+            <span class="fc-chrome-label">vivien-evers — about</span>
+          </div>
+          <div class="fc-about-body">
+            <p class="fc-about-text">Looking for a place<br>to grow.</p>
+            <span class="fc-sprout" id="fc-sprout">🌱</span>
           </div>
         </div>
       </div>
-      <div class="float-card card-small">
-        <div class="mac-chrome">
-          <span class="mac-dot red"></span>
-          <span class="mac-dot yellow"></span>
-          <span class="mac-dot green"></span>
+
+      <!-- CARD 2: iMessage -->
+      <div class="float-card fc-imessage" id="fc-c2">
+        <div class="fc-timestamp">just now</div>
+        <div class="fc-typing" id="fc-typing">
+          <div class="fc-tdot"></div>
+          <div class="fc-tdot"></div>
+          <div class="fc-tdot"></div>
         </div>
-        <div class="card-content">
-          <div style="font-size:32px;font-family:'Instrument Serif',serif;">10+</div>
-          <div style="font-size:11px;text-transform:uppercase;letter-spacing:.08em;color:var(--text-light);margin-top:2px;">Events produced</div>
+        <div class="fc-bubble" id="fc-b1">hi, it's me 👋</div>
+        <div class="fc-bubble" id="fc-b2">let's build something! 🤍</div>
+        <div class="fc-delivered" id="fc-delivered">Delivered</div>
+      </div>
+
+      <!-- CARD 3: Spotify -->
+      <div class="float-card fc-spotify" id="fc-c3">
+        <div class="fc-sp-top">
+          <div class="fc-sp-album"><span class="fc-sp-art">???</span></div>
+          <div class="fc-sp-info">
+            <div class="fc-sp-song">Stimmen aus dem Nichts</div>
+            <div class="fc-sp-artist">Die drei ??? · Folge 076</div>
+          </div>
+          <span class="fc-sp-heart">♡</span>
+        </div>
+        <div class="fc-sp-controls">
+          <span class="fc-sp-ctrl">⏮</span><span class="fc-sp-ctrl">⏪</span>
+          <button class="fc-sp-play">&#9654;</button>
+          <span class="fc-sp-ctrl">⏩</span><span class="fc-sp-ctrl">⏭</span>
+        </div>
+        <div class="fc-sp-progress">
+          <span class="fc-sp-time">1:23</span>
+          <div class="fc-sp-bar"><div class="fc-sp-fill"></div><div class="fc-sp-dot"></div></div>
+          <span class="fc-sp-time">3:45</span>
         </div>
       </div>
-      <div class="float-card card-location">
-        <div class="card-content" style="padding:16px 20px;">
-          <div style="font-size:14px;font-weight:500;">📍 Hamburg, Germany</div>
-          <div style="font-size:12px;color:var(--text-light);margin-top:4px;">Open to hybrid & remote</div>
-        </div>
+
+      <!-- CARD 4: Sticky Note -->
+      <div class="float-card fc-sticky" id="fc-c4">
+        <div class="fc-sticky-holes"><span></span><span></span><span></span><span></span></div>
+        <div class="fc-sticky-num">10+</div>
+        <div class="fc-sticky-text">Events<br>produced</div>
+        <div class="fc-sticky-sub">Hamburg · since 2022</div>
       </div>
+
+      <!-- CARD 5: Hamburg Weather -->
+      <div class="float-card fc-weather" id="fc-c5">
+        <div class="fc-weather-header">
+          <span class="fc-weather-city">Hamburg</span>
+          <span class="fc-live-dot"></span>
+        </div>
+        <span class="fc-weather-icon" id="fc-wi"><span class="fc-skel fc-skel-icon"></span></span>
+        <div class="fc-weather-temp" id="fc-wt"><span class="fc-skel fc-skel-temp"></span></div>
+        <div class="fc-weather-quote" id="fc-wq"><span class="fc-skel fc-skel-quote"></span></div>
+      </div>
+
+      <!-- CARD 6: Coffee -->
+      <div class="float-card fc-coffee" id="fc-c6">
+        <div class="fc-coffee-header">today's fuel ☕</div>
+        <div class="fc-coffee-cups">
+          <div class="fc-cup fc-cup-full">☕</div>
+          <div class="fc-cup fc-cup-full">☕</div>
+          <div class="fc-cup fc-cup-empty" id="fc-cup3">🫙</div>
+        </div>
+        <div class="fc-coffee-count" id="fc-ccount">2 of 3 coffees</div>
+        <div class="fc-coffee-quote" id="fc-cquote">probably thinking<br>about your brand</div>
+      </div>
+
     </div>
   </section>
 
@@ -2386,14 +2543,146 @@
       });
     })();
 
-    /* ── PARALLAX HERO CARDS ──────────────────────────────── */
-    document.addEventListener('mousemove', e => {
-      const x=(e.clientX/innerWidth-.5)*18, y=(e.clientY/innerHeight-.5)*18;
-      document.querySelectorAll('.float-card').forEach((c,i)=>{
-        const f=(i+1)*.4;
-        c.style.transform=`translate(${x*f}px,${y*f}px) rotate(var(--rot,0deg))`;
+    /* ── FLOATING HERO CARDS ──────────────────────────────── */
+    (function() {
+      const floatCards = Array.from(document.querySelectorAll('.float-card'));
+      const floatParams = [
+        {amp:10, period:4000, delay:0},
+        {amp:8,  period:5000, delay:800},
+        {amp:12, period:3500, delay:1600},
+        {amp:6,  period:6000, delay:400},
+        {amp:9,  period:4500, delay:1200},
+        {amp:7,  period:5500, delay:2000},
+      ];
+      const pFactors = [0.3, 0.6, 0.4, 0.7, 0.5, 0.45];
+
+      /* Float via rAF sine wave */
+      function rafFloat(ts) {
+        floatCards.forEach((card, i) => {
+          const {amp, period, delay} = floatParams[i] || floatParams[0];
+          card.style.setProperty('--float-y', (amp * Math.sin(((ts + delay) / period) * Math.PI * 2)) + 'px');
+        });
+        requestAnimationFrame(rafFloat);
+      }
+      requestAnimationFrame(rafFloat);
+
+      /* Parallax on mousemove */
+      const heroEl = document.getElementById('hero');
+      document.addEventListener('mousemove', e => {
+        if (!heroEl) return;
+        const rect = heroEl.getBoundingClientRect();
+        const x = (e.clientX - rect.width / 2) / rect.width;
+        const y = (e.clientY - rect.height / 2) / rect.height;
+        floatCards.forEach((card, i) => {
+          const f = pFactors[i] * 20;
+          card.style.setProperty('--parallax-x', (x * f) + 'px');
+          card.style.setProperty('--parallax-y', (y * f) + 'px');
+        });
       });
-    });
+
+      /* iMessage typing sequence */
+      const typingEl  = document.getElementById('fc-typing');
+      const bubble1   = document.getElementById('fc-b1');
+      const bubble2   = document.getElementById('fc-b2');
+      const delivered = document.getElementById('fc-delivered');
+      if (typingEl) {
+        setTimeout(() => {
+          typingEl.classList.add('hidden');
+          setTimeout(() => {
+            if (bubble1) bubble1.classList.add('shown');
+            setTimeout(() => {
+              if (bubble2) bubble2.classList.add('shown');
+              setTimeout(() => {
+                if (delivered) {
+                  delivered.classList.add('shown');
+                  setTimeout(() => {
+                    delivered.textContent = 'Read ✓✓';
+                    delivered.classList.add('read');
+                  }, 1000);
+                }
+              }, 800);
+            }, 700);
+          }, 200);
+        }, 1500);
+      }
+
+      /* Vine / sprout IntersectionObserver */
+      const vineCard = document.getElementById('fc-c1');
+      if (vineCard) {
+        const vo = new IntersectionObserver(entries => {
+          if (entries[0].isIntersecting) {
+            vineCard.querySelectorAll('.vine-path').forEach((p, i) =>
+              setTimeout(() => p.classList.add('drawn'), i * 200)
+            );
+            setTimeout(() => vineCard.querySelectorAll('.vine-leaf').forEach(l => l.classList.add('shown')), 1500);
+            setTimeout(() => { const s = document.getElementById('fc-sprout'); if (s) s.classList.add('shown'); }, 2500);
+            vo.disconnect();
+          }
+        }, {threshold: 0.3});
+        vo.observe(vineCard);
+      }
+
+      /* Hamburg weather API */
+      const weatherMap = {
+        0:{icon:'☀️',quote:'sunny day, sunny ideas ✨'},
+        1:{icon:'⛅',quote:'cloudy outside, clear vision inside'},
+        2:{icon:'⛅',quote:'cloudy outside, clear vision inside'},
+        3:{icon:'⛅',quote:'cloudy outside, clear vision inside'},
+        45:{icon:'🌫️',quote:'foggy outside, focused inside 🎯'},
+        48:{icon:'🌫️',quote:'foggy outside, focused inside 🎯'},
+        51:{icon:'🌧️',quote:'Hamburg weather, Hamburg hustle 💪'},
+        53:{icon:'🌧️',quote:'Hamburg weather, Hamburg hustle 💪'},
+        55:{icon:'🌧️',quote:'Hamburg weather, Hamburg hustle 💪'},
+        61:{icon:'🌧️',quote:'Hamburg weather, Hamburg hustle 💪'},
+        63:{icon:'🌧️',quote:'Hamburg weather, Hamburg hustle 💪'},
+        65:{icon:'🌧️',quote:'Hamburg weather, Hamburg hustle 💪'},
+        71:{icon:'❄️',quote:'cold outside, warm ideas inside 🔥'},
+        73:{icon:'❄️',quote:'cold outside, warm ideas inside 🔥'},
+        75:{icon:'❄️',quote:'cold outside, warm ideas inside 🔥'},
+        80:{icon:'🌦️',quote:'a little rain never stopped a good idea'},
+        81:{icon:'🌦️',quote:'a little rain never stopped a good idea'},
+        82:{icon:'🌦️',quote:'a little rain never stopped a good idea'},
+        95:{icon:'⛈️',quote:'stormy weather, electric ideas ⚡'},
+      };
+      const wiEl = document.getElementById('fc-wi');
+      const wtEl = document.getElementById('fc-wt');
+      const wqEl = document.getElementById('fc-wq');
+      fetch('https://api.open-meteo.com/v1/forecast?latitude=53.5753&longitude=10.0153&current=temperature_2m,weathercode&timezone=Europe/Berlin')
+        .then(r => r.json())
+        .then(d => {
+          const w = weatherMap[d.current.weathercode] || {icon:'🌤️', quote:'Hamburg, always 🌊'};
+          if (wiEl) wiEl.textContent = w.icon;
+          if (wtEl) wtEl.textContent = Math.round(d.current.temperature_2m) + '°';
+          if (wqEl) wqEl.textContent = w.quote;
+        })
+        .catch(() => {
+          if (wiEl) wiEl.textContent = '🌊';
+          if (wtEl) wtEl.textContent = '18°';
+          if (wqEl) wqEl.textContent = 'perfect weather to build brands';
+        });
+
+      /* Coffee hover */
+      const cc    = document.getElementById('fc-c6');
+      const cup3  = document.getElementById('fc-cup3');
+      const ccEl  = document.getElementById('fc-ccount');
+      const cqEl  = document.getElementById('fc-cquote');
+      if (cc && cup3) {
+        cc.addEventListener('mouseenter', () => {
+          cup3.textContent = '☕';
+          cup3.classList.remove('fc-cup-empty');
+          cup3.classList.add('popped');
+          if (ccEl) ccEl.textContent = '3 of 3 coffees ⚡';
+          if (cqEl) cqEl.innerHTML = 'fully charged. let\'s go.';
+        });
+        cc.addEventListener('mouseleave', () => {
+          cup3.textContent = '🫙';
+          cup3.classList.add('fc-cup-empty');
+          cup3.classList.remove('popped');
+          if (ccEl) ccEl.textContent = '2 of 3 coffees';
+          if (cqEl) cqEl.innerHTML = 'probably thinking<br>about your brand';
+        });
+      }
+    })();
 
     /* ── KONAMI CODE EASTER EGG ───────────────────────────── */
     (function() {
