@@ -515,37 +515,47 @@
     .fc-dot.r{background:#FF5F57;} .fc-dot.y{background:#FFBD2E;} .fc-dot.g{background:#28C940;}
     .fc-chrome-label { font-size:10px; color:#999; margin-left:6px; }
 
-    /* ── CARD 1 — About / Garden ── */
+    /* ── CARD 1 — Meadow / Garden ── */
     .float-card.fc-about {
-      width:300px; top:20px; right:20px; z-index:4;
-      overflow:visible; background:transparent; box-shadow:none; cursor:crosshair;
+      width:300px; height:240px; top:20px; right:20px; z-index:4;
+      overflow:hidden; background:white; cursor:crosshair;
+      border-radius:16px; padding:0;
     }
-    .fc-about-wrap {
-      background:white; border-radius:16px; box-shadow:0 8px 32px rgba(0,0,0,.10);
-      overflow:hidden; position:relative; z-index:1; min-height:220px;
+    .fc-about-chrome {
+      display:flex; align-items:center; gap:5px;
+      padding:0 12px; height:32px;
+      background:#F5F3F1; border-bottom:1px solid rgba(0,0,0,.06);
+      flex-shrink:0;
     }
-    .fc-about-wrap .fc-chrome { border-radius:16px 16px 0 0; }
-    /* planted flowers */
-    @keyframes plantGrow {
-      0%   { transform:scale(0) rotate(-20deg); opacity:0; }
-      60%  { transform:scale(1.3) rotate(5deg);  opacity:1; }
-      100% { transform:scale(1)  rotate(0deg);   opacity:1; }
+    .fc-meadow {
+      width:100%; height:calc(100% - 32px);
+      position:relative; overflow:hidden;
+      background:
+        url("data:image/svg+xml,%3Csvg width='20' height='20' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M10 18 Q10 12 8 8 M10 18 Q10 12 12 8 M5 18 Q5 13 3 10 M15 18 Q15 13 17 10' stroke='%234CAF50' stroke-width='0.8' fill='none' opacity='0.3'/%3E%3C/svg%3E") 0 0 / 20px 20px,
+        linear-gradient(180deg,#C8E6C9 0%,#A5D6A7 40%,#81C784 100%);
     }
-    .fc-planted { position:absolute; font-size:20px; pointer-events:none; line-height:1; z-index:2; animation:plantGrow .5s ease forwards; }
-    .fc-garden-hint { font-size:10px; color:#999; margin-top:8px; opacity:0.5; display:block; }
-    /* hover tooltip */
-    .fc-about::after {
-      content:'your garden 🌱'; position:absolute; bottom:-30px; left:50%;
-      transform:translateX(-50%); font-size:11px; color:#666; background:white;
-      padding:4px 12px; border-radius:20px; box-shadow:0 2px 8px rgba(0,0,0,.12);
-      opacity:0; transition:opacity .2s; pointer-events:none;
-      white-space:nowrap; font-family:'DM Sans',sans-serif; z-index:10;
+    .fc-meadow-card {
+      position:absolute; top:24px; left:50%; transform:translateX(-50%);
+      background:white; border-radius:8px; padding:12px 18px;
+      box-shadow:0 4px 16px rgba(0,0,0,.12),0 1px 4px rgba(0,0,0,.08);
+      text-align:center; white-space:nowrap; z-index:2;
     }
-    .fc-about:hover::after { opacity:1; }
-    .fc-about-body { padding:22px 20px 20px; text-align:center; }
-    .fc-about-text { font-family:'Instrument Serif',serif; font-style:italic; font-size:18px; color:#1A1A1A; line-height:1.4; }
-    .fc-sprout { font-size:20px; margin-top:10px; display:inline-block; transform:scale(0); transition:transform .5s cubic-bezier(.34,1.56,.64,1); }
-    .fc-sprout.shown { transform:scale(1); }
+    .fc-meadow-card-text {
+      font-family:'Instrument Serif',serif; font-style:italic;
+      font-size:15px; color:#1A1A1A; line-height:1.4;
+    }
+    #garden-seed {
+      position:absolute; bottom:50px; left:50%; transform:translateX(-50%);
+      font-size:24px; z-index:1; pointer-events:none;
+    }
+    .fc-meadow-hint {
+      position:absolute; bottom:16px; left:50%; transform:translateX(-50%);
+      font-family:'DM Sans',sans-serif; font-size:11px;
+      color:rgba(255,255,255,.85); white-space:nowrap;
+      text-align:center; z-index:2; pointer-events:none;
+      opacity:0; transition:opacity .2s; line-height:1.5;
+    }
+    .fc-about:hover .fc-meadow-hint { opacity:1; }
 
     /* ── CARD 3 — Spotify ── */
     .fc-spotify { width:280px; bottom:40px; right:20px; z-index:2; padding:14px; background:#121212; border-radius:16px; color:white; }
@@ -1399,15 +1409,12 @@
         top: auto; right: auto; bottom: auto; left: auto;
         --base-rotate: 0deg;
       }
-      /* Garden card: white tile in scroll strip */
+      /* Garden card: fixed width in scroll strip */
       .float-card.fc-about {
-        background: white;
-        box-shadow: 0 8px 24px rgba(0,0,0,.10);
-        overflow: hidden;
         width: 220px;
+        height: 180px;
         cursor: default;
       }
-      .float-card.fc-about::after { display: none; } /* hide tooltip on mobile */
       /* Spotify slightly wider */
       .float-card.fc-spotify { width: 240px; }
       /* Tag modal: stay within viewport on mobile */
@@ -1634,18 +1641,18 @@
 
     <div class="hero-right">
 
-      <!-- CARD 1: About / Garden -->
+      <!-- CARD 1: Meadow / Garden -->
       <div class="float-card fc-about" id="fc-c1" style="--base-rotate:1.5deg">
-        <div class="fc-about-wrap">
-          <div class="fc-chrome">
-            <span class="fc-dot r"></span><span class="fc-dot y"></span><span class="fc-dot g"></span>
-            <span class="fc-chrome-label">vivien-evers — about</span>
+        <div class="fc-about-chrome">
+          <span class="fc-dot r"></span><span class="fc-dot y"></span><span class="fc-dot g"></span>
+          <span class="fc-chrome-label">vivien-evers — about</span>
+        </div>
+        <div class="fc-meadow" id="fc-meadow">
+          <div class="fc-meadow-card" id="fc-meadow-card">
+            <span class="fc-meadow-card-text">Looking for a place to grow.</span>
           </div>
-          <div class="fc-about-body">
-            <p class="fc-about-text">Looking for a place<br>to grow.</p>
-            <span class="fc-sprout" id="fc-sprout">🌱</span>
-            <span class="fc-garden-hint">click to plant 🌱</span>
-          </div>
+          <span id="garden-seed">🌱</span>
+          <div class="fc-meadow-hint" id="fc-meadow-hint">your garden<br>click to plant</div>
         </div>
       </div>
 
@@ -2585,52 +2592,45 @@
         });
       });
 
-      /* Sprout pop-in after short delay */
-      setTimeout(() => {
-        const s = document.getElementById('fc-sprout');
-        if (s) s.classList.add('shown');
-      }, 900);
-
-      /* ── GARDEN EASTER EGG ── */
+      /* ── GARDEN MEADOW ── */
       (function() {
-        const aboutCard = document.getElementById('fc-c1');
-        const aboutWrap = aboutCard && aboutCard.querySelector('.fc-about-wrap');
-        if (!aboutCard || !aboutWrap) return;
+        const meadow     = document.getElementById('fc-meadow');
+        const meadowCard = document.getElementById('fc-meadow-card');
+        const hint       = document.getElementById('fc-meadow-hint');
+        if (!meadow) return;
 
-        const plants = ['🌸','🌺','🌻','🌹','🌷','🪷','🌼','💐','🌿','🍀','🌱','🪴','🌵'];
+        const plants = ['🌸','🌺','🌻','🌹','🌷','🪷','🌼','🌿','🍀','🌱','🪴','🌵','🪻'];
         let planted = 0;
 
-        aboutCard.addEventListener('click', e => {
-          if (planted >= 20) return;
+        /* card click: don't bubble to meadow */
+        if (meadowCard) meadowCard.addEventListener('click', e => e.stopPropagation());
 
-          /* position relative to fc-about-wrap */
-          const rect = aboutWrap.getBoundingClientRect();
-          const x = Math.max(8,  Math.min(rect.width  - 28, e.clientX - rect.left  - 10));
-          const y = Math.max(8,  Math.min(rect.height - 28, e.clientY - rect.top   - 10));
+        meadow.addEventListener('click', e => {
+          if (planted >= 30) return;
+
+          const rect = meadow.getBoundingClientRect();
+          const x    = Math.max(12, Math.min(rect.width - 20, e.clientX - rect.left));
 
           const el = document.createElement('span');
-          el.className = 'fc-planted';
           el.textContent = plants[Math.floor(Math.random() * plants.length)];
-          el.style.left = x + 'px';
-          el.style.top  = y + 'px';
-          aboutWrap.appendChild(el);
+          el.style.cssText = `position:absolute;font-size:20px;left:${x}px;bottom:0;transform:translateX(-50%) scale(0);z-index:3;pointer-events:none;line-height:1;transition:all 0.4s cubic-bezier(0.34,1.56,0.64,1);`;
+          meadow.appendChild(el);
           planted++;
 
-          /* Toast after 10 plants */
-          if (planted === 10) {
-            const t = document.createElement('div');
-            t.textContent = "You've got a green thumb! 🌿";
-            t.style.cssText = 'position:fixed;bottom:32px;left:50%;transform:translateX(-50%) translateY(20px);background:white;border-radius:24px;padding:12px 24px;box-shadow:0 4px 24px rgba(0,0,0,.15);font-family:"DM Sans",sans-serif;font-size:13px;font-weight:500;color:#1A1A1A;z-index:99999;opacity:0;transition:opacity .35s,transform .35s cubic-bezier(.34,1.56,.64,1);pointer-events:none;white-space:nowrap;';
-            document.body.appendChild(t);
-            requestAnimationFrame(() => {
-              t.style.opacity = '1';
-              t.style.transform = 'translateX(-50%) translateY(0)';
-            });
+          setTimeout(() => {
+            el.style.transform = 'translateX(-50%) scale(1)';
+            el.style.bottom    = (Math.floor(Math.random() * 50) + 10) + 'px';
+          }, 10);
+
+          /* after 10 plants: hint text fades to "blooming 🌸" */
+          if (planted === 10 && hint) {
+            hint.style.transition = 'opacity .3s';
+            hint.style.opacity    = '0';
             setTimeout(() => {
-              t.style.opacity = '0';
-              t.style.transform = 'translateX(-50%) translateY(20px)';
-              setTimeout(() => t.remove(), 400);
-            }, 3000);
+              hint.innerHTML    = 'blooming 🌸';
+              hint.style.opacity = '';
+              hint.style.transition = '';
+            }, 320);
           }
         });
       })();
