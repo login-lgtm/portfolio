@@ -2606,29 +2606,34 @@
         if (meadowCard) meadowCard.addEventListener('click', e => e.stopPropagation());
 
         meadow.addEventListener('click', e => {
-          if (planted >= 30) return;
-
-          const rect = meadow.getBoundingClientRect();
-          const x    = Math.max(12, Math.min(rect.width - 20, e.clientX - rect.left));
+          /* exact position relative to meadow div */
+          const rect   = meadow.getBoundingClientRect();
+          const clickX = e.clientX - rect.left;
+          const clickY = e.clientY - rect.top;
 
           const el = document.createElement('span');
           el.textContent = plants[Math.floor(Math.random() * plants.length)];
-          el.style.cssText = `position:absolute;font-size:20px;left:${x}px;bottom:0;transform:translateX(-50%) scale(0);z-index:3;pointer-events:none;line-height:1;transition:all 0.4s cubic-bezier(0.34,1.56,0.64,1);`;
+          el.classList.add('garden-plant');
+          el.style.cssText = `position:absolute;font-size:20px;left:${clickX}px;top:${clickY}px;transform:translate(-50%,-50%) scale(0);z-index:3;pointer-events:none;line-height:1;transition:transform 0.4s cubic-bezier(0.34,1.56,0.64,1);`;
           meadow.appendChild(el);
           planted++;
 
-          setTimeout(() => {
-            el.style.transform = 'translateX(-50%) scale(1)';
-            el.style.bottom    = (Math.floor(Math.random() * 50) + 10) + 'px';
-          }, 10);
+          /* double-rAF ensures transition fires after paint */
+          requestAnimationFrame(() => requestAnimationFrame(() => {
+            el.style.transform = 'translate(-50%,-50%) scale(1)';
+          }));
 
-          /* after 10 plants: hint text fades to "blooming 🌸" */
+          /* keep max 15 plants — remove oldest */
+          const all = meadow.querySelectorAll('.garden-plant');
+          if (all.length > 15) all[0].remove();
+
+          /* after 10 plants: hint fades to "blooming 🌸" */
           if (planted === 10 && hint) {
             hint.style.transition = 'opacity .3s';
             hint.style.opacity    = '0';
             setTimeout(() => {
-              hint.innerHTML    = 'blooming 🌸';
-              hint.style.opacity = '';
+              hint.innerHTML      = 'blooming 🌸';
+              hint.style.opacity  = '';
               hint.style.transition = '';
             }, 320);
           }
