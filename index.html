@@ -732,6 +732,8 @@
       min-width: 0;
       min-height: 0;
       transition: opacity .18s ease;
+      display: flex;
+      flex-direction: column;
     }
 
     /* Medien-Bereich */
@@ -770,8 +772,12 @@
 
     /* Text-Bereich */
     .fw-text {
-      padding: 20px 24px 28px;
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      padding: 20px;
     }
+    .fw-text-body { flex: 1; }
     .fw-proj-title {
       font-family: 'Instrument Serif', serif;
       font-size: 22px; color: var(--text);
@@ -1496,8 +1502,77 @@
 .fw-iphone-thumb video,.fw-iphone-thumb img { width:100%; height:100%; object-fit:cover; display:block; }
 .fw-iphone-ph { flex:1; border-radius:16px; background:#E8E4E0; aspect-ratio:9/16; display:flex; align-items:center; justify-content:center; font-size:11px; color:#999; }
 /* ── Open project button ── */
-.fw-open-btn { display:inline-flex; align-items:center; gap:6px; background:#6B5CE7; color:white; border-radius:100px; padding:10px 20px; font-family:'DM Sans',sans-serif; font-size:14px; font-weight:500; text-decoration:none; margin-top:12px; transition:background .2s,transform .15s; }
+.fw-open-btn { display:inline-flex; align-items:center; gap:6px; background:#6B5CE7; color:white; border-radius:100px; padding:10px 20px; font-family:'DM Sans',sans-serif; font-size:14px; font-weight:500; text-decoration:none; margin-top:16px; align-self:flex-start; transition:background .2s,transform .15s; }
 .fw-open-btn:hover { background:#5A4DD0; transform:translateY(-1px); }
+
+/* ── Finder: Mood Banner ─────────────────────────── */
+.project-mood-banner {
+  height: 140px;
+  position: relative;
+  overflow: hidden;
+  flex-shrink: 0;
+}
+.mood-gradient {
+  position: absolute;
+  inset: 0;
+}
+/* MI4L animated gradient */
+@keyframes mi4l-pulse {
+  0%, 100% { background-position: 0% 50%; }
+  50%       { background-position: 100% 50%; }
+}
+.mi4l-gradient {
+  background: linear-gradient(-45deg, #1A1A2E, #6B5CE7, #9B59B6, #2C1654);
+  background-size: 400% 400%;
+  animation: mi4l-pulse 6s ease infinite;
+}
+.mood-profile {
+  position: absolute;
+  right: 20px;
+  bottom: 0;
+  width: 72px;
+  height: 96px;
+  object-fit: cover;
+  border-radius: 10px 10px 0 0;
+}
+.mood-instagram {
+  position: absolute;
+  bottom: 10px;
+  left: 14px;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 11px;
+  color: rgba(255,255,255,.65);
+  letter-spacing: .03em;
+}
+.mood-instagram strong { color: rgba(255,255,255,.9); font-weight: 500; }
+/* ── Apprenticeship Tool Pills ────────────────────── */
+.apprenticeship-pills {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-wrap: wrap;
+  align-content: center;
+  gap: 7px;
+  padding: 14px 16px;
+}
+.app-tool-pill {
+  font-size: 11px;
+  font-family: 'DM Sans', sans-serif;
+  font-weight: 500;
+  background: white;
+  color: #555;
+  padding: 4px 12px;
+  border-radius: 100px;
+  border: 1px solid rgba(0,0,0,.08);
+  box-shadow: 0 1px 4px rgba(0,0,0,.07);
+  opacity: 0;
+  transform: translateY(7px);
+  transition: opacity .35s ease, transform .35s ease;
+}
+.app-tool-pill.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
   </style>
 </head>
 <body class="is-loading">
@@ -2171,32 +2246,70 @@
     /* Rendert den Content-Bereich für Projekt idx */
     function renderContent(idx) {
       const p = PROJECTS[idx];
-      const [m0, m1] = p.images;
       const content = document.getElementById('fw-content');
 
-      function mediaThumb(src, label) {
-        if (!src) return `<div class="fw-iphone-ph">${label}</div>`;
-        if (src.endsWith('.mp4') || src.endsWith('.mov') || src.endsWith('.webm'))
-          return `<div class="fw-iphone-thumb"><video autoplay muted loop playsinline preload="none" style="width:100%;height:100%;object-fit:cover;display:block;"><source src="${src}" type="video/mp4"></video></div>`;
-        return `<div class="fw-iphone-thumb"><img src="${src}" alt="" style="width:100%;height:100%;object-fit:cover;display:block;"></div>`;
+      /* ── Per-project mood banners ── */
+      let bannerHTML = '';
+      if (idx === 0) {
+        // MI4L — animated purple gradient
+        bannerHTML = `
+          <div class="project-mood-banner">
+            <div class="mood-gradient mi4l-gradient"></div>
+            <img class="mood-profile" src="work/mi4l/media/mi4l-profile.jpg" alt="" onerror="this.style.display='none'">
+            <div class="mood-instagram"><strong>@mi4l.hh</strong></div>
+          </div>`;
+      } else if (idx === 1) {
+        // Studio Liebe & NRG — warm-to-dark gradient
+        bannerHTML = `
+          <div class="project-mood-banner">
+            <div class="mood-gradient" style="background:linear-gradient(135deg,#F7E0E8 0%,#E8B4C8 45%,#2A1A3A 100%)"></div>
+            <img class="mood-profile" src="work/studio-liebe-nrg/media/studioliebe-profile.jpg" alt="" onerror="this.style.display='none'">
+            <div class="mood-instagram" style="color:rgba(40,10,40,.45)"><strong style="color:rgba(40,10,40,.75)">@studioliebe.hh · @nrg.hh</strong></div>
+          </div>`;
+      } else if (idx === 2) {
+        // JCO — cream & gold gradient
+        bannerHTML = `
+          <div class="project-mood-banner">
+            <div class="mood-gradient" style="background:linear-gradient(135deg,#F5EFE6 0%,#D4A96A 65%,#8B6422 100%)"></div>
+            <img class="mood-profile" src="work/jco/media/jco-profile.jpg" alt="" onerror="this.style.display='none'">
+            <div class="mood-instagram" style="color:rgba(80,50,10,.5)"><strong style="color:rgba(80,50,10,.8)">@jco.hamburg</strong></div>
+          </div>`;
+      } else {
+        // Apprenticeship — neutral + animated tool pills
+        const tools = ['Figma','Webflow','Illustrator','InDesign','Photoshop','Affinity','HTML & CSS','Print'];
+        bannerHTML = `
+          <div class="project-mood-banner">
+            <div class="mood-gradient" style="background:linear-gradient(135deg,#F5F3F1 0%,#DDD9D5 100%)"></div>
+            <div class="apprenticeship-pills">
+              ${tools.map((t, i) => `<span class="app-tool-pill" style="transition-delay:${i * 55}ms">${t}</span>`).join('')}
+            </div>
+          </div>`;
       }
 
       content.style.opacity = '0';
       setTimeout(() => {
         content.innerHTML = `
-          <div class="fw-iphone-pair">
-            ${mediaThumb(m0, 'Preview')}
-            ${mediaThumb(m1, 'Preview')}
-          </div>
+          ${bannerHTML}
           <div class="fw-text">
-            <div class="fw-proj-title">${p.name}</div>
-            <p class="fw-proj-desc">${p.desc}</p>
-            <div class="fw-proj-tags">${p.tags.map(t => `<span class="fw-tag">${t}</span>`).join('')}</div>
-            <div class="fw-proj-role">${p.role}</div>
-            <a class="fw-open-btn" href="${PROJECTS[idx].url}">Open project →</a>
+            <div class="fw-text-body">
+              <div class="fw-proj-title">${p.name}</div>
+              <p class="fw-proj-desc">${p.desc}</p>
+              <div class="fw-proj-tags">${p.tags.map(t => `<span class="fw-tag">${t}</span>`).join('')}</div>
+              <div class="fw-proj-role">${p.role}</div>
+            </div>
+            <a class="fw-open-btn" href="${p.url}">Open project →</a>
           </div>`;
         content.style.transition = 'opacity .2s ease';
         content.style.opacity = '1';
+
+        /* Trigger staggered pill animation for Apprenticeship */
+        if (idx === 3) {
+          requestAnimationFrame(() => {
+            requestAnimationFrame(() => {
+              content.querySelectorAll('.app-tool-pill').forEach(pill => pill.classList.add('visible'));
+            });
+          });
+        }
       }, 110);
     }
 
