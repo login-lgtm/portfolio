@@ -770,14 +770,21 @@
       object-fit: cover; border-radius: 6px; display: block;
     }
 
-    /* Text-Bereich */
-    .fw-text {
+    /* ── Finder Panel wrapper ── */
+    .fw-panel {
       flex: 1;
       display: flex;
       flex-direction: column;
       padding: 20px;
+      box-sizing: border-box;
+      min-height: 0;
     }
-    .fw-text-body { flex: 1; }
+    .fw-proj-info { flex: 1; }
+    .fw-proj-category {
+      font-size: 11px; font-weight: 500;
+      letter-spacing: .1em; text-transform: uppercase;
+      color: var(--accent); margin-bottom: 6px;
+    }
     .fw-proj-title {
       font-family: 'Instrument Serif', serif;
       font-size: 22px; color: var(--text);
@@ -1502,71 +1509,138 @@
 .fw-iphone-thumb video,.fw-iphone-thumb img { width:100%; height:100%; object-fit:cover; display:block; }
 .fw-iphone-ph { flex:1; border-radius:16px; background:#E8E4E0; aspect-ratio:9/16; display:flex; align-items:center; justify-content:center; font-size:11px; color:#999; }
 /* ── Open project button ── */
-.fw-open-btn { display:inline-flex; align-items:center; gap:6px; background:#6B5CE7; color:white; border-radius:100px; padding:10px 20px; font-family:'DM Sans',sans-serif; font-size:14px; font-weight:500; text-decoration:none; margin-top:16px; align-self:flex-start; transition:background .2s,transform .15s; }
+.fw-open-btn { display:inline-flex; align-items:center; gap:6px; background:#6B5CE7; color:white; border-radius:100px; padding:10px 20px; font-family:'DM Sans',sans-serif; font-size:14px; font-weight:500; text-decoration:none; margin-top:auto; padding-top:14px; align-self:flex-start; transition:background .2s,transform .15s; }
 .fw-open-btn:hover { background:#5A4DD0; transform:translateY(-1px); }
 
-/* ── Finder: Mood Banner ─────────────────────────── */
-.project-mood-banner {
+/* ══════════════════════════════════════════════════
+   FINDER — MOOD BANNERS (redesigned)
+══════════════════════════════════════════════════ */
+.mood-banner {
+  width: 100%;
   height: 140px;
+  border-radius: 12px;
   position: relative;
   overflow: hidden;
   flex-shrink: 0;
+  margin-bottom: 16px;
 }
-.mood-gradient {
+
+/* Profile badge (bottom-left) */
+.mood-profile {
   position: absolute;
-  inset: 0;
+  bottom: 10px;
+  left: 10px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  z-index: 2;
 }
-/* MI4L animated gradient */
-@keyframes mi4l-pulse {
+.mood-profile img {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  border: 1.5px solid rgba(255,255,255,.8);
+  object-fit: cover;
+}
+.mood-profile a {
+  font-family: 'DM Sans', sans-serif;
+  font-size: 11px;
+  font-weight: 500;
+  color: white;
+  text-decoration: none;
+  text-shadow: 0 1px 3px rgba(0,0,0,.5);
+}
+/* Second profile badge (bottom-right, for Studio Liebe / NRG split) */
+.mood-profile-right {
+  position: absolute;
+  bottom: 10px;
+  right: 10px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  z-index: 2;
+  flex-direction: row-reverse;
+}
+.mood-profile-right img {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  border: 1.5px solid rgba(255,255,255,.8);
+  object-fit: cover;
+}
+.mood-profile-right .mood-handle {
+  font-family: 'DM Sans', sans-serif;
+  font-size: 11px;
+  font-weight: 500;
+  color: white;
+  text-shadow: 0 1px 3px rgba(0,0,0,.5);
+}
+
+/* ── MI4L — radial gradient, animated */
+@keyframes gradientShift {
   0%, 100% { background-position: 0% 50%; }
   50%       { background-position: 100% 50%; }
 }
-.mi4l-gradient {
-  background: linear-gradient(-45deg, #1A1A2E, #6B5CE7, #9B59B6, #2C1654);
-  background-size: 400% 400%;
-  animation: mi4l-pulse 6s ease infinite;
+.mood-banner-mi4l {
+  background: radial-gradient(ellipse at 30% 40%, #C41E3A 0%, #8B1A8B 35%, #2D1B4E 70%, #1A0A2E 100%);
+  background-size: 200% 200%;
+  animation: gradientShift 6s ease infinite;
 }
-.mood-profile {
-  position: absolute;
-  right: 20px;
-  bottom: 0;
-  width: 72px;
-  height: 96px;
-  object-fit: cover;
-  border-radius: 10px 10px 0 0;
+
+/* ── Studio Liebe & NRG — split orange / dark */
+.mood-banner-studioliebe {
+  background: linear-gradient(135deg, #FF6B00 0%, #FFB347 45%, #1A1A1A 55%, #000000 100%);
 }
-.mood-instagram {
+.mood-banner-studioliebe::after {
+  content: '';
   position: absolute;
-  bottom: 10px;
-  left: 14px;
-  font-family: 'DM Sans', sans-serif;
-  font-size: 11px;
-  color: rgba(255,255,255,.65);
-  letter-spacing: .03em;
+  left: 50%; top: 15%; bottom: 15%;
+  width: 1px;
+  background: rgba(255,255,255,.15);
 }
-.mood-instagram strong { color: rgba(255,255,255,.9); font-weight: 500; }
-/* ── Apprenticeship Tool Pills ────────────────────── */
-.apprenticeship-pills {
+
+/* ── JCO — deep navy, gold accent stripe */
+.mood-banner-jco {
+  background: linear-gradient(135deg, #1A1A2E 0%, #2D2D4E 40%, #1E3A5F 70%, #0D1117 100%);
+}
+.mood-banner-jco::before {
+  content: '';
   position: absolute;
-  inset: 0;
+  top: 0; left: 0; right: 0;
+  height: 3px;
+  background: linear-gradient(90deg, #C9A96E, #F0D080, #C9A96E);
+}
+
+/* ── Apprenticeship — neutral, animated tool pills */
+.apprenticeship-banner {
+  width: 100%;
+  height: 140px;
+  background: #F5F3F1;
+  border-radius: 12px;
   display: flex;
-  flex-wrap: wrap;
-  align-content: center;
-  gap: 7px;
-  padding: 14px 16px;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  flex-shrink: 0;
+  margin-bottom: 16px;
+  overflow: hidden;
+}
+.app-pills-row {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  justify-content: center;
 }
 .app-tool-pill {
   font-size: 11px;
   font-family: 'DM Sans', sans-serif;
   font-weight: 500;
-  background: white;
-  color: #555;
-  padding: 4px 12px;
+  color: white;
+  padding: 5px 12px;
   border-radius: 100px;
-  border: 1px solid rgba(0,0,0,.08);
-  box-shadow: 0 1px 4px rgba(0,0,0,.07);
   opacity: 0;
-  transform: translateY(7px);
+  transform: translateY(6px);
   transition: opacity .35s ease, transform .35s ease;
 }
 .app-tool-pill.visible {
@@ -2211,34 +2285,30 @@
     const PROJECTS = [
       {
         name: 'Music is for Lovers',
-        images: ['work/mi4l/media/reel-1.mp4','work/mi4l/media/reel-2.mp4','',''],
-        desc: 'Co-built an electronic music event brand from zero. Full visual system, brand identity and communication across three formats: MIFL, Studio Liebe, NRG. 10+ events, up to 400 guests.',
-        tags: ['Brand System','Art Direction','Event Marketing','Print'],
-        role: 'Co-Founder & Creative Lead · 2022 – now',
+        category: 'Brand System · Art Direction',
+        desc: 'Co-founded Dec 2022. Creative Lead since 2024.',
+        tags: ['Brand System','Art Direction','Print'],
         url: 'work/mi4l/index.html'
       },
       {
         name: 'Studio Liebe & NRG',
-        images: ['work/studio-liebe-nrg/media/studio-liebe/reel-1.mp4','work/studio-liebe-nrg/media/nrg/reel-1.mp4','',''],
-        desc: 'Visual identity and brand communication for two sub-formats of MIFL. Art direction, poster design and large-format print production for OMR 2024 Hamburg.',
-        tags: ['Visual Identity','Art Direction','Print Production','Large Format'],
-        role: 'Art Direction & Brand · 2023 – 2024',
+        category: 'Visual Identity · Print',
+        desc: 'Two sub-formats of MIFL — art direction, poster design and large-format print for OMR 2024 Hamburg.',
+        tags: ['Visual Identity','Art Direction','Print Production'],
         url: 'work/studio-liebe-nrg/index.html'
       },
       {
         name: 'Jewish Chamber Orchestra Hamburg',
-        images: ['work/jco/media/reel-1.mp4','work/jco/media/carousel-1.png','',''],
-        desc: 'Brand communication strategy for a cultural institution. Translating brand tone and visual identity across digital channels to reach a younger audience.',
-        tags: ['Brand Communication','Visual Strategy','Cultural Institution'],
-        role: 'Brand & Communications · 2023 – present',
+        category: 'Brand Communication · Cultural',
+        desc: 'Brand communication for a cultural institution — reaching a younger audience across digital channels.',
+        tags: ['Brand Communication','Visual Strategy','Digital'],
         url: 'work/jco/index.html'
       },
       {
         name: 'During my Apprenticeship',
-        images: ['','','',''],
-        desc: 'Three years at a Hamburg agency — websites in Figma & Webflow, corporate identity systems and print production. Real client projects from brief to delivery.',
+        category: 'Agency Work · 2023 – 2026',
+        desc: 'Three years at a Hamburg agency — websites, corporate identity systems and print. Real client projects from brief to delivery.',
         tags: ['Figma','Webflow','Corporate Design','Print Production'],
-        role: 'Digital & Print Designer · 2023 – 2026',
         url: 'work/apprenticeship/index.html'
       }
     ];
@@ -2250,52 +2320,74 @@
 
       /* ── Per-project mood banners ── */
       let bannerHTML = '';
+
       if (idx === 0) {
-        // MI4L — animated purple gradient
+        /* MI4L — radial gradient, animated */
         bannerHTML = `
-          <div class="project-mood-banner">
-            <div class="mood-gradient mi4l-gradient"></div>
-            <img class="mood-profile" src="work/mi4l/media/mi4l-profile.jpg" alt="" onerror="this.style.display='none'">
-            <div class="mood-instagram"><strong>@mi4l.hh</strong></div>
-          </div>`;
-      } else if (idx === 1) {
-        // Studio Liebe & NRG — warm-to-dark gradient
-        bannerHTML = `
-          <div class="project-mood-banner">
-            <div class="mood-gradient" style="background:linear-gradient(135deg,#F7E0E8 0%,#E8B4C8 45%,#2A1A3A 100%)"></div>
-            <img class="mood-profile" src="work/studio-liebe-nrg/media/studioliebe-profile.jpg" alt="" onerror="this.style.display='none'">
-            <div class="mood-instagram" style="color:rgba(40,10,40,.45)"><strong style="color:rgba(40,10,40,.75)">@studioliebe.hh · @nrg.hh</strong></div>
-          </div>`;
-      } else if (idx === 2) {
-        // JCO — cream & gold gradient
-        bannerHTML = `
-          <div class="project-mood-banner">
-            <div class="mood-gradient" style="background:linear-gradient(135deg,#F5EFE6 0%,#D4A96A 65%,#8B6422 100%)"></div>
-            <img class="mood-profile" src="work/jco/media/jco-profile.jpg" alt="" onerror="this.style.display='none'">
-            <div class="mood-instagram" style="color:rgba(80,50,10,.5)"><strong style="color:rgba(80,50,10,.8)">@jco.hamburg</strong></div>
-          </div>`;
-      } else {
-        // Apprenticeship — neutral + animated tool pills
-        const tools = ['Figma','Webflow','Illustrator','InDesign','Photoshop','Affinity','HTML & CSS','Print'];
-        bannerHTML = `
-          <div class="project-mood-banner">
-            <div class="mood-gradient" style="background:linear-gradient(135deg,#F5F3F1 0%,#DDD9D5 100%)"></div>
-            <div class="apprenticeship-pills">
-              ${tools.map((t, i) => `<span class="app-tool-pill" style="transition-delay:${i * 55}ms">${t}</span>`).join('')}
+          <div class="mood-banner mood-banner-mi4l">
+            <div class="mood-profile">
+              <img src="work/mi4l/media/mi4l-profile.jpg" alt="" onerror="this.style.display='none'">
+              <a href="https://www.instagram.com/music.is.for.lovers/" target="_blank">@music.is.for.lovers</a>
             </div>
+          </div>`;
+
+      } else if (idx === 1) {
+        /* Studio Liebe & NRG — orange/dark split */
+        bannerHTML = `
+          <div class="mood-banner mood-banner-studioliebe">
+            <div class="mood-profile">
+              <img src="work/studio-liebe-nrg/media/studio-liebe/studioliebe-profile.jpg" alt="" onerror="this.style.display='none'">
+              <a href="https://www.instagram.com/studioooliebe/" target="_blank">@studioooliebe</a>
+            </div>
+            <div class="mood-profile-right">
+              <img src="work/studio-liebe-nrg/media/nrg/nrg-profile.jpg" alt="" onerror="this.style.display='none'">
+              <span class="mood-handle">NRG</span>
+            </div>
+          </div>`;
+
+      } else if (idx === 2) {
+        /* JCO — deep navy, gold stripe */
+        bannerHTML = `
+          <div class="mood-banner mood-banner-jco">
+            <div class="mood-profile">
+              <img src="work/jco/media/jco-profile.jpg" alt="" onerror="this.style.display='none'">
+              <a href="https://www.instagram.com/jcohamburg/" target="_blank">@jcohamburg</a>
+            </div>
+          </div>`;
+
+      } else {
+        /* Apprenticeship — neutral bg, staggered branded tool pills */
+        const tools = [
+          { label: 'Figma',     bg: '#1E1E1E' },
+          { label: 'Webflow',   bg: '#4353FF' },
+          { label: 'Illustrator', bg: '#FF9A00' },
+          { label: 'InDesign',  bg: '#FF3366' },
+          { label: 'Photoshop', bg: '#31A8FF' },
+          { label: 'Affinity',  bg: '#1B2951' },
+          { label: 'HTML & CSS',bg: '#E34F26' },
+          { label: 'Print',     bg: '#6B5CE7' }
+        ];
+        const row1 = tools.slice(0, 4).map((t, i) =>
+          `<span class="app-tool-pill" style="background:${t.bg};transition-delay:${i * 150}ms">${t.label}</span>`).join('');
+        const row2 = tools.slice(4).map((t, i) =>
+          `<span class="app-tool-pill" style="background:${t.bg};transition-delay:${(i + 4) * 150}ms">${t.label}</span>`).join('');
+        bannerHTML = `
+          <div class="apprenticeship-banner">
+            <div class="app-pills-row">${row1}</div>
+            <div class="app-pills-row">${row2}</div>
           </div>`;
       }
 
       content.style.opacity = '0';
       setTimeout(() => {
         content.innerHTML = `
-          ${bannerHTML}
-          <div class="fw-text">
-            <div class="fw-text-body">
+          <div class="fw-panel">
+            ${bannerHTML}
+            <div class="fw-proj-info">
+              <div class="fw-proj-category">${p.category}</div>
               <div class="fw-proj-title">${p.name}</div>
               <p class="fw-proj-desc">${p.desc}</p>
               <div class="fw-proj-tags">${p.tags.map(t => `<span class="fw-tag">${t}</span>`).join('')}</div>
-              <div class="fw-proj-role">${p.role}</div>
             </div>
             <a class="fw-open-btn" href="${p.url}">Open project →</a>
           </div>`;
