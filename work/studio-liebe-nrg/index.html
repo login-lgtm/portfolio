@@ -89,11 +89,13 @@
     .mac-label { font-size:12px; color:var(--text-light); margin-left:8px; }
 
     /* ── SPLIT HERO ── */
-    .split-hero { display:flex; height:520px; margin-top:57px; position:relative; z-index:1; }
-    .split-half { flex:1; position:relative; display:flex; align-items:center; justify-content:center; overflow:hidden; }
-    .split-ph { font-size:14px; color:rgba(255,255,255,.35); text-align:center; line-height:1.6; padding:16px; }
-    .split-vid { position:absolute; inset:0; width:100%; height:100%; object-fit:cover; opacity:.8; pointer-events:none; }
-    .split-label { position:absolute; bottom:24px; left:24px; background:rgba(255,255,255,.15); color:white; font-size:13px; font-weight:500; padding:6px 12px; border-radius:100px; backdrop-filter:blur(8px); z-index:2; }
+    .split-hero { display:flex; height:480px; margin-top:57px; position:relative; z-index:1; }
+    .split-half { flex:1; position:relative; overflow:hidden; }
+    .split-half img { width:100%; height:100%; object-fit:cover; object-position:center; display:block; }
+    .split-overlay { position:absolute; inset:0; background:linear-gradient(to bottom,rgba(0,0,0,.1) 0%,rgba(0,0,0,.45) 100%); pointer-events:none; }
+    .split-label-l { position:absolute; bottom:20px; left:20px; background:rgba(0,0,0,.55); backdrop-filter:blur(6px); color:white; font-size:13px; font-weight:500; letter-spacing:.05em; padding:6px 14px; border-radius:100px; z-index:2; }
+    .split-label-r { position:absolute; bottom:20px; right:20px; background:rgba(0,0,0,.55); backdrop-filter:blur(6px); color:white; font-size:13px; font-weight:500; letter-spacing:.05em; padding:6px 14px; border-radius:100px; z-index:2; }
+    @media(max-width:768px){ .split-hero { flex-direction:column; height:auto; } .split-half { height:200px; } }
     /* ── MEDIA ── */
     .img-ph video,.img-ph img { width:100%; height:100%; object-fit:cover; display:block; border-radius:12px; }
     .img-ph { overflow:hidden; border-radius:12px; }
@@ -155,7 +157,7 @@
     /* ── RESPONSIVE ── */
     @media (max-width:900px) {
       .split-hero { flex-direction:column; height:auto; }
-      .split-half { height:280px; }
+      .split-half { height:220px; }
       .proj-header,.kontext-section,.content-section,.omr-section,.learnings-section { padding:48px 32px; }
       .kontext-section { padding:0 32px 48px; }
       .img-row { flex-direction:column; }
@@ -325,17 +327,15 @@
 
   <!-- ══ SPLIT HERO ══ -->
   <div class="split-hero">
-    <div class="split-half" style="background:#1E1A2E;">
-      <video class="split-vid" autoplay muted loop playsinline>
-        <source src="media/studio-liebe/h73-reel.mp4" type="video/mp4">
-      </video>
-      <span class="split-label">Studio Liebe</span>
+    <div class="split-half">
+      <img src="media/studio-liebe/studioliebe-header.jpg" alt="Studio Liebe">
+      <div class="split-overlay"></div>
+      <span class="split-label-l">Studio Liebe</span>
     </div>
-    <div class="split-half" style="background:#0A0A0A;">
-      <video class="split-vid" autoplay muted loop playsinline>
-        <source src="media/nrg/nrg-slide.mp4" type="video/mp4">
-      </video>
-      <span class="split-label">NRG</span>
+    <div class="split-half">
+      <img src="media/nrg/nrg-header.jpg" alt="NRG">
+      <div class="split-overlay"></div>
+      <span class="split-label-r">NRG</span>
     </div>
   </div>
 

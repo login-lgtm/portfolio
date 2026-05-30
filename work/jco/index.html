@@ -89,13 +89,14 @@
     .mac-label { font-size:12px; color:var(--text-light); margin-left:8px; }
 
     /* ── HERO ── */
-    .project-hero { position:relative; width:100%; height:500px; background:var(--tag-bg); display:flex; align-items:center; justify-content:center; margin-top:57px; overflow:hidden; }
-    .hero-ph { font-size:16px; color:var(--text-light); text-align:center; line-height:1.6; }
-    .hero-img { position:absolute; inset:0; width:100%; height:100%; object-fit:cover; object-position:top; }
+    .project-hero { position:relative; width:100%; height:480px; background:linear-gradient(135deg,#0D1117 0%,#1A1A2E 50%,rgba(107,92,231,.2) 100%); margin-top:57px; overflow:hidden; }
+    .hero-img { position:absolute; inset:0; width:100%; height:100%; object-fit:cover; object-position:center; display:block; }
+    .hero-overlay { position:absolute; inset:0; background:linear-gradient(to bottom,rgba(0,0,0,.15) 0%,rgba(0,0,0,.55) 100%); pointer-events:none; z-index:1; }
+    @media(max-width:768px){ .project-hero { height:300px; } }
     .iphone-mockup img { width:100%; height:100%; object-fit:cover; object-position:top; display:block; }
-    .hero-mac-label { position:absolute; top:32px; left:32px; display:flex; align-items:center; gap:6px; background:white; border-radius:20px; padding:8px 16px; box-shadow:0 2px 12px rgba(0,0,0,.08); }
+    .hero-mac-label { position:absolute; top:20px; left:20px; z-index:2; display:flex; align-items:center; gap:6px; background:rgba(255,255,255,.12); backdrop-filter:blur(8px); border:1px solid rgba(255,255,255,.2); border-radius:20px; padding:8px 16px; }
     .hero-mac-label .mac-dot { width:8px; height:8px; }
-    .hero-mac-label span { font-size:13px; font-weight:500; color:var(--text); }
+    .hero-mac-label span { font-size:13px; font-weight:500; color:white; }
 
     /* ── PROJEKT-HEADER ── */
     .proj-header { padding:80px; position:relative; z-index:1; }
@@ -352,7 +353,8 @@
 
   <!-- ══ HERO ══ -->
   <div class="project-hero">
-    <img class="hero-img" src="media/instagram-screenshot.png" alt="JCO Hamburg">
+    <img class="hero-img" src="media/jco-header.jpg" alt="JCO Hamburg">
+    <div class="hero-overlay"></div>
     <div class="hero-mac-label">
       <span class="mac-dot r"></span>
       <span class="mac-dot y"></span>
