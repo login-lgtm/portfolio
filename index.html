@@ -683,45 +683,48 @@
 
     /* ── SIDEBAR (links, 240px, Navigation) ── */
     .fw-sidebar {
-      width: 240px;
+      width: 210px;
       flex-shrink: 0;
       background: #F0EDEA;
       border-right: 1px solid rgba(0,0,0,.07);
-      padding: 18px 0;
-      overflow: hidden;       /* Sidebar scrollt NICHT */
+      padding: 6px 0 12px;
+      overflow: hidden;
     }
-    .fw-sidebar-label {
-      font-size: 11px; font-weight: 600;
-      text-transform: uppercase; letter-spacing: .09em;
-      color: var(--text-light);
-      padding: 0 14px 10px;
+    .fw-sidebar-category {
+      font-family: 'DM Sans', sans-serif;
+      font-size: 10px; font-weight: 500;
+      text-transform: uppercase; letter-spacing: .12em;
+      color: #999;
+      padding: 16px 16px 4px;
+      border-top: 1px solid #E8E4E0;
     }
+    .fw-sidebar-category:first-child { border-top: none; padding-top: 8px; }
     .fw-sidebar-list {
-      display: flex; flex-direction: column; gap: 2px;
-      padding: 0 8px;
+      display: flex; flex-direction: column; gap: 1px;
+      padding: 2px 8px;
     }
     .fw-sidebar-item {
-      display: flex; align-items: center; gap: 10px;
-      padding: 8px 10px;
+      display: flex; align-items: center; gap: 9px;
+      padding: 7px 8px;
       border-radius: 7px;
       cursor: pointer;
       user-select: none;
+      position: relative;
+      opacity: 0;
       transition: background .12s;
     }
+    .fw-sidebar-item.folder-visible { animation: folder-in 0.4s ease forwards; }
     .fw-sidebar-item:hover { background: rgba(0,0,0,.05); }
     .fw-sidebar-item.active { background: var(--accent-light); }
-    .fw-sidebar-item.active .fw-sidebar-name {
-      color: var(--accent);
-      font-weight: 600;
-    }
-    .fw-sidebar-icon { display: block; flex-shrink: 0; }
+    .fw-sidebar-item.active .fw-sidebar-name { color: var(--accent); font-weight: 600; }
     .fw-sidebar-name {
-      font-size: 13px; color: var(--text-mid);
+      font-size: 12.5px; color: var(--text-mid);
       line-height: 1.3;
       transition: color .12s;
       white-space: nowrap;
       overflow: hidden;
       text-overflow: ellipsis;
+      position: relative;
     }
 
     /* ── CONTENT (rechts, scrollbar) ── */
@@ -775,33 +778,59 @@
       flex: 1;
       display: flex;
       flex-direction: column;
-      padding: 20px;
+      justify-content: space-between;
+      padding: 16px 18px 18px;
       box-sizing: border-box;
       min-height: 0;
     }
-    .fw-proj-info { flex: 1; }
+    .fw-proj-info { display: flex; flex-direction: column; }
     .fw-proj-category {
-      font-size: 11px; font-weight: 500;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 10px; font-weight: 500;
       letter-spacing: .1em; text-transform: uppercase;
-      color: var(--accent); margin-bottom: 6px;
+      color: #6B5CE7; margin-bottom: 4px;
     }
-    .fw-proj-title {
-      font-family: 'Instrument Serif', serif;
-      font-size: 22px; color: var(--text);
-      line-height: 1.2; margin-bottom: 10px;
+    .fw-proj-name {
+      font-family: 'DM Sans', sans-serif;
+      font-size: 16px; font-weight: 500;
+      color: #1A1A1A; margin: 0 0 2px; line-height: 1.2;
+    }
+    .fw-proj-period {
+      font-family: 'DM Sans', sans-serif;
+      font-size: 12px; color: #999; margin: 0 0 10px;
     }
     .fw-proj-desc {
-      font-size: 14px; color: var(--text-mid);
-      line-height: 1.7; margin-bottom: 14px;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 12px; color: #666;
+      line-height: 1.5; margin: 0 0 0;
     }
-    .fw-proj-tags { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 12px; }
+    .fw-stats {
+      display: flex; gap: 16px;
+      border-top: 1px solid #E8E4E0;
+      padding-top: 10px; margin-top: 10px; margin-bottom: 8px;
+    }
+    .fw-stat { display: flex; flex-direction: column; }
+    .fw-stat-value {
+      font-family: 'Instrument Serif', serif;
+      font-size: 18px; color: #1A1A1A; line-height: 1;
+    }
+    .fw-stat-value.primary { color: #6B5CE7; }
+    .fw-stat-label {
+      font-family: 'DM Sans', sans-serif;
+      font-size: 10px; color: #999; margin-top: 2px;
+    }
+    .fw-proj-tags { display: flex; flex-wrap: wrap; gap: 4px; }
     .fw-tag {
-      font-size: 11px; background: var(--tag-bg);
-      color: var(--text-mid); padding: 4px 10px; border-radius: 100px;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 10px; background: #F0EDEA;
+      color: #666; padding: 3px 10px; border-radius: 100px;
     }
-    .fw-proj-role {
-      font-size: 12px; font-style: italic; color: var(--text-light);
+    /* Legacy selectors kept for safety */
+    .fw-proj-title {
+      font-family: 'Instrument Serif', serif;
+      font-size: 20px; color: var(--text); line-height: 1.2;
     }
+    .fw-proj-role { font-size: 12px; font-style: italic; color: var(--text-light); }
 
     /* Status bar */
     .fw-statusbar {
@@ -1509,8 +1538,151 @@
 .fw-iphone-thumb video,.fw-iphone-thumb img { width:100%; height:100%; object-fit:cover; display:block; }
 .fw-iphone-ph { flex:1; border-radius:16px; background:#E8E4E0; aspect-ratio:9/16; display:flex; align-items:center; justify-content:center; font-size:11px; color:#999; }
 /* ── Open project button ── */
-.fw-open-btn { display:inline-flex; align-items:center; gap:6px; background:#6B5CE7; color:white; border-radius:100px; padding:10px 20px; font-family:'DM Sans',sans-serif; font-size:14px; font-weight:500; text-decoration:none; margin-top:auto; padding-top:14px; align-self:flex-start; transition:background .2s,transform .15s; }
+.fw-open-btn { display:block; width:100%; background:#6B5CE7; color:white; border-radius:100px; padding:10px; font-family:'DM Sans',sans-serif; font-size:13px; font-weight:500; text-align:center; text-decoration:none; transition:background .2s,transform .15s; box-sizing:border-box; }
 .fw-open-btn:hover { background:#5A4DD0; transform:translateY(-1px); }
+
+/* ══════════════════════════════════════════════════
+   FINDER — SIDEBAR ICONS & HOVER ANIMATIONS
+══════════════════════════════════════════════════ */
+
+/* Scroll-in */
+@keyframes folder-in {
+  0%   { opacity: 0; transform: translateX(-8px); }
+  100% { opacity: 1; transform: translateX(0); }
+}
+
+/* Profile circle icon */
+.fw-icon-profile {
+  width: 20px; height: 20px;
+  border-radius: 50%; object-fit: cover;
+  flex-shrink: 0; display: block;
+}
+
+/* ── MI4L soundwave wrapper ── */
+.fw-icon-soundwave {
+  position: relative;
+  width: 20px; height: 20px; flex-shrink: 0;
+}
+.mi4l-wave {
+  position: absolute; top: 0; left: 0;
+  width: 20px; height: 20px;
+  border-radius: 50%;
+  border: 1.5px solid #C41E3A;
+  pointer-events: none;
+  animation: soundwave 1.2s ease-out infinite;
+  animation-play-state: paused;
+}
+.mi4l-wave:nth-child(2) { animation-delay: 0.4s; border-color: #8B1A8B; }
+.mi4l-wave:nth-child(3) { animation-delay: 0.8s; border-color: #6B5CE7; }
+.fw-sidebar-item[data-idx="0"]:hover .mi4l-wave { animation-play-state: running; }
+@keyframes soundwave {
+  0%   { transform: scale(1); opacity: 0.6; }
+  100% { transform: scale(2.5); opacity: 0; }
+}
+
+/* ── Studio Liebe & NRG overlapping icons ── */
+.fw-icon-overlap {
+  position: relative; width: 28px; height: 20px; flex-shrink: 0;
+}
+.fw-icon-back {
+  position: absolute; left: 0; top: 1px;
+  width: 18px; height: 18px;
+  border-radius: 50%; object-fit: cover; z-index: 0;
+}
+.fw-icon-front {
+  position: absolute; left: 9px; top: 1px;
+  width: 18px; height: 18px;
+  border-radius: 50%; object-fit: cover; z-index: 1;
+  border: 1.5px solid #F0EDEA;
+  transition: filter .3s ease;
+}
+.fw-sidebar-item[data-idx="1"]:hover .fw-icon-front {
+  filter: drop-shadow(0 0 6px #FF6B00);
+}
+.fw-sidebar-item[data-idx="1"]:hover .fw-icon-overlap {
+  animation: nrg-shake 0.4s ease;
+}
+@keyframes nrg-shake {
+  0%,100% { transform: translateX(0); }
+  20%      { transform: translateX(-3px); }
+  40%      { transform: translateX(3px); }
+  60%      { transform: translateX(-2px); }
+  80%      { transform: translateX(2px); }
+}
+
+/* ── JCO golden underline ── */
+.fw-name-jco::after {
+  content: '';
+  position: absolute;
+  bottom: -2px; left: 0;
+  height: 1px;
+  background: linear-gradient(90deg, #C9A96E, #F0D080);
+  width: 0%;
+  transition: width 0.4s ease;
+}
+.fw-sidebar-item[data-idx="2"]:hover .fw-name-jco::after { width: 100%; }
+
+/* ── Apprenticeship pencil ── */
+.fw-icon-pencil {
+  font-size: 15px; flex-shrink: 0;
+  display: inline-block; width: 20px; text-align: center;
+}
+.fw-sidebar-item[data-idx="3"]:hover .fw-icon-pencil {
+  animation: pencil-bounce 0.5s ease;
+}
+@keyframes pencil-bounce {
+  0%,100% { transform: rotate(0deg); }
+  25%      { transform: rotate(-15deg); }
+  75%      { transform: rotate(10deg); }
+}
+
+/* ══════════════════════════════════════════════════
+   FINDER — PANEL CLICK ANIMATIONS
+══════════════════════════════════════════════════ */
+@keyframes heartbeat-in {
+  0%  { opacity: 0; transform: scale(0.97); }
+  50% { transform: scale(1.01); }
+  100%{ opacity: 1; transform: scale(1); }
+}
+@keyframes warm-slide {
+  0%  { opacity: 0; transform: translateX(-12px); }
+  100%{ opacity: 1; transform: translateX(0); }
+}
+@keyframes elegant-up {
+  0%  { opacity: 0; transform: translateY(16px); }
+  100%{ opacity: 1; transform: translateY(0); }
+}
+.panel-anim-mi4l         { animation: heartbeat-in 0.5s ease forwards; }
+.panel-anim-studioliebe  { animation: warm-slide   0.35s ease-out forwards; }
+.panel-anim-jco          { animation: elegant-up   0.6s cubic-bezier(.25,.46,.45,.94) forwards; }
+.panel-anim-apprenticeship{ animation: warm-slide  0.3s ease-out forwards; }
+
+/* ══════════════════════════════════════════════════
+   FINDER — APPRENTICESHIP BANNER (updated)
+══════════════════════════════════════════════════ */
+.apprenticeship-banner {
+  width: 100%; height: 130px;
+  background: linear-gradient(135deg, #F5F3F1, #EEECEA);
+  border-radius: 12px;
+  display: flex; flex-direction: column;
+  align-items: center; justify-content: center;
+  gap: 8px; flex-shrink: 0;
+  margin-bottom: 14px; overflow: hidden; position: relative;
+}
+.app-pills-row { display: flex; gap: 6px; align-items: center; justify-content: center; }
+.app-tool-pill {
+  font-size: 11px; font-family: 'DM Sans', sans-serif; font-weight: 500;
+  padding: 4px 10px; border-radius: 100px;
+  opacity: 0; transform: translateX(-8px);
+  transition: opacity .35s ease, transform .35s ease;
+}
+.app-tool-pill.visible { opacity: 1; transform: translateX(0); }
+.app-banner-tagline {
+  font-family: 'DM Sans', sans-serif; font-style: italic;
+  font-size: 11px; color: #999;
+  opacity: 0; transition: opacity .5s ease .65s;
+}
+.app-banner-tagline.visible { opacity: 1; }
 
 /* ══════════════════════════════════════════════════
    FINDER — MOOD BANNERS (redesigned)
@@ -1940,52 +2112,51 @@
       <!-- Body: Sidebar links + Content rechts -->
       <div class="fw-body">
 
-        <!-- ── SIDEBAR: 4 Projekte als klickbare Liste ── -->
+        <!-- ── SIDEBAR: 3 Kategorien ── -->
         <aside class="fw-sidebar">
-          <div class="fw-sidebar-label">Favorites</div>
-          <ul class="fw-sidebar-list" id="fw-sidebar-list">
 
-            <!-- Projekt 0 – Music is for Lovers (blau) -->
+          <!-- FAVORITES -->
+          <div class="fw-sidebar-category">FAVORITES</div>
+          <ul class="fw-sidebar-list">
             <li class="fw-sidebar-item active" data-idx="0" data-url="work/mi4l/index.html">
-              <svg class="fw-sidebar-icon" width="20" height="16" viewBox="0 0 20 16" fill="none">
-                <path d="M1 5.5 L1 3.5 Q1 3 1.5 3 L6.5 3 Q7.8 3 8.3 4 L9.2 5.5 Z" fill="#96B8E2"/>
-                <rect x="1" y="5" width="18" height="9" rx="2" fill="#7B9FD4"/>
-                <rect x="1" y="5" width="18" height="3" rx="2" fill="rgba(255,255,255,.28)"/>
-              </svg>
+              <div class="fw-icon-soundwave">
+                <img class="fw-icon-profile" src="work/mi4l/media/mi4l-profile.jpg" alt=""
+                  onerror="this.style.display='none'">
+                <span class="mi4l-wave"></span>
+                <span class="mi4l-wave"></span>
+                <span class="mi4l-wave"></span>
+              </div>
               <span class="fw-sidebar-name">Music is for Lovers</span>
             </li>
-
-            <!-- Projekt 1 – Studio Liebe & NRG (rosa) -->
             <li class="fw-sidebar-item" data-idx="1" data-url="work/studio-liebe-nrg/index.html">
-              <svg class="fw-sidebar-icon" width="20" height="16" viewBox="0 0 20 16" fill="none">
-                <path d="M1 5.5 L1 3.5 Q1 3 1.5 3 L6.5 3 Q7.8 3 8.3 4 L9.2 5.5 Z" fill="#E2AE97"/>
-                <rect x="1" y="5" width="18" height="9" rx="2" fill="#D4957B"/>
-                <rect x="1" y="5" width="18" height="3" rx="2" fill="rgba(255,255,255,.28)"/>
-              </svg>
+              <div class="fw-icon-overlap">
+                <img class="fw-icon-back" src="work/studio-liebe-nrg/media/nrg/nrg-profile.jpg" alt=""
+                  onerror="this.style.display='none'">
+                <img class="fw-icon-front" src="work/studio-liebe-nrg/media/studio-liebe/studioliebe-profile.jpg" alt=""
+                  onerror="this.style.display='none'">
+              </div>
               <span class="fw-sidebar-name">Studio Liebe & NRG</span>
             </li>
+          </ul>
 
-            <!-- Projekt 2 – Jewish Chamber Orchestra (grün) -->
+          <!-- FREELANCE -->
+          <div class="fw-sidebar-category">FREELANCE</div>
+          <ul class="fw-sidebar-list">
             <li class="fw-sidebar-item" data-idx="2" data-url="work/jco/index.html">
-              <svg class="fw-sidebar-icon" width="20" height="16" viewBox="0 0 20 16" fill="none">
-                <path d="M1 5.5 L1 3.5 Q1 3 1.5 3 L6.5 3 Q7.8 3 8.3 4 L9.2 5.5 Z" fill="#99D4BB"/>
-                <rect x="1" y="5" width="18" height="9" rx="2" fill="#7BC4A0"/>
-                <rect x="1" y="5" width="18" height="3" rx="2" fill="rgba(255,255,255,.28)"/>
-              </svg>
-              <span class="fw-sidebar-name">Jewish Chamber Orchestra Hamburg</span>
+              <span class="fw-icon-pencil">🎼</span>
+              <span class="fw-sidebar-name fw-name-jco">Jewish Chamber Orchestra Hamburg</span>
             </li>
+          </ul>
 
-            <!-- Projekt 3 – During my Apprenticeship (lila) -->
+          <!-- EXPERIENCE -->
+          <div class="fw-sidebar-category">EXPERIENCE</div>
+          <ul class="fw-sidebar-list">
             <li class="fw-sidebar-item" data-idx="3" data-url="work/apprenticeship/index.html">
-              <svg class="fw-sidebar-icon" width="20" height="16" viewBox="0 0 20 16" fill="none">
-                <path d="M1 5.5 L1 3.5 Q1 3 1.5 3 L6.5 3 Q7.8 3 8.3 4 L9.2 5.5 Z" fill="#BB99E2"/>
-                <rect x="1" y="5" width="18" height="9" rx="2" fill="#A07BD4"/>
-                <rect x="1" y="5" width="18" height="3" rx="2" fill="rgba(255,255,255,.28)"/>
-              </svg>
+              <span class="fw-icon-pencil">✏️</span>
               <span class="fw-sidebar-name">During my Apprenticeship</span>
             </li>
-
           </ul>
+
         </aside>
 
         <!-- ── CONTENT: zeigt aktives Projekt ── -->
@@ -2285,44 +2456,68 @@
     const PROJECTS = [
       {
         name: 'Music is for Lovers',
-        category: 'Brand System · Art Direction',
-        desc: 'Co-founded Dec 2022. Creative Lead since 2024.',
+        category: 'BRAND SYSTEM · CO-FOUNDED',
+        period: 'Dec 2022 — today',
+        desc: 'Co-built an event brand from scratch. Visual identity, print & digital.',
+        stats: [
+          { value: '10+', label: 'Events', primary: true },
+          { value: '400', label: 'Guests' },
+          { value: '3',   label: 'Formats' }
+        ],
         tags: ['Brand System','Art Direction','Print'],
-        url: 'work/mi4l/index.html'
+        url: 'work/mi4l/index.html',
+        anim: 'mi4l'
       },
       {
         name: 'Studio Liebe & NRG',
-        category: 'Visual Identity · Print',
-        desc: 'Two sub-formats of MIFL — art direction, poster design and large-format print for OMR 2024 Hamburg.',
-        tags: ['Visual Identity','Art Direction','Print Production'],
-        url: 'work/studio-liebe-nrg/index.html'
+        category: 'VISUAL IDENTITY · SUB-BRANDS',
+        period: '2023 — 2024',
+        desc: 'Two sub-formats, two visual worlds. One system.',
+        stats: [
+          { value: '2',     label: 'Formats', primary: true },
+          { value: 'OMR',   label: '2024 Print' }
+        ],
+        tags: ['Visual Identity','Print Production','Events'],
+        url: 'work/studio-liebe-nrg/index.html',
+        anim: 'studioliebe'
       },
       {
         name: 'Jewish Chamber Orchestra Hamburg',
-        category: 'Brand Communication · Cultural',
-        desc: 'Brand communication for a cultural institution — reaching a younger audience across digital channels.',
-        tags: ['Brand Communication','Visual Strategy','Digital'],
-        url: 'work/jco/index.html'
+        category: 'BRAND COMMUNICATION · FREELANCE',
+        period: '2023 — present',
+        desc: 'Brand communication for a cultural institution.',
+        stats: [
+          { value: '2023', label: 'Since', primary: true },
+          { value: 'Free', label: 'Freelance' }
+        ],
+        tags: ['Brand Comm','Visual Strategy'],
+        url: 'work/jco/index.html',
+        anim: 'jco'
       },
       {
         name: 'During my Apprenticeship',
-        category: 'Agency Work · 2023 – 2026',
-        desc: 'Three years at a Hamburg agency — websites, corporate identity systems and print. Real client projects from brief to delivery.',
-        tags: ['Figma','Webflow','Corporate Design','Print Production'],
-        url: 'work/apprenticeship/index.html'
+        category: 'WEB DESIGN · PRINT · CORPORATE',
+        period: 'Aug 2023 — Jan 2026',
+        desc: 'Real client projects alongside the apprenticeship.',
+        stats: [
+          { value: '3',   label: 'Years', primary: true },
+          { value: '2',   label: 'Web Projects' },
+          { value: 'IHK', label: 'Cert' }
+        ],
+        tags: ['Web Design','Print','Corporate'],
+        url: 'work/apprenticeship/index.html',
+        anim: 'apprenticeship'
       }
     ];
 
-    /* Rendert den Content-Bereich für Projekt idx */
+    /* ── Rendert den Content-Bereich für Projekt idx ── */
     function renderContent(idx) {
       const p = PROJECTS[idx];
       const content = document.getElementById('fw-content');
 
-      /* ── Per-project mood banners ── */
+      /* ── Mood Banner per project ── */
       let bannerHTML = '';
-
       if (idx === 0) {
-        /* MI4L — radial gradient, animated */
         bannerHTML = `
           <div class="mood-banner mood-banner-mi4l">
             <div class="mood-profile">
@@ -2330,9 +2525,7 @@
               <a href="https://www.instagram.com/music.is.for.lovers/" target="_blank">@music.is.for.lovers</a>
             </div>
           </div>`;
-
       } else if (idx === 1) {
-        /* Studio Liebe & NRG — orange/dark split */
         bannerHTML = `
           <div class="mood-banner mood-banner-studioliebe">
             <div class="mood-profile">
@@ -2344,9 +2537,7 @@
               <span class="mood-handle">NRG</span>
             </div>
           </div>`;
-
       } else if (idx === 2) {
-        /* JCO — deep navy, gold stripe */
         bannerHTML = `
           <div class="mood-banner mood-banner-jco">
             <div class="mood-profile">
@@ -2354,58 +2545,65 @@
               <a href="https://www.instagram.com/jcohamburg/" target="_blank">@jcohamburg</a>
             </div>
           </div>`;
-
       } else {
-        /* Apprenticeship — neutral bg, staggered branded tool pills */
         const tools = [
-          { label: 'Figma',     bg: '#1E1E1E' },
-          { label: 'Webflow',   bg: '#4353FF' },
-          { label: 'Illustrator', bg: '#FF9A00' },
-          { label: 'InDesign',  bg: '#FF3366' },
-          { label: 'Photoshop', bg: '#31A8FF' },
-          { label: 'Affinity',  bg: '#1B2951' },
-          { label: 'HTML & CSS',bg: '#E34F26' },
-          { label: 'Print',     bg: '#6B5CE7' }
+          { label: 'Figma',  bg: '#1E1E1E', color: 'white' },
+          { label: 'Ps',     bg: '#001E36', color: '#31A8FF' },
+          { label: 'Ai',     bg: '#FF9A00', color: '#1A1A1A' },
+          { label: 'Id',     bg: '#FF3366', color: 'white' },
+          { label: 'Web',    bg: '#6B5CE7', color: 'white' },
+          { label: 'Print',  bg: '#2A2A2A', color: 'white' }
         ];
-        const row1 = tools.slice(0, 4).map((t, i) =>
-          `<span class="app-tool-pill" style="background:${t.bg};transition-delay:${i * 150}ms">${t.label}</span>`).join('');
-        const row2 = tools.slice(4).map((t, i) =>
-          `<span class="app-tool-pill" style="background:${t.bg};transition-delay:${(i + 4) * 150}ms">${t.label}</span>`).join('');
+        const pillsHTML = tools.map((t, i) =>
+          `<span class="app-tool-pill" style="background:${t.bg};color:${t.color};transition-delay:${i * 100}ms">${t.label}</span>`
+        ).join('');
         bannerHTML = `
           <div class="apprenticeship-banner">
-            <div class="app-pills-row">${row1}</div>
-            <div class="app-pills-row">${row2}</div>
+            <div class="app-pills-row">${pillsHTML}</div>
+            <div class="app-banner-tagline">Built real things while learning.</div>
           </div>`;
       }
 
+      /* ── Stats row ── */
+      const statsHTML = (p.stats || []).map((s, i) =>
+        `<div class="fw-stat">
+          <span class="fw-stat-value${s.primary ? ' primary' : ''}">${s.value}</span>
+          <span class="fw-stat-label">${s.label}</span>
+        </div>`
+      ).join('');
+
+      /* ── Inject HTML with panel animation class ── */
+      content.style.transition = 'none';
       content.style.opacity = '0';
-      setTimeout(() => {
+      requestAnimationFrame(() => {
         content.innerHTML = `
-          <div class="fw-panel">
+          <div class="fw-panel panel-anim-${p.anim}">
             ${bannerHTML}
             <div class="fw-proj-info">
               <div class="fw-proj-category">${p.category}</div>
-              <div class="fw-proj-title">${p.name}</div>
+              <div class="fw-proj-name">${p.name}</div>
+              <div class="fw-proj-period">${p.period}</div>
               <p class="fw-proj-desc">${p.desc}</p>
+              <div class="fw-stats">${statsHTML}</div>
               <div class="fw-proj-tags">${p.tags.map(t => `<span class="fw-tag">${t}</span>`).join('')}</div>
             </div>
             <a class="fw-open-btn" href="${p.url}">Open project →</a>
           </div>`;
-        content.style.transition = 'opacity .2s ease';
         content.style.opacity = '1';
 
-        /* Trigger staggered pill animation for Apprenticeship */
+        /* Trigger pill + tagline animation for Apprenticeship */
         if (idx === 3) {
           requestAnimationFrame(() => {
             requestAnimationFrame(() => {
-              content.querySelectorAll('.app-tool-pill').forEach(pill => pill.classList.add('visible'));
+              content.querySelectorAll('.app-tool-pill, .app-banner-tagline')
+                .forEach(el => el.classList.add('visible'));
             });
           });
         }
-      }, 110);
+      });
     }
 
-    /* Sidebar-Klick (single) + Doppelklick → Projektseite */
+    /* ── Sidebar click (single) + dblclick → open project ── */
     document.querySelectorAll('.fw-sidebar-item').forEach(item => {
       item.addEventListener('click', () => {
         document.querySelectorAll('.fw-sidebar-item').forEach(x => x.classList.remove('active'));
@@ -2417,7 +2615,20 @@
       });
     });
 
-    /* Erstes Projekt beim Laden automatisch aktiv */
+    /* ── Scroll-in: folder items animate in when Finder enters viewport ── */
+    const _finderEl = document.querySelector('.finder-window');
+    const _folderItems = document.querySelectorAll('.fw-sidebar-item');
+    const _folderObserver = new IntersectionObserver((entries) => {
+      if (entries[0].isIntersecting) {
+        _folderItems.forEach((item, i) => {
+          setTimeout(() => item.classList.add('folder-visible'), i * 100);
+        });
+        _folderObserver.disconnect();
+      }
+    }, { threshold: 0.25 });
+    if (_finderEl) _folderObserver.observe(_finderEl);
+
+    /* ── MI4L aktiv + Panel beim Laden ── */
     renderContent(0);
 
     /* ── HERO NAME FADE-IN ─────────────────────────────────── */
