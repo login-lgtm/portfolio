@@ -189,23 +189,22 @@
     @media (max-width:390px) { .nav-links { gap:10px; } .nav-links a { font-size:11px; } }
     @media (hover:none) { body { cursor:auto; } .cursor,.cursor-ring { display:none; } }
 
-/* ── Shared: iPhone Mockup ── */
-.iphone-mockup{width:220px;background:#1A1A1A;border-radius:44px;padding:12px;box-shadow:0 0 0 1px #333,0 20px 60px rgba(0,0,0,.4),inset 0 0 0 1px #444;position:relative;flex-shrink:0;}
-.iphone-screen{border-radius:36px;overflow:hidden;background:#000;aspect-ratio:9/16;position:relative;}
-.iphone-screen video,.iphone-screen img{width:100%;height:100%;object-fit:cover;display:block;}
-.iphone-notch{position:absolute;top:0;left:50%;transform:translateX(-50%);width:80px;height:24px;background:#1A1A1A;border-radius:0 0 16px 16px;z-index:2;}
-/* ── Shared: Carousel ── */
-.carousel-container{position:relative;overflow:hidden;border-radius:20px;background:#1A1A1A;}
-.carousel-track{display:flex;transition:transform 0.4s ease;}
-.carousel-slide{flex-shrink:0;width:100%;aspect-ratio:4/5;}
-.carousel-slide img,.carousel-slide video{width:100%;height:100%;object-fit:cover;display:block;}
-.carousel-btn{position:absolute;top:50%;transform:translateY(-50%);background:rgba(255,255,255,.9);border:none;border-radius:50%;width:36px;height:36px;cursor:pointer;font-size:14px;display:flex;align-items:center;justify-content:center;box-shadow:0 2px 8px rgba(0,0,0,.2);z-index:2;transition:background .2s;}
-.carousel-btn:hover{background:white;}
-.carousel-btn.prev{left:12px;}
-.carousel-btn.next{right:12px;}
-.carousel-dots{display:flex;gap:6px;justify-content:center;margin-top:12px;}
-.carousel-dot{width:6px;height:6px;border-radius:50%;background:#D8D4D0;cursor:pointer;transition:background .2s;}
+/* ── iPhone Mockup ── */
+.iphone-mockup{width:260px;height:563px;background:#1A1A1A;border-radius:46px;padding:8px;box-shadow:0 0 0 1.5px #333,0 24px 48px rgba(0,0,0,.3),inset 0 0 0 1px #2A2A2A;position:relative;flex-shrink:0;}
+.iphone-screen{width:100%;height:100%;border-radius:40px;overflow:hidden;background:#000;}
+.iphone-screen video,.iphone-screen img{width:100%;height:100%;object-fit:cover;}
+.iphone-notch{position:absolute;top:8px;left:50%;transform:translateX(-50%);width:90px;height:26px;background:#1A1A1A;border-radius:0 0 18px 18px;z-index:2;}
+/* ── Carousel ── */
+.carousel-outer{position:relative;width:100%;max-width:360px;aspect-ratio:4/5;overflow:hidden;border-radius:20px;}
+.carousel-track{display:flex;height:100%;transition:transform 0.4s cubic-bezier(0.25,0.46,0.45,0.94);will-change:transform;padding:0 40px;box-sizing:border-box;}
+.carousel-slide{flex-shrink:0;width:calc(100% - 80px);height:100%;margin:0 8px;border-radius:16px;overflow:hidden;position:relative;transition:opacity 0.4s ease,transform 0.4s ease;opacity:.5;transform:scale(0.95);}
+.carousel-slide.active{opacity:1;transform:scale(1);}
+.carousel-slide img,.carousel-slide video{width:100%;height:100%;object-fit:cover;}
+.carousel-nav{display:flex;align-items:center;justify-content:center;gap:12px;margin-top:16px;}
+.carousel-dot{width:6px;height:6px;border-radius:50%;background:#D8D4D0;cursor:pointer;transition:background .2s;border:none;padding:0;}
 .carousel-dot.active{background:#6B5CE7;}
+.carousel-btn{width:32px;height:32px;border-radius:50%;background:white;border:none;cursor:pointer;font-size:16px;display:flex;align-items:center;justify-content:center;box-shadow:0 2px 8px rgba(0,0,0,.15);transition:transform .2s;}
+.carousel-btn:hover{transform:scale(1.1);}
 /* ── Brand Moment ── */
 .brand-moment{padding:80px;background:white;display:flex;align-items:center;gap:60px;position:relative;z-index:1;}
 .brand-moment-left{flex:1;}
@@ -219,13 +218,15 @@
 .bm-thumb:hover{transform:scale(1.05);}
 .bm-thumb video,.bm-thumb img{width:100%;height:100%;object-fit:cover;display:block;}
 /* ── In Action ── */
-.in-action{padding:80px;position:relative;z-index:1;}
-.in-action-title{font-family:'Instrument Serif',serif;font-size:clamp(32px,4vw,48px);letter-spacing:-1px;line-height:1.1;margin-bottom:0;}
-.iphones-wrap{display:flex;gap:48px;align-items:flex-start;justify-content:center;margin-top:48px;}
-.iphone-tilt-left{transform:rotate(-2deg);}
-.iphone-tilt-right{transform:rotate(2deg);margin-top:40px;}
-.carousel-wrap{margin-top:80px;max-width:360px;margin-left:auto;margin-right:auto;}
-.carousel-label{font-size:11px;color:#999;text-transform:uppercase;letter-spacing:.1em;text-align:center;margin-bottom:16px;}
+.in-action{position:relative;z-index:1;padding-top:80px;}
+.in-action-label{font-size:11px;color:#6B5CE7;font-weight:500;letter-spacing:.12em;text-transform:uppercase;padding:0 80px;margin-bottom:8px;display:block;}
+.in-action-heading{font-family:'Instrument Serif',serif;font-size:48px;letter-spacing:-1px;line-height:1.1;padding:0 80px;margin-bottom:0;}
+.in-action-layout{display:flex;align-items:flex-start;gap:40px;padding:80px;}
+.iphones-group{display:flex;gap:20px;align-items:flex-start;flex-shrink:0;}
+.iphones-group .iphone-mockup:nth-child(1){transform:rotate(-1.5deg);}
+.iphones-group .iphone-mockup:nth-child(2){transform:rotate(1.5deg);margin-top:40px;}
+.carousel-group{flex:1;display:flex;flex-direction:column;align-items:center;}
+.carousel-label{font-size:11px;color:#999;letter-spacing:.12em;text-transform:uppercase;margin-bottom:16px;text-align:center;}
 /* ── Ticket ── */
 .ticket-section{padding:40px 80px;text-align:center;position:relative;z-index:1;}
 .ticket{display:inline-flex;background:#1E1A2E;color:white;border-radius:12px;overflow:hidden;box-shadow:0 8px 32px rgba(0,0,0,.2);cursor:pointer;transition:transform .3s ease;max-width:480px;}
@@ -250,16 +251,22 @@
 /* ── Responsive ── */
 @media(max-width:768px){
   .brand-moment{flex-direction:column;padding:48px 32px;gap:32px;}
-  .in-action{padding:48px 32px;}
-  .iphones-wrap{gap:24px;}
-  .iphone-mockup{width:160px;}
-  .carousel-wrap{max-width:100%;}
+  .in-action{padding-top:40px;}
+  .in-action-label{padding:0 24px;}
+  .in-action-heading{padding:0 24px;font-size:32px;}
+  .in-action-layout{flex-direction:column;padding:40px 24px;gap:32px;}
+  .iphone-mockup{width:160px;height:347px;border-radius:36px;padding:6px;}
+  .iphone-screen{border-radius:30px;}
+  .iphone-notch{width:70px;height:20px;}
+  .iphones-group{justify-content:center;}
+  .carousel-group{width:100%;}
+  .carousel-outer{max-width:100%;}
   .ticket-section,.program-section{padding:32px;}
   .ticket{flex-direction:column;max-width:100%;}
   .ticket-tear{width:100%;height:2px;margin:0 16px;background:repeating-linear-gradient(to right,transparent,transparent 6px,rgba(255,255,255,.2) 6px,rgba(255,255,255,.2) 8px);}
 }
 @media(max-width:480px){
-  .brand-moment,.in-action{padding:40px 20px;}
+  .brand-moment{padding:40px 20px;}
   .ticket-section,.program-section{padding:24px 20px;}
 }
   </style>
@@ -455,41 +462,51 @@
 
   <!-- ══ IN ACTION ══ -->
   <section class="in-action" style="background:#F5F3F1;">
-    <div class="section-label reveal">In Action</div>
-    <div class="in-action-title reveal">Visual communication<br>across every touchpoint.</div>
-    <div class="iphones-wrap">
-      <div class="iphone-tilt-left reveal">
+    <span class="in-action-label reveal">IN ACTION</span>
+    <h2 class="in-action-heading reveal">Visual communication<br>across every touchpoint.</h2>
+    <div class="in-action-layout">
+      <div class="iphones-group">
         <div class="iphone-mockup">
           <div class="iphone-notch"></div>
           <div class="iphone-screen">
-            <video autoplay muted loop playsinline preload="none"><source src="media/reel-1.mp4" type="video/mp4"></video>
+            <video autoplay muted loop playsinline preload="none">
+              <source src="media/reel-1.mp4" type="video/mp4">
+            </video>
           </div>
         </div>
-      </div>
-      <div class="iphone-tilt-right reveal">
         <div class="iphone-mockup">
           <div class="iphone-notch"></div>
           <div class="iphone-screen">
-            <video autoplay muted loop playsinline preload="none"><source src="media/reel-2.mp4" type="video/mp4"></video>
+            <video autoplay muted loop playsinline preload="none">
+              <source src="media/reel-2.mp4" type="video/mp4">
+            </video>
           </div>
         </div>
       </div>
-    </div>
-    <div class="carousel-wrap">
-      <div class="carousel-label">Carousel Post</div>
-      <div id="mi4l-carousel" class="carousel-container">
-        <div class="carousel-track">
-          <div class="carousel-slide"><img src="media/carousel-1.jpg" alt="MI4L Carousel 1" loading="lazy"></div>
-          <div class="carousel-slide"><video autoplay muted loop playsinline preload="none"><source src="media/carousel-2.mp4" type="video/mp4"></video></div>
-          <div class="carousel-slide"><img src="media/carousel-3.jpg" alt="MI4L Carousel 3" loading="lazy"></div>
+      <div class="carousel-group">
+        <div class="carousel-label">CAROUSEL POST</div>
+        <div id="mi4l-carousel" class="carousel-outer">
+          <div class="carousel-track">
+            <div class="carousel-slide active">
+              <img src="media/carousel-1.jpg" alt="MI4L Slide 1">
+            </div>
+            <div class="carousel-slide">
+              <video muted loop playsinline preload="none">
+                <source src="media/carousel-2.mp4" type="video/mp4">
+              </video>
+            </div>
+            <div class="carousel-slide">
+              <img src="media/carousel-3.jpg" alt="MI4L Slide 3">
+            </div>
+          </div>
         </div>
-        <button class="carousel-btn prev">‹</button>
-        <button class="carousel-btn next">›</button>
-      </div>
-      <div class="carousel-dots">
-        <div class="carousel-dot active"></div>
-        <div class="carousel-dot"></div>
-        <div class="carousel-dot"></div>
+        <div class="carousel-nav">
+          <button class="carousel-btn prev">‹</button>
+          <button class="carousel-dot active"></button>
+          <button class="carousel-dot"></button>
+          <button class="carousel-dot"></button>
+          <button class="carousel-btn next">›</button>
+        </div>
       </div>
     </div>
   </section>
@@ -565,22 +582,44 @@
     document.querySelectorAll('.reveal').forEach(el=>obs.observe(el));
     /* ── CAROUSEL ── */
     function initCarousel(id) {
-      const wrap   = document.getElementById(id); if (!wrap) return;
-      const track  = wrap.querySelector('.carousel-track');
-      const slides = track.querySelectorAll('.carousel-slide');
-      const dots   = document.querySelectorAll(`#${id} ~ .carousel-dots .carousel-dot`);
-      let current  = 0;
+      const outer = document.getElementById(id);
+      if (!outer) return;
+      const track = outer.querySelector('.carousel-track');
+      const slides = outer.querySelectorAll('.carousel-slide');
+      const dots = outer.parentElement.querySelectorAll('.carousel-dot');
+      let current = 0;
+      function getSlideWidth() { return outer.offsetWidth - 80 + 16; }
       function goTo(n) {
-        current = (n + slides.length) % slides.length;
-        track.style.transform = `translateX(-${current * 100}%)`;
-        dots.forEach((d,i) => d.classList.toggle('active', i === current));
-        slides.forEach((s,i) => { const v = s.querySelector('video'); if (v) { i === current ? v.play() : v.pause(); } });
+        current = Math.max(0, Math.min(n, slides.length - 1));
+        track.style.transform = `translateX(${-current * getSlideWidth()}px)`;
+        slides.forEach((s, i) => {
+          s.classList.toggle('active', i === current);
+          const v = s.querySelector('video');
+          if (v) { i === current ? v.play().catch(()=>{}) : v.pause(); }
+        });
+        dots.forEach((d, i) => d.classList.toggle('active', i === current));
       }
-      wrap.querySelector('.prev')?.addEventListener('click', () => goTo(current - 1));
-      wrap.querySelector('.next')?.addEventListener('click', () => goTo(current + 1));
-      dots.forEach((d,i) => d.addEventListener('click', () => goTo(i)));
+      outer.parentElement.querySelector('.carousel-btn.prev')?.addEventListener('click', () => goTo(current - 1));
+      outer.parentElement.querySelector('.carousel-btn.next')?.addEventListener('click', () => goTo(current + 1));
+      dots.forEach((d, i) => d.addEventListener('click', () => goTo(i)));
+      let touchStartX = 0;
+      outer.addEventListener('touchstart', e => { touchStartX = e.touches[0].clientX; }, { passive: true });
+      outer.addEventListener('touchend', e => {
+        const diff = touchStartX - e.changedTouches[0].clientX;
+        if (Math.abs(diff) > 50) { diff > 0 ? goTo(current + 1) : goTo(current - 1); }
+      });
+      window.addEventListener('resize', () => goTo(current));
       goTo(0);
     }
+    /* ── VIDEO OBSERVER ── */
+    const videoObserver = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        const video = entry.target;
+        if (entry.isIntersecting) { video.play().catch(() => {}); }
+        else { video.pause(); }
+      });
+    }, { threshold: 0.3 });
+    document.querySelectorAll('.iphone-screen video, .carousel-slide video').forEach(v => videoObserver.observe(v));
     initCarousel('mi4l-carousel');
   </script>
 </body>
