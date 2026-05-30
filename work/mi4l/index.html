@@ -187,6 +187,80 @@
     }
     @media (max-width:390px) { .nav-links { gap:10px; } .nav-links a { font-size:11px; } }
     @media (hover:none) { body { cursor:auto; } .cursor,.cursor-ring { display:none; } }
+
+/* ── Shared: iPhone Mockup ── */
+.iphone-mockup{width:220px;background:#1A1A1A;border-radius:44px;padding:12px;box-shadow:0 0 0 1px #333,0 20px 60px rgba(0,0,0,.4),inset 0 0 0 1px #444;position:relative;flex-shrink:0;}
+.iphone-screen{border-radius:36px;overflow:hidden;background:#000;aspect-ratio:9/16;position:relative;}
+.iphone-screen video,.iphone-screen img{width:100%;height:100%;object-fit:cover;display:block;}
+.iphone-notch{position:absolute;top:0;left:50%;transform:translateX(-50%);width:80px;height:24px;background:#1A1A1A;border-radius:0 0 16px 16px;z-index:2;}
+/* ── Shared: Carousel ── */
+.carousel-container{position:relative;overflow:hidden;border-radius:20px;background:#1A1A1A;}
+.carousel-track{display:flex;transition:transform 0.4s ease;}
+.carousel-slide{flex-shrink:0;width:100%;aspect-ratio:4/5;}
+.carousel-slide img,.carousel-slide video{width:100%;height:100%;object-fit:cover;display:block;}
+.carousel-btn{position:absolute;top:50%;transform:translateY(-50%);background:rgba(255,255,255,.9);border:none;border-radius:50%;width:36px;height:36px;cursor:pointer;font-size:14px;display:flex;align-items:center;justify-content:center;box-shadow:0 2px 8px rgba(0,0,0,.2);z-index:2;transition:background .2s;}
+.carousel-btn:hover{background:white;}
+.carousel-btn.prev{left:12px;}
+.carousel-btn.next{right:12px;}
+.carousel-dots{display:flex;gap:6px;justify-content:center;margin-top:12px;}
+.carousel-dot{width:6px;height:6px;border-radius:50%;background:#D8D4D0;cursor:pointer;transition:background .2s;}
+.carousel-dot.active{background:#6B5CE7;}
+/* ── Brand Moment ── */
+.brand-moment{padding:80px;background:white;display:flex;align-items:center;gap:60px;position:relative;z-index:1;}
+.brand-moment-left{flex:1;}
+.bm-ig-label{font-size:11px;color:var(--accent);font-weight:600;letter-spacing:.12em;text-transform:uppercase;margin-bottom:12px;}
+.bm-ig-handle{font-family:'Instrument Serif',serif;font-size:36px;color:#1A1A1A;text-decoration:none;display:inline-flex;align-items:center;gap:8px;transition:color .2s;}
+.bm-ig-handle:hover{color:var(--accent);}
+.bm-ig-arrow{font-size:16px;color:var(--accent);}
+.bm-ig-sub{font-size:14px;color:#666;margin-top:8px;}
+.bm-thumbs{display:flex;gap:8px;}
+.bm-thumb{width:100px;height:100px;border-radius:8px;overflow:hidden;flex-shrink:0;transition:transform .3s;cursor:pointer;}
+.bm-thumb:hover{transform:scale(1.05);}
+.bm-thumb video,.bm-thumb img{width:100%;height:100%;object-fit:cover;display:block;}
+/* ── In Action ── */
+.in-action{padding:80px;position:relative;z-index:1;}
+.in-action-title{font-family:'Instrument Serif',serif;font-size:clamp(32px,4vw,48px);letter-spacing:-1px;line-height:1.1;margin-bottom:0;}
+.iphones-wrap{display:flex;gap:48px;align-items:flex-start;justify-content:center;margin-top:48px;}
+.iphone-tilt-left{transform:rotate(-2deg);}
+.iphone-tilt-right{transform:rotate(2deg);margin-top:40px;}
+.carousel-wrap{margin-top:80px;max-width:360px;margin-left:auto;margin-right:auto;}
+.carousel-label{font-size:11px;color:#999;text-transform:uppercase;letter-spacing:.1em;text-align:center;margin-bottom:16px;}
+/* ── Ticket ── */
+.ticket-section{padding:40px 80px;text-align:center;position:relative;z-index:1;}
+.ticket{display:inline-flex;background:#1E1A2E;color:white;border-radius:12px;overflow:hidden;box-shadow:0 8px 32px rgba(0,0,0,.2);cursor:pointer;transition:transform .3s ease;max-width:480px;}
+.ticket:hover{transform:scale(1.03) rotate(-1deg);}
+.ticket-left{padding:24px 32px;flex:1;text-align:left;}
+.ticket-label{font-size:11px;color:#6B5CE7;letter-spacing:.15em;font-weight:600;margin-bottom:8px;}
+.ticket-event{font-family:'Instrument Serif',serif;font-size:22px;margin-bottom:4px;}
+.ticket-venue{font-size:13px;color:rgba(255,255,255,.5);}
+.ticket-tear{width:2px;background:repeating-linear-gradient(to bottom,transparent,transparent 6px,rgba(255,255,255,.2) 6px,rgba(255,255,255,.2) 8px);margin:16px 0;}
+.ticket-right{padding:24px 28px;display:flex;flex-direction:column;justify-content:center;align-items:center;background:rgba(107,92,231,.15);}
+.ticket-number{font-family:'Instrument Serif',serif;font-size:28px;color:#6B5CE7;}
+.ticket-guests{font-size:11px;color:rgba(255,255,255,.5);margin-top:4px;}
+/* ── Program Book ── */
+.program-section{padding:40px 80px;text-align:center;position:relative;z-index:1;}
+.program-book{display:inline-block;background:#1E1A2E;color:white;border-radius:8px 16px 16px 8px;padding:32px 40px;box-shadow:-4px 0 0 #6B5CE7,0 8px 32px rgba(0,0,0,.2);cursor:pointer;transition:transform .3s ease;text-align:left;max-width:280px;}
+.program-book:hover{transform:rotate(-2deg) scale(1.03);}
+.program-label{font-size:10px;color:#6B5CE7;letter-spacing:.15em;font-weight:600;margin-bottom:16px;}
+.program-title{font-family:'Instrument Serif',serif;font-size:28px;margin-bottom:8px;}
+.program-subtitle{font-size:13px;color:rgba(255,255,255,.5);}
+/* ── OMR poster ── */
+.omr-poster-ph{width:100%;max-width:800px;height:360px;background:#2A2A3E;border-radius:12px;display:flex;align-items:center;justify-content:center;color:rgba(255,255,255,.3);font-size:14px;font-style:italic;margin:40px auto 0;}
+/* ── Responsive ── */
+@media(max-width:768px){
+  .brand-moment{flex-direction:column;padding:48px 32px;gap:32px;}
+  .in-action{padding:48px 32px;}
+  .iphones-wrap{gap:24px;}
+  .iphone-mockup{width:160px;}
+  .carousel-wrap{max-width:100%;}
+  .ticket-section,.program-section{padding:32px;}
+  .ticket{flex-direction:column;max-width:100%;}
+  .ticket-tear{width:100%;height:2px;margin:0 16px;background:repeating-linear-gradient(to right,transparent,transparent 6px,rgba(255,255,255,.2) 6px,rgba(255,255,255,.2) 8px);}
+}
+@media(max-width:480px){
+  .brand-moment,.in-action{padding:40px 20px;}
+  .ticket-section,.program-section{padding:24px 20px;}
+}
   </style>
 </head>
 <body>
@@ -355,43 +429,81 @@
     </div>
   </section>
 
-  <!-- ══ SUB-BRANDS ══ -->
-  <section class="subbrand-section">
-    <div class="section-heading">
-      <div class="section-label reveal">Sub-Brands</div>
-      <div class="section-title reveal">Three formats. One system.</div>
+  <!-- ══ BRAND MOMENT ══ -->
+  <section class="brand-moment">
+    <div class="brand-moment-left">
+      <div class="bm-ig-label">Find us on Instagram</div>
+      <a class="bm-ig-handle" href="https://www.instagram.com/music.is.for.lovers/" target="_blank">
+        @music.is.for.lovers <span class="bm-ig-arrow">→</span>
+      </a>
+      <div class="bm-ig-sub">Electronic music · Hamburg</div>
     </div>
-    <p class="reveal" style="font-family:'Instrument Serif',serif;font-style:italic;font-size:22px;color:var(--text-mid);margin-top:-16px;margin-bottom:8px;">Each format has its own visual world — all unmistakably connected.</p>
-    <div class="subbrand-grid">
-      <div class="subbrand-card reveal">
-        <div class="mac-chrome">
-          <span class="mac-dot r"></span><span class="mac-dot y"></span><span class="mac-dot g"></span>
-          <span class="mac-label">studio-liebe</span>
-        </div>
-        <div class="subbrand-img" style="background:var(--dark);">
-          <video autoplay muted loop playsinline>
-            <source src="../studio-liebe-nrg/media/studio-liebe/info-slide.mp4" type="video/mp4">
-          </video>
-        </div>
-        <div class="subbrand-body">
-          <div class="subbrand-desc">Disco &amp; house · Haus 73 · Künstlerbörse</div>
-          <a href="../studio-liebe-nrg/index.html" class="outline-btn">View Studio Liebe &amp; NRG →</a>
+    <div class="bm-thumbs">
+      <div class="bm-thumb">
+        <video autoplay muted loop playsinline preload="none"><source src="media/reel-1.mp4" type="video/mp4"></video>
+      </div>
+      <div class="bm-thumb">
+        <video autoplay muted loop playsinline preload="none"><source src="media/reel-2.mp4" type="video/mp4"></video>
+      </div>
+      <div class="bm-thumb">
+        <img src="media/carousel-1.jpg" alt="MI4L" loading="lazy">
+      </div>
+    </div>
+  </section>
+
+  <!-- ══ IN ACTION ══ -->
+  <section class="in-action" style="background:#F5F3F1;">
+    <div class="section-label reveal">In Action</div>
+    <div class="in-action-title reveal">Visual communication<br>across every touchpoint.</div>
+    <div class="iphones-wrap">
+      <div class="iphone-tilt-left reveal">
+        <div class="iphone-mockup">
+          <div class="iphone-notch"></div>
+          <div class="iphone-screen">
+            <video autoplay muted loop playsinline preload="none"><source src="media/reel-1.mp4" type="video/mp4"></video>
+          </div>
         </div>
       </div>
-      <div class="subbrand-card reveal">
-        <div class="mac-chrome">
-          <span class="mac-dot r"></span><span class="mac-dot y"></span><span class="mac-dot g"></span>
-          <span class="mac-label">nrg</span>
+      <div class="iphone-tilt-right reveal">
+        <div class="iphone-mockup">
+          <div class="iphone-notch"></div>
+          <div class="iphone-screen">
+            <video autoplay muted loop playsinline preload="none"><source src="media/reel-2.mp4" type="video/mp4"></video>
+          </div>
         </div>
-        <div class="subbrand-img" style="background:var(--dark);">
-          <video autoplay muted loop playsinline>
-            <source src="../studio-liebe-nrg/media/nrg/nrg-slide.mp4" type="video/mp4">
-          </video>
+      </div>
+    </div>
+    <div class="carousel-wrap">
+      <div class="carousel-label">Carousel Post</div>
+      <div id="mi4l-carousel" class="carousel-container">
+        <div class="carousel-track">
+          <div class="carousel-slide"><img src="media/carousel-1.jpg" alt="MI4L Carousel 1" loading="lazy"></div>
+          <div class="carousel-slide"><video autoplay muted loop playsinline preload="none"><source src="media/carousel-2.mp4" type="video/mp4"></video></div>
+          <div class="carousel-slide"><img src="media/carousel-3.jpg" alt="MI4L Carousel 3" loading="lazy"></div>
         </div>
-        <div class="subbrand-body">
-          <div class="subbrand-desc">Tech house · Bunker · Übel &amp; Gefährlich</div>
-          <a href="../studio-liebe-nrg/index.html" class="outline-btn">View Studio Liebe &amp; NRG →</a>
-        </div>
+        <button class="carousel-btn prev">‹</button>
+        <button class="carousel-btn next">›</button>
+      </div>
+      <div class="carousel-dots">
+        <div class="carousel-dot active"></div>
+        <div class="carousel-dot"></div>
+        <div class="carousel-dot"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══ TICKET ══ -->
+  <section class="ticket-section">
+    <div class="ticket" id="mi4l-ticket">
+      <div class="ticket-left">
+        <div class="ticket-label">MI4L</div>
+        <div class="ticket-event">Music is for Lovers</div>
+        <div class="ticket-venue">Übel &amp; Gefährlich · Hamburg</div>
+      </div>
+      <div class="ticket-tear"></div>
+      <div class="ticket-right">
+        <div class="ticket-number">#2024</div>
+        <div class="ticket-guests">400 Guests</div>
       </div>
     </div>
   </section>
@@ -449,6 +561,25 @@
     /* ── SCROLL REVEAL ── */
     const obs=new IntersectionObserver(entries=>entries.forEach(e=>{if(e.isIntersecting){e.target.classList.add('visible');obs.unobserve(e.target);}}),{threshold:.12});
     document.querySelectorAll('.reveal').forEach(el=>obs.observe(el));
+    /* ── CAROUSEL ── */
+    function initCarousel(id) {
+      const wrap   = document.getElementById(id); if (!wrap) return;
+      const track  = wrap.querySelector('.carousel-track');
+      const slides = track.querySelectorAll('.carousel-slide');
+      const dots   = document.querySelectorAll(`#${id} ~ .carousel-dots .carousel-dot`);
+      let current  = 0;
+      function goTo(n) {
+        current = (n + slides.length) % slides.length;
+        track.style.transform = `translateX(-${current * 100}%)`;
+        dots.forEach((d,i) => d.classList.toggle('active', i === current));
+        slides.forEach((s,i) => { const v = s.querySelector('video'); if (v) { i === current ? v.play() : v.pause(); } });
+      }
+      wrap.querySelector('.prev')?.addEventListener('click', () => goTo(current - 1));
+      wrap.querySelector('.next')?.addEventListener('click', () => goTo(current + 1));
+      dots.forEach((d,i) => d.addEventListener('click', () => goTo(i)));
+      goTo(0);
+    }
+    initCarousel('mi4l-carousel');
   </script>
 </body>
 </html>

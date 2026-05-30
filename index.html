@@ -1489,6 +1489,15 @@
       body { cursor: auto !important; }
       .cursor, .cursor-ring { display: none !important; }
     }
+
+/* ── Finder: iPhone pair preview ── */
+.fw-iphone-pair { display:flex; gap:8px; padding:16px 16px 0; }
+.fw-iphone-thumb { flex:1; border-radius:16px; overflow:hidden; background:#1A1A1A; aspect-ratio:9/16; }
+.fw-iphone-thumb video,.fw-iphone-thumb img { width:100%; height:100%; object-fit:cover; display:block; }
+.fw-iphone-ph { flex:1; border-radius:16px; background:#E8E4E0; aspect-ratio:9/16; display:flex; align-items:center; justify-content:center; font-size:11px; color:#999; }
+/* ── Open project button ── */
+.fw-open-btn { display:inline-flex; align-items:center; gap:6px; background:#6B5CE7; color:white; border-radius:100px; padding:10px 20px; font-family:'DM Sans',sans-serif; font-size:14px; font-weight:500; text-decoration:none; margin-top:12px; transition:background .2s,transform .15s; }
+.fw-open-btn:hover { background:#5A4DD0; transform:translateY(-1px); }
   </style>
 </head>
 <body class="is-loading">
@@ -1798,7 +1807,7 @@
             </li>
 
             <!-- Projekt 1 – Studio Liebe & NRG (rosa) -->
-            <li class="fw-sidebar-item" data-idx="1" data-url="work/mi4l/index.html">
+            <li class="fw-sidebar-item" data-idx="1" data-url="work/studio-liebe-nrg/index.html">
               <svg class="fw-sidebar-icon" width="20" height="16" viewBox="0 0 20 16" fill="none">
                 <path d="M1 5.5 L1 3.5 Q1 3 1.5 3 L6.5 3 Q7.8 3 8.3 4 L9.2 5.5 Z" fill="#E2AE97"/>
                 <rect x="1" y="5" width="18" height="9" rx="2" fill="#D4957B"/>
@@ -2127,81 +2136,65 @@
     const PROJECTS = [
       {
         name: 'Music is for Lovers',
-        // ↓ Bildpfade eintragen (Hauptbild + 3 Thumbnails)
-        images: ['', '', '', ''],
+        images: ['work/mi4l/media/reel-1.mp4','work/mi4l/media/reel-2.mp4','',''],
         desc: 'Co-built an electronic music event brand from zero. Full visual system, brand identity and communication across three formats: MIFL, Studio Liebe, NRG. 10+ events, up to 400 guests.',
         tags: ['Brand System','Art Direction','Event Marketing','Print'],
-        role: 'Co-Founder & Creative Lead · 2022 – now'
+        role: 'Co-Founder & Creative Lead · 2022 – now',
+        url: 'work/mi4l/index.html'
       },
       {
         name: 'Studio Liebe & NRG',
-        // ↓ Bildpfade eintragen
-        images: ['', '', '', ''],
+        images: ['work/studio-liebe-nrg/media/studio-liebe/reel-1.mp4','work/studio-liebe-nrg/media/nrg/reel-1.mp4','',''],
         desc: 'Visual identity and brand communication for two sub-formats of MIFL. Art direction, poster design and large-format print production for OMR 2024 Hamburg.',
         tags: ['Visual Identity','Art Direction','Print Production','Large Format'],
-        role: 'Art Direction & Brand · 2023 – 2024'
+        role: 'Art Direction & Brand · 2023 – 2024',
+        url: 'work/studio-liebe-nrg/index.html'
       },
       {
         name: 'Jewish Chamber Orchestra Hamburg',
-        // ↓ Bildpfade eintragen
-        images: ['', '', '', ''],
+        images: ['work/jco/media/reel-1.mp4','work/jco/media/carousel-1.png','',''],
         desc: 'Brand communication strategy for a cultural institution. Translating brand tone and visual identity across digital channels to reach a younger audience.',
         tags: ['Brand Communication','Visual Strategy','Cultural Institution'],
-        role: 'Brand & Communications · 2023 – present'
+        role: 'Brand & Communications · 2023 – present',
+        url: 'work/jco/index.html'
       },
       {
         name: 'During my Apprenticeship',
-        // ↓ Bildpfade eintragen
-        images: ['', '', '', ''],
+        images: ['','','',''],
         desc: 'Three years at a Hamburg agency — websites in Figma & Webflow, corporate identity systems and print production. Real client projects from brief to delivery.',
         tags: ['Figma','Webflow','Corporate Design','Print Production'],
-        role: 'Digital & Print Designer · 2023 – 2026'
+        role: 'Digital & Print Designer · 2023 – 2026',
+        url: 'work/apprenticeship/index.html'
       }
     ];
-
-    /* Hilfsfunktion: Bild oder Platzhalter rendern */
-    function imgOrPh(src, cssClass, phText) {
-      return src
-        ? `<img src="${src}" class="${cssClass}" alt="">`
-        : `<div class="${cssClass.replace('img','ph')}">${phText}</div>`;
-    }
 
     /* Rendert den Content-Bereich für Projekt idx */
     function renderContent(idx) {
       const p = PROJECTS[idx];
-      const [i0, i1, i2, i3] = p.images;
+      const [m0, m1] = p.images;
       const content = document.getElementById('fw-content');
+
+      function mediaThumb(src, label) {
+        if (!src) return `<div class="fw-iphone-ph">${label}</div>`;
+        if (src.endsWith('.mp4') || src.endsWith('.mov') || src.endsWith('.webm'))
+          return `<div class="fw-iphone-thumb"><video autoplay muted loop playsinline preload="none" style="width:100%;height:100%;object-fit:cover;display:block;"><source src="${src}" type="video/mp4"></video></div>`;
+        return `<div class="fw-iphone-thumb"><img src="${src}" alt="" style="width:100%;height:100%;object-fit:cover;display:block;"></div>`;
+      }
 
       content.style.opacity = '0';
       setTimeout(() => {
         content.innerHTML = `
-          <!-- ═══════════════════════════════════════════════
-               MEDIEN — Bilder eintragen in PROJECTS[${idx}].images
-               Oder ersetze die Platzhalter-Divs direkt durch:
-               <img src="images/DATEINAME.jpg" alt="…">
-          ═══════════════════════════════════════════════ -->
-          <div class="fw-media">
-
-            <!-- HAUPTBILD: images[0] — z.B. 'images/mifl-main.jpg' -->
-            ${i0
-              ? `<img src="${i0}" class="fw-media-main-img" alt="${p.name}">`
-              : `<div class="fw-media-main-ph">[ Cover image ]</div>`}
-
-            <div class="fw-media-thumbs">
-              ${i1 ? `<img src="${i1}" class="fw-media-thumb-img" alt="">` : `<div class="fw-media-thumb-ph">[ 2 ]</div>`}
-              ${i2 ? `<img src="${i2}" class="fw-media-thumb-img" alt="">` : `<div class="fw-media-thumb-ph">[ 3 ]</div>`}
-              ${i3 ? `<img src="${i3}" class="fw-media-thumb-img" alt="">` : `<div class="fw-media-thumb-ph">[ 4 ]</div>`}
-            </div>
-
+          <div class="fw-iphone-pair">
+            ${mediaThumb(m0, 'Preview')}
+            ${mediaThumb(m1, 'Preview')}
           </div>
-
           <div class="fw-text">
             <div class="fw-proj-title">${p.name}</div>
             <p class="fw-proj-desc">${p.desc}</p>
             <div class="fw-proj-tags">${p.tags.map(t => `<span class="fw-tag">${t}</span>`).join('')}</div>
             <div class="fw-proj-role">${p.role}</div>
+            <a class="fw-open-btn" href="${PROJECTS[idx].url}">Open project →</a>
           </div>`;
-
         content.style.transition = 'opacity .2s ease';
         content.style.opacity = '1';
       }, 110);
