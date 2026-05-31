@@ -116,7 +116,7 @@
       background: var(--accent); border-radius: 50%;
       position: fixed; pointer-events: none; z-index: 9999;
       transform: translate(-50%, -50%);
-      transition: width .2s, height .2s;
+      transition: width .2s, height .2s, opacity .3s ease;
       mix-blend-mode: multiply;
     }
     .cursor-ring {
@@ -168,7 +168,10 @@
       text-decoration: none; cursor: pointer;
       transition: box-shadow .2s;
     }
-    a.nav-breadcrumb:hover { box-shadow: 0 2px 12px rgba(0,0,0,.08); }
+    a.nav-breadcrumb { position: relative; }
+    a.nav-breadcrumb:hover { background: #F0EDFF; box-shadow: 0 2px 12px rgba(0,0,0,.08); }
+    a.nav-breadcrumb::after { content: '← Home'; position: absolute; top: calc(100% + 8px); left: 50%; transform: translateX(-50%); background: #1E1A2E; color: white; font-size: 11px; font-weight: 500; padding: 4px 10px; border-radius: 6px; white-space: nowrap; opacity: 0; pointer-events: none; transition: opacity .2s; z-index: 200; }
+    a.nav-breadcrumb:hover::after { opacity: 1; }
     .nav-breadcrumb .folder-icon { display: inline-flex; flex-direction: column; gap: 1px; margin-right: 2px; }
     .folder-tab  { width: 12px; height: 4px; background: #90BEDD; border-radius: 2px 2px 0 0; }
     .folder-body { width: 18px; height: 13px; background: #689DCF; border-radius: 0 2px 2px 2px; }
@@ -200,9 +203,9 @@
     .nav-work-wrapper:hover > a .nav-caret { transform: rotate(180deg); }
 
     .nav-dropdown {
-      position:absolute; top:100%; right:0; margin-top:4px;
+      position:absolute; top:100%; right:0; margin-top:0;
       background: white; border: 1px solid #E8E4E0;
-      border-radius: 16px; padding: 8px;
+      border-radius: 16px; padding: 4px 8px 8px;
       min-width: 280px;
       box-shadow: 0 8px 40px rgba(0,0,0,.12);
       opacity: 0; pointer-events: none;
@@ -1290,9 +1293,91 @@
     }
     @media (max-width: 900px) {
       .dock-wrapper { align-items: flex-start; overflow-x: auto; width: 100%; padding-bottom: 4px; }
-      .dock { gap: 5px; padding: 12px 16px; }
+      .dock { gap: 5px; padding: 12px 16px; overflow-x: auto; -webkit-overflow-scrolling: touch; scrollbar-width: none; }
+      .dock::-webkit-scrollbar { display: none; }
+      .dock-item { flex-shrink: 0; min-width: 48px; }
       .dock-icon { width: 48px; height: 48px; }
+      .dock-tip { display: none; }
     }
+
+    /* ── HERO NAME MARKER ── */
+    .name-highlight-wrap { position: relative; display: inline; }
+    .name-highlight-wrap::before {
+      content: '';
+      position: absolute;
+      inset: -4px -6px;
+      background: var(--accent-light);
+      transform-origin: left center;
+      transform: scaleX(0);
+      z-index: -1;
+      border-radius: 4px;
+      pointer-events: none;
+    }
+    .name-highlight-wrap.animate::before {
+      animation: markerSweep 0.8s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+    }
+    @keyframes markerSweep { to { transform: scaleX(1); } }
+
+    /* ── MEMORY GAME EASTER EGG ── */
+    #secret-folder {
+      position: fixed; bottom: 120px; right: 40px; z-index: 50;
+      cursor: pointer; opacity: 0.4;
+      transition: opacity .3s, transform .3s;
+    }
+    #secret-folder:hover { opacity: 1; transform: scale(1.1); }
+    #secret-folder img { width: 48px; height: 48px; display: block; }
+    .memory-modal {
+      position: fixed; inset: 0; z-index: 9000;
+      background: rgba(0,0,0,.55); backdrop-filter: blur(4px);
+      display: flex; align-items: center; justify-content: center;
+    }
+    .memory-modal.hidden { display: none; }
+    .memory-window {
+      background: white; border-radius: 16px; overflow: hidden;
+      width: 520px; max-width: calc(100vw - 32px);
+      box-shadow: 0 24px 80px rgba(0,0,0,.3);
+      animation: memWinIn .35s cubic-bezier(.34,1.56,.64,1) both;
+    }
+    @keyframes memWinIn { from{opacity:0;transform:scale(.88) translateY(16px)} to{opacity:1;transform:none} }
+    .memory-chrome {
+      display: flex; align-items: center; gap: 6px; padding: 12px 16px;
+      background: #F5F3F1; border-bottom: 1px solid var(--border);
+    }
+    .memory-chrome .mem-dot { width: 11px; height: 11px; border-radius: 50%; }
+    .mem-dot.r{background:#FF5F57;} .mem-dot.y{background:#FFBD2E;} .mem-dot.g{background:#28C940;}
+    .memory-chrome .mem-title { flex:1; text-align:center; font-size:12px; font-weight:500; color:var(--text-mid); margin-right:33px; }
+    .mem-close { position: absolute; right: 16px; top: 12px; background: none; border: none; font-size: 16px; color: var(--text-mid); cursor: pointer; padding: 4px 8px; border-radius: 6px; }
+    .mem-close:hover { background: #E8E4E0; }
+    .memory-body { padding: 20px 24px 24px; }
+    .memory-body h3 { font-family: 'Instrument Serif', serif; font-size: 22px; margin-bottom: 4px; }
+    .memory-body p { font-size: 13px; color: var(--text-mid); margin-bottom: 20px; }
+    .memory-grid {
+      display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px;
+    }
+    .mem-card {
+      width: 100%; aspect-ratio: 1; border-radius: 10px;
+      cursor: pointer; perspective: 600px; position: relative;
+    }
+    .mem-card-inner {
+      width: 100%; height: 100%; position: relative;
+      transform-style: preserve-3d;
+      transition: transform .4s cubic-bezier(.34,1.2,.64,1);
+    }
+    .mem-card.flipped .mem-card-inner { transform: rotateY(180deg); }
+    .mem-card-back, .mem-card-front {
+      position: absolute; inset: 0; border-radius: 10px;
+      backface-visibility: hidden; -webkit-backface-visibility: hidden;
+      display: flex; align-items: center; justify-content: center;
+    }
+    .mem-card-back { background: var(--accent); }
+    .mem-card-back svg { width: 24px; height: 24px; opacity: .5; }
+    .mem-card-front { background: var(--tag-bg); transform: rotateY(180deg); overflow: hidden; }
+    .mem-card-front img { width: 100%; height: 100%; object-fit: cover; border-radius: 10px; }
+    .mem-card-front .mem-emoji { font-size: 32px; }
+    .mem-card.matched .mem-card-back { background: #28C940 !important; }
+    .mem-card.matched .mem-card-front { background: #E8F8EA; }
+    .memory-win-msg { display:none; text-align:center; margin-top:16px; font-size:14px; font-weight:500; color:var(--accent); }
+    .memory-win-msg.show { display:block; animation: memWinIn .4s ease both; }
 
     /* ─────────────────────────────────────────────
        CONTACT
@@ -1856,28 +1941,28 @@
         <a href="#work">Work <span class="nav-caret">▾</span></a>
         <div class="nav-dropdown">
           <a class="nav-dropdown-item" href="work/mi4l/index.html">
-            <span class="nav-dropdown-item-icon"><svg viewBox="0 0 20 20" fill="none"><path d="M3 5a2 2 0 012-2h4l2 2h6a2 2 0 012 2v8a2 2 0 01-2 2H5a2 2 0 01-2-2V5z" fill="#90BEDD"/></svg></span>
+            <span class="nav-dropdown-item-icon"><img src="images/icons/folder-custom.png" width="20" height="20" alt="" style="object-fit:contain;display:block;"></span>
             <span class="nav-dropdown-item-text">
               <span class="nav-dropdown-item-name">MI4L</span>
               <span class="nav-dropdown-item-sub">Brand Development · Art Direction</span>
             </span>
           </a>
           <a class="nav-dropdown-item" href="work/studio-liebe-nrg/index.html">
-            <span class="nav-dropdown-item-icon"><svg viewBox="0 0 20 20" fill="none"><path d="M3 5a2 2 0 012-2h4l2 2h6a2 2 0 012 2v8a2 2 0 01-2 2H5a2 2 0 01-2-2V5z" fill="#90BEDD"/></svg></span>
+            <span class="nav-dropdown-item-icon"><img src="images/icons/folder-custom.png" width="20" height="20" alt="" style="object-fit:contain;display:block;"></span>
             <span class="nav-dropdown-item-text">
               <span class="nav-dropdown-item-name">Studio Liebe &amp; NRG</span>
               <span class="nav-dropdown-item-sub">Visual Identity · Print Production</span>
             </span>
           </a>
           <a class="nav-dropdown-item" href="work/jco/index.html">
-            <span class="nav-dropdown-item-icon"><svg viewBox="0 0 20 20" fill="none"><path d="M3 5a2 2 0 012-2h4l2 2h6a2 2 0 012 2v8a2 2 0 01-2 2H5a2 2 0 01-2-2V5z" fill="#90BEDD"/></svg></span>
+            <span class="nav-dropdown-item-icon"><img src="images/icons/folder-custom.png" width="20" height="20" alt="" style="object-fit:contain;display:block;"></span>
             <span class="nav-dropdown-item-text">
               <span class="nav-dropdown-item-name">JCO Hamburg</span>
               <span class="nav-dropdown-item-sub">Brand Communication · Visual Strategy</span>
             </span>
           </a>
           <a class="nav-dropdown-item" href="work/apprenticeship/index.html">
-            <span class="nav-dropdown-item-icon"><svg viewBox="0 0 20 20" fill="none"><path d="M3 5a2 2 0 012-2h4l2 2h6a2 2 0 012 2v8a2 2 0 01-2 2H5a2 2 0 01-2-2V5z" fill="#90BEDD"/></svg></span>
+            <span class="nav-dropdown-item-icon"><img src="images/icons/folder-custom.png" width="20" height="20" alt="" style="object-fit:contain;display:block;"></span>
             <span class="nav-dropdown-item-text">
               <span class="nav-dropdown-item-name">During my Apprenticeship</span>
               <span class="nav-dropdown-item-sub">Web Design · Corporate Design · Print</span>
@@ -1909,10 +1994,10 @@
       <div class="nav-overlay-item">
         <span class="nav-overlay-label is-label">Work</span>
         <div class="nav-overlay-sub">
-          <a href="work/mi4l/index.html">📁 MI4L</a>
-          <a href="work/studio-liebe-nrg/index.html">📁 Studio Liebe &amp; NRG</a>
-          <a href="work/jco/index.html">📁 JCO Hamburg</a>
-          <a href="work/apprenticeship/index.html">📁 During my Apprenticeship</a>
+          <a href="work/mi4l/index.html"><img src="images/icons/folder-custom.png" style="width:18px;height:18px;object-fit:contain;margin-right:6px;vertical-align:middle;"> MI4L</a>
+          <a href="work/studio-liebe-nrg/index.html"><img src="images/icons/folder-custom.png" style="width:18px;height:18px;object-fit:contain;margin-right:6px;vertical-align:middle;"> Studio Liebe &amp; NRG</a>
+          <a href="work/jco/index.html"><img src="work/jco/media/jco-profile.jpg" style="width:20px;height:20px;border-radius:50%;object-fit:cover;margin-right:6px;vertical-align:middle;" onerror="this.src='images/icons/folder-custom.png';this.style.borderRadius='0'"> JCO Hamburg</a>
+          <a href="work/apprenticeship/index.html"><img src="images/icons/folder-custom.png" style="width:18px;height:18px;object-fit:contain;margin-right:6px;vertical-align:middle;"> During my Apprenticeship</a>
         </div>
       </div>
       <div class="nav-overlay-item">
@@ -1957,7 +2042,7 @@
       <h1 class="hero-name" id="hero-name">
         <span class="figma-wrapper selected" id="figma-wrapper">
           <span class="figma-line-left show" id="figma-line"></span>
-          Vivien <em>Evers</em>
+          <span class="name-highlight-wrap" id="name-highlight-wrap">Vivien <em>Evers</em></span>
           <span class="figma-anchor figma-anchor-tr show" id="figma-anchor-tr"></span>
           <span class="figma-anchor figma-anchor-bl show" id="figma-anchor-bl"></span>
         </span>
@@ -2194,7 +2279,7 @@
       <div class="cam-body">
 
         <!-- Modellname -->
-        <div class="cam-model">VIVIEN CAM</div>
+        <div class="cam-model">VIVI CAM</div>
 
         <!-- REC-Dot -->
         <div class="cam-rec"></div>
@@ -2246,7 +2331,7 @@
 
     <div class="lens-statement">
       <p class="lens-statement-main">"Curious, observant and always building."</p>
-      <p class="lens-statement-sub">I see what others walk past.</p>
+      <p class="lens-statement-sub">what caught my eye</p>
     </div>
   </section>
 
@@ -2636,6 +2721,11 @@
       const nameEl = document.getElementById('hero-name');
       nameEl.style.opacity   = '1';
       nameEl.style.transform = 'translateY(0)';
+      /* lila marker sweeps behind the name */
+      setTimeout(() => {
+        const hl = document.getElementById('name-highlight-wrap');
+        if (hl) hl.classList.add('animate');
+      }, 200);
     }
 
     /* ── HAMBURGER NAV (slides from top) ──────────────────── */
@@ -2846,11 +2936,15 @@
     /* ── CUSTOM CURSOR ─────────────────────────────────────── */
     const cur  = document.getElementById('cursor');
     const ring = document.getElementById('cursorRing');
-    let mx=0,my=0,rx=0,ry=0;
+    let mx=0,my=0,rx=0,ry=0,cursorTimeout;
     document.addEventListener('mousemove', e => {
       mx=e.clientX; my=e.clientY;
       cur.style.left=mx+'px'; cur.style.top=my+'px';
+      cur.style.opacity='1'; ring.style.opacity='0.5';
+      clearTimeout(cursorTimeout);
+      cursorTimeout = setTimeout(() => { cur.style.opacity='0'; ring.style.opacity='0'; }, 3000);
     });
+    document.addEventListener('mouseleave', () => { cur.style.opacity='0'; ring.style.opacity='0'; });
     (function loop(){
       rx+=(mx-rx)*.12; ry+=(my-ry)*.12;
       ring.style.left=rx+'px'; ring.style.top=ry+'px';
@@ -3148,5 +3242,155 @@
       to { transform: translateY(110vh) rotate(720deg); opacity: 0; }
     }
   </style>
+
+  <!-- ══ SECRET FOLDER EASTER EGG ══ -->
+  <div id="secret-folder" title="psst...">
+    <img src="images/icons/folder-custom.png" alt="">
+  </div>
+
+  <!-- ══ MEMORY GAME MODAL ══ -->
+  <div class="memory-modal hidden" id="memory-modal">
+    <div class="memory-window" style="position:relative;">
+      <div class="memory-chrome">
+        <span class="mem-dot r"></span>
+        <span class="mem-dot y"></span>
+        <span class="mem-dot g"></span>
+        <span class="mem-title">memory.app — find the match</span>
+      </div>
+      <button class="mem-close" id="mem-close" title="Close">✕</button>
+      <div class="memory-body">
+        <h3>You found a secret 🥚</h3>
+        <p>Match the brands. Good luck.</p>
+        <div class="memory-grid" id="memory-grid"></div>
+        <div class="memory-win-msg" id="memory-win-msg">🎉 You really know your brands!</div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    /* ── MEMORY GAME ── */
+    (function() {
+      const PAIRS = [
+        { type: 'img', src: 'work/mi4l/media/mi4l-profile.jpg',                                          id: 'mi4l' },
+        { type: 'img', src: 'work/studio-liebe-nrg/media/studio-liebe/studioliebe-profile.jpg',          id: 'sl' },
+        { type: 'img', src: 'work/studio-liebe-nrg/media/nrg/nrg-profile.jpg',                          id: 'nrg' },
+        { type: 'img', src: 'work/jco/media/jco-profile.jpg',                                            id: 'jco' },
+        { type: 'emoji', emoji: '☕',                                                                      id: 'coffee' },
+        { type: 'emoji', emoji: '🌸',                                                                      id: 'cherry' },
+      ];
+
+      const modal = document.getElementById('memory-modal');
+      const grid  = document.getElementById('memory-grid');
+      const winMsg = document.getElementById('memory-win-msg');
+      const folder = document.getElementById('secret-folder');
+      let cards = [], flipped = [], matched = 0, locked = false;
+
+      function shuffle(arr) {
+        for (let i = arr.length - 1; i > 0; i--) {
+          const j = Math.floor(Math.random() * (i + 1));
+          [arr[i], arr[j]] = [arr[j], arr[i]];
+        }
+        return arr;
+      }
+
+      function buildGrid() {
+        grid.innerHTML = '';
+        winMsg.classList.remove('show');
+        matched = 0; flipped = []; locked = false; cards = [];
+
+        const deck = shuffle([...PAIRS, ...PAIRS]);
+        deck.forEach((pair, idx) => {
+          const card = document.createElement('div');
+          card.className = 'mem-card';
+          card.dataset.id = pair.id;
+
+          const inner = document.createElement('div');
+          inner.className = 'mem-card-inner';
+
+          const back = document.createElement('div');
+          back.className = 'mem-card-back';
+          back.innerHTML = `<svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="1.5"><path d="M3 7a2 2 0 012-2h3l2 2h8a2 2 0 012 2v7a2 2 0 01-2 2H5a2 2 0 01-2-2V7z"/></svg>`;
+
+          const front = document.createElement('div');
+          front.className = 'mem-card-front';
+          if (pair.type === 'img') {
+            front.innerHTML = `<img src="${pair.src}" alt="" onerror="this.parentElement.innerHTML='<span class=mem-emoji>🎵</span>'">`;
+          } else {
+            front.innerHTML = `<span class="mem-emoji">${pair.emoji}</span>`;
+          }
+
+          inner.appendChild(back);
+          inner.appendChild(front);
+          card.appendChild(inner);
+          grid.appendChild(card);
+          cards.push(card);
+
+          card.addEventListener('click', () => flipCard(card));
+        });
+      }
+
+      function flipCard(card) {
+        if (locked || card.classList.contains('flipped') || card.classList.contains('matched')) return;
+        card.classList.add('flipped');
+        flipped.push(card);
+        if (flipped.length === 2) checkMatch();
+      }
+
+      function checkMatch() {
+        locked = true;
+        const [a, b] = flipped;
+        if (a.dataset.id === b.dataset.id) {
+          a.classList.add('matched');
+          b.classList.add('matched');
+          matched++;
+          flipped = [];
+          locked = false;
+          if (matched === PAIRS.length) {
+            setTimeout(() => {
+              winMsg.classList.add('show');
+              fireConfetti();
+            }, 300);
+          }
+        } else {
+          setTimeout(() => {
+            a.classList.remove('flipped');
+            b.classList.remove('flipped');
+            flipped = [];
+            locked = false;
+          }, 900);
+        }
+      }
+
+      function fireConfetti() {
+        const colors = ['#6B5CE7','#DDD9F7','#1E1A2E','#FF6B9D','#FFD93D','#A3E4D7'];
+        for (let i = 0; i < 80; i++) {
+          const p = document.createElement('div');
+          const size = 6 + Math.random() * 8;
+          p.style.cssText = `position:fixed;left:${Math.random()*100}vw;top:-12px;width:${size}px;height:${size}px;background:${colors[Math.floor(Math.random()*colors.length)]};border-radius:${Math.random()>.5?'50%':'3px'};z-index:99998;pointer-events:none;animation:konfettiFall ${1.4+Math.random()*1.8}s ease-in ${Math.random()*.6}s forwards;transform:rotate(${Math.random()*360}deg);`;
+          document.body.appendChild(p);
+          setTimeout(() => p.remove(), 3000);
+        }
+      }
+
+      function openModal() { modal.classList.remove('hidden'); buildGrid(); }
+      function closeModal() { modal.classList.add('hidden'); }
+
+      folder.addEventListener('click', openModal);
+      document.getElementById('mem-close').addEventListener('click', closeModal);
+      modal.addEventListener('click', e => { if (e.target === modal) closeModal(); });
+    })();
+
+    /* ── DOCK TOUCH TOOLTIPS ── */
+    document.querySelectorAll('.dock-item').forEach(item => {
+      item.addEventListener('touchstart', e => {
+        e.preventDefault();
+        const tip = item.querySelector('.dock-tip');
+        if (!tip) return;
+        tip.style.cssText = 'display:block!important;opacity:1!important;transform:translateX(-50%) translateY(0)!important;';
+        clearTimeout(item._tipTimer);
+        item._tipTimer = setTimeout(() => { tip.style.cssText = ''; }, 1500);
+      }, { passive: false });
+    });
+  </script>
 </body>
 </html>

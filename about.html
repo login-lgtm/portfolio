@@ -21,13 +21,16 @@
     body::after { content:''; position:fixed; inset:0; background-image:linear-gradient(rgba(0,0,0,.035) 1px,transparent 1px),linear-gradient(90deg,rgba(0,0,0,.035) 1px,transparent 1px); background-size:40px 40px; pointer-events:none; z-index:0; }
 
     /* ── CURSOR ── */
-    .cursor { width:10px; height:10px; background:var(--accent); border-radius:50%; position:fixed; pointer-events:none; z-index:9999; transform:translate(-50%,-50%); transition:width .2s,height .2s; mix-blend-mode:multiply; }
+    .cursor { width:10px; height:10px; background:var(--accent); border-radius:50%; position:fixed; pointer-events:none; z-index:9999; transform:translate(-50%,-50%); transition:width .2s,height .2s,opacity .3s ease; mix-blend-mode:multiply; }
     .cursor-ring { width:36px; height:36px; border:1.5px solid var(--accent); border-radius:50%; position:fixed; pointer-events:none; z-index:9998; transform:translate(-50%,-50%); opacity:.5; transition:width .25s,height .25s,opacity .2s; }
 
     /* ── NAV ── */
     nav { position:fixed; top:0; left:0; right:0; z-index:100; height:64px; padding:0 40px; display:flex; align-items:center; justify-content:space-between; backdrop-filter:blur(12px); background:rgba(238,236,234,.92); border-bottom:1px solid var(--border); }
     a.nav-breadcrumb { display:inline-flex; align-items:center; gap:6px; background:white; padding:6px 14px; border-radius:20px; border:1px solid var(--border); font-size:12px; font-weight:500; color:var(--text); text-decoration:none; cursor:pointer; transition:box-shadow .2s; }
-    a.nav-breadcrumb:hover { box-shadow:0 2px 12px rgba(0,0,0,.08); }
+    a.nav-breadcrumb { position:relative; }
+    a.nav-breadcrumb:hover { background:#F0EDFF; box-shadow:0 2px 12px rgba(0,0,0,.08); }
+    a.nav-breadcrumb::after { content:'← Home'; position:absolute; top:calc(100% + 8px); left:50%; transform:translateX(-50%); background:#1E1A2E; color:white; font-size:11px; font-weight:500; padding:4px 10px; border-radius:6px; white-space:nowrap; opacity:0; pointer-events:none; transition:opacity .2s; z-index:200; }
+    a.nav-breadcrumb:hover::after { opacity:1; }
     .nav-breadcrumb .folder-icon { display:inline-flex; flex-direction:column; gap:1px; margin-right:2px; }
     .folder-tab { width:12px; height:4px; background:#90BEDD; border-radius:2px 2px 0 0; }
     .folder-body { width:18px; height:13px; background:#689DCF; border-radius:0 2px 2px 2px; }
@@ -44,7 +47,7 @@
     .nav-work-wrapper { position:relative; height:64px; display:flex; align-items:center; }
     .nav-work-wrapper > a .nav-caret { display:inline-block; font-size:10px; margin-left:3px; transition:transform .2s; }
     .nav-work-wrapper:hover > a .nav-caret { transform:rotate(180deg); }
-    .nav-dropdown { position:absolute; top:100%; right:0; margin-top:4px; background:white; border:1px solid #E8E4E0; border-radius:16px; padding:8px; min-width:280px; box-shadow:0 8px 40px rgba(0,0,0,.12); opacity:0; pointer-events:none; transform:translateY(-4px); transition:opacity .2s ease .15s,transform .2s ease .15s; }
+    .nav-dropdown { position:absolute; top:100%; right:0; margin-top:0; background:white; border:1px solid #E8E4E0; border-radius:16px; padding:4px 8px 8px; min-width:280px; box-shadow:0 8px 40px rgba(0,0,0,.12); opacity:0; pointer-events:none; transform:translateY(-4px); transition:opacity .2s ease .15s,transform .2s ease .15s; }
     .nav-work-wrapper:hover .nav-dropdown { opacity:1; pointer-events:auto; transform:translateY(0); transition:opacity .15s ease 0s,transform .15s ease 0s; }
     .nav-dropdown-item { display:flex; align-items:center; gap:12px; padding:10px 14px; border-radius:10px; text-decoration:none; transition:background .15s; }
     .nav-dropdown-item:hover { background:#F5F3F1; }
@@ -190,7 +193,7 @@
 
     /* ── EASTER EGG ── */
     .egg-section {
-      padding: 48px 80px 80px;
+      padding: 40px 80px;
       position: relative;
       z-index: 1;
       min-height: 180px;
@@ -207,8 +210,8 @@
     .psst:hover { opacity: 0.5; }
     .egg-zone { display: inline-block; position: relative; }
     .egg-windows {
-      display: flex;
-      gap: 16px;
+      position: relative;
+      min-height: 240px;
       margin-top: 16px;
       pointer-events: none;
     }
@@ -219,17 +222,20 @@
       overflow: hidden;
       width: 185px;
       opacity: 0;
-      transform: translateY(12px);
+      transform: translateY(8px) scale(.96);
       transition: opacity .35s ease, transform .35s ease;
       pointer-events: auto;
+      position: absolute;
     }
-    .egg-win.show { opacity: 1; transform: translateY(0); }
+    .egg-win.show { opacity: 1; transform: translateY(0) scale(1); }
+    #egg0 { left: 0; top: 18px; rotate: -3deg; z-index: 3; }
+    #egg1 { left: 170px; top: 0; rotate: 2.5deg; z-index: 2; width: 195px; }
+    #egg2 { left: 330px; top: 24px; rotate: -1.5deg; z-index: 4; width: 200px; }
+    #egg3 { left: 100px; top: 105px; rotate: 3deg; width: 165px; z-index: 5; }
     .egg-win-chrome { display:flex; align-items:center; gap:5px; padding:8px 10px; background:#F5F3F1; border-bottom:1px solid var(--border); }
     .egg-dot { width:8px; height:8px; border-radius:50%; }
     .egg-dot.r{background:#FF5F57;} .egg-dot.y{background:#FFBD2E;} .egg-dot.g{background:#28C940;}
     .egg-win-body { padding:12px 14px; font-size:13px; color:var(--text-mid); line-height:1.5; }
-    .egg-win:nth-child(4) { width: 165px; }
-    .egg-win:nth-child(3) { width: 200px; }
 
     /* ── VALUES ── */
     .values {
@@ -304,19 +310,53 @@
     .reveal { opacity:0; transform:translateY(32px); transition:opacity .7s ease,transform .7s ease; }
     .reveal.visible { opacity:1; transform:translateY(0); }
 
-    /* ── IMESSAGE CARD (floating right of coffee photo) ── */
+    /* ── IMESSAGE CARD (centered between photos) ── */
     .about-imessage {
       position: absolute;
-      top: 20px;
-      right: -10px;
+      top: 50%;
+      left: 50%;
+      transform: translateX(-50%) translateY(-50%);
       width: 220px;
       background: white;
       border-radius: 16px;
-      box-shadow: 0 8px 32px rgba(0,0,0,.12);
+      box-shadow: 0 8px 32px rgba(0,0,0,.15);
       padding: 14px 16px;
       z-index: 6;
-      animation: floatTilted 3.5s ease-in-out infinite;
+      cursor: pointer;
+      transition: box-shadow .2s, transform .2s;
     }
+    .about-imessage:hover {
+      box-shadow: 0 16px 48px rgba(0,0,0,.2);
+      transform: translateX(-50%) translateY(calc(-50% - 4px));
+    }
+    .imessage-keyboard {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 4px;
+      margin-top: 0;
+      max-height: 0;
+      overflow: hidden;
+      opacity: 0;
+      transition: max-height .3s ease, opacity .25s ease, margin-top .25s ease;
+    }
+    .about-imessage:hover .imessage-keyboard {
+      max-height: 80px;
+      opacity: 1;
+      margin-top: 10px;
+    }
+    .ik-key {
+      background: white;
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: 5px 2px;
+      font-size: 15px;
+      text-align: center;
+      cursor: pointer;
+      transition: transform .1s ease, background .1s ease;
+      box-shadow: 0 1px 3px rgba(0,0,0,.08);
+      line-height: 1;
+    }
+    .ik-key:hover { transform: scale(1.25) translateY(-2px); background: #F0EDFF; }
     .ai-timestamp { text-align: right; font-size: 10px; color: #999; margin-bottom: 8px; }
     .ai-typing {
       display: inline-flex; gap: 4px; align-items: center;
@@ -367,19 +407,22 @@
       .about-imessage {
         position: relative;
         top: auto;
-        right: auto;
-        align-self: flex-end;
-        margin-top: -20px;
+        left: auto;
         transform: none;
+        align-self: center;
+        margin-top: 16px;
         animation: none;
+        transition: none;
       }
+      .about-imessage:hover { transform: none; }
       /* Section padding */
       .statements { padding: 48px 32px; }
       .values { padding: 60px 32px; }
       .values-list { gap: 0; }
       #contact-cta { padding: 60px 32px; }
       .egg-section { padding: 24px 32px 48px; }
-      .egg-windows { flex-wrap: wrap; }
+      .egg-windows { min-height: auto; display: flex; flex-wrap: wrap; gap: 12px; }
+      .egg-win { position: relative; left: auto !important; top: auto !important; rotate: 0deg !important; width: 185px !important; }
     }
     @media (max-width: 480px) {
       .about-hero { padding: 80px 20px 60px; }
@@ -424,19 +467,19 @@
         <a href="index.html#work">Work <span class="nav-caret">▾</span></a>
         <div class="nav-dropdown">
           <a class="nav-dropdown-item" href="work/mi4l/index.html">
-            <span class="nav-dropdown-item-icon"><svg viewBox="0 0 20 20" fill="none"><path d="M3 5a2 2 0 012-2h4l2 2h6a2 2 0 012 2v8a2 2 0 01-2 2H5a2 2 0 01-2-2V5z" fill="#90BEDD"/></svg></span>
+            <span class="nav-dropdown-item-icon"><img src="images/icons/folder-custom.png" width="20" height="20" alt="" style="object-fit:contain;display:block;"></span>
             <span class="nav-dropdown-item-text"><span class="nav-dropdown-item-name">MI4L</span><span class="nav-dropdown-item-sub">Brand Development · Art Direction</span></span>
           </a>
           <a class="nav-dropdown-item" href="work/studio-liebe-nrg/index.html">
-            <span class="nav-dropdown-item-icon"><svg viewBox="0 0 20 20" fill="none"><path d="M3 5a2 2 0 012-2h4l2 2h6a2 2 0 012 2v8a2 2 0 01-2 2H5a2 2 0 01-2-2V5z" fill="#90BEDD"/></svg></span>
+            <span class="nav-dropdown-item-icon"><img src="images/icons/folder-custom.png" width="20" height="20" alt="" style="object-fit:contain;display:block;"></span>
             <span class="nav-dropdown-item-text"><span class="nav-dropdown-item-name">Studio Liebe &amp; NRG</span><span class="nav-dropdown-item-sub">Visual Identity · Print Production</span></span>
           </a>
           <a class="nav-dropdown-item" href="work/jco/index.html">
-            <span class="nav-dropdown-item-icon"><svg viewBox="0 0 20 20" fill="none"><path d="M3 5a2 2 0 012-2h4l2 2h6a2 2 0 012 2v8a2 2 0 01-2 2H5a2 2 0 01-2-2V5z" fill="#90BEDD"/></svg></span>
+            <span class="nav-dropdown-item-icon"><img src="images/icons/folder-custom.png" width="20" height="20" alt="" style="object-fit:contain;display:block;"></span>
             <span class="nav-dropdown-item-text"><span class="nav-dropdown-item-name">JCO Hamburg</span><span class="nav-dropdown-item-sub">Brand Communication · Visual Strategy</span></span>
           </a>
           <a class="nav-dropdown-item" href="work/apprenticeship/index.html">
-            <span class="nav-dropdown-item-icon"><svg viewBox="0 0 20 20" fill="none"><path d="M3 5a2 2 0 012-2h4l2 2h6a2 2 0 012 2v8a2 2 0 01-2 2H5a2 2 0 01-2-2V5z" fill="#90BEDD"/></svg></span>
+            <span class="nav-dropdown-item-icon"><img src="images/icons/folder-custom.png" width="20" height="20" alt="" style="object-fit:contain;display:block;"></span>
             <span class="nav-dropdown-item-text"><span class="nav-dropdown-item-name">During my Apprenticeship</span><span class="nav-dropdown-item-sub">Web Design · Corporate Design · Print</span></span>
           </a>
           <div class="nav-dropdown-divider"></div>
@@ -464,10 +507,10 @@
       <div class="nav-overlay-item">
         <span class="nav-overlay-label is-label">Work</span>
         <div class="nav-overlay-sub">
-          <a href="work/mi4l/index.html">📁 MI4L</a>
-          <a href="work/studio-liebe-nrg/index.html">📁 Studio Liebe &amp; NRG</a>
-          <a href="work/jco/index.html">📁 JCO Hamburg</a>
-          <a href="work/apprenticeship/index.html">📁 During my Apprenticeship</a>
+          <a href="work/mi4l/index.html"><img src="images/icons/folder-custom.png" width="16" height="16" alt="" style="object-fit:contain;flex-shrink:0;"> MI4L</a>
+          <a href="work/studio-liebe-nrg/index.html"><img src="images/icons/folder-custom.png" width="16" height="16" alt="" style="object-fit:contain;flex-shrink:0;"> Studio Liebe &amp; NRG</a>
+          <a href="work/jco/index.html"><img src="images/icons/folder-custom.png" width="16" height="16" alt="" style="object-fit:contain;flex-shrink:0;"> JCO Hamburg</a>
+          <a href="work/apprenticeship/index.html"><img src="images/icons/folder-custom.png" width="16" height="16" alt="" style="object-fit:contain;flex-shrink:0;"> During my Apprenticeship</a>
         </div>
       </div>
       <div class="nav-overlay-item"><a class="nav-overlay-label" href="about.html" style="color:var(--accent)">About</a></div>
@@ -497,8 +540,8 @@
         <div class="intro-sub">26 · Hamburg · always building something</div>
       </div>
 
-      <!-- iMessage: floating over right photo -->
-      <div class="about-imessage" id="about-imessage">
+      <!-- iMessage: centered between photos -->
+      <div class="about-imessage" id="about-imessage" onclick="window.location='mailto:hallo@vivienevers.de'">
         <div class="ai-timestamp">just now</div>
         <div class="ai-typing" id="ai-typing">
           <div class="ai-tdot"></div>
@@ -508,6 +551,18 @@
         <div class="ai-bubble" id="ai-b1">Let's have a coffee chat ☕</div>
         <div class="ai-bubble" id="ai-b2">I'd love to get to know you. 🤍</div>
         <div class="ai-delivered" id="ai-delivered">Delivered</div>
+        <div class="imessage-keyboard">
+          <span class="ik-key">☕</span>
+          <span class="ik-key">✨</span>
+          <span class="ik-key">💜</span>
+          <span class="ik-key">🤍</span>
+          <span class="ik-key">🌸</span>
+          <span class="ik-key">🎨</span>
+          <span class="ik-key">💡</span>
+          <span class="ik-key">🔍</span>
+          <span class="ik-key">🎁</span>
+          <span class="ik-key">🥚</span>
+        </div>
       </div>
 
     </div>
@@ -614,7 +669,9 @@
     const cur = document.getElementById('cursor');
     const ring = document.getElementById('cursorRing');
     let mx=0,my=0,rx=0,ry=0;
-    document.addEventListener('mousemove', e => { mx=e.clientX; my=e.clientY; cur.style.left=mx+'px'; cur.style.top=my+'px'; });
+    let cursorTimeout;
+    document.addEventListener('mousemove', e => { mx=e.clientX; my=e.clientY; cur.style.left=mx+'px'; cur.style.top=my+'px'; cur.style.opacity='1'; ring.style.opacity='0.5'; clearTimeout(cursorTimeout); cursorTimeout=setTimeout(()=>{cur.style.opacity='0';ring.style.opacity='0';},3000); });
+    document.addEventListener('mouseleave', () => { cur.style.opacity='0'; ring.style.opacity='0'; });
     (function loop(){ rx+=(mx-rx)*.12; ry+=(my-ry)*.12; ring.style.left=rx+'px'; ring.style.top=ry+'px'; requestAnimationFrame(loop); })();
     document.querySelectorAll('a,button').forEach(el => {
       el.addEventListener('mouseenter', () => { cur.style.width=cur.style.height='20px'; ring.style.width=ring.style.height='56px'; ring.style.opacity='.3'; });
@@ -690,8 +747,6 @@
       function showEgg() {
         if (hovered) return;
         hovered = true;
-        /* apply slight random Y offset to each window */
-        wins.forEach(w => { w.style.marginTop = randomOffset(); });
         wins.forEach((w, i) => {
           timers.push(setTimeout(() => w.classList.add('show'), i * 160));
         });

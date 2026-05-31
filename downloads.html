@@ -52,7 +52,7 @@
       background: var(--accent); border-radius: 50%;
       position: fixed; pointer-events: none; z-index: 9999;
       transform: translate(-50%,-50%);
-      transition: width .2s, height .2s;
+      transition: width .2s, height .2s, opacity .3s ease;
       mix-blend-mode: multiply;
     }
     .cursor-ring {
@@ -84,7 +84,10 @@
       text-decoration: none; cursor: pointer;
       transition: box-shadow .2s;
     }
-    a.nav-breadcrumb:hover { box-shadow: 0 2px 12px rgba(0,0,0,.08); }
+    a.nav-breadcrumb { position: relative; }
+    a.nav-breadcrumb:hover { background: #F0EDFF; box-shadow: 0 2px 12px rgba(0,0,0,.08); }
+    a.nav-breadcrumb::after { content: '← Home'; position: absolute; top: calc(100% + 8px); left: 50%; transform: translateX(-50%); background: #1E1A2E; color: white; font-size: 11px; font-weight: 500; padding: 4px 10px; border-radius: 6px; white-space: nowrap; opacity: 0; pointer-events: none; transition: opacity .2s; z-index: 200; }
+    a.nav-breadcrumb:hover::after { opacity: 1; }
     .nav-breadcrumb .folder-icon { display: inline-flex; flex-direction: column; gap: 1px; margin-right: 2px; }
     .folder-tab  { width: 12px; height: 4px; background: #90BEDD; border-radius: 2px 2px 0 0; }
     .folder-body { width: 18px; height: 13px; background: #689DCF; border-radius: 0 2px 2px 2px; }
@@ -114,9 +117,9 @@
     .nav-work-wrapper:hover > a .nav-caret { transform: rotate(180deg); }
 
     .nav-dropdown {
-      position:absolute; top:100%; right:0; margin-top:4px;
+      position:absolute; top:100%; right:0; margin-top:0;
       background: white; border: 1px solid #E8E4E0;
-      border-radius: 16px; padding: 8px;
+      border-radius: 16px; padding: 4px 8px 8px;
       min-width: 280px;
       box-shadow: 0 8px 40px rgba(0,0,0,.12);
       opacity: 0; pointer-events: none;
@@ -425,6 +428,7 @@
 
   <!-- ══ PASSWORD OVERLAY ══ -->
   <div id="pw-overlay">
+    <button onclick="window.location='index.html'" title="Back to portfolio" style="position:absolute;top:20px;right:20px;width:32px;height:32px;border-radius:50%;background:rgba(255,255,255,.85);border:1px solid var(--border);cursor:pointer;font-size:14px;color:var(--text-mid);display:flex;align-items:center;justify-content:center;z-index:5001;transition:background .2s,box-shadow .2s;">✕</button>
     <div class="pw-mac-win" id="pw-win">
       <div class="pw-chrome">
         <span class="mac-dot r"></span>
@@ -469,28 +473,28 @@
         <a href="index.html#work">Work <span class="nav-caret">▾</span></a>
         <div class="nav-dropdown">
           <a class="nav-dropdown-item" href="work/mi4l/index.html">
-            <span class="nav-dropdown-item-icon"><svg viewBox="0 0 20 20" fill="none"><path d="M3 5a2 2 0 012-2h4l2 2h6a2 2 0 012 2v8a2 2 0 01-2 2H5a2 2 0 01-2-2V5z" fill="#90BEDD"/></svg></span>
+            <span class="nav-dropdown-item-icon"><img src="images/icons/folder-custom.png" width="20" height="20" alt="" style="object-fit:contain;display:block;"></span>
             <span class="nav-dropdown-item-text">
               <span class="nav-dropdown-item-name">MI4L</span>
               <span class="nav-dropdown-item-sub">Brand Development · Art Direction</span>
             </span>
           </a>
           <a class="nav-dropdown-item" href="work/studio-liebe-nrg/index.html">
-            <span class="nav-dropdown-item-icon"><svg viewBox="0 0 20 20" fill="none"><path d="M3 5a2 2 0 012-2h4l2 2h6a2 2 0 012 2v8a2 2 0 01-2 2H5a2 2 0 01-2-2V5z" fill="#90BEDD"/></svg></span>
+            <span class="nav-dropdown-item-icon"><img src="images/icons/folder-custom.png" width="20" height="20" alt="" style="object-fit:contain;display:block;"></span>
             <span class="nav-dropdown-item-text">
               <span class="nav-dropdown-item-name">Studio Liebe &amp; NRG</span>
               <span class="nav-dropdown-item-sub">Visual Identity · Print Production</span>
             </span>
           </a>
           <a class="nav-dropdown-item" href="work/jco/index.html">
-            <span class="nav-dropdown-item-icon"><svg viewBox="0 0 20 20" fill="none"><path d="M3 5a2 2 0 012-2h4l2 2h6a2 2 0 012 2v8a2 2 0 01-2 2H5a2 2 0 01-2-2V5z" fill="#90BEDD"/></svg></span>
+            <span class="nav-dropdown-item-icon"><img src="images/icons/folder-custom.png" width="20" height="20" alt="" style="object-fit:contain;display:block;"></span>
             <span class="nav-dropdown-item-text">
               <span class="nav-dropdown-item-name">JCO Hamburg</span>
               <span class="nav-dropdown-item-sub">Brand Communication · Visual Strategy</span>
             </span>
           </a>
           <a class="nav-dropdown-item" href="work/apprenticeship/index.html">
-            <span class="nav-dropdown-item-icon"><svg viewBox="0 0 20 20" fill="none"><path d="M3 5a2 2 0 012-2h4l2 2h6a2 2 0 012 2v8a2 2 0 01-2 2H5a2 2 0 01-2-2V5z" fill="#90BEDD"/></svg></span>
+            <span class="nav-dropdown-item-icon"><img src="images/icons/folder-custom.png" width="20" height="20" alt="" style="object-fit:contain;display:block;"></span>
             <span class="nav-dropdown-item-text">
               <span class="nav-dropdown-item-name">During my Apprenticeship</span>
               <span class="nav-dropdown-item-sub">Web Design · Corporate Design · Print</span>
@@ -522,10 +526,10 @@
       <div class="nav-overlay-item">
         <span class="nav-overlay-label is-label">Work</span>
         <div class="nav-overlay-sub">
-          <a href="work/mi4l/index.html">📁 MI4L</a>
-          <a href="work/studio-liebe-nrg/index.html">📁 Studio Liebe &amp; NRG</a>
-          <a href="work/jco/index.html">📁 JCO Hamburg</a>
-          <a href="work/apprenticeship/index.html">📁 During my Apprenticeship</a>
+          <a href="work/mi4l/index.html"><img src="images/icons/folder-custom.png" width="16" height="16" alt="" style="object-fit:contain;flex-shrink:0;"> MI4L</a>
+          <a href="work/studio-liebe-nrg/index.html"><img src="images/icons/folder-custom.png" width="16" height="16" alt="" style="object-fit:contain;flex-shrink:0;"> Studio Liebe &amp; NRG</a>
+          <a href="work/jco/index.html"><img src="images/icons/folder-custom.png" width="16" height="16" alt="" style="object-fit:contain;flex-shrink:0;"> JCO Hamburg</a>
+          <a href="work/apprenticeship/index.html"><img src="images/icons/folder-custom.png" width="16" height="16" alt="" style="object-fit:contain;flex-shrink:0;"> During my Apprenticeship</a>
         </div>
       </div>
       <div class="nav-overlay-item">
@@ -607,10 +611,15 @@
     const cur  = document.getElementById('cursor');
     const ring = document.getElementById('cursorRing');
     let mx=0, my=0, rx=0, ry=0;
+    let cursorTimeout;
     document.addEventListener('mousemove', e => {
       mx = e.clientX; my = e.clientY;
       cur.style.left = mx + 'px'; cur.style.top = my + 'px';
+      cur.style.opacity = '1'; ring.style.opacity = '0.5';
+      clearTimeout(cursorTimeout);
+      cursorTimeout = setTimeout(() => { cur.style.opacity='0'; ring.style.opacity='0'; }, 3000);
     });
+    document.addEventListener('mouseleave', () => { cur.style.opacity='0'; ring.style.opacity='0'; });
     (function loop() {
       rx += (mx - rx) * .12; ry += (my - ry) * .12;
       ring.style.left = rx + 'px'; ring.style.top = ry + 'px';
