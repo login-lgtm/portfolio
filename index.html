@@ -1707,19 +1707,8 @@
 }
 .fw-sidebar-item[data-idx="2"]:hover .fw-name-jco::after { width: 100%; }
 
-/* ── Apprenticeship pencil ── */
-.fw-icon-pencil {
-  font-size: 15px; flex-shrink: 0;
-  display: inline-block; width: 20px; text-align: center;
-}
-.fw-sidebar-item[data-idx="3"]:hover .fw-icon-pencil {
-  animation: pencil-bounce 0.5s ease;
-}
-@keyframes pencil-bounce {
-  0%,100% { transform: rotate(0deg); }
-  25%      { transform: rotate(-15deg); }
-  75%      { transform: rotate(10deg); }
-}
+/* ── Apprenticeship folder icon ── */
+/* (emoji/pencil icon removed; uses folder-custom.png) */
 
 /* ══════════════════════════════════════════════════
    FINDER — PANEL CLICK ANIMATIONS
@@ -2228,7 +2217,7 @@
           <div class="fw-sidebar-category">FREELANCE</div>
           <ul class="fw-sidebar-list">
             <li class="fw-sidebar-item" data-idx="2" data-url="work/jco/index.html">
-              <span class="fw-icon-pencil">🎼</span>
+              <img src="images/icons/folder-custom.png" alt="" width="20" height="20" style="object-fit:contain;flex-shrink:0;">
               <span class="fw-sidebar-name fw-name-jco">Jewish Chamber Orchestra Hamburg</span>
             </li>
           </ul>
@@ -2237,7 +2226,7 @@
           <div class="fw-sidebar-category">EXPERIENCE</div>
           <ul class="fw-sidebar-list">
             <li class="fw-sidebar-item" data-idx="3" data-url="work/apprenticeship/index.html">
-              <span class="fw-icon-pencil">✏️</span>
+              <img src="images/icons/folder-custom.png" alt="" width="20" height="20" style="object-fit:contain;flex-shrink:0;">
               <span class="fw-sidebar-name">During my Apprenticeship</span>
             </li>
           </ul>

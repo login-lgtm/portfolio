@@ -104,7 +104,7 @@
     /* ── PROJEKT-HEADER ── */
     .proj-header { padding:80px; position:relative; z-index:1; }
     .proj-name { font-family:'Instrument Serif',serif; font-size:clamp(40px,5vw,72px); letter-spacing:-2px; line-height:1.05; margin-bottom:24px; }
-    .proj-opinion { font-family:'Instrument Serif',serif; font-style:italic; font-size:clamp(18px,2vw,26px); color:var(--accent); line-height:1.45; margin-bottom:24px; }
+    .proj-opinion { font-family:'Instrument Serif',serif; font-style:italic; font-size:clamp(20px,2.5vw,28px); color:var(--accent); line-height:1.3; margin-bottom:24px; max-width:800px; }
     .proj-role { font-size:15px; color:var(--text-mid); }
 
     /* ── INFO 2-COL ── */
@@ -228,6 +228,12 @@
 .program-label{font-size:10px;color:#6B5CE7;letter-spacing:.15em;font-weight:600;margin-bottom:16px;}
 .program-title{font-family:'Instrument Serif',serif;font-size:28px;margin-bottom:8px;}
 .program-subtitle{font-size:13px;color:rgba(255,255,255,.5);}
+/* ── JCO Ticket overrides ── */
+#jco-ticket{background:#1A1A2E;}
+#jco-ticket:hover{transform:rotate(-1deg) scale(1.03);}
+#jco-ticket .ticket-label{color:#C9A96E;}
+#jco-ticket .ticket-right{background:rgba(201,169,110,.12);}
+#jco-ticket .ticket-number{color:#C9A96E;}
 /* ── OMR poster ── */
 .omr-poster-ph{width:100%;max-width:800px;height:360px;background:#2A2A3E;border-radius:12px;display:flex;align-items:center;justify-content:center;color:rgba(255,255,255,.3);font-size:14px;font-style:italic;margin:40px auto 0;}
 /* ── Responsive ── */
@@ -505,12 +511,19 @@
     </div>
   </section>
 
-  <!-- ══ PROGRAM BOOK ══ -->
-  <section class="program-section">
-    <div class="program-book">
-      <div class="program-label">Jewish Chamber Orchestra</div>
-      <div class="program-title">Spielzeit 2024</div>
-      <div class="program-subtitle">Hamburg</div>
+  <!-- ══ JCO TICKET ══ -->
+  <section class="ticket-section">
+    <div class="ticket" id="jco-ticket">
+      <div class="ticket-left">
+        <div class="ticket-label">JEWISH CHAMBER ORCHESTRA HAMBURG</div>
+        <div class="ticket-event">Spielzeit 2025 / 2026</div>
+        <div class="ticket-venue">Hamburg · Laeiszhalle &amp; more</div>
+      </div>
+      <div class="ticket-tear"></div>
+      <div class="ticket-right">
+        <div class="ticket-number">#JCO</div>
+        <div class="ticket-guests">since 2023</div>
+      </div>
     </div>
   </section>
 

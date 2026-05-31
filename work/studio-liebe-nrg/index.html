@@ -106,7 +106,12 @@
     /* ── PROJEKT-HEADER ── */
     .proj-header { padding:80px; position:relative; z-index:1; }
     .proj-name { font-family:'Instrument Serif',serif; font-size:clamp(44px,5vw,80px); letter-spacing:-2px; line-height:1.05; margin-bottom:24px; }
-    .proj-opinion { font-family:'Instrument Serif',serif; font-style:italic; font-size:clamp(18px,2.2vw,28px); color:var(--accent); line-height:1.45; margin-bottom:24px; }
+    .proj-opinion { font-family:'Instrument Serif',serif; font-style:italic; font-size:clamp(20px,2.5vw,28px); color:var(--accent); line-height:1.3; margin-bottom:24px; max-width:800px; }
+    .proj-note { background:white; border-left:3px solid #6B5CE7; padding:16px 20px; border-radius:0 8px 8px 0; font-family:'DM Sans',sans-serif; font-size:14px; color:#666; line-height:1.6; margin-top:24px; max-width:640px; }
+    .photo-grid { display:grid; grid-template-columns:repeat(2,1fr); gap:16px; margin-top:32px; }
+    .photo-ph { aspect-ratio:3/2; background:#E8E4E0; border-radius:12px; display:flex; align-items:center; justify-content:center; font-family:'DM Sans',sans-serif; font-size:13px; color:#999; overflow:hidden; transition:transform .3s ease, box-shadow .3s ease; cursor:default; }
+    .photo-ph:hover { transform:scale(1.02); box-shadow:0 8px 32px rgba(0,0,0,.1); }
+    .photo-ph img { width:100%; height:100%; object-fit:cover; border-radius:12px; display:block; }
     .proj-role { font-size:15px; color:var(--text-mid); }
     .context-link { display:inline-block; margin-top:16px; font-size:14px; color:var(--text-mid); text-decoration:none; transition:color .2s; }
     .context-link:hover { color:var(--accent); }
@@ -352,7 +357,7 @@
   <!-- ══ PROJEKT-HEADER ══ -->
   <section class="proj-header reveal">
     <div class="proj-name">Studio Liebe &amp; NRG</div>
-    <div class="proj-opinion">Two formats. Two visual worlds.<br>Both built to feel distinct —<br>and unmistakably connected.</div>
+    <div class="proj-opinion">Two formats. Two visual worlds.<br>Both built to feel distinct — and unmistakably connected.</div>
     <div class="tags-row">
       <span class="tag-pill">Visual Identity</span>
       <span class="tag-pill">Art Direction</span>
@@ -362,6 +367,7 @@
       <span class="tag-pill">Large Format</span>
     </div>
     <div class="proj-role">Art Direction &amp; Brand · Sub-formats of MI4L · 2023 – 2024</div>
+    <div class="proj-note">The original branding for MI4L, Studio Liebe and NRG was created by others. From early 2025 I took on full Creative Lead responsibility — developing, refining and scaling all visual systems from there.</div>
     <a href="../mi4l/index.html" class="context-link">← Part of MI4L — Music is for Lovers</a>
   </section>
 
@@ -513,6 +519,27 @@
           <button class="carousel-dot"></button>
           <button class="carousel-btn next">›</button>
         </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══ PHOTOGRAPHY ══ -->
+  <section style="padding:80px;background:#F5F3F1;position:relative;z-index:1;">
+    <div class="section-label reveal">Photography</div>
+    <h2 style="font-family:'Instrument Serif',serif;font-size:clamp(32px,4vw,48px);letter-spacing:-1px;line-height:1.1;margin-bottom:8px;" class="reveal">Studio Liebe — at Pallas World</h2>
+    <p style="font-family:'DM Sans',sans-serif;font-style:italic;font-size:14px;color:#999;margin-bottom:0;" class="reveal">Photography by Daniel Dittus</p>
+    <div class="photo-grid reveal">
+      <div class="photo-ph">
+        <img src="media/studio-liebe/photo-1.jpg" alt="Studio Liebe at Pallas World" onerror="this.parentElement.innerHTML='[ Foto — Daniel Dittus ]'">
+      </div>
+      <div class="photo-ph">
+        <img src="media/studio-liebe/photo-2.jpg" alt="Studio Liebe at Pallas World" onerror="this.parentElement.innerHTML='[ Foto — Daniel Dittus ]'">
+      </div>
+      <div class="photo-ph">
+        <img src="media/studio-liebe/photo-3.jpg" alt="Studio Liebe at Pallas World" onerror="this.parentElement.innerHTML='[ Foto — Daniel Dittus ]'">
+      </div>
+      <div class="photo-ph">
+        <img src="media/studio-liebe/photo-4.jpg" alt="Studio Liebe at Pallas World" onerror="this.parentElement.innerHTML='[ Foto — Daniel Dittus ]'">
       </div>
     </div>
   </section>

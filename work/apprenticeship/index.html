@@ -144,6 +144,14 @@
     .impr-link { color:inherit; opacity:.6; text-decoration:none; transition:opacity .2s; }
     .impr-link:hover { opacity:1; text-decoration:underline; }
 
+    /* ── BROWSER MOCKUP SCROLL ANIMATION ── */
+    @keyframes autoScroll {
+      0%   { transform: translateY(0); }
+      100% { transform: translateY(-50%); }
+    }
+    .scroll-content { animation: autoScroll 8s linear infinite alternate; }
+    .browser-desc { font-family:'DM Sans',sans-serif; font-size:13px; color:#666; line-height:1.6; margin-top:12px; padding:0 4px; }
+
     /* ── REVEAL ── */
     .reveal { opacity:0; transform:translateY(28px); transition:opacity .7s ease,transform .7s ease; }
     .reveal.visible { opacity:1; transform:translateY(0); }
@@ -334,12 +342,34 @@
         </div>
         <div style="position:relative;overflow:hidden;height:280px;background:#f5f3f0;">
           <iframe src="https://bdb-schleswig-holstein.de" loading="lazy" scrolling="no" title="BDB Schleswig-Holstein" style="width:100%;height:100%;border:none;display:block;" id="iframe-bdb"></iframe>
-          <a href="https://bdb-schleswig-holstein.de" target="_blank" rel="noopener" id="fallback-bdb" style="position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;text-decoration:none;background:linear-gradient(145deg,#f0ede8,#e4dfd9);gap:8px;padding:20px;opacity:0;transition:opacity .2s;">
-            <span style="font-size:32px;">🌐</span>
-            <span style="font-size:15px;font-weight:600;color:#1A1A1A;">BDB Schleswig-Holstein</span>
-            <span style="font-size:12px;color:#666;">bdb-schleswig-holstein.de</span>
-            <span style="font-size:12px;color:#6B5CE7;font-weight:500;margin-top:2px;">Visit live site →</span>
-          </a>
+          <div id="fallback-bdb" style="position:absolute;inset:0;overflow:hidden;background:#f0f4f0;opacity:0;transition:opacity .2s;pointer-events:none;">
+            <div class="scroll-content" style="padding:16px;display:flex;flex-direction:column;gap:10px;">
+              <div style="font-size:12px;font-weight:700;color:#004b57;text-align:center;line-height:1.4;padding:8px 0;">Landesverband Schleswig-Holstein<br>im Bund deutscher Baumschulen</div>
+              <div style="width:100%;height:26px;background:#004b57;border-radius:4px;display:flex;align-items:center;gap:10px;padding:0 10px;flex-shrink:0;">
+                <span style="font-size:9px;color:rgba(255,255,255,.8);">Startseite</span>
+                <span style="font-size:9px;color:rgba(255,255,255,.8);">Mitglieder</span>
+                <span style="font-size:9px;color:rgba(255,255,255,.8);">Veranstaltungen</span>
+                <span style="font-size:9px;color:rgba(255,255,255,.8);">Über uns</span>
+              </div>
+              <div style="width:100%;background:#004b57;border-radius:6px;padding:18px;text-align:center;flex-shrink:0;">
+                <div style="font-size:14px;font-weight:600;color:white;margin-bottom:4px;">Baumschulen im Norden</div>
+                <div style="font-size:10px;color:rgba(255,255,255,.7);">Verband der Baumschulen Schleswig-Holstein</div>
+              </div>
+              <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;">
+                <div style="background:white;border-radius:6px;padding:10px;font-size:9px;color:#555;line-height:1.4;">Neuigkeiten &amp; Aktuelles</div>
+                <div style="background:white;border-radius:6px;padding:10px;font-size:9px;color:#555;line-height:1.4;">Mitgliederbereich</div>
+                <div style="background:white;border-radius:6px;padding:10px;font-size:9px;color:#555;line-height:1.4;">Veranstaltungen</div>
+                <div style="background:white;border-radius:6px;padding:10px;font-size:9px;color:#555;line-height:1.4;">Baumschulen finden</div>
+              </div>
+              <div style="width:100%;height:1px;background:#d8d4d0;margin:4px 0;flex-shrink:0;"></div>
+              <div style="background:white;border-radius:6px;padding:12px;font-size:9px;color:#555;line-height:1.6;">Aktuelle Meldungen · News aus dem Verband · Fachthemen für Baumschulen</div>
+              <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px;">
+                <div style="background:#e8f0e8;border-radius:4px;padding:8px;font-size:8px;color:#004b57;">Fachinfo</div>
+                <div style="background:#e8f0e8;border-radius:4px;padding:8px;font-size:8px;color:#004b57;">Kontakt</div>
+                <div style="background:#e8f0e8;border-radius:4px;padding:8px;font-size:8px;color:#004b57;">Downloads</div>
+              </div>
+            </div>
+          </div>
         </div>
         <div class="browser-footer">
           <div class="browser-title">BDB Schleswig-Holstein</div>
@@ -348,6 +378,7 @@
             <span class="browser-tag">Webdesign</span>
             <span class="browser-tag">Corporate</span>
           </div>
+          <p class="browser-desc">Landesverband Schleswig-Holstein im Bund deutscher Baumschulen (BdB) e.V. — Trade association for nursery businesses in northern Germany. Designed and built during my first year of apprenticeship.</p>
         </div>
       </div>
       </div><!-- /1st year wrapper -->
@@ -360,12 +391,34 @@
         </div>
         <div style="position:relative;overflow:hidden;height:280px;background:#f5f3f0;">
           <iframe src="https://florapresenta.de" loading="lazy" scrolling="no" title="Florapresenta" style="width:100%;height:100%;border:none;display:block;" id="iframe-flora"></iframe>
-          <a href="https://florapresenta.de" target="_blank" rel="noopener" id="fallback-flora" style="position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;text-decoration:none;background:linear-gradient(145deg,#f0ede8,#e4dfd9);gap:8px;padding:20px;opacity:0;transition:opacity .2s;">
-            <span style="font-size:32px;">🌸</span>
-            <span style="font-size:15px;font-weight:600;color:#1A1A1A;">Florapresenta</span>
-            <span style="font-size:12px;color:#666;">florapresenta.de</span>
-            <span style="font-size:12px;color:#6B5CE7;font-weight:500;margin-top:2px;">Visit live site →</span>
-          </a>
+          <div id="fallback-flora" style="position:absolute;inset:0;overflow:hidden;background:#f5f9f0;opacity:0;transition:opacity .2s;pointer-events:none;">
+            <div class="scroll-content" style="padding:16px;display:flex;flex-direction:column;gap:10px;">
+              <div style="font-size:16px;font-weight:700;color:#64b32c;text-align:center;padding:6px 0;">florapresenta</div>
+              <div style="width:100%;height:26px;background:#64b32c;border-radius:4px;display:flex;align-items:center;gap:10px;padding:0 10px;flex-shrink:0;">
+                <span style="font-size:9px;color:rgba(255,255,255,.9);">Start</span>
+                <span style="font-size:9px;color:rgba(255,255,255,.9);">Produkte</span>
+                <span style="font-size:9px;color:rgba(255,255,255,.9);">Über uns</span>
+                <span style="font-size:9px;color:rgba(255,255,255,.9);">Kontakt</span>
+              </div>
+              <div style="width:100%;background:linear-gradient(135deg,#64b32c,#4a8a20);border-radius:6px;padding:18px;text-align:center;flex-shrink:0;">
+                <div style="font-size:14px;font-weight:600;color:white;margin-bottom:4px;">Nachhaltige Werbemittel aus Pflanzen</div>
+                <div style="font-size:10px;color:rgba(255,255,255,.8);">Blumen &amp; Samen als Werbegeschenke</div>
+              </div>
+              <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;">
+                <div style="background:white;border-radius:6px;padding:10px;font-size:9px;color:#555;line-height:1.4;">Saatgut-Sets</div>
+                <div style="background:white;border-radius:6px;padding:10px;font-size:9px;color:#555;line-height:1.4;">Pflanz-Kits</div>
+                <div style="background:white;border-radius:6px;padding:10px;font-size:9px;color:#555;line-height:1.4;">Geschenksets</div>
+                <div style="background:white;border-radius:6px;padding:10px;font-size:9px;color:#555;line-height:1.4;">Kunden</div>
+              </div>
+              <div style="width:100%;height:1px;background:#c8e8b8;margin:4px 0;flex-shrink:0;"></div>
+              <div style="background:white;border-radius:6px;padding:12px;font-size:9px;color:#555;line-height:1.6;">Nachhaltige Werbeartikel · Blumen &amp; Pflanzen als Geschenk · Umweltfreundliche Promotionartikel</div>
+              <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px;">
+                <div style="background:#e8f5e0;border-radius:4px;padding:8px;font-size:8px;color:#64b32c;">Anfrage</div>
+                <div style="background:#e8f5e0;border-radius:4px;padding:8px;font-size:8px;color:#64b32c;">Katalog</div>
+                <div style="background:#e8f5e0;border-radius:4px;padding:8px;font-size:8px;color:#64b32c;">Kontakt</div>
+              </div>
+            </div>
+          </div>
         </div>
         <div class="browser-footer">
           <div class="browser-title">Florapresenta</div>
@@ -374,6 +427,7 @@
             <span class="browser-tag">Webdesign</span>
             <span class="browser-tag">E-Commerce</span>
           </div>
+          <p class="browser-desc">Florapresenta Blumen &amp; Pflanzen GmbH — Sustainable promotional products from plants and seeds. Designed and built during my second year.</p>
         </div>
       </div>
       </div><!-- /2nd year wrapper -->
