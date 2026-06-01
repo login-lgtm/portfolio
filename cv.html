@@ -307,6 +307,26 @@
       margin-bottom: 14px;
       line-height: 1.5;
     }
+    .timeline-desc {
+      font-size: 14px;
+      color: var(--text-mid);
+      line-height: 1.7;
+      margin-bottom: 14px;
+      max-width: 560px;
+    }
+    .timeline-desc p + p { margin-top: 8px; }
+    .cv-intro {
+      padding: 0 80px 48px;
+      max-width: 680px;
+    }
+    .cv-intro p {
+      font-family: 'Instrument Serif', serif;
+      font-style: italic;
+      font-size: clamp(17px, 1.6vw, 20px);
+      color: var(--text-mid);
+      line-height: 1.65;
+    }
+    .cv-intro p + p { margin-top: 12px; }
     .tag-row { display: flex; flex-wrap: wrap; gap: 6px; }
     .tag {
       font-size: 11px;
@@ -442,6 +462,7 @@
     @media (max-width: 900px) {
       .cv-hero, .cv-glance, .cv-experience,
       .cv-skills, .cv-education, .cv-languages { padding-left: 32px; padding-right: 32px; }
+      .cv-intro { padding-left: 32px; padding-right: 32px; }
       nav { padding: 14px 24px; }
       .glance-grid { grid-template-columns: 1fr; }
       .timeline-entry, .edu-entry { grid-template-columns: 1fr; gap: 8px; }
@@ -466,6 +487,7 @@
       /* Sections */
       .cv-glance, .cv-experience,
       .cv-skills, .cv-education, .cv-languages { padding-left: 20px; padding-right: 20px; }
+      .cv-intro { padding-left: 20px; padding-right: 20px; padding-bottom: 32px; }
       .cv-glance { padding-top: 48px; padding-bottom: 40px; }
 
       /* Cards */
@@ -577,24 +599,30 @@
     <section class="cv-hero">
       <div class="cv-terminal-path"><span>~/vivien/</span>cv</div>
       <h1 class="cv-hero-title">Vivien <em>Evers</em></h1>
-      <p class="cv-hero-sub">Digital & Print Designer · Brand & Marketing · Hamburg</p>
+      <p class="cv-hero-sub">Building brands, experiences and digital communication.</p>
     </section>
+
+    <!-- ══ INTRO ══════════════════════════════════════════════════ -->
+    <div class="cv-intro">
+      <p>I started in print design, but quickly became interested in how brands, experiences and communication shape the way people connect with ideas.</p>
+      <p>Today I work across branding, digital communication and cultural projects while continuing to explore the intersection of design, strategy and experience.</p>
+    </div>
 
     <!-- ══ AT A GLANCE ════════════════════════════════════════════ -->
     <section class="cv-glance">
       <div class="section-label">At a Glance</div>
       <div class="glance-grid">
         <div class="glance-card reveal">
+          <div class="glance-number">10<span>+</span></div>
+          <div class="glance-label">Events &amp;<br>campaigns</div>
+        </div>
+        <div class="glance-card reveal">
           <div class="glance-number">3<span>+</span></div>
-          <div class="glance-label">Years of<br>Experience</div>
+          <div class="glance-label">Years building<br>brands</div>
         </div>
         <div class="glance-card reveal">
-          <div class="glance-number" style="font-size:38px;">✓</div>
-          <div class="glance-label">Graduated<br>Jan 2026</div>
-        </div>
-        <div class="glance-card reveal">
-          <div class="glance-number">2</div>
-          <div class="glance-label">Own Brand<br>Projects</div>
+          <div class="glance-number">2026</div>
+          <div class="glance-label">Graduated Digital<br>&amp; Print Design</div>
         </div>
       </div>
     </section>
@@ -611,10 +639,15 @@
           <div class="timeline-body">
             <div class="timeline-role">Brand & Communications · Freelance</div>
             <div class="timeline-company"><strong>Jewish Chamber Orchestra Hamburg</strong> · Hamburg</div>
+            <div class="timeline-desc">
+              <p>Supporting the digital communication of a cultural institution with the goal of reaching younger audiences while preserving cultural depth and credibility.</p>
+              <p>Working across communication, content strategy and brand development within an existing identity system.</p>
+            </div>
             <div class="tag-row">
               <span class="tag">Brand Communication</span>
+              <span class="tag">Content Strategy</span>
               <span class="tag">Visual Identity</span>
-              <span class="tag">CI-Design</span>
+              <span class="tag">Cultural Marketing</span>
             </div>
           </div>
         </div>
@@ -642,14 +675,17 @@
             <div class="timeline-date">2023 – 2026</div>
           </div>
           <div class="timeline-body">
-            <div class="timeline-role">Apprenticeship — Digital & Print Designer</div>
+            <div class="timeline-role">Apprenticeship – Digital & Print Designer</div>
             <div class="timeline-company"><strong>ehsmedia</strong> · Schenefeld</div>
+            <div class="timeline-desc">
+              <p>Worked across print, web and brand communication for real clients while independently expanding into digital design, Figma and creative workflows.</p>
+              <p>Contributed to websites, print production, campaigns and visual communication across multiple industries.</p>
+            </div>
             <div class="tag-row">
+              <span class="tag">Web Design</span>
+              <span class="tag">Print Production</span>
+              <span class="tag">Brand Communication</span>
               <span class="tag">Figma</span>
-              <span class="tag">Webflow</span>
-              <span class="tag">Adobe Suite</span>
-              <span class="tag">Corporate Design</span>
-              <span class="tag">Print</span>
             </div>
           </div>
         </div>
@@ -663,33 +699,23 @@
       <div class="skills-groups">
 
         <div class="skill-group reveal">
-          <div class="skill-group-title">Design</div>
+          <div class="skill-group-title">Brand</div>
           <div class="skill-tags-row">
-            <span class="skill-chip">Figma</span>
-            <span class="skill-chip">Adobe Illustrator</span>
-            <span class="skill-chip">Adobe InDesign</span>
-            <span class="skill-chip">Adobe Photoshop</span>
-            <span class="skill-chip">Canva Pro</span>
-          </div>
-        </div>
-
-        <div class="skill-group reveal">
-          <div class="skill-group-title">Web</div>
-          <div class="skill-tags-row">
-            <span class="skill-chip">UI Design</span>
-            <span class="skill-chip">Web Design</span>
-            <span class="skill-chip">UI/UX</span>
-          </div>
-        </div>
-
-        <div class="skill-group reveal">
-          <div class="skill-group-title">Brand & Marketing</div>
-          <div class="skill-tags-row">
-            <span class="skill-chip">Brand Strategy</span>
+            <span class="skill-chip">Brand Development</span>
+            <span class="skill-chip">Brand Communication</span>
             <span class="skill-chip">Visual Identity</span>
-            <span class="skill-chip">Art Direction</span>
             <span class="skill-chip">Campaign Design</span>
             <span class="skill-chip">Event Marketing</span>
+          </div>
+        </div>
+
+        <div class="skill-group reveal">
+          <div class="skill-group-title">Digital</div>
+          <div class="skill-tags-row">
+            <span class="skill-chip">Figma</span>
+            <span class="skill-chip">UI/UX</span>
+            <span class="skill-chip">Web Design</span>
+            <span class="skill-chip">Information Architecture</span>
           </div>
         </div>
 
@@ -698,7 +724,27 @@
           <div class="skill-tags-row">
             <span class="skill-chip">Print Production</span>
             <span class="skill-chip">Large Format</span>
-            <span class="skill-chip">Print Prepress</span>
+            <span class="skill-chip">Prepress</span>
+          </div>
+        </div>
+
+        <div class="skill-group reveal">
+          <div class="skill-group-title">Tools</div>
+          <div class="skill-tags-row">
+            <span class="skill-chip">Adobe Illustrator</span>
+            <span class="skill-chip">Adobe InDesign</span>
+            <span class="skill-chip">Adobe Photoshop</span>
+            <span class="skill-chip">Canva</span>
+          </div>
+        </div>
+
+        <div class="skill-group reveal">
+          <div class="skill-group-title">AI & Workflows</div>
+          <div class="skill-tags-row">
+            <span class="skill-chip">Claude Code</span>
+            <span class="skill-chip">Claude</span>
+            <span class="skill-chip">ChatGPT</span>
+            <span class="skill-chip">Gemini</span>
           </div>
         </div>
 
