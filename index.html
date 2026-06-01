@@ -386,78 +386,6 @@
     }
     .hero-name em { font-style: italic; color: var(--accent); }
 
-    /* ─────────────────────────────────────────────
-       FIGMA SELECTION DECORATION (hero name)
-    ───────────────────────────────────────────── */
-    /* Selection bounding box */
-    .figma-wrapper {
-      position: relative;
-      display: inline-block;
-      padding: 4px 10px 6px 8px;
-      border-radius: 3px;
-      background: transparent;
-      transition: background-color 0.4s ease;
-    }
-    .figma-wrapper.selected {
-      background: rgba(221, 217, 247, 0.55);
-    }
-
-    /* Left edge line (like Figma selection border) */
-    .figma-line-left {
-      position: absolute;
-      left: -2px;
-      top: 0;
-      bottom: 0;
-      width: 2px;
-      background: var(--accent);
-      border-radius: 1px;
-      opacity: 0;
-      transform: scaleY(0);
-      transform-origin: top;
-      transition: opacity 0.15s ease, transform 0.28s ease;
-      pointer-events: none;
-    }
-    .figma-line-left.show {
-      opacity: 1;
-      transform: scaleY(1);
-    }
-
-    /* Resize handle dots */
-    .figma-anchor {
-      position: absolute;
-      width: 12px; height: 12px;
-      background: var(--accent);
-      border-radius: 50%;
-      border: 2px solid white;
-      box-shadow: 0 0 0 1.5px var(--accent);
-      transform: scale(0);
-      transition: transform 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
-      z-index: 2;
-      pointer-events: none;
-    }
-    .figma-anchor.show { transform: scale(1); }
-    .figma-anchor-tr { top: -6px; right: -6px; }
-    .figma-anchor-bl { bottom: -6px; left: -6px; }
-
-    /* Blinking text cursor */
-    .figma-cursor {
-      display: inline-block;
-      width: 3px;
-      height: 0.82em;
-      background: var(--accent);
-      margin-left: 4px;
-      vertical-align: text-bottom;
-      opacity: 0;
-      border-radius: 1px;
-    }
-    .figma-cursor.blink {
-      animation: figmaBlink 1s step-end infinite;
-    }
-    @keyframes figmaBlink {
-      0%, 100% { opacity: 1; }
-      50%       { opacity: 0; }
-    }
-
     .hero-sub {
       font-size: clamp(18px, 2.5vw, 26px);
       color: var(--text-mid); font-weight: 300;
@@ -2083,12 +2011,7 @@
         </div>
       </div>
       <h1 class="hero-name" id="hero-name">
-        <span class="figma-wrapper selected" id="figma-wrapper">
-          <span class="figma-line-left show" id="figma-line"></span>
-          <span class="name-highlight-wrap" id="name-highlight-wrap">Vivien <em>Evers</em></span>
-          <span class="figma-anchor figma-anchor-tr show" id="figma-anchor-tr"></span>
-          <span class="figma-anchor figma-anchor-bl show" id="figma-anchor-bl"></span>
-        </span>
+        <span class="name-highlight-wrap" id="name-highlight-wrap">Vivien <em>Evers</em></span>
       </h1>
       <p class="hero-sub">Digital & Print Designer — Brand, Design & Marketing</p>
       <div class="hero-ctas">
