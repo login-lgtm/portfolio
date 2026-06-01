@@ -216,7 +216,8 @@
       .nav-links { gap:14px; }
       .nav-links a { font-size:12px; }
       .hero-mac-label { display:none; }
-      .ap-hero { padding:80px 20px 48px; }
+      .ap-hero { padding:calc(56px + env(safe-area-inset-top, 0px) + 24px) 20px 48px; }
+      .ap-hero-statement { font-size:36px; }
       .reframe-section,.web-section,.self-section,.learnings-section { padding:40px 20px; }
       .nav-footer { padding:24px 20px; }
     }

@@ -1545,9 +1545,10 @@
     /* ── 640px — mobile ─────────────────────── */
     @media (max-width: 640px) {
       /* Hero */
-      #hero { padding: 76px 20px 48px; min-height: 100svh; }
+      #hero { padding: calc(56px + env(safe-area-inset-top, 0px) + 20px) 0 48px; min-height: 100svh; }
       .hero-sub { font-size: 15px; margin-bottom: 28px; }
       .btn-primary, .btn-secondary { padding: 12px 20px; font-size: 13px; }
+      .lens-title { font-size: 30px; letter-spacing: -0.5px; }
 
       /* Sections */
       #work, #about, #contact { padding: 60px 20px; }

@@ -481,15 +481,16 @@
       .nav-links a { font-size: 12px; }
 
       /* CV Hero */
-      .cv-hero { padding: 80px 20px 48px; }
+      .cv-hero { padding: calc(56px + env(safe-area-inset-top, 0px) + 24px) 20px 48px; }
       .cv-hero-title { font-size: 44px; letter-spacing: -1px; }
       .cv-hero-sub { font-size: 15px; }
 
       /* Sections */
       .cv-glance, .cv-experience,
       .cv-skills, .cv-education, .cv-languages { padding-left: 20px; padding-right: 20px; }
-      .cv-intro { padding: 48px 20px 36px; }
-      .cv-glance { padding-top: 48px; padding-bottom: 40px; }
+      .cv-intro { padding: 40px 20px 32px; }
+      .cv-glance { padding-top: 40px; padding-bottom: 36px; }
+      .section-label { margin-bottom: 20px; }
 
       /* Cards */
       .glance-card { padding: 24px 20px; }
