@@ -1795,38 +1795,50 @@
   text-shadow: 0 1px 3px rgba(0,0,0,.5);
 }
 
-/* ── Wabern animation for mood banners */
+/* ── Wabern animations (background-image, no !important → position animates freely) */
 @keyframes wabern {
-  0%   { background-position: 0% 50%; }
-  50%  { background-position: 100% 50%; }
-  100% { background-position: 0% 50%; }
+  0%, 100% { background-position: 0% 50%; }
+  50%       { background-position: 100% 50%; }
+}
+@keyframes wabernAlt {
+  0%, 100% { background-position: 100% 50%; }
+  50%       { background-position: 0% 50%; }
 }
 
-/* ── MI4L — radial gradient, animated */
+/* ── MI4L — crimson → violet → deep purple */
 .mood-banner-mi4l {
-  background: linear-gradient(135deg, #C41E3A, #8B1A8B, #2D1B4E, #C41E3A) !important;
-  background-size: 300% 300% !important;
-  animation: wabern 6s ease infinite;
+  background-image: linear-gradient(135deg, #B5001F, #7B0EA0, #2D0A4E, #A0006A, #B5001F);
+  background-size: 400% 400%;
+  animation: wabern 5s ease infinite;
 }
 
-/* ── Studio Liebe & NRG — split orange / dark */
-.mood-banner-studioliebe {
-  background: linear-gradient(135deg, #FF6B00, #FFB347, #1A1A1A, #000000, #FF6B00) !important;
-  background-size: 400% 400% !important;
-  animation: wabern 8s ease infinite;
+/* ── Studio Liebe (left) / NRG (right) — hard split, each half animated */
+.mood-banner-studioliebe { background: #0A0A0A; }
+
+.mood-banner-studioliebe::before {
+  content: '';
+  position: absolute;
+  left: 0; top: 0; bottom: 0; right: 50%;
+  background-image: linear-gradient(135deg, #E8527A, #F09060, #C43870, #F07090, #E8527A);
+  background-size: 400% 400%;
+  animation: wabern 6s ease infinite;
+  z-index: 0;
 }
 .mood-banner-studioliebe::after {
   content: '';
   position: absolute;
-  left: 50%; top: 15%; bottom: 15%;
-  width: 1px;
-  background: rgba(255,255,255,.15);
+  left: 50%; top: 0; bottom: 0; right: 0;
+  background-image: linear-gradient(135deg, #0A0A12, #1A1A2A, #0D0D0D, #16101E, #0A0A12);
+  background-size: 400% 400%;
+  animation: wabernAlt 7s ease infinite;
+  border-left: 1px solid rgba(255,255,255,.18);
+  z-index: 0;
 }
 
-/* ── JCO — deep navy, gold accent stripe */
+/* ── JCO — deep navy with gold shimmer */
 .mood-banner-jco {
-  background: linear-gradient(135deg, #1A1A2E, #2D2D4E, #1E3A5F, #C9A96E, #1A1A2E) !important;
-  background-size: 300% 300% !important;
+  background-image: linear-gradient(135deg, #0D0D1E, #1A1A2E, #C9A96E, #2D2444, #0D0D1E);
+  background-size: 400% 400%;
   animation: wabern 7s ease infinite;
 }
 .mood-banner-jco::before {
@@ -1834,7 +1846,8 @@
   position: absolute;
   top: 0; left: 0; right: 0;
   height: 3px;
-  background: linear-gradient(90deg, #C9A96E, #F0D080, #C9A96E);
+  background: linear-gradient(90deg, transparent, #C9A96E, #F0D080, #C9A96E, transparent);
+  z-index: 1;
 }
 
 /* ── Apprenticeship — neutral, animated tool pills */
