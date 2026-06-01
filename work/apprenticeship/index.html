@@ -125,6 +125,9 @@
 
     /* ── HERO ── */
     .ap-hero { background:var(--dark); min-height:500px; display:flex; align-items:center; padding:100px 80px 80px; position:relative; z-index:1; margin-top:0; }
+    .hero-mac-label { position:absolute; top:20px; left:20px; z-index:2; display:flex; align-items:center; gap:6px; background:rgba(255,255,255,.12); backdrop-filter:blur(8px); border:1px solid rgba(255,255,255,.2); border-radius:20px; padding:8px 16px; }
+    .hero-mac-label .mac-dot { width:8px; height:8px; }
+    .hero-mac-label span { font-size:13px; font-weight:500; color:white; font-family:'DM Sans',sans-serif; }
     .ap-hero-inner { max-width:800px; }
     .ap-hero-statement { font-family:'Instrument Serif',serif; font-style:italic; font-size:clamp(44px,6vw,72px); color:white; line-height:1.1; }
     .ap-hero-sub { margin-top:32px; font-size:16px; font-weight:500; color:var(--accent); }
@@ -331,6 +334,12 @@
 
   <!-- ══ HERO ══ -->
   <section class="ap-hero">
+    <div class="hero-mac-label">
+      <span class="mac-dot r"></span>
+      <span class="mac-dot y"></span>
+      <span class="mac-dot g"></span>
+      <span>~/vivien/work/apprenticeship</span>
+    </div>
     <div class="ap-hero-inner">
       <div class="ap-hero-statement reveal">
         "I didn't wait<br>to be taught.<br>I built while<br>I learned."
