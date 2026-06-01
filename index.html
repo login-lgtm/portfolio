@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
   <title>Vivien Evers — Brand & Marketing</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@400;600&family=Instrument+Serif:ital@0;1&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
@@ -1480,7 +1480,7 @@
       nav {
         top: 0; left: 0; right: 0; transform: none; width: auto;
         border-radius: 0; border: none; border-bottom: 1px solid var(--border);
-        height: 56px; padding: 0 20px; justify-content: flex-end;
+        padding-top: env(safe-area-inset-top); height: calc(56px + env(safe-area-inset-top)); padding-left: 20px; padding-right: 20px; justify-content: flex-end; align-items: center;
         background: rgba(238,236,234,.97); box-shadow: none; white-space: normal;
       }
       nav.nav-hidden { transform: translateY(-100%); opacity: 1; pointer-events: auto; }
