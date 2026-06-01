@@ -195,7 +195,8 @@
     .nav-links > li > a.nav-active::after { width: 100%; }
 
     /* Work dropdown wrapper with delay trick */
-    .nav-work-wrapper { position:relative; height:64px; display:flex; align-items:center; }
+    .nav-work-wrapper { position:relative; height:64px; display:flex; align-items:center; padding:8px 4px; margin:-8px -4px; }
+    .nav-work-wrapper::after { content:''; position:absolute; top:100%; left:-20px; right:-20px; height:16px; background:transparent; }
     .nav-work-wrapper > a .nav-caret {
       display: inline-block; font-size: 10px; margin-left: 3px;
       transition: transform .2s;
@@ -211,7 +212,7 @@
       opacity: 0; pointer-events: none;
       transform: translateY(-4px);
       /* delay hide so cursor can reach it */
-      transition: opacity .2s ease .15s, transform .2s ease .15s;
+      transition: opacity .25s ease .1s, transform .25s ease .1s;
       padding-top: 8px;
     }
     .nav-work-wrapper:hover .nav-dropdown {
@@ -219,6 +220,7 @@
       transform: translateY(0);
       transition: opacity .15s ease 0s, transform .15s ease 0s;
     }
+    .nav-work-wrapper:focus-within .nav-dropdown { opacity:1; pointer-events:auto; transform:translateY(0); transition:opacity .15s ease 0s,transform .15s ease 0s; }
     .nav-dropdown-item {
       display: flex; align-items: center; gap: 12px;
       padding: 10px 14px; border-radius: 10px;
@@ -376,9 +378,7 @@
       letter-spacing: -4px;
       white-space: nowrap;
       margin-bottom: 12px;
-      opacity: 0;
-      transform: translateY(24px);
-      transition: opacity 0.6s ease, transform 0.6s ease;
+      opacity: 1;
       position: relative;
     }
     @media (max-width: 768px) {
@@ -1299,6 +1299,55 @@
       .dock-icon { width: 48px; height: 48px; }
       .dock-tip { display: none; }
     }
+    @media (max-width: 768px) {
+      .dock-wrapper {
+        align-items: stretch;
+        overflow-x: visible;
+        width: 100%;
+        padding-bottom: 0;
+      }
+      .dock {
+        display: grid !important;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 16px;
+        padding: 24px 16px;
+        background: transparent;
+        backdrop-filter: none;
+        box-shadow: none;
+        border-radius: 0;
+        overflow: visible;
+        align-items: start;
+      }
+      .dock-item {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 6px;
+        min-width: 0;
+      }
+      .dock-icon {
+        width: 56px !important;
+        height: 56px !important;
+        border-radius: 12px;
+        box-shadow: 0 2px 8px rgba(0,0,0,.12);
+      }
+      .dock-icon:hover { transform: none; }
+      .dock-sep { display: none; }
+      .dock-tip { display: none; }
+      /* iOS-Kachel Label */
+      .dock-item::after {
+        content: attr(data-label);
+        font-family: 'DM Sans', sans-serif;
+        font-size: 11px;
+        color: #666;
+        text-align: center;
+        max-width: 64px;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        display: block;
+      }
+    }
 
     /* ── HERO NAME MARKER ── */
     .name-highlight-wrap { position: relative; display: inline; }
@@ -1319,13 +1368,6 @@
     @keyframes markerSweep { to { transform: scaleX(1); } }
 
     /* ── MEMORY GAME EASTER EGG ── */
-    #secret-folder {
-      position: fixed; bottom: 120px; right: 40px; z-index: 50;
-      cursor: pointer; opacity: 0.4;
-      transition: opacity .3s, transform .3s;
-    }
-    #secret-folder:hover { opacity: 1; transform: scale(1.1); }
-    #secret-folder img { width: 48px; height: 48px; display: block; }
     .memory-modal {
       position: fixed; inset: 0; z-index: 9000;
       background: rgba(0,0,0,.55); backdrop-filter: blur(4px);
@@ -1822,20 +1864,25 @@
   text-shadow: 0 1px 3px rgba(0,0,0,.5);
 }
 
-/* ── MI4L — radial gradient, animated */
-@keyframes gradientShift {
-  0%, 100% { background-position: 0% 50%; }
-  50%       { background-position: 100% 50%; }
+/* ── Wabern animation for mood banners */
+@keyframes wabern {
+  0%   { background-position: 0% 50%; }
+  50%  { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
 }
+
+/* ── MI4L — radial gradient, animated */
 .mood-banner-mi4l {
-  background: radial-gradient(ellipse at 30% 40%, #C41E3A 0%, #8B1A8B 35%, #2D1B4E 70%, #1A0A2E 100%);
-  background-size: 200% 200%;
-  animation: gradientShift 6s ease infinite;
+  background: linear-gradient(135deg, #C41E3A, #8B1A8B, #2D1B4E, #C41E3A) !important;
+  background-size: 300% 300% !important;
+  animation: wabern 6s ease infinite;
 }
 
 /* ── Studio Liebe & NRG — split orange / dark */
 .mood-banner-studioliebe {
-  background: linear-gradient(135deg, #FF6B00 0%, #FFB347 45%, #1A1A1A 55%, #000000 100%);
+  background: linear-gradient(135deg, #FF6B00, #FFB347, #1A1A1A, #000000, #FF6B00) !important;
+  background-size: 400% 400% !important;
+  animation: wabern 8s ease infinite;
 }
 .mood-banner-studioliebe::after {
   content: '';
@@ -1847,7 +1894,9 @@
 
 /* ── JCO — deep navy, gold accent stripe */
 .mood-banner-jco {
-  background: linear-gradient(135deg, #1A1A2E 0%, #2D2D4E 40%, #1E3A5F 70%, #0D1117 100%);
+  background: linear-gradient(135deg, #1A1A2E, #2D2D4E, #1E3A5F, #C9A96E, #1A1A2E) !important;
+  background-size: 300% 300% !important;
+  animation: wabern 7s ease infinite;
 }
 .mood-banner-jco::before {
   content: '';
@@ -1985,7 +2034,7 @@
         <div class="nav-overlay-sub">
           <a href="work/mi4l/index.html"><img src="images/icons/folder-custom.png" style="width:18px;height:18px;object-fit:contain;margin-right:6px;vertical-align:middle;"> MI4L</a>
           <a href="work/studio-liebe-nrg/index.html"><img src="images/icons/folder-custom.png" style="width:18px;height:18px;object-fit:contain;margin-right:6px;vertical-align:middle;"> Studio Liebe &amp; NRG</a>
-          <a href="work/jco/index.html"><img src="work/jco/media/jco-profile.jpg" style="width:20px;height:20px;border-radius:50%;object-fit:cover;margin-right:6px;vertical-align:middle;" onerror="this.src='images/icons/folder-custom.png';this.style.borderRadius='0'"> JCO Hamburg</a>
+          <a href="work/jco/index.html"><img src="work/jco/media/JCO-profile.jpg" style="width:20px;height:20px;border-radius:50%;object-fit:cover;margin-right:6px;vertical-align:middle;" onerror="this.src='images/icons/folder-custom.png';this.style.borderRadius='0'"> JCO Hamburg</a>
           <a href="work/apprenticeship/index.html"><img src="images/icons/folder-custom.png" style="width:18px;height:18px;object-fit:contain;margin-right:6px;vertical-align:middle;"> During my Apprenticeship</a>
         </div>
       </div>
@@ -2064,7 +2113,13 @@
       <div class="float-card fc-spotify" id="fc-c3" style="--base-rotate:-1deg">
         <span class="fc-sp-nowplaying">Now Playing</span>
         <div class="fc-sp-top">
-          <div class="fc-sp-album"><span class="fc-sp-art">???</span></div>
+          <div class="fc-sp-album">
+            <img src="images/diedrei-cover.jpg"
+                 style="width:100%;height:100%;object-fit:cover;border-radius:6px;position:relative;z-index:1;"
+                 alt="Die drei ??? — Stimmen aus dem Nichts"
+                 onerror="this.style.display='none'">
+            <span class="fc-sp-art" style="position:absolute;z-index:0;">???</span>
+          </div>
           <div class="fc-sp-info">
             <div class="fc-sp-song">Stimmen aus dem Nichts</div>
             <div class="fc-sp-artist">Die drei ??? · Folge 076</div>
@@ -2124,6 +2179,11 @@
         </div>
         <div class="fc-coffee-count" id="fc-ccount">2 of 3 coffees</div>
         <div class="fc-coffee-quote" id="fc-cquote">probably thinking<br>about your brand</div>
+      </div>
+
+      <!-- Floating folder icon — opens Memory Game -->
+      <div style="position:absolute;bottom:80px;left:40px;z-index:10;cursor:pointer;animation:float3 4s ease-in-out infinite;" onclick="if(window._openMemoryModal)window._openMemoryModal();else document.getElementById('memory-modal').classList.remove('hidden');">
+        <img src="images/icons/folder-custom.png" width="48" height="48" alt="Secret Folder">
       </div>
 
     </div>
@@ -2322,6 +2382,11 @@
       <p class="lens-statement-main">"Curious, observant and always building."</p>
       <p class="lens-statement-sub">what caught my eye</p>
     </div>
+
+    <!-- Folder icon bottom-right -->
+    <div style="position:absolute;bottom:24px;right:24px;cursor:pointer;z-index:5;" onclick="if(window._openMemoryModal)window._openMemoryModal();else document.getElementById('memory-modal').classList.remove('hidden');">
+      <img src="images/icons/folder-custom.png" width="36" height="36" alt="">
+    </div>
   </section>
 
   <!-- ══════════════════════════════════════════
@@ -2509,7 +2574,7 @@
           </span>
           <span>› Vivien Evers</span><span>›</span><span>Portfolio</span>
         </div>
-        <span>© 2026 Vivien Evers · vivienevers.de · <a href="impressum.html" class="impr-link">Impressum</a></span>
+        <span><img src="images/icons/folder-custom.png" onclick="if(window._openMemoryModal)window._openMemoryModal();else document.getElementById('memory-modal').classList.remove('hidden');" style="width:20px;height:20px;vertical-align:middle;margin-right:8px;cursor:pointer;display:inline-block;" alt="">© 2026 Vivien Evers · vivienevers.de · <a href="impressum.html" class="impr-link">Impressum</a></span>
       </div>
       <div style="font-size:11px;opacity:.4;text-align:center;margin-top:12px;color:rgba(255,255,255,.6);">Built with Claude Code · Deployed on Vercel</div>
     </div>
@@ -2616,7 +2681,7 @@
         bannerHTML = `
           <div class="mood-banner mood-banner-jco">
             <div class="mood-profile">
-              <img src="work/jco/media/jco-profile.jpg" alt="" onerror="this.style.display='none'">
+              <img src="work/jco/media/JCO-profile.jpg" alt="" onerror="this.style.display='none'">
               <a href="https://www.instagram.com/jcohamburg/" target="_blank">@jcohamburg</a>
             </div>
           </div>`;
@@ -2706,17 +2771,18 @@
     /* ── MI4L aktiv + Panel beim Laden ── */
     renderContent(0);
 
-    /* ── HERO NAME FADE-IN ─────────────────────────────────── */
+    /* ── HERO NAME HIGHLIGHT ──────────────────────────────────── */
     function startHeroNameAnimation() {
-      const nameEl = document.getElementById('hero-name');
-      nameEl.style.opacity   = '1';
-      nameEl.style.transform = 'translateY(0)';
-      /* lila marker sweeps behind the name */
-      setTimeout(() => {
-        const hl = document.getElementById('name-highlight-wrap');
-        if (hl) hl.classList.add('animate');
-      }, 200);
+      /* Name is already visible (opacity:1 in CSS) — just trigger the marker */
+      const hl = document.getElementById('name-highlight-wrap');
+      if (hl) hl.classList.add('animate');
     }
+
+    /* Trigger highlight immediately on page load */
+    (function() {
+      const hl = document.getElementById('name-highlight-wrap');
+      if (hl) setTimeout(() => hl.classList.add('animate'), 200);
+    })();
 
     /* ── HAMBURGER NAV (slides from top) ──────────────────── */
     const hamburger = document.getElementById('nav-hamburger');
@@ -3233,11 +3299,6 @@
     }
   </style>
 
-  <!-- ══ SECRET FOLDER EASTER EGG ══ -->
-  <div id="secret-folder" title="psst...">
-    <img src="images/icons/folder-custom.png" alt="">
-  </div>
-
   <!-- ══ MEMORY GAME MODAL ══ -->
   <div class="memory-modal hidden" id="memory-modal">
     <div class="memory-window" style="position:relative;">
@@ -3264,7 +3325,7 @@
         { type: 'img', src: 'work/mi4l/media/mi4l-profile.jpg',                                          id: 'mi4l' },
         { type: 'img', src: 'work/studio-liebe-nrg/media/studio-liebe/studioliebe-profile.jpg',          id: 'sl' },
         { type: 'img', src: 'work/studio-liebe-nrg/media/nrg/nrg-profile.jpg',                          id: 'nrg' },
-        { type: 'img', src: 'work/jco/media/jco-profile.jpg',                                            id: 'jco' },
+        { type: 'img', src: 'work/jco/media/JCO-profile.jpg',                                            id: 'jco' },
         { type: 'emoji', emoji: '☕',                                                                      id: 'coffee' },
         { type: 'emoji', emoji: '🌸',                                                                      id: 'cherry' },
       ];
@@ -3272,7 +3333,6 @@
       const modal = document.getElementById('memory-modal');
       const grid  = document.getElementById('memory-grid');
       const winMsg = document.getElementById('memory-win-msg');
-      const folder = document.getElementById('secret-folder');
       let cards = [], flipped = [], matched = 0, locked = false;
 
       function shuffle(arr) {
@@ -3365,9 +3425,11 @@
       function openModal() { modal.classList.remove('hidden'); buildGrid(); }
       function closeModal() { modal.classList.add('hidden'); }
 
-      folder.addEventListener('click', openModal);
+      /* Memory modal is opened via folder icon clicks (see HTML) */
       document.getElementById('mem-close').addEventListener('click', closeModal);
       modal.addEventListener('click', e => { if (e.target === modal) closeModal(); });
+      /* Expose openModal globally so inline onclick handlers can call it */
+      window._openMemoryModal = openModal;
     })();
 
     /* ── DOCK TOUCH TOOLTIPS ── */
@@ -3381,6 +3443,21 @@
         item._tipTimer = setTimeout(() => { tip.style.cssText = ''; }, 1500);
       }, { passive: false });
     });
+
+    /* ── iOS Dock Label Toast (Mobile) ── */
+    if (window.innerWidth <= 768) {
+      document.querySelectorAll('.dock-item').forEach(item => {
+        item.addEventListener('click', function() {
+          const label = this.querySelector('.dock-tip')?.textContent || this.getAttribute('data-label');
+          if (!label) return;
+          const toast = document.createElement('div');
+          toast.textContent = label;
+          toast.style.cssText = 'position:fixed;bottom:100px;left:50%;transform:translateX(-50%);background:rgba(0,0,0,.75);color:white;padding:8px 16px;border-radius:20px;font-size:13px;z-index:9999;pointer-events:none;transition:opacity .3s';
+          document.body.appendChild(toast);
+          setTimeout(() => { toast.style.opacity='0'; setTimeout(() => toast.remove(), 300); }, 1500);
+        });
+      });
+    }
   </script>
 </body>
 </html>

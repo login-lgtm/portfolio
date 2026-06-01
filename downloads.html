@@ -109,7 +109,8 @@
     .nav-links > li > a.nav-active { color: var(--accent); }
     .nav-links > li > a.nav-active::after { width: 100%; }
 
-    .nav-work-wrapper { position:relative; height:64px; display:flex; align-items:center; }
+    .nav-work-wrapper { position:relative; height:64px; display:flex; align-items:center; padding:8px 4px; margin:-8px -4px; }
+    .nav-work-wrapper::after { content:''; position:absolute; top:100%; left:-20px; right:-20px; height:16px; background:transparent; }
     .nav-work-wrapper > a .nav-caret {
       display: inline-block; font-size: 10px; margin-left: 3px;
       transition: transform .2s;
@@ -124,12 +125,13 @@
       box-shadow: 0 8px 40px rgba(0,0,0,.12);
       opacity: 0; pointer-events: none;
       transform: translateY(-4px);
-      transition: opacity .2s ease .15s, transform .2s ease .15s;
+      transition: opacity .25s ease .1s, transform .25s ease .1s;
     }
     .nav-work-wrapper:hover .nav-dropdown {
       opacity: 1; pointer-events: auto; transform: translateY(0);
       transition: opacity .15s ease 0s, transform .15s ease 0s;
     }
+    .nav-work-wrapper:focus-within .nav-dropdown { opacity:1; pointer-events:auto; transform:translateY(0); transition:opacity .15s ease 0s,transform .15s ease 0s; }
     .nav-dropdown-item {
       display: flex; align-items: center; gap: 12px;
       padding: 10px 14px; border-radius: 10px;
@@ -414,6 +416,21 @@
     }
     @media (hover: none) { body { cursor: auto; } .cursor, .cursor-ring { display: none; } }
 
+    /* ── Red Dot Close Button ── */
+    .mac-dot.r { position: relative; cursor: pointer; }
+    .mac-dot.r:hover { background: #cc4b44 !important; }
+    .mac-dot.r:hover::after {
+      content: '×';
+      position: absolute;
+      inset: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 8px;
+      color: rgba(0,0,0,0.5);
+      line-height: 1;
+    }
+
     /* ── FOOTER ── */
     .site-foot { text-align:center; font-size:13px; color:var(--text-light); padding:24px 40px; border-top:1px solid var(--border); position:relative; z-index:1; }
     .impr-link { color:inherit; opacity:.6; text-decoration:none; transition:opacity .2s; }
@@ -431,7 +448,7 @@
     <button onclick="window.location='index.html'" title="Back to portfolio" style="position:absolute;top:20px;right:20px;width:32px;height:32px;border-radius:50%;background:rgba(255,255,255,.85);border:1px solid var(--border);cursor:pointer;font-size:14px;color:var(--text-mid);display:flex;align-items:center;justify-content:center;z-index:5001;transition:background .2s,box-shadow .2s;">✕</button>
     <div class="pw-mac-win" id="pw-win">
       <div class="pw-chrome">
-        <span class="mac-dot r"></span>
+        <span class="mac-dot r" onclick="window.location.href='index.html'" title="Close"></span>
         <span class="mac-dot y"></span>
         <span class="mac-dot g"></span>
         <span class="pw-chrome-title">Private Downloads</span>
@@ -677,6 +694,21 @@
         setTimeout(() => pwInput.focus(), 50);
       }
     });
+
+    /* ── Overlay click outside → back to home ── */
+    const pwOverlayEl = document.getElementById('pw-overlay');
+    if (pwOverlayEl) {
+      const pwWinEl = document.getElementById('pw-win');
+      if (pwWinEl) {
+        pwWinEl.addEventListener('click', e => e.stopPropagation());
+      }
+      pwOverlayEl.addEventListener('click', e => {
+        if (e.target === pwOverlayEl) window.location.href = 'index.html';
+      });
+      pwOverlayEl.addEventListener('touchend', e => {
+        if (e.target === pwOverlayEl) window.location.href = 'index.html';
+      });
+    }
   </script>
 
   <footer class="site-foot">
