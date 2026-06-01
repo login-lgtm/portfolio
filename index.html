@@ -552,7 +552,7 @@
     .fc-coffee-quote { font-style:italic; font-size:12px; color:#999; margin-top:4px; line-height:1.4; }
 
     /* ── FOLDER CARD ── */
-    .fc-folder { top:160px; right:290px; z-index:3; cursor:pointer; opacity:1; }
+    .fc-folder { top:300px; right:290px; z-index:3; cursor:pointer; opacity:1; }
     .fc-folder-inner { border-radius:16px; overflow:hidden; transition:transform 0.3s; }
     .fc-folder:hover .fc-folder-inner { transform:scale(1.05); }
 
@@ -1320,12 +1320,10 @@
     }
     .memory-chrome .mem-dot { width: 11px; height: 11px; border-radius: 50%; }
     .mem-dot.r{background:#FF5F57;} .mem-dot.y{background:#FFBD2E;} .mem-dot.g{background:#28C940;}
-    .memory-chrome .mem-title { flex:1; text-align:center; font-size:12px; font-weight:500; color:var(--text-mid); margin-right:33px; }
-    .mem-close { position: absolute; right: 16px; top: 12px; background: none; border: none; font-size: 16px; color: var(--text-mid); cursor: pointer; padding: 4px 8px; border-radius: 6px; }
-    .mem-close:hover { background: #E8E4E0; }
+    .memory-chrome .mem-title { flex:1; text-align:center; font-size:12px; font-weight:500; color:var(--text-mid); }
     .memory-body { padding: 20px 24px 24px; }
     .memory-body h3 { font-family: 'Instrument Serif', serif; font-size: 22px; margin-bottom: 4px; }
-    .memory-body p { font-size: 13px; color: var(--text-mid); margin-bottom: 20px; }
+    .memory-body p { font-family: 'DM Sans', sans-serif; font-size: 14px; color: #666; margin-bottom: 20px; }
     .memory-grid {
       display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px;
     }
@@ -1351,7 +1349,7 @@
     .mem-card-front .mem-emoji { font-size: 32px; }
     .mem-card.matched .mem-card-back { background: #28C940 !important; }
     .mem-card.matched .mem-card-front { background: #E8F8EA; }
-    .memory-win-msg { display:none; text-align:center; margin-top:16px; font-size:14px; font-weight:500; color:var(--accent); }
+    .memory-win-msg { display:none; text-align:center; margin-top:16px; font-size:14px; font-family:'DM Sans',sans-serif; color:#1A1A1A; line-height:1.5; }
     .memory-win-msg.show { display:block; animation: memWinIn .4s ease both; }
 
     /* ─────────────────────────────────────────────
@@ -2116,11 +2114,11 @@
             <span class="fc-dot r"></span>
             <span class="fc-dot y"></span>
             <span class="fc-dot g"></span>
-            <span class="fc-chrome-label">secret.folder</span>
+            <span class="fc-chrome-label">courius.folder</span>
           </div>
           <div style="padding:20px 24px;">
             <img src="images/icons/folder-custom.png" style="width:48px;height:48px;object-fit:contain;display:block;margin:0 auto;" alt="Secret Folder">
-            <p style="font-family:'DM Sans',sans-serif;font-size:10px;color:#999;text-align:center;margin-top:8px;margin-bottom:0;">double-click to open</p>
+            <p style="font-family:'DM Sans',sans-serif;font-size:10px;color:#999;text-align:center;margin-top:8px;margin-bottom:0;">click to play.</p>
           </div>
         </div>
       </div>
@@ -3238,17 +3236,16 @@
   <div class="memory-modal hidden" id="memory-modal">
     <div class="memory-window" style="position:relative;">
       <div class="memory-chrome">
-        <span class="mem-dot r"></span>
+        <span class="mem-dot r" id="mem-dot-close" style="cursor:pointer;" title="Close"></span>
         <span class="mem-dot y"></span>
         <span class="mem-dot g"></span>
         <span class="mem-title">memory.app — find the match</span>
       </div>
-      <button class="mem-close" id="mem-close" title="Close">✕</button>
       <div class="memory-body">
-        <h3>You found a secret 🥚</h3>
-        <p>Match the brands. Good luck.</p>
+        <h3>A little something for the curious.</h3>
+        <p>Find the matching pairs.</p>
         <div class="memory-grid" id="memory-grid"></div>
-        <div class="memory-win-msg" id="memory-win-msg">🎉 You really know your brands!</div>
+        <div class="memory-win-msg" id="memory-win-msg">You really know the brands.<br>Vivien would like you.</div>
       </div>
     </div>
   </div>
@@ -3361,7 +3358,7 @@
       function closeModal() { modal.classList.add('hidden'); }
 
       /* Memory modal is opened via folder icon clicks (see HTML) */
-      document.getElementById('mem-close').addEventListener('click', closeModal);
+      document.getElementById('mem-dot-close').addEventListener('click', closeModal);
       modal.addEventListener('click', e => { if (e.target === modal) closeModal(); });
       /* Expose openModal globally so inline onclick handlers can call it */
       window._openMemoryModal = openModal;
