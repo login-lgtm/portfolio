@@ -1804,6 +1804,21 @@
   0%, 100% { background-position: 100% 50%; }
   50%       { background-position: 0% 50%; }
 }
+/* ── Organic slow-drift for Studio Liebe / NRG */
+@keyframes wabernSL {
+  0%   { background-position:  10% 20%; }
+  28%  { background-position:  80% 70%; }
+  55%  { background-position:  30% 90%; }
+  78%  { background-position:  90% 30%; }
+  100% { background-position:  10% 20%; }
+}
+@keyframes wabernNRG {
+  0%   { background-position:  90% 70%; }
+  22%  { background-position:  20% 10%; }
+  50%  { background-position:  70% 80%; }
+  75%  { background-position:  10% 40%; }
+  100% { background-position:  90% 70%; }
+}
 
 /* ── MI4L — crimson → violet → deep purple */
 .mood-banner-mi4l {
@@ -1821,7 +1836,7 @@
   left: 0; top: 0; bottom: 0; right: 50%;
   background-image: linear-gradient(135deg, #E8527A, #F09060, #C43870, #F07090, #E8527A);
   background-size: 400% 400%;
-  animation: wabern 6s ease infinite;
+  animation: wabernSL 14s ease-in-out infinite;
   z-index: 0;
 }
 .mood-banner-studioliebe::after {
@@ -1830,7 +1845,7 @@
   left: 50%; top: 0; bottom: 0; right: 0;
   background-image: linear-gradient(135deg, #0A0A10, #FFE000, #0D0D0D, #FFF7B0, #0A0A10, #FFE000);
   background-size: 400% 400%;
-  animation: wabernAlt 7s ease infinite;
+  animation: wabernNRG 18s ease-in-out infinite;
   border-left: 1px solid rgba(255,255,255,.18);
   z-index: 0;
 }
