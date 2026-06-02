@@ -501,6 +501,235 @@
     }
     @media (hover: none) { body { cursor: auto; } .cursor, .cursor-ring { display: none; } }
 
+    /* ── WHAT'S IN MY BAG ── */
+    .bag-section {
+      padding: 80px;
+      background: #EEECEA;
+      position: relative;
+      overflow: visible;
+      z-index: 1;
+    }
+    .bag-sup {
+      font-size: 11px;
+      color: var(--accent);
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      font-weight: 600;
+    }
+    .bag-title {
+      font-family: 'Instrument Serif', serif;
+      font-size: 56px;
+      line-height: 1.05;
+      letter-spacing: -1.5px;
+      margin-top: 8px;
+    }
+    .bag-container {
+      position: relative;
+      width: 400px;
+      height: 400px;
+      margin: 60px auto 0;
+    }
+    #the-bag {
+      width: 220px;
+      height: auto;
+      position: absolute;
+      left: 50%; top: 50%;
+      transform: translate(-50%, -50%);
+      cursor: pointer;
+      transition: transform 0.3s ease;
+      z-index: 2;
+    }
+    #the-bag:hover { transform: translate(-50%, -50%) scale(1.05); }
+    .bag-item {
+      position: absolute;
+      background: white;
+      border-radius: 12px;
+      padding: 12px 14px;
+      box-shadow: 0 8px 24px rgba(0,0,0,.10);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 6px;
+      width: 100px;
+      cursor: pointer;
+      opacity: 0;
+      transform: translate(-50%, -50%) scale(0.5);
+      transition: all 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+      z-index: 3;
+    }
+    .bag-item.open { opacity: 1; transform: translate(-50%, -50%) scale(1); }
+    .bag-item-icon {
+      width: 48px; height: 48px;
+      object-fit: contain;
+      border-radius: 8px;
+      display: block;
+    }
+    .bag-item-svg {
+      display: flex; align-items: center; justify-content: center;
+      width: 48px; height: 48px;
+    }
+    .bag-item-label {
+      font-size: 11px;
+      font-weight: 500;
+      color: #666;
+      text-align: center;
+      line-height: 1.3;
+    }
+    .bag-item .tooltip {
+      position: absolute;
+      bottom: calc(100% + 8px);
+      left: 50%;
+      transform: translateX(-50%);
+      background: #1A1A1A;
+      color: white;
+      padding: 5px 10px;
+      border-radius: 6px;
+      font-size: 11px;
+      white-space: nowrap;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.2s;
+      z-index: 10;
+    }
+    .bag-item:hover .tooltip { opacity: 1; }
+    .bag-hint {
+      text-align: center;
+      font-size: 12px;
+      color: #999;
+      margin-top: 280px;
+    }
+
+    /* ── CURRENTLY WIDGET ── */
+    .currently-widget {
+      position: absolute;
+      top: 80px; right: 80px;
+      width: 260px;
+      background: white;
+      border-radius: 16px;
+      box-shadow: 0 8px 32px rgba(0,0,0,.10);
+      overflow: hidden;
+      animation: float2 5s ease-in-out infinite;
+      z-index: 4;
+    }
+    @keyframes float2 {
+      0%, 100% { transform: translateY(0); }
+      50%       { transform: translateY(-8px); }
+    }
+    .cw-chrome {
+      height: 32px;
+      background: #F5F3F1;
+      display: flex;
+      align-items: center;
+      padding: 0 12px;
+      gap: 0;
+    }
+    .cw-dots { display: flex; gap: 5px; align-items: center; }
+    .cw-dot { width: 8px; height: 8px; border-radius: 50%; }
+    .cw-dot:nth-child(1) { background: #FF5F57; }
+    .cw-dot:nth-child(2) { background: #FFBD2E; }
+    .cw-dot:nth-child(3) { background: #28CA41; }
+    .cw-url { font-size: 10px; color: #999; margin-left: 10px; }
+    .cw-content { padding: 20px; }
+    .cw-label {
+      font-size: 10px;
+      color: var(--accent);
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      font-weight: 600;
+      margin-bottom: 12px;
+    }
+    .cw-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 6px 0;
+      border-bottom: 1px solid #F0EDEA;
+      font-size: 12px;
+      gap: 12px;
+    }
+    .cw-row:last-child { border-bottom: none; }
+    .cw-key { color: #999; flex-shrink: 0; }
+    .cw-val { font-weight: 500; color: #1A1A1A; text-align: right; }
+    .cw-val.accent { color: var(--accent); }
+
+    /* ── VIVIEN IN NUMBERS ── */
+    .numbers-section {
+      background: white;
+      padding: 80px;
+      position: relative;
+      z-index: 1;
+    }
+    .numbers-sup {
+      font-size: 11px;
+      color: var(--accent);
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      font-weight: 600;
+      margin-bottom: 40px;
+    }
+    .numbers-grid {
+      display: flex;
+      gap: 0;
+      border-top: 1px solid #E8E4E0;
+      border-bottom: 1px solid #E8E4E0;
+    }
+    .number-box {
+      flex: 1;
+      padding: 40px 24px;
+      text-align: center;
+      border-right: 1px solid #E8E4E0;
+    }
+    .number-box:last-child { border-right: none; }
+    .counter-number {
+      font-family: 'Instrument Serif', serif;
+      font-size: 72px;
+      line-height: 1;
+      color: #1A1A1A;
+      letter-spacing: -2px;
+      display: block;
+    }
+    .number-label {
+      font-size: 13px;
+      font-weight: 500;
+      color: #666;
+      margin-top: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 4px;
+    }
+    .heart-icon { display: inline-flex; align-items: center; }
+
+    /* ── RESPONSIVE: new sections ── */
+    @media (max-width: 900px) {
+      .bag-section { padding: 60px 32px; min-height: 0; }
+      .currently-widget {
+        position: relative;
+        top: auto; right: auto;
+        width: 260px;
+        margin: 40px auto 0;
+        animation: none;
+        float: none;
+      }
+      .numbers-section { padding: 60px 32px; }
+    }
+    @media (max-width: 768px) {
+      .bag-container { width: 320px; height: 380px; }
+      .bag-item.open { transform: translate(-50%, -50%) scale(0.85); }
+      .numbers-grid { display: grid; grid-template-columns: repeat(2, 1fr); }
+      .number-box { border-right: 1px solid #E8E4E0; }
+      .number-box:nth-child(2) { border-right: none; }
+      .number-box:nth-child(3) { border-top: 1px solid #E8E4E0; }
+      .number-box:nth-child(4) { border-top: 1px solid #E8E4E0; border-right: none; }
+      .counter-number { font-size: 52px; }
+    }
+    @media (max-width: 480px) {
+      .bag-section { padding: 48px 20px; }
+      .bag-title { font-size: 40px; letter-spacing: -1px; }
+      .numbers-section { padding: 48px 20px; }
+      .number-box { padding: 32px 16px; }
+    }
+
     /* ── FOOTER ── */
     .site-foot { text-align:center; font-size:13px; color:var(--text-light); padding:24px 40px; border-top:1px solid var(--border); position:relative; z-index:1; }
     .impr-link { color:inherit; opacity:.6; text-decoration:none; transition:opacity .2s; }
@@ -646,6 +875,166 @@
 
   </section>
 
+  <!-- ══ WHAT'S IN MY BAG + CURRENTLY ══ -->
+  <section class="bag-section">
+
+    <!-- Currently widget — floats top-right on desktop -->
+    <div class="currently-widget">
+      <div class="cw-chrome">
+        <div class="cw-dots">
+          <div class="cw-dot"></div>
+          <div class="cw-dot"></div>
+          <div class="cw-dot"></div>
+        </div>
+        <span class="cw-url">currently.app</span>
+      </div>
+      <div class="cw-content">
+        <div class="cw-label">CURRENTLY</div>
+        <div class="cw-row">
+          <span class="cw-key">Listening</span>
+          <span class="cw-val">Mordlust</span>
+        </div>
+        <div class="cw-row">
+          <span class="cw-key">Drinking</span>
+          <span class="cw-val">Iced Oat Coffee</span>
+        </div>
+        <div class="cw-row">
+          <span class="cw-key">Working on</span>
+          <span class="cw-val accent">Your brand</span>
+        </div>
+        <div class="cw-row">
+          <span class="cw-key">Based in</span>
+          <span class="cw-val">Hamburg, DE</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="bag-sup reveal">WHAT'S IN MY BAG</div>
+    <h2 class="bag-title reveal">Everything I need.</h2>
+
+    <div class="bag-container" id="bag-container">
+
+      <img src="images/about/bag.png" id="the-bag" alt="My bag">
+
+      <!-- Card 1: Mordlust -->
+      <div class="bag-item" style="left:-20px;top:20px;transition-delay:0s;">
+        <img src="images/about/mordlust.jpg" class="bag-item-icon" alt="Mordlust" style="border-radius:8px;">
+        <span class="bag-item-label">Mordlust</span>
+        <span class="tooltip">true crime. always.</span>
+      </div>
+
+      <!-- Card 2: Iced Coffee -->
+      <div class="bag-item" style="left:30px;top:-30px;transition-delay:0.08s;">
+        <img src="images/about/coffeechat.png" class="bag-item-icon" alt="Iced Coffee" style="border-radius:8px;object-position:center top;">
+        <span class="bag-item-label">Iced Coffee</span>
+        <span class="tooltip">oat milk, always</span>
+      </div>
+
+      <!-- Card 3: MacBook Air -->
+      <div class="bag-item" style="right:-20px;top:10px;transition-delay:0.16s;">
+        <div class="bag-item-svg">
+          <svg viewBox="0 0 80 52" width="64" height="42">
+            <rect x="4" y="2" width="72" height="44" rx="4" fill="#1B3A6B"/>
+            <rect x="8" y="6" width="64" height="36" rx="2" fill="#2A4F8A" opacity="0.6"/>
+            <rect x="0" y="46" width="80" height="4" rx="2" fill="#1B3A6B"/>
+            <rect x="28" y="44" width="24" height="4" rx="1" fill="#152E57"/>
+          </svg>
+        </div>
+        <span class="bag-item-label">MacBook Air</span>
+        <span class="tooltip">dark blue. obviously.</span>
+      </div>
+
+      <!-- Card 4: iPhone 15 Pro -->
+      <div class="bag-item" style="right:-10px;top:120px;transition-delay:0.24s;">
+        <div class="bag-item-svg">
+          <svg viewBox="0 0 36 72" width="28" height="56">
+            <rect x="0" y="0" width="36" height="72" rx="8" fill="#8E8E93"/>
+            <rect x="2" y="2" width="32" height="68" rx="7" fill="#1C1C1E"/>
+            <rect x="8" y="4" width="20" height="3" rx="1.5" fill="#3A3A3C"/>
+          </svg>
+        </div>
+        <span class="bag-item-label">iPhone 15 Pro</span>
+        <span class="tooltip">probably taking a photo right now</span>
+      </div>
+
+      <!-- Card 5: AirPods -->
+      <div class="bag-item" style="left:-10px;top:140px;transition-delay:0.32s;">
+        <div class="bag-item-svg">
+          <svg viewBox="0 0 60 48" width="54" height="44">
+            <rect x="15" y="8" width="30" height="36" rx="15" fill="#E8E8E8" stroke="#D0D0D0" stroke-width="1"/>
+            <ellipse cx="22" cy="12" rx="4" ry="6" fill="white" stroke="#D0D0D0" stroke-width="0.5"/>
+            <ellipse cx="38" cy="12" rx="4" ry="6" fill="white" stroke="#D0D0D0" stroke-width="0.5"/>
+            <circle cx="30" cy="38" r="2" fill="#4CAF50" opacity="0.8"/>
+          </svg>
+        </div>
+        <span class="bag-item-label">AirPods</span>
+        <span class="tooltip">never without</span>
+      </div>
+
+      <!-- Card 6: Lipgloss -->
+      <div class="bag-item" style="right:20px;top:240px;transition-delay:0.40s;">
+        <div class="bag-item-svg">
+          <svg viewBox="0 0 20 64" width="18" height="58">
+            <rect x="4" y="16" width="12" height="44" rx="4" fill="#E8A0B4"/>
+            <rect x="2" y="4" width="16" height="16" rx="4" fill="#D4607A"/>
+            <rect x="7" y="20" width="3" height="20" rx="1.5" fill="white" opacity="0.3"/>
+            <ellipse cx="10" cy="8" rx="3" ry="4" fill="#C04060"/>
+          </svg>
+        </div>
+        <span class="bag-item-label">Lipgloss</span>
+        <span class="tooltip">essential</span>
+      </div>
+
+      <!-- Card 7: Handcreme -->
+      <div class="bag-item" style="left:30px;top:260px;transition-delay:0.48s;">
+        <div class="bag-item-svg">
+          <svg viewBox="0 0 28 64" width="26" height="58">
+            <rect x="2" y="12" width="24" height="48" rx="4" fill="#F5F0E8"/>
+            <rect x="6" y="2" width="16" height="14" rx="4" fill="#E8DCC8"/>
+            <rect x="4" y="24" width="20" height="20" rx="2" fill="#EDE5D5"/>
+            <rect x="7" y="28" width="14" height="2" rx="1" fill="#C8B89A" opacity="0.6"/>
+            <rect x="9" y="32" width="10" height="1.5" rx="0.75" fill="#C8B89A" opacity="0.4"/>
+          </svg>
+        </div>
+        <span class="bag-item-label">Handcreme</span>
+        <span class="tooltip">detail-oriented, remember?</span>
+      </div>
+
+    </div><!-- /bag-container -->
+
+    <p class="bag-hint" id="bag-hint">click to open</p>
+
+  </section>
+
+  <!-- ══ VIVIEN IN NUMBERS ══ -->
+  <section class="numbers-section">
+    <div class="numbers-sup reveal">IN NUMBERS</div>
+    <div class="numbers-grid">
+      <div class="number-box">
+        <span class="counter-number" data-target="26">0</span>
+        <div class="number-label">years old</div>
+      </div>
+      <div class="number-box">
+        <span class="counter-number" data-target="3">0</span>
+        <div class="number-label">years of experience</div>
+      </div>
+      <div class="number-box">
+        <span class="counter-number" data-target="10+">0</span>
+        <div class="number-label">events produced</div>
+      </div>
+      <div class="number-box">
+        <span class="counter-number" data-no-count="true">1</span>
+        <div class="number-label">Herzensmensch
+          <span class="heart-icon">
+            <svg width="14" height="14" viewBox="0 0 24 24">
+              <path d="M12 21.593c-5.63-5.539-11-10.297-11-14.402 0-3.791 3.068-5.191 5.281-5.191 1.312 0 4.151.501 5.719 4.457 1.59-3.968 4.464-4.447 5.726-4.447 2.54 0 5.274 1.621 5.274 5.181 0 4.069-5.136 8.625-11 14.402z" fill="none" stroke="#6B5CE7" stroke-width="1.5"/>
+            </svg>
+          </span>
+        </div>
+      </div>
+    </div>
+  </section>
+
   <!-- ══ VALUES SECTION ══ -->
   <section class="values">
     <div class="values-title reveal">How I work.</div>
@@ -786,6 +1175,57 @@
         if (entries[0].isIntersecting) { obsIM.disconnect(); runSequence(); }
       }, { threshold: 0.3 });
       obsIM.observe(container);
+    })();
+
+    /* ── BAG TOGGLE ── */
+    (function() {
+      let bagOpen = false;
+      const bagEl   = document.getElementById('the-bag');
+      const bagHint = document.getElementById('bag-hint');
+      const items   = document.querySelectorAll('.bag-item');
+      if (!bagEl) return;
+
+      bagEl.addEventListener('click', () => {
+        bagOpen = !bagOpen;
+        items.forEach((item, i) => {
+          setTimeout(() => {
+            item.classList.toggle('open', bagOpen);
+          }, bagOpen ? i * 80 : (items.length - 1 - i) * 60);
+        });
+        if (bagHint) bagHint.textContent = bagOpen ? 'click to close' : 'click to open';
+      });
+    })();
+
+    /* ── COUNTER ANIMATION ── */
+    (function() {
+      const numSec = document.querySelector('.numbers-section');
+      if (!numSec) return;
+
+      function animateCounter(el, target) {
+        const isPlus = target.toString().includes('+');
+        const num = parseInt(target);
+        if (isNaN(num)) return;
+        let current = 0;
+        const duration = 1500;
+        const step = num / (duration / 16);
+        const timer = setInterval(() => {
+          current += step;
+          if (current >= num) { current = num; clearInterval(timer); }
+          el.textContent = Math.floor(current) + (isPlus ? '+' : '');
+        }, 16);
+      }
+
+      const obs = new IntersectionObserver(entries => {
+        if (entries[0].isIntersecting) {
+          document.querySelectorAll('.counter-number').forEach(el => {
+            if (el.dataset.noCount) return;
+            animateCounter(el, el.dataset.target);
+          });
+          obs.disconnect();
+        }
+      }, { threshold: 0.5 });
+
+      obs.observe(numSec);
     })();
 
     /* ── IMESSAGE BOTTOM SHEET ── */
