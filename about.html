@@ -345,6 +345,79 @@
     }
     .ik-key:hover { transform: scale(1.25) translateY(-2px); background: #F0EDFF; }
     .ai-timestamp { text-align: right; font-size: 10px; color: #999; margin-bottom: 8px; }
+
+    /* ── EMOJI REACTION TAG ── */
+    .ai-reaction-tag {
+      display: inline-flex; align-items: center; gap: 4px;
+      background: #F0F0F0; border: 1.5px solid white;
+      border-radius: 100px; padding: 2px 8px 2px 4px;
+      font-size: 13px; margin-top: 6px;
+      box-shadow: 0 1px 4px rgba(0,0,0,.12);
+      animation: reactPop .35s cubic-bezier(.34,1.56,.64,1);
+    }
+    .ai-reaction-count { font-size: 11px; color: #666; font-weight: 600; }
+    @keyframes reactPop { 0%{transform:scale(0);opacity:0} 100%{transform:scale(1);opacity:1} }
+
+    /* ── MOBILE BOTTOM SHEET ── */
+    .ai-sheet-backdrop {
+      display: none; position: fixed; inset: 0;
+      background: rgba(0,0,0,.4); z-index: 800;
+      opacity: 0; transition: opacity .25s ease;
+      -webkit-tap-highlight-color: transparent;
+    }
+    .ai-sheet-backdrop.open { opacity: 1; }
+    .ai-sheet {
+      display: none; position: fixed;
+      left: 0; right: 0; bottom: 0;
+      background: #F2F2F7;
+      border-radius: 20px 20px 0 0;
+      padding: 0 0 calc(env(safe-area-inset-bottom, 0px) + 16px);
+      z-index: 801;
+      transform: translateY(100%);
+      transition: transform .32s cubic-bezier(.4,0,.2,1);
+    }
+    .ai-sheet.open { transform: translateY(0); }
+    @media (hover: none) {
+      .ai-sheet-backdrop, .ai-sheet { display: block; }
+      .imessage-keyboard { display: none !important; }
+      .about-imessage { cursor: pointer; }
+    }
+    .ai-sheet-handle {
+      width: 36px; height: 4px; background: #C7C7CC;
+      border-radius: 2px; margin: 12px auto 0;
+    }
+    .ai-sheet-header {
+      text-align: center; padding: 14px 20px 0;
+      font-size: 13px; color: #8E8E93; font-family: 'DM Sans', sans-serif;
+      letter-spacing: .02em;
+    }
+    .ai-sheet-emojis {
+      display: flex; justify-content: center; gap: 10px;
+      padding: 20px 24px;
+    }
+    .ai-sheet-emoji {
+      font-size: 28px; width: 52px; height: 52px;
+      border-radius: 50%; border: none;
+      background: white; cursor: pointer;
+      display: flex; align-items: center; justify-content: center;
+      box-shadow: 0 2px 8px rgba(0,0,0,.1);
+      transition: transform .15s ease;
+      -webkit-tap-highlight-color: transparent;
+    }
+    .ai-sheet-emoji:active { transform: scale(.88); }
+    .ai-sheet-emoji.reacted { background: #E8E4FF; box-shadow: 0 2px 8px rgba(107,92,231,.2); }
+    .ai-sheet-divider {
+      height: 1px; background: rgba(0,0,0,.08); margin: 0 20px 16px;
+    }
+    .ai-sheet-reply {
+      display: block; margin: 0 16px;
+      background: #0B93F6; color: white;
+      border-radius: 14px; padding: 15px 20px;
+      font-size: 16px; font-weight: 600;
+      font-family: 'DM Sans', sans-serif;
+      text-decoration: none; text-align: center;
+      -webkit-tap-highlight-color: transparent;
+    }
     .ai-typing {
       display: inline-flex; gap: 4px; align-items: center;
       background: #E8E8E8; border-radius: 14px 14px 14px 2px; padding: 8px 14px;
@@ -531,7 +604,7 @@
       </div>
 
       <!-- iMessage: centered between photos -->
-      <div class="about-imessage" id="about-imessage" onclick="window.location='mailto:hallo@vivienevers.de'">
+      <div class="about-imessage" id="about-imessage">
         <div class="ai-timestamp">just now</div>
         <div class="ai-typing" id="ai-typing">
           <div class="ai-tdot"></div>
@@ -715,6 +788,101 @@
       obsIM.observe(container);
     })();
 
+    /* ── IMESSAGE BOTTOM SHEET ── */
+    (function() {
+      const imessage  = document.getElementById('about-imessage');
+      const backdrop  = document.getElementById('ai-sheet-backdrop');
+      const sheet     = document.getElementById('ai-sheet');
+      const emojiBtns = document.querySelectorAll('.ai-sheet-emoji');
+      if (!imessage || !backdrop || !sheet) return;
+
+      /* Touch-only device check */
+      const isTouch = () => window.matchMedia('(hover: none)').matches;
+
+      function openSheet() {
+        backdrop.style.display = 'block';
+        sheet.style.display    = 'block';
+        requestAnimationFrame(() => {
+          requestAnimationFrame(() => {
+            backdrop.classList.add('open');
+            sheet.classList.add('open');
+          });
+        });
+      }
+
+      function closeSheet() {
+        backdrop.classList.remove('open');
+        sheet.classList.remove('open');
+        setTimeout(() => {
+          backdrop.style.display = 'none';
+          sheet.style.display    = 'none';
+        }, 320);
+      }
+
+      /* iMessage tap handler */
+      imessage.addEventListener('click', function(e) {
+        if (isTouch()) {
+          openSheet();
+        } else {
+          window.location = 'mailto:hallo@vivienevers.de';
+        }
+      });
+
+      /* Backdrop tap → close */
+      backdrop.addEventListener('click', closeSheet);
+
+      /* Emoji reaction */
+      emojiBtns.forEach(btn => {
+        btn.addEventListener('click', function(e) {
+          e.stopPropagation();
+          const emoji = btn.dataset.emoji;
+
+          /* Floating emoji burst */
+          const floater = document.createElement('div');
+          floater.textContent = emoji;
+          floater.style.cssText = `position:fixed;left:${btn.getBoundingClientRect().left + 26}px;top:${btn.getBoundingClientRect().top + 26}px;pointer-events:none;z-index:9999;font-size:28px;transition:all .6s cubic-bezier(.2,0,.4,1);transform:translate(-50%,-50%) scale(1);opacity:1;`;
+          document.body.appendChild(floater);
+          requestAnimationFrame(() => requestAnimationFrame(() => {
+            floater.style.transform = 'translate(-50%,-150%) scale(1.5)';
+            floater.style.opacity   = '0';
+          }));
+          setTimeout(() => floater.remove(), 650);
+
+          /* Reaction tag on the iMessage */
+          const existing = imessage.querySelector('.ai-reaction-tag');
+          if (existing) existing.remove();
+          const tag = document.createElement('div');
+          tag.className = 'ai-reaction-tag';
+          tag.innerHTML = `${emoji} <span class="ai-reaction-count">1</span>`;
+          imessage.appendChild(tag);
+
+          /* Highlight reacted button */
+          emojiBtns.forEach(b => b.classList.remove('reacted'));
+          btn.classList.add('reacted');
+
+          /* Close after short delay */
+          setTimeout(closeSheet, 400);
+        });
+      });
+    })();
+
   </script>
+
+  <!-- iMessage bottom sheet (mobile only) -->
+  <div class="ai-sheet-backdrop" id="ai-sheet-backdrop"></div>
+  <div class="ai-sheet" id="ai-sheet">
+    <div class="ai-sheet-handle"></div>
+    <div class="ai-sheet-header">React or write back</div>
+    <div class="ai-sheet-emojis">
+      <button class="ai-sheet-emoji" data-emoji="☕">☕</button>
+      <button class="ai-sheet-emoji" data-emoji="✨">✨</button>
+      <button class="ai-sheet-emoji" data-emoji="💜">💜</button>
+      <button class="ai-sheet-emoji" data-emoji="🤍">🤍</button>
+      <button class="ai-sheet-emoji" data-emoji="🌸">🌸</button>
+      <button class="ai-sheet-emoji" data-emoji="🎨">🎨</button>
+    </div>
+    <div class="ai-sheet-divider"></div>
+    <a href="mailto:hallo@vivienevers.de" class="ai-sheet-reply" id="ai-sheet-reply">Write back ✉️</a>
+  </div>
 </body>
 </html>
