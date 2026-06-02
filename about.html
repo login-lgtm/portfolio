@@ -596,7 +596,7 @@
       text-align: center;
       font-size: 12px;
       color: #999;
-      margin-top: 280px;
+      margin-top: 16px;
     }
 
     /* ── CURRENTLY WIDGET ── */
@@ -703,10 +703,11 @@
     /* ── RESPONSIVE: new sections ── */
     @media (max-width: 900px) {
       .bag-section { padding: 60px 32px; min-height: 0; }
+      /* currently widget moves below bag in normal flow */
       .currently-widget {
         position: relative;
         top: auto; right: auto;
-        width: 260px;
+        width: 280px;
         margin: 40px auto 0;
         animation: none;
         float: none;
@@ -714,8 +715,6 @@
       .numbers-section { padding: 60px 32px; }
     }
     @media (max-width: 768px) {
-      .bag-container { width: 320px; height: 380px; }
-      .bag-item.open { transform: translate(-50%, -50%) scale(0.85); }
       .numbers-grid { display: grid; grid-template-columns: repeat(2, 1fr); }
       .number-box { border-right: 1px solid #E8E4E0; }
       .number-box:nth-child(2) { border-right: none; }
@@ -724,8 +723,21 @@
       .counter-number { font-size: 52px; }
     }
     @media (max-width: 480px) {
-      .bag-section { padding: 48px 20px; }
-      .bag-title { font-size: 40px; letter-spacing: -1px; }
+      .bag-section { padding: 48px 0 56px; overflow-x: hidden; } /* clip card edge overflow */
+      .bag-sup { padding: 0 24px; }
+      .bag-title { font-size: 40px; letter-spacing: -1px; padding: 0 24px; }
+      .bag-hint  { padding: 0 24px; }
+      /* Scale the whole 400×400 container down so cards fit.
+         overflow-x: hidden on section clips the ~8px left/right edge overflow cleanly. */
+      .bag-container {
+        width: 400px;
+        height: 400px;
+        transform: scale(0.77);
+        transform-origin: center top;
+        margin: 40px auto -92px; /* centered; bottom compensates layout height */
+      }
+      .bag-item.open { transform: translate(-50%, -50%) scale(1); } /* don't double-scale */
+      .currently-widget { width: calc(100% - 48px); }
       .numbers-section { padding: 48px 20px; }
       .number-box { padding: 32px 16px; }
     }
@@ -878,37 +890,6 @@
   <!-- ══ WHAT'S IN MY BAG + CURRENTLY ══ -->
   <section class="bag-section">
 
-    <!-- Currently widget — floats top-right on desktop -->
-    <div class="currently-widget">
-      <div class="cw-chrome">
-        <div class="cw-dots">
-          <div class="cw-dot"></div>
-          <div class="cw-dot"></div>
-          <div class="cw-dot"></div>
-        </div>
-        <span class="cw-url">currently.app</span>
-      </div>
-      <div class="cw-content">
-        <div class="cw-label">CURRENTLY</div>
-        <div class="cw-row">
-          <span class="cw-key">Listening</span>
-          <span class="cw-val">Mordlust</span>
-        </div>
-        <div class="cw-row">
-          <span class="cw-key">Drinking</span>
-          <span class="cw-val">Iced Oat Coffee</span>
-        </div>
-        <div class="cw-row">
-          <span class="cw-key">Working on</span>
-          <span class="cw-val accent">Your brand</span>
-        </div>
-        <div class="cw-row">
-          <span class="cw-key">Based in</span>
-          <span class="cw-val">Hamburg, DE</span>
-        </div>
-      </div>
-    </div>
-
     <div class="bag-sup reveal">WHAT'S IN MY BAG</div>
     <h2 class="bag-title reveal">Everything I need.</h2>
 
@@ -1003,6 +984,37 @@
     </div><!-- /bag-container -->
 
     <p class="bag-hint" id="bag-hint">click to open</p>
+
+    <!-- Currently widget — absolute top-right on desktop, flows below bag on mobile -->
+    <div class="currently-widget">
+      <div class="cw-chrome">
+        <div class="cw-dots">
+          <div class="cw-dot"></div>
+          <div class="cw-dot"></div>
+          <div class="cw-dot"></div>
+        </div>
+        <span class="cw-url">currently.app</span>
+      </div>
+      <div class="cw-content">
+        <div class="cw-label">CURRENTLY</div>
+        <div class="cw-row">
+          <span class="cw-key">Listening</span>
+          <span class="cw-val">Mordlust</span>
+        </div>
+        <div class="cw-row">
+          <span class="cw-key">Drinking</span>
+          <span class="cw-val">Iced Oat Coffee</span>
+        </div>
+        <div class="cw-row">
+          <span class="cw-key">Working on</span>
+          <span class="cw-val accent">Your brand</span>
+        </div>
+        <div class="cw-row">
+          <span class="cw-key">Based in</span>
+          <span class="cw-val">Hamburg, DE</span>
+        </div>
+      </div>
+    </div>
 
   </section>
 
