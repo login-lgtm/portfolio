@@ -270,6 +270,41 @@
     }
     .value-text em { font-style: italic; color: var(--accent-light); }
 
+    /* ── HOW I THINK ── */
+    .how-i-think {
+      padding: 100px 80px;
+      background: var(--dark);
+      position: relative; z-index: 1;
+    }
+    .hit-inner { max-width: 640px; }
+    .hit-label {
+      font-size: 11px; font-weight: 600; letter-spacing: .12em;
+      text-transform: uppercase; color: var(--accent); margin-bottom: 20px;
+    }
+    .hit-headline {
+      font-family: 'Instrument Serif', serif;
+      font-size: clamp(36px, 4.5vw, 60px);
+      color: white; letter-spacing: -1px; line-height: 1.1;
+      margin-bottom: 32px;
+    }
+    .hit-text {
+      font-size: 17px; color: rgba(255,255,255,.6);
+      line-height: 1.75; margin-bottom: 32px;
+    }
+    .hit-text p + p { margin-top: 12px; }
+    .hit-positioning {
+      font-family: 'Instrument Serif', serif;
+      font-style: italic;
+      font-size: clamp(16px, 1.8vw, 20px);
+      color: rgba(255,255,255,.45);
+      line-height: 1.6;
+      border-left: 2px solid var(--accent);
+      padding-left: 20px;
+    }
+    @media (max-width: 768px) {
+      .how-i-think { padding: 60px 24px; }
+    }
+
     /* ── CONTACT CTA ── */
     #contact-cta {
       padding: 120px 80px;
@@ -882,7 +917,7 @@
 
     <div class="stmt reveal">
       <div class="stmt-headline">I'm looking for a place</div>
-      <div class="stmt-sub serif">where brand and craft come together.</div>
+      <div class="stmt-sub serif">where product, brand and craft come together.</div>
     </div>
 
   </section>
@@ -1070,13 +1105,29 @@
     </div>
   </section>
 
+  <!-- ══ HOW I THINK ══ -->
+  <section class="how-i-think">
+    <div class="hit-inner">
+      <div class="hit-label reveal">How I think.</div>
+      <div class="hit-headline reveal">I learn by building.</div>
+      <div class="hit-text reveal">
+        <p>Most of the things I've learned didn't come from a course or a textbook.</p>
+        <p>They came from real projects, real mistakes and a lot of curiosity.</p>
+        <p>Whether it's a cultural event, a website or a workflow tool — I'm most interested in understanding how things work, and how they can work better.</p>
+      </div>
+      <div class="hit-positioning reveal">
+        I come from design and brand communication. But the more I build websites and digital tools, the more interested I become in product design, user experience and the way people interact with technology.
+      </div>
+    </div>
+  </section>
+
   <!-- ══ CONTACT CTA ══ -->
   <section id="contact-cta">
     <div class="cta-inner">
       <div class="imessage-wrap">
         <div class="imessage-time">Today 11:42</div>
-        <div class="imessage-bubble">Let's have a coffee chat ☕</div>
-        <div class="imessage-bubble second">I'd love to hear about your project.</div>
+        <div class="imessage-bubble">Looking for opportunities in product, brand and digital experiences.</div>
+        <div class="imessage-bubble second">Let's talk. ☕</div>
       </div>
       <h2 class="cta-title">Let's connect.</h2>
       <a href="mailto:hallo@vivienevers.de" class="cta-btn">hallo@vivienevers.de</a>

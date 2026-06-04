@@ -405,6 +405,13 @@
       margin-bottom: 40px;
       opacity: 0; animation: fadeUp .7s ease .45s forwards;
     }
+    .hero-direction {
+      font-size: clamp(14px, 1.5vw, 17px);
+      color: var(--text-light); font-weight: 400;
+      line-height: 1.6; margin-bottom: 32px; margin-top: -24px;
+      max-width: 480px;
+      opacity: 0; animation: fadeUp .7s ease .55s forwards;
+    }
     .hero-ctas {
       display: flex; gap: 14px; flex-wrap: wrap;
       opacity: 0; animation: fadeUp .7s ease .6s forwards;
@@ -583,6 +590,7 @@
       line-height:1.1; letter-spacing:-1px; margin-bottom:16px;
     }
     .section-sub { font-size:18px; color:var(--text-mid); font-weight:300; max-width:560px; }
+    .section-sub2 { font-size:15px; color:var(--text-light); font-weight:300; max-width:560px; margin-top:8px; }
 
     /* ─────────────────────────────────────────────
        WORK SECTION
@@ -1725,6 +1733,7 @@
 .panel-anim-studioliebe  { animation: warm-slide   0.35s ease-out forwards; }
 .panel-anim-jco          { animation: elegant-up   0.6s cubic-bezier(.25,.46,.45,.94) forwards; }
 .panel-anim-apprenticeship{ animation: warm-slide  0.3s ease-out forwards; }
+.panel-anim-dashboard    { animation: elegant-up   0.5s cubic-bezier(.25,.46,.45,.94) forwards; }
 
 /* ══════════════════════════════════════════════════
    FINDER — APPRENTICESHIP BANNER (updated)
@@ -1884,6 +1893,22 @@
   animation: wabern 10s ease-in-out infinite;
 }
 
+/* ── Dashboard — dark grid */
+.mood-banner-dashboard {
+  background: linear-gradient(135deg, #1E1A2E 0%, #2D1B69 50%, #1A1A2E 100%);
+  background-size: 300% 300%;
+  animation: wabern 8s ease infinite;
+}
+.mood-banner-dashboard::after {
+  content: '';
+  position: absolute; inset: 0;
+  background-image:
+    linear-gradient(rgba(107,92,231,.12) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(107,92,231,.12) 1px, transparent 1px);
+  background-size: 24px 24px;
+  z-index: 0;
+}
+
 /* ── Apprenticeship — neutral, animated tool pills */
 .apprenticeship-banner {
   width: 100%;
@@ -1985,6 +2010,15 @@
               <span class="nav-dropdown-item-sub">Web Design · Corporate Design · Print</span>
             </span>
           </a>
+          <a class="nav-dropdown-item" href="work/dashboard/index.html">
+            <span class="nav-dropdown-item-icon">
+              <svg viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg"><rect x="2" y="2" width="7" height="7" rx="1.5" fill="#6B5CE7" opacity=".7"/><rect x="11" y="2" width="7" height="7" rx="1.5" fill="#6B5CE7" opacity=".4"/><rect x="2" y="11" width="7" height="7" rx="1.5" fill="#6B5CE7" opacity=".4"/><rect x="11" y="11" width="7" height="7" rx="1.5" fill="#6B5CE7" opacity=".7"/></svg>
+            </span>
+            <span class="nav-dropdown-item-text">
+              <span class="nav-dropdown-item-name">Workflow Dashboard</span>
+              <span class="nav-dropdown-item-sub">Product Thinking · Self-Initiated</span>
+            </span>
+          </a>
           <div class="nav-dropdown-divider"></div>
           <a class="nav-dropdown-viewall" href="#work">→ View all work</a>
         </div>
@@ -2015,6 +2049,7 @@
           <a href="work/studio-liebe-nrg/index.html"><img src="images/icons/folder-custom.png" style="width:18px;height:18px;object-fit:contain;margin-right:6px;vertical-align:middle;"> Studio Liebe &amp; NRG</a>
           <a href="work/jco/index.html"><img src="images/icons/folder-custom.png" style="width:18px;height:18px;object-fit:contain;margin-right:6px;vertical-align:middle;"> JCO Hamburg</a>
           <a href="work/apprenticeship/index.html"><img src="images/icons/folder-custom.png" style="width:18px;height:18px;object-fit:contain;margin-right:6px;vertical-align:middle;"> During my Apprenticeship</a>
+          <a href="work/dashboard/index.html"><img src="images/icons/folder-custom.png" style="width:18px;height:18px;object-fit:contain;margin-right:6px;vertical-align:middle;"> Workflow Dashboard</a>
         </div>
       </div>
       <div class="nav-overlay-item">
@@ -2060,6 +2095,7 @@
         <span class="name-highlight-wrap" id="name-highlight-wrap">Vivien <em>Evers</em></span>
       </h1>
       <p class="hero-sub">Building brands, experiences and digital communication.</p>
+      <p class="hero-direction">Started in print design. Built through real projects.<br>Increasingly interested in digital products, user experiences and brand communication.</p>
       <div class="hero-ctas">
         <a href="#work" class="btn-primary">View my work ▶</a>
         <a href="#contact" class="btn-secondary">Let's chat ☕</a>
@@ -2213,7 +2249,8 @@
     <div class="work-header reveal">
       <div class="section-label">Selected Work</div>
       <h2 class="section-title">Projects</h2>
-      <p class="section-sub">Selected projects across branding, digital communication and cultural experiences.</p>
+      <p class="section-sub">Selected projects across brand communication, cultural experiences, websites and personal tools.</p>
+      <p class="section-sub2">A mix of real client work, self-initiated projects and experiments that shaped the way I think about design, communication and digital products.</p>
     </div>
 
     <div class="finder-window reveal">
@@ -2276,6 +2313,15 @@
             </li>
           </ul>
 
+          <!-- PERSONAL -->
+          <div class="fw-sidebar-category">PERSONAL</div>
+          <ul class="fw-sidebar-list">
+            <li class="fw-sidebar-item" data-idx="4" data-url="work/dashboard/index.html">
+              <svg width="20" height="20" viewBox="0 0 20 20" fill="none" style="flex-shrink:0;" xmlns="http://www.w3.org/2000/svg"><rect x="2" y="2" width="7" height="7" rx="1.5" fill="#6B5CE7" opacity=".7"/><rect x="11" y="2" width="7" height="7" rx="1.5" fill="#6B5CE7" opacity=".4"/><rect x="2" y="11" width="7" height="7" rx="1.5" fill="#6B5CE7" opacity=".4"/><rect x="11" y="11" width="7" height="7" rx="1.5" fill="#6B5CE7" opacity=".7"/></svg>
+              <span class="fw-sidebar-name">Workflow Dashboard</span>
+            </li>
+          </ul>
+
         </aside>
 
         <!-- ── CONTENT: zeigt aktives Projekt ── -->
@@ -2285,7 +2331,7 @@
 
       </div><!-- /fw-body -->
 
-      <div class="fw-statusbar">4 items · ~/vivien/portfolio <span style="margin-left:16px;opacity:.6;">⌘ Double-click a folder to open the project</span></div>
+      <div class="fw-statusbar">5 items · ~/vivien/portfolio <span style="margin-left:16px;opacity:.6;">⌘ Double-click a folder to open the project</span></div>
 
     </div><!-- /finder-window -->
   </section>
@@ -2539,7 +2585,7 @@
     <div class="contact-inner">
       <div class="imessage-wrapper">
         <div class="imessage-time">Today 09:48 AM</div>
-        <div class="imessage-bubble">Looking for opportunities in brand, digital experiences or communication.</div>
+        <div class="imessage-bubble">Looking for opportunities in product, brand and digital experiences.</div>
         <div class="imessage-bubble second">Let's talk.</div>
       </div>
       <h2 class="contact-title">Let's build something.</h2>
@@ -2628,6 +2674,19 @@
         tags: ['Web Design','Print','Corporate'],
         url: 'work/apprenticeship/index.html',
         anim: 'apprenticeship'
+      },
+      {
+        name: 'Personal Workflow Dashboard',
+        category: 'PRODUCT THINKING · SELF-INITIATED',
+        period: '2026',
+        desc: 'A self-built dashboard to organize applications, companies, documents and workflows — built to reduce friction in my own process.',
+        stats: [
+          { value: '2026', label: 'Year', primary: true },
+          { value: 'Self', label: 'Initiated' }
+        ],
+        tags: ['Product Thinking','Information Architecture','Claude Code'],
+        url: 'work/dashboard/index.html',
+        anim: 'dashboard'
       }
     ];
 
@@ -2666,7 +2725,7 @@
               <a href="https://www.instagram.com/jcohamburg/" target="_blank">@jcohamburg</a>
             </div>
           </div>`;
-      } else {
+      } else if (idx === 3) {
         const tools = [
           { label: 'Figma',  bg: '#1E1E1E', color: 'white' },
           { label: 'Ps',     bg: '#001E36', color: '#31A8FF' },
@@ -2682,6 +2741,14 @@
           <div class="apprenticeship-banner">
             <div class="app-pills-row">${pillsHTML}</div>
             <div class="app-banner-tagline">Built real things while learning.</div>
+          </div>`;
+      } else {
+        bannerHTML = `
+          <div class="mood-banner mood-banner-dashboard" style="display:flex;align-items:flex-end;padding:12px 14px;">
+            <div style="position:relative;z-index:1;font-family:'Courier New',monospace;font-size:11px;color:rgba(255,255,255,.6);line-height:1.8;">
+              <div><span style="color:#6B5CE7;">→</span> Problem: too many tools, no overview</div>
+              <div><span style="color:#6B5CE7;">→</span> Solution: <span style="color:rgba(255,255,255,.9);">build my own</span></div>
+            </div>
           </div>`;
       }
 
