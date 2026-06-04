@@ -1,0 +1,608 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Vivien Evers — Lebenslauf</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+
+  <style>
+    /* ── RESET ── */
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+    html { font-size: 10pt; }
+
+    /* ── VARIABLES ── */
+    :root {
+      --accent:   #6B5CE7;
+      --dark:     #1E1A2E;
+      --text:     #1A1A1A;
+      --mid:      #555555;
+      --light:    #888888;
+      --border:   #D8D4D0;
+      --bg-light: #F5F3F1;
+      --tag-bg:   #EEECEA;
+    }
+
+    /* ── PRINT CONTROL BAR (screen only) ── */
+    .print-bar {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 1000;
+      background: var(--dark); color: white;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 10px 24px; gap: 16px;
+      font-family: 'DM Sans', sans-serif; font-size: 13px;
+    }
+    .print-bar-left { display: flex; align-items: center; gap: 12px; }
+    .print-bar-dots { display: flex; gap: 6px; }
+    .pb-dot { width: 11px; height: 11px; border-radius: 50%; }
+    .pb-dot.r { background: #FF5F57; } .pb-dot.y { background: #FFBD2E; } .pb-dot.g { background: #28C940; }
+    .print-bar-name { color: rgba(255,255,255,.5); }
+    .print-bar-name span { color: white; font-weight: 500; }
+    .print-bar-right { display: flex; align-items: center; gap: 10px; }
+    .print-note { font-size: 11px; color: rgba(255,255,255,.4); }
+    .btn-print {
+      background: var(--accent); color: white; border: none;
+      padding: 7px 20px; border-radius: 100px;
+      font-family: 'DM Sans', sans-serif; font-size: 13px; font-weight: 500;
+      cursor: pointer; transition: background .15s, transform .1s;
+    }
+    .btn-print:hover { background: #4A3DB5; transform: translateY(-1px); }
+    .btn-back {
+      color: rgba(255,255,255,.55); text-decoration: none; font-size: 13px;
+      transition: color .15s;
+    }
+    .btn-back:hover { color: white; }
+
+    /* ── A4 PAGE WRAPPER (screen) ── */
+    body {
+      background: #EEECEA;
+      font-family: 'DM Sans', sans-serif;
+      padding-top: 52px; /* print bar height */
+      min-height: 100vh;
+    }
+
+    .page-wrap {
+      max-width: 210mm;
+      margin: 24px auto 48px;
+      background: white;
+      box-shadow: 0 8px 40px rgba(0,0,0,.12);
+    }
+
+    /* ── HEADER (dark) ── */
+    .cv-header {
+      background: var(--dark);
+      padding: 32px 36px 28px;
+      position: relative;
+      overflow: hidden;
+    }
+    .cv-header::before {
+      content: '';
+      position: absolute;
+      top: -80px; right: -80px;
+      width: 300px; height: 300px;
+      background: radial-gradient(circle, rgba(107,92,231,.2) 0%, transparent 65%);
+      pointer-events: none;
+    }
+    .cv-header-inner { position: relative; z-index: 1; }
+
+    .cv-name {
+      font-family: 'Instrument Serif', serif;
+      font-size: 38pt;
+      color: white;
+      letter-spacing: -1.5px;
+      line-height: 1.05;
+      margin-bottom: 6px;
+    }
+    .cv-name em { font-style: italic; color: #DDD9F7; }
+
+    .cv-title {
+      font-size: 10.5pt;
+      color: rgba(255,255,255,.5);
+      font-weight: 300;
+      margin-bottom: 20px;
+      letter-spacing: .03em;
+    }
+
+    .cv-contact {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px 18px;
+    }
+    .cv-contact-item {
+      font-size: 9pt;
+      color: rgba(255,255,255,.65);
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      text-decoration: none;
+    }
+    .cv-contact-item:hover { color: white; }
+    .cv-contact-dot { color: var(--accent); font-size: 8pt; }
+
+    /* ── PROFILE STRIP ── */
+    .cv-profile {
+      background: var(--bg-light);
+      border-bottom: 1px solid var(--border);
+      padding: 16px 36px;
+    }
+    .cv-profile p {
+      font-size: 9.5pt;
+      color: var(--mid);
+      line-height: 1.65;
+      max-width: 100%;
+    }
+
+    /* ── BODY: 2-column grid ── */
+    .cv-body {
+      display: grid;
+      grid-template-columns: 1fr 180px;
+      gap: 0;
+    }
+    .cv-main { padding: 28px 32px 28px 36px; border-right: 1px solid var(--border); }
+    .cv-side { padding: 28px 20px 28px 24px; }
+
+    /* ── SECTION ── */
+    .cv-section { margin-bottom: 26px; }
+    .cv-section:last-child { margin-bottom: 0; }
+    .cv-section-title {
+      font-size: 7.5pt;
+      font-weight: 600;
+      letter-spacing: .14em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 12px;
+      padding-bottom: 5px;
+      border-bottom: 1.5px solid var(--accent);
+    }
+
+    /* ── EXPERIENCE ── */
+    .cv-entry { margin-bottom: 18px; }
+    .cv-entry:last-child { margin-bottom: 0; }
+    .cv-entry-header { display: flex; align-items: baseline; justify-content: space-between; gap: 8px; margin-bottom: 2px; }
+    .cv-entry-role {
+      font-size: 10pt;
+      font-weight: 600;
+      color: var(--text);
+      line-height: 1.3;
+    }
+    .cv-entry-date {
+      font-size: 8pt;
+      color: var(--light);
+      white-space: nowrap;
+      flex-shrink: 0;
+      font-family: 'Courier New', monospace;
+    }
+    .cv-entry-company {
+      font-size: 9pt;
+      color: var(--mid);
+      margin-bottom: 5px;
+    }
+    .cv-entry-company strong { color: var(--text); font-weight: 500; }
+    .cv-entry-note {
+      font-size: 8.5pt;
+      color: var(--light);
+      font-style: italic;
+      margin-bottom: 5px;
+    }
+    .cv-entry-desc {
+      font-size: 9pt;
+      color: var(--mid);
+      line-height: 1.6;
+    }
+    .cv-entry-desc p + p { margin-top: 4px; }
+    .cv-entry-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 3px;
+      margin-top: 6px;
+    }
+    .cv-tag {
+      font-size: 7.5pt;
+      background: var(--tag-bg);
+      color: var(--mid);
+      padding: 2px 7px;
+      border-radius: 100px;
+      /* ATS: these are still real text */
+    }
+    .cv-tag.accent { background: #DDD9F7; color: var(--accent); }
+
+    /* ── EDUCATION ── */
+    .cv-edu-entry { margin-bottom: 12px; }
+    .cv-edu-entry:last-child { margin-bottom: 0; }
+    .cv-edu-year { font-size: 8pt; color: var(--light); font-family: 'Courier New', monospace; margin-bottom: 1px; }
+    .cv-edu-degree { font-size: 9.5pt; font-weight: 500; color: var(--text); margin-bottom: 1px; }
+    .cv-edu-school { font-size: 8.5pt; color: var(--mid); }
+
+    /* ── SIDE SKILLS ── */
+    .cv-skill-group { margin-bottom: 16px; }
+    .cv-skill-group:last-child { margin-bottom: 0; }
+    .cv-skill-group-title {
+      font-size: 7pt;
+      font-weight: 600;
+      letter-spacing: .12em;
+      text-transform: uppercase;
+      color: var(--light);
+      margin-bottom: 5px;
+    }
+    .cv-skill-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 3px;
+    }
+    .cv-skill-list li {
+      font-size: 8.5pt;
+      color: var(--mid);
+      padding: 2px 0;
+      border-bottom: 1px solid #F0EDEA;
+    }
+    .cv-skill-list li:last-child { border-bottom: none; }
+
+    /* ── LANGUAGES (side) ── */
+    .cv-lang-item {
+      font-size: 8.5pt;
+      color: var(--mid);
+      margin-bottom: 4px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .cv-lang-level {
+      font-size: 7.5pt;
+      color: var(--light);
+      font-style: italic;
+    }
+
+    /* ── FOOTER ── */
+    .cv-foot {
+      background: var(--tag-bg);
+      border-top: 1px solid var(--border);
+      padding: 8px 36px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 7.5pt;
+      color: var(--light);
+    }
+    .cv-foot a { color: var(--accent); text-decoration: none; }
+
+    /* ── PRINT ── */
+    @page {
+      size: A4;
+      margin: 0;
+    }
+
+    @media print {
+      body {
+        background: white;
+        padding-top: 0;
+        -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
+      }
+      .print-bar { display: none; }
+      .page-wrap {
+        margin: 0;
+        max-width: 100%;
+        box-shadow: none;
+        width: 210mm;
+        min-height: 297mm;
+      }
+      /* Ensure dark header prints */
+      .cv-header { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+      .cv-profile { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+    }
+
+    /* ── SCREEN RESPONSIVE ── */
+    @media (max-width: 700px) {
+      .cv-body { grid-template-columns: 1fr; }
+      .cv-main { border-right: none; border-bottom: 1px solid var(--border); padding: 24px 20px; }
+      .cv-side { padding: 24px 20px; }
+      .cv-header { padding: 24px 20px 20px; }
+      .cv-profile { padding: 14px 20px; }
+      .cv-foot { padding: 8px 20px; flex-direction: column; gap: 4px; text-align: center; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ── PRINT BAR (screen only) ── -->
+  <div class="print-bar">
+    <div class="print-bar-left">
+      <div class="print-bar-dots">
+        <div class="pb-dot r"></div>
+        <div class="pb-dot y"></div>
+        <div class="pb-dot g"></div>
+      </div>
+      <span class="print-bar-name"><span>Vivien Evers</span> · Lebenslauf · A4</span>
+    </div>
+    <div class="print-bar-right">
+      <span class="print-note">⌘ P zum Drucken / als PDF speichern</span>
+      <button class="btn-print" onclick="window.print()">↓ Als PDF speichern</button>
+      <a href="cv.html" class="btn-back">← CV-Seite</a>
+    </div>
+  </div>
+
+  <!-- ── A4 PAGE ── -->
+  <div class="page-wrap">
+
+    <!-- HEADER -->
+    <header class="cv-header">
+      <div class="cv-header-inner">
+        <h1 class="cv-name">Vivien <em>Evers</em></h1>
+        <div class="cv-title">Digital Designer · Brand Communication · Product Thinking</div>
+        <div class="cv-contact">
+          <a href="mailto:hallo@vivienevers.de" class="cv-contact-item">
+            <span class="cv-contact-dot">●</span> hallo@vivienevers.de
+          </a>
+          <span class="cv-contact-item">
+            <span class="cv-contact-dot">●</span> Hamburg, Deutschland
+          </span>
+          <a href="https://vivienevers.de" class="cv-contact-item" target="_blank">
+            <span class="cv-contact-dot">●</span> vivienevers.de
+          </a>
+          <a href="https://linkedin.com/in/vivien-victoria-evers" class="cv-contact-item" target="_blank">
+            <span class="cv-contact-dot">●</span> linkedin.com/in/vivien-victoria-evers
+          </a>
+        </div>
+      </div>
+    </header>
+
+    <!-- PROFILE -->
+    <div class="cv-profile">
+      <p>
+        Trained in print design, now working across brand communication, digital experiences and cultural projects — with growing interest in product design and how people interact with digital tools. I learn by building real things, think in systems and bring a strong brand and communication background to everything I work on.
+      </p>
+    </div>
+
+    <!-- BODY -->
+    <div class="cv-body">
+
+      <!-- ── MAIN COLUMN ── -->
+      <main class="cv-main">
+
+        <!-- EXPERIENCE -->
+        <section class="cv-section">
+          <h2 class="cv-section-title">Berufserfahrung</h2>
+
+          <!-- JCO -->
+          <div class="cv-entry">
+            <div class="cv-entry-header">
+              <div class="cv-entry-role">Brand Communication · Freelance</div>
+              <div class="cv-entry-date">2025 – heute</div>
+            </div>
+            <div class="cv-entry-company"><strong>Jewish Chamber Orchestra Hamburg</strong> · Hamburg</div>
+            <div class="cv-entry-desc">
+              <p>Unterstützung der digitalen Kommunikation einer Kulturinstitution — mit dem Ziel, jüngere Zielgruppen zu erreichen ohne kulturelle Tiefe zu verlieren. Arbeit an Kommunikationsstrategie, Content und Markenentwicklung innerhalb eines bestehenden Identitätssystems.</p>
+            </div>
+            <div class="cv-entry-tags">
+              <span class="cv-tag">Brand Communication</span>
+              <span class="cv-tag">Content Strategy</span>
+              <span class="cv-tag">Visual Identity</span>
+              <span class="cv-tag">Cultural Marketing</span>
+            </div>
+          </div>
+
+          <!-- Freelance -->
+          <div class="cv-entry">
+            <div class="cv-entry-header">
+              <div class="cv-entry-role">Web, Brand & Digital Projects · Freelance</div>
+              <div class="cv-entry-date">2025 – heute</div>
+            </div>
+            <div class="cv-entry-company"><strong>Verschiedene Kunden</strong> · Hamburg</div>
+            <div class="cv-entry-desc">
+              <p>Projektarbeit für Kunden in den Bereichen UX-Konzept, Markenentwicklung und digitale Kommunikation — von ersten Konzeptideen bis zu fertiger visueller Identität und digitalen Inhalten.</p>
+            </div>
+            <div class="cv-entry-tags">
+              <span class="cv-tag">Web Design</span>
+              <span class="cv-tag">Brand Development</span>
+              <span class="cv-tag">Visual Identity</span>
+              <span class="cv-tag">Figma</span>
+            </div>
+          </div>
+
+          <!-- MI4L -->
+          <div class="cv-entry">
+            <div class="cv-entry-header">
+              <div class="cv-entry-role">Co-Founder &amp; Creative Lead</div>
+              <div class="cv-entry-date">2022 – heute</div>
+            </div>
+            <div class="cv-entry-company"><strong>Music is for Lovers (MI4L)</strong> · Hamburg</div>
+            <div class="cv-entry-note">10+ Events · bis zu 400 Gäste · Kooperationen mit Jägermeister &amp; Carlsberg</div>
+            <div class="cv-entry-desc">
+              <p>Mitgründung eines Community-Event-Labels. Aufbau und Weiterentwicklung der Marke über Zeit — visuelle Identität, Printproduktion, Kampagnen und Eventbranding. Seit 2025 als Creative Lead verantwortlich für die gesamte Kommunikation und Markenführung.</p>
+            </div>
+            <div class="cv-entry-tags">
+              <span class="cv-tag accent">Co-Gründerin</span>
+              <span class="cv-tag">Brand Development</span>
+              <span class="cv-tag">Art Direction</span>
+              <span class="cv-tag">Print Production</span>
+              <span class="cv-tag">Event Branding</span>
+            </div>
+          </div>
+
+          <!-- Apprenticeship -->
+          <div class="cv-entry">
+            <div class="cv-entry-header">
+              <div class="cv-entry-role">Ausbildung – Digital &amp; Print Designerin</div>
+              <div class="cv-entry-date">2023 – 2026</div>
+            </div>
+            <div class="cv-entry-company"><strong>ehsmedia</strong> · Schenefeld</div>
+            <div class="cv-entry-desc">
+              <p>Ausbildung in Print, Web und Markenkommunikation für reale Kunden — parallel selbstständig in Figma, Web Design und digitale Workflows erweitert. Mitarbeit an Webseiten, Printproduktionen, Kampagnen und visueller Kommunikation in mehreren Branchen.</p>
+            </div>
+            <div class="cv-entry-tags">
+              <span class="cv-tag">Web Design</span>
+              <span class="cv-tag">Print Production</span>
+              <span class="cv-tag">Brand Communication</span>
+              <span class="cv-tag">Figma</span>
+              <span class="cv-tag">Corporate Design</span>
+            </div>
+          </div>
+
+        </section>
+
+        <!-- EDUCATION -->
+        <section class="cv-section">
+          <h2 class="cv-section-title">Ausbildung</h2>
+
+          <div class="cv-edu-entry">
+            <div class="cv-edu-year">Jan 2026</div>
+            <div class="cv-edu-degree">Digital &amp; Print Designerin (IHK)</div>
+            <div class="cv-edu-school">ehsmedia · Schenefeld — Abschluss mit IHK-Zertifikat</div>
+          </div>
+
+          <div class="cv-edu-entry">
+            <div class="cv-edu-year">2021 – 2023</div>
+            <div class="cv-edu-degree">Berufliche Orientierungsphase</div>
+            <div class="cv-edu-school">Arbeit in verschiedenen Bereichen — Weg in Richtung Mediendesign und Kommunikation</div>
+          </div>
+
+          <div class="cv-edu-entry">
+            <div class="cv-edu-year">2019</div>
+            <div class="cv-edu-degree">Abitur · Schwerpunkt: Wirtschaft &amp; Politik</div>
+            <div class="cv-edu-school">Stadtteilschule Hamburg-Mitte</div>
+          </div>
+
+        </section>
+
+        <!-- PROJECTS (ATS-relevant) -->
+        <section class="cv-section">
+          <h2 class="cv-section-title">Selbstständige Projekte</h2>
+
+          <div class="cv-entry">
+            <div class="cv-entry-header">
+              <div class="cv-entry-role">Workflow Dashboard</div>
+              <div class="cv-entry-date">2026</div>
+            </div>
+            <div class="cv-entry-company">Selbstinitiiertes Projekt</div>
+            <div class="cv-entry-desc">
+              <p>Eigenständig entwickeltes Kanban-Dashboard mit Next.js und Claude Code. Konzept, Informationsarchitektur und Build in Eigenregie — als flexible Organisationslösung für verschiedene Workflows.</p>
+            </div>
+            <div class="cv-entry-tags">
+              <span class="cv-tag">Product Thinking</span>
+              <span class="cv-tag">Information Architecture</span>
+              <span class="cv-tag">Next.js</span>
+              <span class="cv-tag">Claude Code</span>
+            </div>
+          </div>
+
+          <div class="cv-entry">
+            <div class="cv-entry-header">
+              <div class="cv-entry-role">Portfolio Website</div>
+              <div class="cv-entry-date">2026</div>
+            </div>
+            <div class="cv-entry-company">vivienevers.de</div>
+            <div class="cv-entry-desc">
+              <p>Selbst konzipiert, designed und mit Claude Code gebaut — inklusive interaktiver Mac/Finder-Ästhetik, 5 Case Studies, responsivem Design und Deployment auf Vercel.</p>
+            </div>
+            <div class="cv-entry-tags">
+              <span class="cv-tag">Web Design</span>
+              <span class="cv-tag">HTML/CSS/JS</span>
+              <span class="cv-tag">Claude Code</span>
+              <span class="cv-tag">Vercel</span>
+            </div>
+          </div>
+
+        </section>
+
+      </main>
+
+      <!-- ── SIDE COLUMN ── -->
+      <aside class="cv-side">
+
+        <!-- SKILLS -->
+        <section class="cv-section">
+          <h2 class="cv-section-title">Skills</h2>
+
+          <div class="cv-skill-group">
+            <div class="cv-skill-group-title">Brand &amp; Kommunikation</div>
+            <ul class="cv-skill-list">
+              <li>Brand Communication</li>
+              <li>Visual Identity</li>
+              <li>Campaign Design</li>
+              <li>Event Branding</li>
+              <li>Cultural Communication</li>
+              <li>Content Strategy</li>
+            </ul>
+          </div>
+
+          <div class="cv-skill-group">
+            <div class="cv-skill-group-title">Digital &amp; Product</div>
+            <ul class="cv-skill-list">
+              <li>Figma</li>
+              <li>UI/UX Basics</li>
+              <li>Web Design</li>
+              <li>Information Architecture</li>
+              <li>Product Thinking</li>
+              <li>Workflow Design</li>
+            </ul>
+          </div>
+
+          <div class="cv-skill-group">
+            <div class="cv-skill-group-title">Produktion</div>
+            <ul class="cv-skill-list">
+              <li>Adobe Illustrator</li>
+              <li>Adobe InDesign</li>
+              <li>Adobe Photoshop</li>
+              <li>Print Production</li>
+              <li>Large Format</li>
+              <li>Prepress</li>
+            </ul>
+          </div>
+
+          <div class="cv-skill-group">
+            <div class="cv-skill-group-title">Weitere Tools</div>
+            <ul class="cv-skill-list">
+              <li>Canva Pro</li>
+              <li>HTML / CSS</li>
+              <li>Next.js (Basics)</li>
+              <li>Vercel</li>
+            </ul>
+          </div>
+
+          <div class="cv-skill-group">
+            <div class="cv-skill-group-title">AI &amp; Workflows</div>
+            <ul class="cv-skill-list">
+              <li>Claude Code</li>
+              <li>Claude</li>
+              <li>ChatGPT</li>
+              <li>Gemini</li>
+            </ul>
+          </div>
+        </section>
+
+        <!-- LANGUAGES -->
+        <section class="cv-section">
+          <h2 class="cv-section-title">Sprachen</h2>
+          <div class="cv-lang-item">
+            Deutsch <span class="cv-lang-level">Muttersprache</span>
+          </div>
+          <div class="cv-lang-item">
+            Englisch <span class="cv-lang-level">Verhandlungssicher</span>
+          </div>
+        </section>
+
+        <!-- LINKS -->
+        <section class="cv-section">
+          <h2 class="cv-section-title">Links</h2>
+          <ul class="cv-skill-list">
+            <li><a href="https://vivienevers.de" style="color:var(--accent);text-decoration:none;">vivienevers.de</a></li>
+            <li><a href="https://linkedin.com/in/vivien-victoria-evers" style="color:var(--accent);text-decoration:none;">LinkedIn</a></li>
+            <li><a href="mailto:hallo@vivienevers.de" style="color:var(--accent);text-decoration:none;">hallo@vivienevers.de</a></li>
+          </ul>
+        </section>
+
+      </aside>
+
+    </div><!-- /cv-body -->
+
+    <!-- FOOTER -->
+    <footer class="cv-foot">
+      <span>Vivien Evers · Hamburg · <a href="mailto:hallo@vivienevers.de">hallo@vivienevers.de</a></span>
+      <span>vivienevers.de · Stand: Juni 2026</span>
+    </footer>
+
+  </div><!-- /page-wrap -->
+
+</body>
+</html>
