@@ -203,6 +203,50 @@
     }
     .key-quote em { color:var(--accent); font-style:italic; }
 
+    /* ── DEMO SECTION ── */
+    .demo-section { padding: 0 80px 80px; position: relative; z-index: 1; }
+    .demo-header { margin-bottom: 24px; }
+    .demo-frame-wrap {
+      border-radius: 14px; overflow: hidden;
+      box-shadow: 0 12px 48px rgba(0,0,0,.14), 0 0 0 1px rgba(0,0,0,.07);
+    }
+    .demo-chrome {
+      display: flex; align-items: center; gap: 10px;
+      background: #E8E6E3; padding: 11px 16px;
+      border-bottom: 1px solid rgba(0,0,0,.09);
+    }
+    .demo-chrome-dots { display: flex; gap: 6px; }
+    .demo-dot { width: 11px; height: 11px; border-radius: 50%; }
+    .demo-dot.r { background: #FF5F57; }
+    .demo-dot.y { background: #FFBD2E; }
+    .demo-dot.g { background: #28C940; }
+    .demo-chrome-url {
+      flex: 1; text-align: center;
+      font-size: 12px; color: var(--text-light);
+      font-family: 'DM Sans', sans-serif;
+    }
+    .demo-chrome-badge {
+      font-size: 10px; font-weight: 600; letter-spacing: .08em;
+      text-transform: uppercase; color: var(--accent);
+      background: var(--accent-light); padding: 3px 10px; border-radius: 100px;
+    }
+    .demo-iframe {
+      width: 100%; height: 560px; border: none; display: block;
+      background: var(--bg);
+    }
+    .demo-caption {
+      font-size: 13px; color: var(--text-light);
+      margin-top: 14px; font-style: italic; text-align: center;
+    }
+    @media (max-width: 900px) {
+      .demo-section { padding-left: 32px; padding-right: 32px; }
+      .demo-iframe { height: 440px; }
+    }
+    @media (max-width: 640px) {
+      .demo-section { padding-left: 20px; padding-right: 20px; }
+      .demo-iframe { height: 380px; }
+    }
+
     /* ── NAV FOOTER ── */
     .nav-footer { padding:48px 80px; border-top:1px solid var(--tag-bg); display:flex; justify-content:space-between; align-items:center; position:relative; z-index:1; }
     .nav-footer a { font-size:15px; font-weight:500; color:var(--text-mid); text-decoration:none; transition:color .2s; }
@@ -335,17 +379,18 @@
   <!-- ══ PROJEKT-HEADER ══ -->
   <section class="proj-header reveal">
     <div class="proj-name">Personal Workflow Dashboard</div>
-    <div class="proj-opinion">Turning application chaos into a self-built digital tool.</div>
+    <div class="proj-opinion">Built fast. Used daily.<br>Designed to adapt to different workflows.</div>
     <div class="tags-row">
       <span class="tag-pill">Product Thinking</span>
       <span class="tag-pill">Information Architecture</span>
       <span class="tag-pill">Workflow Design</span>
       <span class="tag-pill">Claude Code</span>
+      <span class="tag-pill">Next.js</span>
       <span class="tag-pill">Self-Initiated</span>
     </div>
-    <div class="proj-role">Self-initiated project · 2026 · Concept, structure and build with Claude Code</div>
+    <div class="proj-role">Self-initiated · 2026 · Concept, structure and build with Claude Code</div>
     <div class="proj-note">
-      This is not a professional UX case study. It's a personal project that started from a real problem — and turned into a first step into product thinking.
+      This is not a professional product case. It's a personal tool I built to solve a real organizational problem — and then kept using because it actually worked. The structure is flexible enough to be adapted for different workflows.
     </div>
   </section>
 
@@ -357,11 +402,11 @@
         <span class="mac-label">dashboard — project info</span>
       </div>
       <div class="mac-win-body">
-        <div class="mac-win-title">Started from a real problem.</div>
+        <div class="mac-win-title">Built for one problem. Useful for many.</div>
         <div class="mac-win-text">
-          <p>While preparing for job applications, I noticed that my research, company lists, documents, notes and next steps were scattered across too many places.</p>
-          <p>Instead of trying to force my workflow into another generic tool, I started building my own dashboard with Claude Code.</p>
-          <p>The project became a first step into product thinking: understanding a real problem, structuring information and building a tool around an actual workflow.</p>
+          <p>I noticed that organizing my work — projects, statuses, next steps, notes — was scattered across too many places. Switching between tools constantly, losing context, starting over.</p>
+          <p>Instead of adapting my workflow to yet another generic tool, I built my own dashboard with Claude Code. Kanban board, detail panels, filters, status tracking — exactly what I needed, nothing more.</p>
+          <p>What started as a quick solution for one specific workflow turned into something more interesting: a structure that's flexible enough to be adapted for different use cases. I currently use it both as a project board for creative work and as an organizational tool for other ongoing tasks.</p>
         </div>
       </div>
     </div>
@@ -381,12 +426,37 @@
   <section class="challenge-section reveal">
     <div class="section-label">Challenge</div>
     <div class="challenge-quote">
-      How can I organize applications, companies, documents and next steps in one place — without losing clarity?
+      How do you organize complex, ongoing work — across multiple projects and statuses — without losing clarity or momentum?
     </div>
     <div class="challenge-text">
-      <p>Generic tools like Notion or spreadsheets felt either too heavy or too unstructured. I needed something built around my specific workflow — not the other way around.</p>
-      <p>The challenge wasn't just organizational. It was also about understanding what information actually matters during a job search, and how to present it to myself in a way that reduces friction and keeps momentum.</p>
+      <p>Generic tools felt either too heavy or too unstructured for what I actually needed. I wanted something that worked like my brain: project by project, status by status, with quick access to context and next steps.</p>
+      <p>The core challenge wasn't just building something functional — it was deciding what information actually matters, how to structure it, and how to keep it lightweight enough to actually use every day.</p>
     </div>
+  </section>
+
+  <!-- ══ DEMO ══ -->
+  <section class="demo-section">
+    <div class="demo-header reveal">
+      <div class="section-label">Live Demo</div>
+      <h2 class="section-title" style="font-size:clamp(28px,3vw,40px);margin-bottom:8px;">See it in action.</h2>
+      <p style="font-size:15px;color:var(--text-light);margin-bottom:24px;">This is a Studio version of the dashboard — showing how the same structure works for organizing creative project tasks across MI4L, Studio Liebe, NRG, JCO and more. Fully interactive.</p>
+    </div>
+    <div class="demo-frame-wrap reveal">
+      <div class="demo-chrome">
+        <div class="demo-chrome-dots">
+          <span class="demo-dot r"></span><span class="demo-dot y"></span><span class="demo-dot g"></span>
+        </div>
+        <div class="demo-chrome-url">vivien.studio — dashboard</div>
+        <div class="demo-chrome-badge">Interactive Demo</div>
+      </div>
+      <iframe
+        src="demo.html"
+        class="demo-iframe"
+        title="Studio Dashboard Demo"
+        loading="lazy"
+      ></iframe>
+    </div>
+    <p class="demo-caption reveal">Click any card to open the detail panel. The structure — kanban columns, status tracking, project filters — is the same across all use cases.</p>
   </section>
 
   <!-- ══ PROCESS ══ -->

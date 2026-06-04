@@ -1,0 +1,754 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Studio Dashboard — Demo</title>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #EEECEA; --surface: #fff; --surface-2: #F5F3F1; --surface-3: #EDE9E5;
+      --border: #D8D4D0; --border-soft: #E4E0DC;
+      --text: #1A1A1A; --text-mid: #666; --text-light: #999;
+      --accent: #6B5CE7; --accent-light: #DDD9F7; --accent-dark: #4A3DB5;
+      --tag-bg: #E8E4E0;
+      --sidebar-w: 200px;
+      --col-idee: #ABABAB;
+      --col-arbeit: #689DCF;
+      --col-review: #E0A830;
+      --col-fertig: #4AAF74;
+    }
+    * { margin:0; padding:0; box-sizing:border-box; }
+    html,body { height:100%; }
+    body {
+      font-family:'DM Sans',sans-serif; background:var(--bg);
+      color:var(--text); display:flex; overflow:hidden;
+      -webkit-font-smoothing:antialiased;
+    }
+    body::after {
+      content:''; position:fixed; inset:0;
+      background-image:linear-gradient(rgba(0,0,0,.03) 1px,transparent 1px),linear-gradient(90deg,rgba(0,0,0,.03) 1px,transparent 1px);
+      background-size:40px 40px; pointer-events:none; z-index:0;
+    }
+
+    /* ── SIDEBAR ── */
+    .sidebar {
+      width:var(--sidebar-w); flex-shrink:0; background:#1E1A2E;
+      display:flex; flex-direction:column; gap:0;
+      position:relative; z-index:2; height:100vh; overflow-y:auto;
+      border-right:1px solid rgba(255,255,255,.06);
+    }
+    .sidebar-header {
+      padding:20px 16px 12px;
+      border-bottom:1px solid rgba(255,255,255,.07);
+    }
+    .sidebar-logo {
+      font-family:'Instrument Serif',serif;
+      font-style:italic; font-size:18px; color:white; display:block;
+    }
+    .sidebar-logo span { color:var(--accent); }
+    .sidebar-sub { font-size:11px; color:rgba(255,255,255,.35); margin-top:2px; }
+    .sidebar-section { padding:16px 10px 4px; }
+    .sidebar-section-label {
+      font-size:9px; font-weight:600; letter-spacing:.12em;
+      text-transform:uppercase; color:rgba(255,255,255,.3);
+      padding:0 8px; margin-bottom:4px;
+    }
+    .sidebar-item {
+      display:flex; align-items:center; gap:9px;
+      padding:8px 10px; border-radius:8px; cursor:pointer;
+      transition:background .15s; color:rgba(255,255,255,.55);
+      font-size:13px; font-weight:500; user-select:none;
+    }
+    .sidebar-item:hover { background:rgba(255,255,255,.06); color:rgba(255,255,255,.85); }
+    .sidebar-item.active { background:rgba(107,92,231,.25); color:var(--accent-light); }
+    .sidebar-item-icon { font-size:14px; line-height:1; flex-shrink:0; }
+    .sidebar-badge {
+      margin-left:auto; background:rgba(107,92,231,.4);
+      color:var(--accent-light); font-size:10px; font-weight:600;
+      padding:1px 7px; border-radius:100px;
+    }
+    .sidebar-footer {
+      margin-top:auto; padding:12px; border-top:1px solid rgba(255,255,255,.06);
+    }
+    .sidebar-avatar {
+      display:flex; align-items:center; gap:9px; padding:8px 8px;
+      border-radius:8px; cursor:pointer; transition:background .15s;
+    }
+    .sidebar-avatar:hover { background:rgba(255,255,255,.06); }
+    .avatar-dot {
+      width:28px; height:28px; border-radius:50%;
+      background:var(--accent); display:flex; align-items:center;
+      justify-content:center; font-size:11px; font-weight:600; color:white; flex-shrink:0;
+    }
+    .avatar-name { font-size:12px; font-weight:500; color:rgba(255,255,255,.7); }
+    .avatar-role { font-size:10px; color:rgba(255,255,255,.3); }
+
+    /* ── MAIN ── */
+    .main {
+      flex:1; display:flex; flex-direction:column;
+      overflow:hidden; position:relative; z-index:1;
+    }
+    .topbar {
+      display:flex; align-items:center; justify-content:space-between;
+      padding:14px 24px; background:var(--surface);
+      border-bottom:1px solid var(--border); flex-shrink:0;
+      gap:16px;
+    }
+    .topbar-title {
+      font-family:'Instrument Serif',serif;
+      font-size:20px; font-weight:400; color:var(--text);
+    }
+    .topbar-right { display:flex; align-items:center; gap:10px; }
+    .topbar-stat {
+      display:flex; align-items:center; gap:6px;
+      background:var(--surface-2); border-radius:100px;
+      padding:5px 12px; font-size:12px; color:var(--text-mid);
+    }
+    .topbar-stat strong { color:var(--text); font-weight:600; }
+    .add-btn {
+      background:var(--accent); color:white;
+      border:none; border-radius:8px; padding:7px 14px;
+      font-size:13px; font-weight:500; cursor:pointer;
+      display:flex; align-items:center; gap:6px;
+      font-family:'DM Sans',sans-serif;
+      transition:background .15s, transform .1s;
+    }
+    .add-btn:hover { background:var(--accent-dark); transform:translateY(-1px); }
+
+    /* ── KANBAN ── */
+    .board {
+      flex:1; overflow-x:auto; overflow-y:hidden;
+      padding:20px 24px; display:flex; gap:16px;
+      align-items:flex-start;
+    }
+    .col {
+      width:260px; flex-shrink:0; display:flex; flex-direction:column; gap:8px;
+    }
+    .col-header {
+      display:flex; align-items:center; gap:8px;
+      padding:6px 4px; margin-bottom:2px;
+    }
+    .col-dot {
+      width:8px; height:8px; border-radius:50%; flex-shrink:0;
+    }
+    .col-name {
+      font-size:12px; font-weight:600; color:var(--text-mid);
+      text-transform:uppercase; letter-spacing:.08em; flex:1;
+    }
+    .col-count {
+      font-size:11px; color:var(--text-light);
+      background:var(--tag-bg); padding:1px 8px; border-radius:100px;
+    }
+
+    /* ── CARD ── */
+    .card {
+      background:var(--surface); border-radius:12px;
+      padding:14px; border:1px solid var(--border-soft);
+      box-shadow:0 1px 4px rgba(0,0,0,.05);
+      cursor:pointer; transition:transform .15s, box-shadow .15s;
+      user-select:none;
+    }
+    .card:hover { transform:translateY(-2px); box-shadow:0 4px 16px rgba(0,0,0,.09); }
+    .card.active { border-color:var(--accent); box-shadow:0 0 0 2px var(--accent-light); }
+    .card-top { display:flex; align-items:flex-start; gap:8px; justify-content:space-between; }
+    .card-title { font-size:13px; font-weight:500; line-height:1.4; flex:1; }
+    .card-fav { font-size:14px; opacity:.4; flex-shrink:0; }
+    .card-fav.on { opacity:1; }
+    .card-project {
+      font-size:10px; font-weight:600; letter-spacing:.08em;
+      text-transform:uppercase; color:var(--accent); margin-bottom:6px;
+    }
+    .card-desc {
+      font-size:12px; color:var(--text-light); line-height:1.5;
+      margin-top:8px;
+    }
+    .card-tags { display:flex; flex-wrap:wrap; gap:4px; margin-top:10px; }
+    .card-tag {
+      font-size:10px; background:var(--tag-bg); color:var(--text-mid);
+      padding:2px 8px; border-radius:100px;
+    }
+    .card-tag.accent { background:var(--accent-light); color:var(--accent-dark); }
+    .card-footer {
+      display:flex; align-items:center; justify-content:space-between;
+      margin-top:10px; padding-top:8px; border-top:1px solid var(--border-soft);
+    }
+    .card-date { font-size:10px; color:var(--text-light); }
+    .card-status-dot {
+      width:6px; height:6px; border-radius:50%;
+    }
+
+    /* empty col */
+    .col-empty {
+      border:1.5px dashed var(--border); border-radius:12px;
+      padding:20px 16px; text-align:center;
+      font-size:12px; color:var(--text-light); font-style:italic; line-height:1.6;
+    }
+
+    /* ── DETAIL PANEL ── */
+    .detail-panel {
+      width:320px; flex-shrink:0; background:var(--surface);
+      border-left:1px solid var(--border); display:flex; flex-direction:column;
+      overflow-y:auto; transition:width .25s ease, opacity .2s ease;
+      position:relative; z-index:2;
+    }
+    .detail-panel.closed { width:0; opacity:0; overflow:hidden; pointer-events:none; }
+    .dp-header {
+      padding:16px 18px; border-bottom:1px solid var(--border);
+      display:flex; align-items:center; justify-content:space-between; flex-shrink:0;
+    }
+    .dp-project { font-size:10px; font-weight:600; letter-spacing:.1em; text-transform:uppercase; color:var(--accent); }
+    .dp-close {
+      width:26px; height:26px; border-radius:50%; background:var(--surface-2);
+      border:none; cursor:pointer; display:flex; align-items:center; justify-content:center;
+      font-size:14px; color:var(--text-mid); transition:background .15s;
+    }
+    .dp-close:hover { background:var(--border); }
+    .dp-body { padding:18px; flex:1; }
+    .dp-title { font-family:'Instrument Serif',serif; font-size:20px; line-height:1.3; margin-bottom:12px; }
+    .dp-meta { display:flex; flex-direction:column; gap:8px; margin-bottom:16px; }
+    .dp-meta-row { display:flex; align-items:center; gap:8px; font-size:12px; color:var(--text-mid); }
+    .dp-meta-label { color:var(--text-light); font-size:11px; min-width:64px; }
+    .dp-status {
+      display:inline-flex; align-items:center; gap:5px;
+      font-size:11px; font-weight:600; padding:3px 10px;
+      border-radius:100px; text-transform:uppercase; letter-spacing:.06em;
+    }
+    .dp-section { margin-bottom:20px; }
+    .dp-section-title { font-size:10px; font-weight:600; text-transform:uppercase; letter-spacing:.1em; color:var(--text-light); margin-bottom:8px; }
+    .dp-notes {
+      font-size:13px; color:var(--text-mid); line-height:1.65;
+      background:var(--surface-2); border-radius:8px; padding:12px;
+    }
+    .dp-checklist { display:flex; flex-direction:column; gap:6px; }
+    .dp-check {
+      display:flex; align-items:center; gap:8px; font-size:13px; color:var(--text-mid);
+      cursor:pointer; padding:4px 0;
+    }
+    .dp-check input { accent-color:var(--accent); width:14px; height:14px; cursor:pointer; }
+    .dp-check.done span { text-decoration:line-through; color:var(--text-light); }
+    .dp-tags { display:flex; flex-wrap:wrap; gap:6px; }
+    .dp-tag {
+      font-size:11px; background:var(--tag-bg); color:var(--text-mid);
+      padding:3px 10px; border-radius:100px;
+    }
+
+    /* ── MOBILE fallback ── */
+    @media (max-width: 700px) {
+      .sidebar { display:none; }
+      .detail-panel { display:none; }
+      .board { padding:12px; }
+      .col { width:220px; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- SIDEBAR -->
+<aside class="sidebar">
+  <div class="sidebar-header">
+    <span class="sidebar-logo">vivien.<span>studio</span></span>
+    <div class="sidebar-sub">personal workspace</div>
+  </div>
+
+  <div class="sidebar-section">
+    <div class="sidebar-section-label">Workspace</div>
+    <div class="sidebar-item active" onclick="setView(this)">
+      <span class="sidebar-item-icon">⬛</span> Studio Board
+      <span class="sidebar-badge">7</span>
+    </div>
+    <div class="sidebar-item" onclick="setView(this)">
+      <span class="sidebar-item-icon">📋</span> Alle Tasks
+    </div>
+    <div class="sidebar-item" onclick="setView(this)">
+      <span class="sidebar-item-icon">📌</span> Pinned
+    </div>
+  </div>
+
+  <div class="sidebar-section">
+    <div class="sidebar-section-label">Projekte</div>
+    <div class="sidebar-item" onclick="setView(this)">
+      <span class="sidebar-item-icon" style="color:#B5001F;">●</span> MI4L
+    </div>
+    <div class="sidebar-item" onclick="setView(this)">
+      <span class="sidebar-item-icon" style="color:#FF8C00;">●</span> Studio Liebe
+    </div>
+    <div class="sidebar-item" onclick="setView(this)">
+      <span class="sidebar-item-icon" style="color:#c38eff;">●</span> NRG
+    </div>
+    <div class="sidebar-item" onclick="setView(this)">
+      <span class="sidebar-item-icon" style="color:#4A9CC8;">●</span> JCO Hamburg
+    </div>
+    <div class="sidebar-item" onclick="setView(this)">
+      <span class="sidebar-item-icon" style="color:var(--accent);">●</span> Portfolio
+    </div>
+  </div>
+
+  <div class="sidebar-section">
+    <div class="sidebar-section-label">Tools</div>
+    <div class="sidebar-item" onclick="setView(this)">
+      <span class="sidebar-item-icon">📁</span> Vorlagen
+    </div>
+    <div class="sidebar-item" onclick="setView(this)">
+      <span class="sidebar-item-icon">📅</span> Kalender
+    </div>
+  </div>
+
+  <div class="sidebar-footer">
+    <div class="sidebar-avatar">
+      <div class="avatar-dot">VE</div>
+      <div>
+        <div class="avatar-name">Vivien Evers</div>
+        <div class="avatar-role">Creative Lead</div>
+      </div>
+    </div>
+  </div>
+</aside>
+
+<!-- MAIN -->
+<div class="main">
+
+  <!-- TOPBAR -->
+  <div class="topbar">
+    <div class="topbar-title">Studio Board</div>
+    <div class="topbar-right">
+      <div class="topbar-stat"><strong>7</strong> aktiv</div>
+      <div class="topbar-stat"><strong>3</strong> diese Woche fertig</div>
+      <button class="add-btn">＋ Task</button>
+    </div>
+  </div>
+
+  <!-- BOARD -->
+  <div class="board" id="board">
+
+    <!-- COL: IDEE -->
+    <div class="col">
+      <div class="col-header">
+        <div class="col-dot" style="background:var(--col-idee)"></div>
+        <div class="col-name">Idee</div>
+        <div class="col-count">2</div>
+      </div>
+
+      <div class="card" data-id="1" onclick="openCard(1)">
+        <div class="card-project">JCO Hamburg</div>
+        <div class="card-top">
+          <div class="card-title">Audience Participation — Konzeptidee</div>
+        </div>
+        <div class="card-desc">UGC-Ansatz: Publikum macht eigene Fotos, wir kuratieren. Format noch offen.</div>
+        <div class="card-tags">
+          <span class="card-tag">Konzept</span>
+          <span class="card-tag">Digital</span>
+        </div>
+        <div class="card-footer">
+          <div class="card-date">offen</div>
+          <div class="card-status-dot" style="background:var(--col-idee)"></div>
+        </div>
+      </div>
+
+      <div class="card" data-id="2" onclick="openCard(2)">
+        <div class="card-project">MI4L</div>
+        <div class="card-top">
+          <div class="card-title">MI4L × NRG Collab — Visual Direction</div>
+        </div>
+        <div class="card-desc">Beide Welten zusammenbringen ohne die Eigenständigkeit zu verlieren.</div>
+        <div class="card-tags">
+          <span class="card-tag">Art Direction</span>
+          <span class="card-tag">Collab</span>
+        </div>
+        <div class="card-footer">
+          <div class="card-date">Sommer 2026</div>
+          <div class="card-status-dot" style="background:var(--col-idee)"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- COL: IN ARBEIT -->
+    <div class="col">
+      <div class="col-header">
+        <div class="col-dot" style="background:var(--col-arbeit)"></div>
+        <div class="col-name">In Arbeit</div>
+        <div class="col-count">3</div>
+      </div>
+
+      <div class="card" data-id="3" onclick="openCard(3)">
+        <div class="card-project">Studio Liebe</div>
+        <div class="card-top">
+          <div class="card-title">Mai Event — Poster & Social Set</div>
+        </div>
+        <div class="card-desc">A3 Print + Instagram Reels-Format. Farbrichtung warm/golden, neue Schriftsetzung.</div>
+        <div class="card-tags">
+          <span class="card-tag">Print</span>
+          <span class="card-tag">Poster</span>
+          <span class="card-tag accent">Deadline</span>
+        </div>
+        <div class="card-footer">
+          <div class="card-date">bis 12. Mai</div>
+          <div class="card-status-dot" style="background:var(--col-arbeit)"></div>
+        </div>
+      </div>
+
+      <div class="card" data-id="4" onclick="openCard(4)">
+        <div class="card-project">JCO Hamburg</div>
+        <div class="card-top">
+          <div class="card-title">Instagram April — Content-Planung</div>
+        </div>
+        <div class="card-desc">5 Posts, 3 Reels, 2 Stories-Sets. Saison 25/26 Framing.</div>
+        <div class="card-tags">
+          <span class="card-tag">Social</span>
+          <span class="card-tag">Content</span>
+        </div>
+        <div class="card-footer">
+          <div class="card-date">laufend</div>
+          <div class="card-status-dot" style="background:var(--col-arbeit)"></div>
+        </div>
+      </div>
+
+      <div class="card" data-id="5" onclick="openCard(5)">
+        <div class="card-project">NRG</div>
+        <div class="card-top">
+          <div class="card-title">NRG Lineup Poster — Juni</div>
+        </div>
+        <div class="card-desc">Dark, technoid. A2 + Digital. Farbe: schwarz/lila, kein warm.</div>
+        <div class="card-tags">
+          <span class="card-tag">Print</span>
+          <span class="card-tag">Large Format</span>
+        </div>
+        <div class="card-footer">
+          <div class="card-date">bis 3. Juni</div>
+          <div class="card-status-dot" style="background:var(--col-arbeit)"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- COL: REVIEW -->
+    <div class="col">
+      <div class="col-header">
+        <div class="col-dot" style="background:var(--col-review)"></div>
+        <div class="col-name">Review</div>
+        <div class="col-count">2</div>
+      </div>
+
+      <div class="card" data-id="6" onclick="openCard(6)">
+        <div class="card-project">MI4L</div>
+        <div class="card-top">
+          <div class="card-title">Anniversary Visual — 3 Jahre MI4L</div>
+        </div>
+        <div class="card-desc">Key-Visual steht. Feedback von Léa noch ausstehend. Ggf. Schrift anpassen.</div>
+        <div class="card-tags">
+          <span class="card-tag">Branding</span>
+          <span class="card-tag">Feedback offen</span>
+        </div>
+        <div class="card-footer">
+          <div class="card-date">wartet auf OK</div>
+          <div class="card-status-dot" style="background:var(--col-review)"></div>
+        </div>
+      </div>
+
+      <div class="card" data-id="7" onclick="openCard(7)">
+        <div class="card-project">Portfolio</div>
+        <div class="card-top">
+          <div class="card-title">Dashboard Case Study — Copy final</div>
+        </div>
+        <div class="card-desc">Text steht. Framing prüfen: selbst initiiert, ehrlich, keine inflated claims.</div>
+        <div class="card-tags">
+          <span class="card-tag">Copy</span>
+          <span class="card-tag">UX Writing</span>
+        </div>
+        <div class="card-footer">
+          <div class="card-date">diese Woche</div>
+          <div class="card-status-dot" style="background:var(--col-review)"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- COL: FERTIG -->
+    <div class="col">
+      <div class="col-header">
+        <div class="col-dot" style="background:var(--col-fertig)"></div>
+        <div class="col-name">Fertig</div>
+        <div class="col-count">3</div>
+      </div>
+
+      <div class="card" data-id="8" onclick="openCard(8)" style="opacity:.75;">
+        <div class="card-project">Studio Liebe</div>
+        <div class="card-top">
+          <div class="card-title">Stories-Template Set Q1</div>
+        </div>
+        <div class="card-tags">
+          <span class="card-tag">Digital</span>
+          <span class="card-tag">Template</span>
+        </div>
+        <div class="card-footer">
+          <div class="card-date">fertig 14. März</div>
+          <div class="card-status-dot" style="background:var(--col-fertig)"></div>
+        </div>
+      </div>
+
+      <div class="card" data-id="9" onclick="openCard(9)" style="opacity:.75;">
+        <div class="card-project">JCO Hamburg</div>
+        <div class="card-top">
+          <div class="card-title">JCO Newsletter — März-Ausgabe</div>
+        </div>
+        <div class="card-tags">
+          <span class="card-tag">Layout</span>
+          <span class="card-tag">Print</span>
+        </div>
+        <div class="card-footer">
+          <div class="card-date">fertig 28. März</div>
+          <div class="card-status-dot" style="background:var(--col-fertig)"></div>
+        </div>
+      </div>
+
+      <div class="card" data-id="10" onclick="openCard(10)" style="opacity:.75;">
+        <div class="card-project">Portfolio</div>
+        <div class="card-top">
+          <div class="card-title">Portfolio Website — Launch</div>
+        </div>
+        <div class="card-tags">
+          <span class="card-tag">Web</span>
+          <span class="card-tag">Shipped ✓</span>
+        </div>
+        <div class="card-footer">
+          <div class="card-date">fertig April 2026</div>
+          <div class="card-status-dot" style="background:var(--col-fertig)"></div>
+        </div>
+      </div>
+    </div>
+
+  </div><!-- /board -->
+
+</div><!-- /main -->
+
+<!-- DETAIL PANEL -->
+<div class="detail-panel closed" id="detail-panel">
+  <div class="dp-header">
+    <div class="dp-project" id="dp-project">—</div>
+    <button class="dp-close" onclick="closePanel()">✕</button>
+  </div>
+  <div class="dp-body">
+    <div class="dp-title" id="dp-title">—</div>
+    <div class="dp-meta" id="dp-meta"></div>
+    <div class="dp-section">
+      <div class="dp-section-title">Notizen</div>
+      <div class="dp-notes" id="dp-notes">—</div>
+    </div>
+    <div class="dp-section" id="dp-checklist-section">
+      <div class="dp-section-title">Subtasks</div>
+      <div class="dp-checklist" id="dp-checklist"></div>
+    </div>
+    <div class="dp-section">
+      <div class="dp-section-title">Tags</div>
+      <div class="dp-tags" id="dp-tags"></div>
+    </div>
+  </div>
+</div>
+
+<script>
+const CARDS = {
+  1: {
+    project: 'JCO Hamburg',
+    title: 'Audience Participation — Konzeptidee',
+    status: 'Idee', statusColor: '#ABABAB',
+    date: 'offen',
+    notes: 'Idee: Publikum fotografiert eigene Konzertmomente, wir kuratieren die besten für Instagram. Könnte gut für das jüngere Publikum funktionieren — Teilhabe statt Konsum. Format noch offen, vielleicht ein eigener Hashtag.',
+    checks: [
+      { text: 'Konzept skizzieren', done: true },
+      { text: 'Vergleichsprojekte recherchieren', done: false },
+      { text: 'Mit JCO-Team besprechen', done: false }
+    ],
+    tags: ['Konzept', 'Digital', 'UGC', 'Audience']
+  },
+  2: {
+    project: 'MI4L',
+    title: 'MI4L × NRG Collab — Visual Direction',
+    status: 'Idee', statusColor: '#ABABAB',
+    date: 'Sommer 2026',
+    notes: 'Beide Formate haben sehr unterschiedliche Ästhetiken. Die Herausforderung: Collab-Look, der keines der beiden verwässert. Eher kontrastreich arbeiten als mischen.',
+    checks: [
+      { text: 'Moodboard erstellen', done: false },
+      { text: 'Referenzen sammeln', done: false },
+      { text: 'Konzept vorstellen', done: false }
+    ],
+    tags: ['Art Direction', 'Collab', 'Branding', 'MI4L', 'NRG']
+  },
+  3: {
+    project: 'Studio Liebe',
+    title: 'Mai Event — Poster & Social Set',
+    status: 'In Arbeit', statusColor: '#689DCF',
+    date: 'Deadline: 12. Mai',
+    notes: 'Farbrichtung: warm, golden, soft — passend zur Disco-House-Atmosphäre. A3-Format für Druck, dazu quadratisch für Feed und 9:16 für Reel-Cover. Neue Schriftsetzung ausprobieren — etwas luftiger als zuletzt.',
+    checks: [
+      { text: 'Typografie-Auswahl finalisieren', done: true },
+      { text: 'Hauptposter fertigstellen', done: true },
+      { text: 'Social-Formate ableiten', done: false },
+      { text: 'Druckdaten vorbereiten', done: false },
+      { text: 'Freigabe einholen', done: false }
+    ],
+    tags: ['Print', 'Poster', 'A3', 'Social', 'Deadline']
+  },
+  4: {
+    project: 'JCO Hamburg',
+    title: 'Instagram April — Content-Planung',
+    status: 'In Arbeit', statusColor: '#689DCF',
+    date: 'laufend',
+    notes: 'Saison 25/26 Framing: Tiefe und Zugänglichkeit gleichzeitig. 5 Posts, 3 Reels, 2 Stories-Sets. Tone of Voice: kulturnah, aber nicht elitär. Immer an jüngeres Publikum denken ohne es zu vergraulen.',
+    checks: [
+      { text: 'Content-Plan schreiben', done: true },
+      { text: 'Post 1–3 designen', done: true },
+      { text: 'Reels produzieren', done: false },
+      { text: 'Stories fertigstellen', done: false }
+    ],
+    tags: ['Social Media', 'Content', 'Instagram', 'Cultural']
+  },
+  5: {
+    project: 'NRG',
+    title: 'NRG Lineup Poster — Juni',
+    status: 'In Arbeit', statusColor: '#689DCF',
+    date: 'Deadline: 3. Juni',
+    notes: 'Dark, technoid. Schwarz/Lila, kein warm. Schrift: grotesk, condense. Lineup-Hierarchie klar machen ohne Headliner unfair zu behandeln. A2 + digitale Formate.',
+    checks: [
+      { text: 'Layout-Entwürfe', done: true },
+      { text: 'Typografie finalisieren', done: false },
+      { text: 'Freigabe Lineup-Info', done: false },
+      { text: 'Druckdaten', done: false }
+    ],
+    tags: ['Print', 'Large Format', 'Tech House', 'NRG']
+  },
+  6: {
+    project: 'MI4L',
+    title: 'Anniversary Visual — 3 Jahre MI4L',
+    status: 'Review', statusColor: '#E0A830',
+    date: 'wartet auf Feedback',
+    notes: 'Key-Visual steht und sieht gut aus. Feedback von Léa noch ausstehend — v.a. zur Typografie. Möglicherweise Schrift noch etwas anpassen. Version 2 liegt bereit.',
+    checks: [
+      { text: 'Key-Visual v1 erstellt', done: true },
+      { text: 'Feedback Léa eingeholt', done: false },
+      { text: 'Anpassungen Version 2', done: false },
+      { text: 'Final freigeben', done: false }
+    ],
+    tags: ['Branding', 'Anniversary', 'MI4L', 'Key Visual']
+  },
+  7: {
+    project: 'Portfolio',
+    title: 'Dashboard Case Study — Copy final',
+    status: 'Review', statusColor: '#E0A830',
+    date: 'diese Woche',
+    notes: 'Text steht. Framing prüfen: selbst initiiert, ehrlich, keine übertriebenen Claims. Ton soll zeigen: Ich denke in Systemen, in Workflows, in Nutzerbedürfnissen — ohne zu übertreiben wer ich bin.',
+    checks: [
+      { text: 'Copy geschrieben', done: true },
+      { text: 'Framing-Check', done: true },
+      { text: 'Demo-Version bauen', done: false },
+      { text: 'Live schalten', done: false }
+    ],
+    tags: ['Portfolio', 'Copy', 'Case Study', 'UX Writing']
+  },
+  8: {
+    project: 'Studio Liebe',
+    title: 'Stories-Template Set Q1',
+    status: 'Fertig', statusColor: '#4AAF74',
+    date: 'fertig 14. März',
+    notes: 'Flexibles Stories-Set für alle Events im Q1. Funktioniert mit Farb- und Bildwechsel. Template-Logik klar dokumentiert für zukünftige Nutzung.',
+    checks: [
+      { text: 'Templates erstellt', done: true },
+      { text: 'Dokumentation', done: true },
+      { text: 'Abgenommen', done: true }
+    ],
+    tags: ['Digital', 'Template', 'Instagram', 'Stories']
+  },
+  9: {
+    project: 'JCO Hamburg',
+    title: 'JCO Newsletter — März-Ausgabe',
+    status: 'Fertig', statusColor: '#4AAF74',
+    date: 'fertig 28. März',
+    notes: 'Layout für März-Newsletter. Saubere Typografie, JCO-Identität beibehalten. Druckvorbereitung und digitale Version abgeschlossen.',
+    checks: [
+      { text: 'Layout fertig', done: true },
+      { text: 'Korrektorat', done: true },
+      { text: 'Druckfreigabe', done: true }
+    ],
+    tags: ['Newsletter', 'Layout', 'Print', 'JCO']
+  },
+  10: {
+    project: 'Portfolio',
+    title: 'Portfolio Website — Launch',
+    status: 'Fertig', statusColor: '#4AAF74',
+    date: 'fertig April 2026',
+    notes: 'Komplett neu gebaut mit Claude Code. Mac/Finder-Ästhetik, 5 Case Studies, CV, About, Downloads. Responsive, schnell, ehrlich positioniert.',
+    checks: [
+      { text: 'Design & Copy', done: true },
+      { text: 'Development', done: true },
+      { text: 'Mobile QA', done: true },
+      { text: 'Deployed auf Vercel', done: true }
+    ],
+    tags: ['Web', 'Portfolio', 'Claude Code', 'Shipped']
+  }
+};
+
+let activeId = null;
+
+function setView(el) {
+  document.querySelectorAll('.sidebar-item').forEach(i => i.classList.remove('active'));
+  el.classList.add('active');
+}
+
+function openCard(id) {
+  const d = CARDS[id];
+  if (!d) return;
+
+  // toggle
+  if (activeId === id) { closePanel(); return; }
+  activeId = id;
+
+  document.querySelectorAll('.card').forEach(c => c.classList.remove('active'));
+  document.querySelector(`.card[data-id="${id}"]`)?.classList.add('active');
+
+  document.getElementById('dp-project').textContent = d.project;
+  document.getElementById('dp-title').textContent = d.title;
+  document.getElementById('dp-notes').textContent = d.notes;
+
+  // meta
+  const meta = document.getElementById('dp-meta');
+  meta.innerHTML = `
+    <div class="dp-meta-row">
+      <span class="dp-meta-label">Status</span>
+      <span class="dp-status" style="background:${d.statusColor}22;color:${d.statusColor};">
+        <span style="width:6px;height:6px;border-radius:50%;background:${d.statusColor};display:inline-block;"></span>
+        ${d.status}
+      </span>
+    </div>
+    <div class="dp-meta-row">
+      <span class="dp-meta-label">Datum</span>
+      <span>${d.date}</span>
+    </div>
+  `;
+
+  // checklist
+  const cl = document.getElementById('dp-checklist');
+  cl.innerHTML = d.checks.map((c,i) => `
+    <label class="dp-check ${c.done?'done':''}" id="chk-${id}-${i}">
+      <input type="checkbox" ${c.done?'checked':''} onchange="toggleCheck(${id},${i},this)">
+      <span>${c.text}</span>
+    </label>
+  `).join('');
+
+  // tags
+  const tg = document.getElementById('dp-tags');
+  tg.innerHTML = d.tags.map(t=>`<span class="dp-tag">${t}</span>`).join('');
+
+  document.getElementById('detail-panel').classList.remove('closed');
+}
+
+function toggleCheck(cardId, checkIdx, el) {
+  CARDS[cardId].checks[checkIdx].done = el.checked;
+  const label = document.getElementById(`chk-${cardId}-${checkIdx}`);
+  if (label) label.classList.toggle('done', el.checked);
+}
+
+function closePanel() {
+  activeId = null;
+  document.querySelectorAll('.card').forEach(c => c.classList.remove('active'));
+  document.getElementById('detail-panel').classList.add('closed');
+}
+</script>
+</body>
+</html>
