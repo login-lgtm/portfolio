@@ -250,6 +250,11 @@
     .nav-dropdown-item-sub  { font-size: 12px; color: var(--text-light); margin-top: 1px; }
     .nav-dropdown-item.active-project .nav-dropdown-item-name { color: var(--accent); }
     .nav-dropdown-divider { height: 1px; background: #E8E4E0; margin: 4px 0; }
+    .nav-dropdown-cat {
+      font-size: 9px; font-weight: 600; letter-spacing: .12em;
+      text-transform: uppercase; color: var(--text-light);
+      padding: 10px 14px 2px; user-select: none;
+    }
     .nav-dropdown-viewall {
       display: block; padding: 10px 14px; border-radius: 10px;
       font-size: 13px; color: var(--accent); text-decoration: none;
@@ -1597,6 +1602,7 @@
       /* Contact */
       .contact-title { font-size: 40px; letter-spacing: -1px; }
       .imessage-bubble { font-size: 15px; padding: 12px 16px; max-width: 280px; }
+      .imessage-wrapper { display: flex; flex-direction: column; align-items: flex-end; width: 100%; }
       .footer-bar { flex-direction: column; gap: 6px; text-align: center; }
     }
 
@@ -1626,7 +1632,7 @@
 .fw-iphone-thumb video,.fw-iphone-thumb img { width:100%; height:100%; object-fit:cover; display:block; }
 .fw-iphone-ph { flex:1; border-radius:16px; background:#E8E4E0; aspect-ratio:9/16; display:flex; align-items:center; justify-content:center; font-size:11px; color:#999; }
 /* ── Open project button ── */
-.fw-open-btn { display:block; width:100%; background:#6B5CE7; color:white; border-radius:100px; padding:10px; font-family:'DM Sans',sans-serif; font-size:13px; font-weight:500; text-align:center; text-decoration:none; transition:background .2s,transform .15s; box-sizing:border-box; }
+.fw-open-btn { display:block; width:100%; background:#6B5CE7; color:white; border-radius:100px; padding:10px; font-family:'DM Sans',sans-serif; font-size:13px; font-weight:500; text-align:center; text-decoration:none; transition:background .2s,transform .15s; box-sizing:border-box; margin-top:16px; }
 .fw-open-btn:hover { background:#5A4DD0; transform:translateY(-1px); }
 
 /* ══════════════════════════════════════════════════
@@ -1982,6 +1988,7 @@
       <li class="nav-work-wrapper">
         <a href="#work">Work <span class="nav-caret">▾</span></a>
         <div class="nav-dropdown">
+          <div class="nav-dropdown-cat">Favorites</div>
           <a class="nav-dropdown-item" href="work/mi4l/index.html">
             <span class="nav-dropdown-item-icon"><img src="images/icons/folder-custom.png" width="20" height="20" alt="" style="object-fit:contain;display:block;"></span>
             <span class="nav-dropdown-item-text">
@@ -1989,6 +1996,7 @@
               <span class="nav-dropdown-item-sub">Brand Development · Art Direction</span>
             </span>
           </a>
+          <div class="nav-dropdown-cat">Freelance</div>
           <a class="nav-dropdown-item" href="work/studio-liebe-nrg/index.html">
             <span class="nav-dropdown-item-icon"><img src="images/icons/folder-custom.png" width="20" height="20" alt="" style="object-fit:contain;display:block;"></span>
             <span class="nav-dropdown-item-text">
@@ -2003,6 +2011,7 @@
               <span class="nav-dropdown-item-sub">Brand Communication · Visual Strategy</span>
             </span>
           </a>
+          <div class="nav-dropdown-cat">Experience</div>
           <a class="nav-dropdown-item" href="work/apprenticeship/index.html">
             <span class="nav-dropdown-item-icon"><img src="images/icons/folder-custom.png" width="20" height="20" alt="" style="object-fit:contain;display:block;"></span>
             <span class="nav-dropdown-item-text">
@@ -2010,6 +2019,7 @@
               <span class="nav-dropdown-item-sub">Web Design · Corporate Design · Print</span>
             </span>
           </a>
+          <div class="nav-dropdown-cat">Personal</div>
           <a class="nav-dropdown-item" href="work/dashboard/index.html">
             <span class="nav-dropdown-item-icon">
               <svg viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg"><rect x="2" y="2" width="7" height="7" rx="1.5" fill="#6B5CE7" opacity=".7"/><rect x="11" y="2" width="7" height="7" rx="1.5" fill="#6B5CE7" opacity=".4"/><rect x="2" y="11" width="7" height="7" rx="1.5" fill="#6B5CE7" opacity=".4"/><rect x="11" y="11" width="7" height="7" rx="1.5" fill="#6B5CE7" opacity=".7"/></svg>
@@ -2049,7 +2059,7 @@
           <a href="work/studio-liebe-nrg/index.html"><img src="images/icons/folder-custom.png" style="width:18px;height:18px;object-fit:contain;margin-right:6px;vertical-align:middle;"> Studio Liebe &amp; NRG</a>
           <a href="work/jco/index.html"><img src="images/icons/folder-custom.png" style="width:18px;height:18px;object-fit:contain;margin-right:6px;vertical-align:middle;"> JCO Hamburg</a>
           <a href="work/apprenticeship/index.html"><img src="images/icons/folder-custom.png" style="width:18px;height:18px;object-fit:contain;margin-right:6px;vertical-align:middle;"> During my Apprenticeship</a>
-          <a href="work/dashboard/index.html"><img src="images/icons/folder-custom.png" style="width:18px;height:18px;object-fit:contain;margin-right:6px;vertical-align:middle;"> Workflow Dashboard</a>
+          <a href="work/dashboard/index.html"><svg viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg" style="width:18px;height:18px;margin-right:6px;vertical-align:middle;flex-shrink:0;"><rect x="2" y="2" width="7" height="7" rx="1.5" fill="#6B5CE7" opacity=".7"/><rect x="11" y="2" width="7" height="7" rx="1.5" fill="#6B5CE7" opacity=".4"/><rect x="2" y="11" width="7" height="7" rx="1.5" fill="#6B5CE7" opacity=".4"/><rect x="11" y="11" width="7" height="7" rx="1.5" fill="#6B5CE7" opacity=".7"/></svg> Workflow Dashboard</a>
         </div>
       </div>
       <div class="nav-overlay-item">
@@ -2837,6 +2847,7 @@
       const navEl = document.querySelector('nav');
       let lastY = window.scrollY;
       window.addEventListener('scroll', () => {
+        if (window.innerWidth <= 768) { lastY = y; return; }
         const y = window.scrollY;
         if (y > lastY && y > 80) navEl.classList.add('nav-hidden');
         else navEl.classList.remove('nav-hidden');
@@ -3497,29 +3508,27 @@
     })();
 
     /* ── DOCK TOUCH TOOLTIPS ── */
-    document.querySelectorAll('.dock-item').forEach(item => {
-      item.addEventListener('touchstart', e => {
-        e.preventDefault();
-        const tip = item.querySelector('.dock-tip');
-        if (!tip) return;
-        tip.style.cssText = 'display:block!important;opacity:1!important;transform:translateX(-50%) translateY(0)!important;';
-        clearTimeout(item._tipTimer);
-        item._tipTimer = setTimeout(() => { tip.style.cssText = ''; }, 1500);
-      }, { passive: false });
-    });
-
-    /* ── iOS Dock Label Toast (Mobile) ── */
-    if (window.innerWidth <= 768) {
+    /* ── Mobile Dock: show toast on tap (no page jump) ── */
+    if (window.matchMedia('(hover: none)').matches) {
       document.querySelectorAll('.dock-item').forEach(item => {
-        item.addEventListener('click', function() {
-          const label = this.querySelector('.dock-tip')?.textContent || this.getAttribute('data-label');
+        item.addEventListener('touchend', e => {
+          e.preventDefault();
+          const label = item.querySelector('.dock-tip')?.textContent;
           if (!label) return;
+          const existing = document.querySelector('._dock-toast');
+          if (existing) existing.remove();
           const toast = document.createElement('div');
+          toast.className = '_dock-toast';
           toast.textContent = label;
-          toast.style.cssText = 'position:fixed;bottom:100px;left:50%;transform:translateX(-50%);background:rgba(0,0,0,.75);color:white;padding:8px 16px;border-radius:20px;font-size:13px;z-index:9999;pointer-events:none;transition:opacity .3s';
+          toast.style.cssText = 'position:fixed;bottom:100px;left:50%;transform:translateX(-50%);background:rgba(0,0,0,.78);color:white;padding:8px 18px;border-radius:20px;font-size:13px;z-index:9999;pointer-events:none;white-space:nowrap;max-width:90vw;overflow:hidden;text-overflow:ellipsis;';
           document.body.appendChild(toast);
-          setTimeout(() => { toast.style.opacity='0'; setTimeout(() => toast.remove(), 300); }, 1500);
-        });
+          clearTimeout(item._tipTimer);
+          item._tipTimer = setTimeout(() => {
+            toast.style.transition = 'opacity .3s';
+            toast.style.opacity = '0';
+            setTimeout(() => toast.remove(), 320);
+          }, 1600);
+        }, { passive: false });
       });
     }
   </script>
