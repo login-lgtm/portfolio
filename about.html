@@ -88,13 +88,13 @@
     .nav-overlay.open { transform:translateY(0); }
     .nav-overlay-header { display:flex; align-items:center; justify-content:space-between; padding:20px 24px; border-bottom:1px solid var(--border); }
     .nav-overlay-close { background:none; border:none; font-size:22px; cursor:pointer; color:var(--text); line-height:1; padding:4px; }
-    .nav-overlay-list { padding:8px 0 32px; }
+    .nav-overlay-list { padding:4px 0 16px; }
     .nav-overlay-item { border-bottom:1px solid var(--border); }
-    .nav-overlay-label { font-family:'Instrument Serif',serif; font-size:32px; color:var(--text); padding:20px 24px; display:block; text-decoration:none; transition:color .2s; }
+    .nav-overlay-label { font-family:'Instrument Serif',serif; font-size:28px; color:var(--text); padding:14px 24px; display:block; text-decoration:none; transition:color .2s; }
     .nav-overlay-label:hover { color:var(--accent); }
     .nav-overlay-label.is-label { cursor:default; }
-    .nav-overlay-sub { padding:0 24px 12px; display:flex; flex-direction:column; gap:4px; }
-    .nav-overlay-sub a { display:flex; align-items:center; gap:10px; padding:10px 0; font-size:16px; font-weight:500; color:var(--text-mid); text-decoration:none; padding-left:24px; transition:color .15s; }
+    .nav-overlay-sub { padding:0 24px 6px; display:flex; flex-direction:column; gap:0; }
+    .nav-overlay-sub a { display:flex; align-items:center; gap:10px; padding:6px 0; font-size:14px; font-weight:500; color:var(--text-mid); text-decoration:none; padding-left:24px; transition:color .15s; }
     .nav-overlay-sub a:hover { color:var(--accent); }
     @media (max-width:768px) {
       nav {
@@ -322,7 +322,7 @@
       background-size:40px 40px;
     }
     .cta-inner { position:relative; z-index:1; }
-    .imessage-wrap { display:flex; flex-direction:column; align-items:flex-end; gap:8px; margin-bottom:48px; margin-left:auto; text-align:left; }
+    .imessage-wrap { display:flex; flex-direction:column; align-items:flex-end; gap:8px; margin-bottom:48px; width:100%; }
     .imessage-time { font-size:12px; color:rgba(255,255,255,.6); margin-bottom:4px; }
     .imessage-bubble { background:rgba(255,255,255,.2); backdrop-filter:blur(8px); color:white; padding:14px 22px; border-radius:20px 20px 4px 20px; font-size:18px; font-weight:500; max-width:360px; }
     .imessage-bubble.second { font-size:16px; font-weight:400; }
@@ -564,7 +564,7 @@
     .garden-meadow {
       border-radius: 20px; overflow: hidden;
       box-shadow: 0 8px 40px rgba(0,0,0,.10);
-      height: 440px; position: relative; cursor: crosshair;
+      height: 440px; position: relative; cursor: crosshair; touch-action: manipulation;
       background:
         url("data:image/svg+xml,%3Csvg width='20' height='20' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M10 18 Q10 12 8 8 M10 18 Q10 12 12 8 M5 18 Q5 13 3 10 M15 18 Q15 13 17 10' stroke='%234CAF50' stroke-width='0.8' fill='none' opacity='0.3'/%3E%3C/svg%3E") 0 0 / 20px 20px,
         linear-gradient(180deg,#C8E6C9 0%,#A5D6A7 40%,#81C784 100%);
@@ -683,7 +683,7 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      gap: 4px;
+      gap: 0;
     }
     .heart-icon { display: inline-flex; align-items: center; }
 
@@ -1068,7 +1068,10 @@
     const overlayClose = document.getElementById('nav-overlay-close');
     function openOverlay()  { overlay.classList.add('open'); document.body.style.overflow='hidden'; }
     function closeOverlay() { overlay.classList.remove('open'); document.body.style.overflow=''; }
-    if (hamburger) hamburger.addEventListener('click', openOverlay);
+    if (hamburger) {
+      hamburger.addEventListener('click', openOverlay);
+      hamburger.addEventListener('touchstart', e => { e.preventDefault(); openOverlay(); }, { passive: false });
+    }
     if (overlayClose) overlayClose.addEventListener('click', closeOverlay);
 
     /* ── SCROLL REVEAL ── */
@@ -1158,61 +1161,59 @@
         hint.innerHTML = 'you already planted here 🌱';
       }
 
-      meadow.addEventListener('click', e => {
-        if (localStorage.getItem(LS_PLANTED) === '1') return; // already planted
-        /* Ignore if clicking counter */
-        if (e.target.closest('#garden-counter')) return;
-
+      /* Touch handler for mobile — touchend gives precise coords */
+      function plantAt(clientX, clientY) {
+        if (localStorage.getItem(LS_PLANTED) === '1') return;
         const rect   = meadow.getBoundingClientRect();
-        const clickX = e.clientX - rect.left;
-        const clickY = e.clientY - rect.top;
+        const clickX = clientX - rect.left;
+        const clickY = clientY - rect.top;
 
         const el = document.createElement('span');
         el.textContent = plants[Math.floor(Math.random() * plants.length)];
         el.className = 'garden-plant';
         el.style.cssText = `position:absolute;left:${clickX}px;top:${clickY}px;font-size:${20+Math.random()*12}px;transform:translate(-50%,-50%) scale(0);z-index:3;pointer-events:none;line-height:1;transition:transform 0.4s cubic-bezier(0.34,1.56,0.64,1);`;
         meadow.appendChild(el);
-
         requestAnimationFrame(() => requestAnimationFrame(() => {
           el.style.transform = 'translate(-50%,-50%) scale(1)';
         }));
-
-        /* Remove oldest if too many */
         const all = meadow.querySelectorAll('.garden-plant');
         if (all.length > 40) all[0].remove();
-
-        /* Increment counter */
         totalCount++;
         if (countEl) countEl.textContent = totalCount;
         localStorage.setItem(LS_KEY, totalCount);
-
-        /* Mark this visitor as planted */
-        if (!hasPlanted) {
+        if (!localStorage.getItem(LS_PLANTED)) {
           localStorage.setItem(LS_PLANTED, '1');
           if (hint) {
             hint.style.transition = 'opacity .3s';
             hint.style.opacity = '0';
-            setTimeout(() => {
-              hint.innerHTML = 'one flower planted 🌱 thank you';
-              hint.style.opacity = '';
-            }, 300);
+            setTimeout(() => { hint.innerHTML = 'one flower planted 🌱 thank you'; hint.style.opacity = ''; }, 300);
           }
         }
-
-        /* Burst emojis on click */
         for (let i = 0; i < 5; i++) {
           const p = document.createElement('div');
           p.textContent = plants[Math.floor(Math.random() * plants.length)];
-          p.style.cssText = `position:fixed;left:${e.clientX}px;top:${e.clientY}px;pointer-events:none;z-index:9999;font-size:${10+Math.random()*8}px;transition:all 0.5s ease-out;transform:translate(-50%,-50%);`;
+          p.style.cssText = `position:fixed;left:${clientX}px;top:${clientY}px;pointer-events:none;z-index:9999;font-size:${10+Math.random()*8}px;transition:all 0.5s ease-out;transform:translate(-50%,-50%);`;
           document.body.appendChild(p);
-          const angle = (Math.PI * 2 / 5) * i + Math.random();
-          const dist  = 30 + Math.random() * 40;
+          const angle = (Math.PI*2/5)*i + Math.random();
+          const dist = 30 + Math.random()*40;
           requestAnimationFrame(() => {
             p.style.transform = `translate(calc(-50% + ${Math.cos(angle)*dist}px),calc(-50% + ${Math.sin(angle)*dist}px)) scale(0)`;
             p.style.opacity = '0';
           });
           setTimeout(() => p.remove(), 550);
         }
+      }
+
+      meadow.addEventListener('touchend', e => {
+        if (e.target.closest('#garden-counter')) return;
+        e.preventDefault();
+        const t = e.changedTouches[0];
+        plantAt(t.clientX, t.clientY);
+      }, { passive: false });
+
+      meadow.addEventListener('click', e => {
+        if (e.target.closest('#garden-counter')) return;
+        plantAt(e.clientX, e.clientY);
       });
     })();
 

@@ -290,32 +290,32 @@
       background: none; border: none; font-size: 22px;
       cursor: pointer; color: var(--text); line-height: 1; padding: 4px;
     }
-    .nav-overlay-list { padding: 8px 0 32px; }
+    .nav-overlay-list { padding: 4px 0 16px; }
     .nav-overlay-item {
       border-bottom: 1px solid var(--border);
     }
     .nav-overlay-label {
       font-family: 'Instrument Serif', serif;
-      font-size: 32px; color: var(--text);
-      padding: 20px 24px; display: block;
+      font-size: 28px; color: var(--text);
+      padding: 14px 24px; display: block;
       text-decoration: none;
       transition: color .2s;
     }
     .nav-overlay-label:hover { color: var(--accent); }
     .nav-overlay-label.is-label { cursor: default; }
     .nav-overlay-sub {
-      padding: 0 24px 12px;
-      display: flex; flex-direction: column; gap: 4px;
+      padding: 0 24px 6px;
+      display: flex; flex-direction: column; gap: 0;
     }
     .nav-overlay-sub a {
       display: flex; align-items: center; gap: 10px;
-      padding: 10px 0; font-size: 16px; font-weight: 500;
+      padding: 6px 0; font-size: 14px; font-weight: 500;
       color: var(--text-mid); text-decoration: none;
       padding-left: 24px; transition: color .15s;
     }
     .nav-overlay-sub a:hover { color: var(--accent); }
     .nav-overlay-sub a.ov-active { color: var(--accent); }
-    .nav-overlay-cat { font-size:9px; font-weight:600; letter-spacing:.12em; text-transform:uppercase; color:var(--text-light); padding:10px 24px 2px; }
+    .nav-overlay-cat { font-size:9px; font-weight:600; letter-spacing:.12em; text-transform:uppercase; color:var(--text-light); padding:6px 24px 2px; }
 
     /* Open to New Roles tag */
     .hero-tag {
@@ -535,7 +535,7 @@
     .fc-sp-ctrl { color:#B3B3B3; cursor:pointer; display:inline-flex; align-items:center; justify-content:center; transition:color .15s; line-height:0; }
     .fc-sp-ctrl svg { fill:currentColor; }
     .fc-sp-ctrl:hover { color:white; }
-    .fc-sp-play { width:32px; height:32px; border-radius:50%; background:white; border:none; cursor:pointer; display:flex; align-items:center; justify-content:center; flex-shrink:0; transition:transform .1s; -webkit-appearance:none; appearance:none; }
+    .fc-sp-play { width:32px; height:32px; border-radius:50%; background:white !important; -webkit-background-color:white !important; border:none; cursor:pointer; display:flex; align-items:center; justify-content:center; flex-shrink:0; transition:transform .1s; -webkit-appearance:none; appearance:none; color:#121212; }
     .fc-sp-play:hover { transform:scale(1.06); }
     .fc-sp-play svg { fill:#121212; }
     .fc-sp-progress { display:flex; align-items:center; gap:6px; }
@@ -1395,7 +1395,7 @@
       background-size: 40px 40px;
     }
     .contact-inner { position:relative; z-index:1; }
-    .imessage-wrapper { display:flex; flex-direction:column; align-items:flex-end; gap:8px; margin-bottom:48px; text-align:left; }
+    .imessage-wrapper { display:flex; flex-direction:column; align-items:flex-end; gap:8px; margin-bottom:48px; width:100%; }
     .imessage-time   { font-size:12px; color:rgba(255,255,255,.6); margin-bottom:4px; }
     .imessage-bubble {
       background:rgba(255,255,255,.2); backdrop-filter:blur(8px);
@@ -1563,7 +1563,8 @@
         cursor: default;
       }
       .fc-meadow-hint { opacity: 1 !important; z-index: 10; }
-      .fc-meadow-card { display: none; }
+      .fc-meadow-card { top: auto; bottom: 10px; padding: 6px 12px; white-space: nowrap; }
+      .fc-meadow-card-text { font-size: 12px; }
       .float-card.fc-coffee { width: 160px; }
       .float-card.fc-folder { width: 130px; }
       .fc-folder .fc-folder-inner > div:last-child { padding: 14px 16px; }
@@ -1617,6 +1618,7 @@
       .dock-icon { width: 40px; height: 40px; }
       .dock { gap: 4px; padding: 10px 12px; }
       .dock-hint { font-size: 11px; }
+      .dock-wrapper { margin-top: 24px; margin-bottom: 8px; }
       .dock-wrapper { margin-top: 16px; }
 
       /* Contact */
@@ -2234,8 +2236,8 @@
             <span class="fc-dot g"></span>
             <span class="fc-chrome-label">curious.folder</span>
           </div>
-          <div style="padding:20px 24px;">
-            <img src="images/icons/folder-custom.png" style="width:48px;height:48px;object-fit:contain;display:block;margin:0 auto;" alt="Secret Folder">
+          <div style="padding:20px 24px;display:flex;flex-direction:column;align-items:center;justify-content:center;height:calc(100% - 28px);">
+            <img src="images/icons/folder-custom.png" style="width:48px;height:48px;object-fit:contain;display:block;" alt="Secret Folder">
             <p style="font-family:'DM Sans',sans-serif;font-size:10px;color:#999;text-align:center;margin-top:8px;margin-bottom:0;">click to play.</p>
           </div>
         </div>
@@ -2886,7 +2888,10 @@
     function openOverlay()  { overlay.classList.add('open'); document.body.style.overflow = 'hidden'; }
     function closeOverlay() { overlay.classList.remove('open'); document.body.style.overflow = ''; }
 
-    if (hamburger) hamburger.addEventListener('click', openOverlay);
+    if (hamburger) {
+      hamburger.addEventListener('click', openOverlay);
+      hamburger.addEventListener('touchstart', e => { e.preventDefault(); openOverlay(); }, { passive: false });
+    }
     if (overlayClose) overlayClose.addEventListener('click', closeOverlay);
 
     /* ── OPEN TO NEW ROLES MODAL (positioned below tag) ──── */
