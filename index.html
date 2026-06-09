@@ -808,17 +808,97 @@
     @media (max-width: 900px) {
       .fw-sidebar { width: 180px; }
     }
+    /* ── iOS Files-style mobile panel (hidden on desktop) ── */
+    .fw-ios-panel { display: none; }
+    .fw-ios-header {
+      font-family: 'DM Sans', sans-serif;
+      font-size: 22px; font-weight: 700; color: #1A1A1A;
+      padding: 20px 20px 10px;
+    }
+    .fw-ios-section-label {
+      font-family: 'DM Sans', sans-serif;
+      font-size: 10px; font-weight: 600; letter-spacing: .1em;
+      text-transform: uppercase; color: #999;
+      padding: 10px 20px 4px;
+    }
+    .fw-ios-row {
+      display: flex; align-items: center;
+      padding: 10px 16px;
+      border-bottom: 1px solid rgba(0,0,0,.06);
+      cursor: pointer; gap: 12px;
+      user-select: none; -webkit-tap-highlight-color: transparent;
+      background: white;
+    }
+    .fw-ios-row:active { background: rgba(0,0,0,.04); }
+    .fw-ios-icon-wrap {
+      width: 40px; height: 40px; flex-shrink: 0;
+      border-radius: 10px; overflow: hidden;
+      display: flex; align-items: center; justify-content: center;
+      background: #F0EDEA;
+    }
+    .fw-ios-icon-wrap img { width: 100%; height: 100%; object-fit: cover; }
+    .fw-ios-icon-wrap svg { width: 22px; height: 22px; }
+    .fw-ios-row-info { flex: 1; min-width: 0; }
+    .fw-ios-row-name {
+      font-family: 'DM Sans', sans-serif;
+      font-size: 15px; font-weight: 500; color: #1A1A1A;
+      white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+    }
+    .fw-ios-row-sub {
+      font-family: 'DM Sans', sans-serif;
+      font-size: 12px; color: #999; margin-top: 1px;
+    }
+    .fw-ios-chevron {
+      font-size: 16px; color: #C8C8CC;
+      transition: transform .2s; flex-shrink: 0;
+      font-weight: 600;
+    }
+    .fw-ios-row.open .fw-ios-chevron { transform: rotate(90deg); }
+    .fw-ios-detail {
+      display: none;
+      padding: 12px 16px 16px 68px;
+      background: #FAFAFA;
+      border-bottom: 1px solid rgba(0,0,0,.06);
+    }
+    .fw-ios-detail.open { display: block; }
+    .fw-ios-detail-desc {
+      font-family: 'DM Sans', sans-serif;
+      font-size: 13px; color: #555; line-height: 1.5; margin-bottom: 10px;
+    }
+    .fw-ios-detail-stats {
+      display: flex; gap: 16px; margin-bottom: 10px;
+    }
+    .fw-ios-stat-val {
+      font-family: 'Instrument Serif', serif;
+      font-size: 17px; color: #6B5CE7; display: block;
+    }
+    .fw-ios-stat-lbl {
+      font-family: 'DM Sans', sans-serif;
+      font-size: 10px; color: #999;
+    }
+    .fw-ios-tags { display: flex; flex-wrap: wrap; gap: 4px; margin-bottom: 12px; }
+    .fw-ios-tag {
+      font-family: 'DM Sans', sans-serif;
+      font-size: 10px; background: #EEECEA;
+      color: #666; padding: 3px 9px; border-radius: 100px;
+    }
+    .fw-ios-open-btn {
+      display: block; width: 100%; background: #6B5CE7; color: white;
+      border-radius: 100px; padding: 10px;
+      font-family: 'DM Sans', sans-serif; font-size: 13px; font-weight: 500;
+      text-align: center; text-decoration: none;
+      box-sizing: border-box;
+    }
+
     @media (max-width: 680px) {
-      .finder-window { height: auto; }
-      .fw-body { flex-direction: column; }
-      .fw-sidebar {
-        width: 100%; border-right: none;
-        border-bottom: 1px solid rgba(0,0,0,.07);
-        padding: 12px 0; overflow-x: auto; overflow-y: hidden;
+      .finder-window {
+        height: auto; border-radius: 16px;
+        background: white; overflow: hidden;
       }
-      .fw-sidebar-list { flex-direction: row; padding: 0 12px; }
-      .fw-sidebar-item { white-space: nowrap; }
-      .fw-content { min-height: 400px; }
+      .fw-chrome { display: none; }
+      .fw-body { display: none !important; }
+      .fw-statusbar { display: none; }
+      .fw-ios-panel { display: block; }
     }
 
     /* ─────────────────────────────────────────────
@@ -1588,23 +1668,8 @@
       #skills { padding: 60px 20px; }
       .about-inner { gap: 28px; }
 
-      /* Finder window: sidebar → horizontal tab bar */
+      /* Finder window → iOS Files panel on mobile (handled by 680px block) */
       .finder-window { height: auto; }
-      .fw-body { flex-direction: column; }
-      .fw-sidebar {
-        width: 100%; height: auto; flex-shrink: 0;
-        border-right: none;
-        border-bottom: 1px solid rgba(0,0,0,.07);
-        padding: 8px 8px 0;
-      }
-      .fw-sidebar-label { display: none; }
-      .fw-sidebar-list {
-        flex-direction: row; overflow-x: auto; gap: 4px; padding: 0;
-        -webkit-overflow-scrolling: touch;
-      }
-      .fw-sidebar-icon { display: none; }
-      .fw-sidebar-item { flex-shrink: 0; padding: 6px 12px; border-radius: 6px; }
-      .fw-content { height: 360px; }
 
       /* Statement lines */
       .stmt-block { margin-left: -20px; margin-right: -20px; }
@@ -2853,6 +2918,81 @@
 
     /* ── MI4L aktiv + Panel beim Laden ── */
     renderContent(0);
+
+    /* ── iOS Files-style mobile panel ── */
+    (function() {
+      const finderEl = document.querySelector('.finder-window');
+      if (!finderEl) return;
+
+      const CATS = [
+        { label: 'Favorites', indices: [0, 1] },
+        { label: 'Freelance', indices: [2] },
+        { label: 'Experience', indices: [3] },
+        { label: 'Personal', indices: [4] }
+      ];
+
+      const ICONS = [
+        /* 0 MI4L */
+        `<div class="fw-ios-icon-wrap" style="background:#1A1A1A"><img src="work/mi4l/media/mi4l-profile.jpg" alt="" onerror="this.parentNode.innerHTML='<svg viewBox=\'0 0 20 20\' fill=\'white\' xmlns=\'http://www.w3.org/2000/svg\'><rect x=\'3\' y=\'8\' width=\'2\' height=\'4\' rx=\'1\'/><rect x=\'7\' y=\'5\' width=\'2\' height=\'10\' rx=\'1\'/><rect x=\'11\' y=\'7\' width=\'2\' height=\'6\' rx=\'1\'/><rect x=\'15\' y=\'9\' width=\'2\' height=\'2\' rx=\'1\'/></svg>'"></div>`,
+        /* 1 Studio Liebe */
+        `<div class="fw-ios-icon-wrap"><img src="work/studio-liebe-nrg/media/studio-liebe/studioliebe-profile.jpg" alt="" onerror="this.style.display='none'"></div>`,
+        /* 2 JCO */
+        `<div class="fw-ios-icon-wrap"><img src="work/jco/media/JCO-profile.jpg" alt="" onerror="this.parentNode.innerHTML='<img src=\'images/icons/folder-custom.png\' style=\'width:22px;height:22px;object-fit:contain\'>'"></div>`,
+        /* 3 Apprenticeship */
+        `<div class="fw-ios-icon-wrap"><img src="images/icons/folder-custom.png" style="width:22px;height:22px;object-fit:contain;width:100%;height:100%;object-fit:cover" alt=""></div>`,
+        /* 4 Dashboard */
+        `<div class="fw-ios-icon-wrap" style="background:#EDE9F7"><svg viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg"><rect x="2" y="2" width="7" height="7" rx="1.5" fill="#6B5CE7" opacity=".8"/><rect x="11" y="2" width="7" height="7" rx="1.5" fill="#6B5CE7" opacity=".5"/><rect x="2" y="11" width="7" height="7" rx="1.5" fill="#6B5CE7" opacity=".5"/><rect x="11" y="11" width="7" height="7" rx="1.5" fill="#6B5CE7" opacity=".8"/></svg></div>`
+      ];
+
+      function buildPanel() {
+        let html = `<div class="fw-ios-header">Projects</div>`;
+        CATS.forEach(cat => {
+          html += `<div class="fw-ios-section-label">${cat.label}</div>`;
+          cat.indices.forEach(idx => {
+            const p = PROJECTS[idx];
+            const statsHTML = (p.stats || []).slice(0, 3).map(s =>
+              `<div><span class="fw-ios-stat-val">${s.value}</span><span class="fw-ios-stat-lbl">${s.label}</span></div>`
+            ).join('');
+            html += `
+              <div class="fw-ios-row" data-ios-idx="${idx}">
+                ${ICONS[idx]}
+                <div class="fw-ios-row-info">
+                  <div class="fw-ios-row-name">${p.name}</div>
+                  <div class="fw-ios-row-sub">${p.period}</div>
+                </div>
+                <span class="fw-ios-chevron">›</span>
+              </div>
+              <div class="fw-ios-detail" data-ios-detail="${idx}">
+                <p class="fw-ios-detail-desc">${p.desc}</p>
+                <div class="fw-ios-detail-stats">${statsHTML}</div>
+                <div class="fw-ios-tags">${p.tags.map(t => `<span class="fw-ios-tag">${t}</span>`).join('')}</div>
+                <a class="fw-ios-open-btn" href="${p.url}">Open project →</a>
+              </div>`;
+          });
+        });
+        const panel = document.createElement('div');
+        panel.className = 'fw-ios-panel';
+        panel.innerHTML = html;
+        finderEl.appendChild(panel);
+
+        panel.addEventListener('click', e => {
+          const row = e.target.closest('.fw-ios-row');
+          if (!row) return;
+          const idx = row.dataset.iosIdx;
+          const detail = panel.querySelector(`[data-ios-detail="${idx}"]`);
+          const isOpen = row.classList.contains('open');
+          /* close all */
+          panel.querySelectorAll('.fw-ios-row.open').forEach(r => r.classList.remove('open'));
+          panel.querySelectorAll('.fw-ios-detail.open').forEach(d => d.classList.remove('open'));
+          if (!isOpen) {
+            row.classList.add('open');
+            if (detail) detail.classList.add('open');
+          }
+        });
+      }
+
+      buildPanel();
+    })();
 
     /* ── HERO NAME HIGHLIGHT ──────────────────────────────────── */
     function startHeroNameAnimation() {
