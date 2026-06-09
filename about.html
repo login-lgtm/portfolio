@@ -536,127 +536,74 @@
     }
     @media (hover: none) { body { cursor: auto; } .cursor, .cursor-ring { display: none; } }
 
-    /* ── WHAT'S IN MY BAG ── */
-    .bag-section {
+    /* ── GARDEN SECTION ── */
+    .garden-section {
       padding: 80px;
-      background: #EEECEA;
+      background: var(--bg);
       position: relative;
-      overflow: visible;
       z-index: 1;
     }
-    .bag-sup {
-      font-size: 11px;
-      color: var(--accent);
-      text-transform: uppercase;
-      letter-spacing: 0.12em;
-      font-weight: 600;
+    .garden-sup {
+      font-size: 11px; color: var(--accent);
+      text-transform: uppercase; letter-spacing: 0.12em; font-weight: 600;
     }
-    .bag-title {
+    .garden-title {
       font-family: 'Instrument Serif', serif;
-      font-size: 56px;
-      line-height: 1.05;
-      letter-spacing: -1.5px;
-      margin-top: 8px;
+      font-size: clamp(40px, 5vw, 64px);
+      line-height: 1.05; letter-spacing: -1.5px; margin-top: 8px;
     }
-    .bag-container {
-      position: relative;
-      width: 400px;
-      height: 400px;
-      margin: 60px auto 0;
+    .garden-body {
+      display: grid;
+      grid-template-columns: 1fr 280px;
+      gap: 32px;
+      margin-top: 48px;
+      align-items: start;
     }
-    #the-bag {
-      width: 220px;
-      height: auto;
-      position: absolute;
-      left: 50%; top: 50%;
-      transform: translate(-50%, -50%);
-      cursor: pointer;
-      transition: transform 0.3s ease;
-      z-index: 2;
+    .garden-meadow {
+      border-radius: 20px; overflow: hidden;
+      box-shadow: 0 8px 40px rgba(0,0,0,.10);
+      height: 440px; position: relative; cursor: crosshair;
+      background:
+        url("data:image/svg+xml,%3Csvg width='20' height='20' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M10 18 Q10 12 8 8 M10 18 Q10 12 12 8 M5 18 Q5 13 3 10 M15 18 Q15 13 17 10' stroke='%234CAF50' stroke-width='0.8' fill='none' opacity='0.3'/%3E%3C/svg%3E") 0 0 / 20px 20px,
+        linear-gradient(180deg,#C8E6C9 0%,#A5D6A7 40%,#81C784 100%);
+      user-select: none;
     }
-    #the-bag:hover { transform: translate(-50%, -50%) scale(1.05); }
-    .bag-item {
-      position: absolute;
-      background: white;
-      border-radius: 12px;
-      padding: 12px 14px;
-      box-shadow: 0 8px 24px rgba(0,0,0,.10);
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 6px;
-      width: 100px;
-      cursor: pointer;
-      opacity: 0;
-      transform: translate(-50%, -50%) scale(0.5);
-      transition: all 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
-      z-index: 3;
+    .garden-meadow-hint {
+      position: absolute; bottom: 20px; left: 50%; transform: translateX(-50%);
+      font-size: 12px; color: rgba(0,0,0,.45); white-space: nowrap;
+      background: rgba(255,255,255,.6); backdrop-filter: blur(6px);
+      padding: 6px 14px; border-radius: 100px; pointer-events: none;
+      transition: opacity .3s;
     }
-    .bag-item.open { opacity: 1; transform: translate(-50%, -50%) scale(1); }
-    .bag-item-icon {
-      width: 48px; height: 48px;
-      object-fit: contain;
-      border-radius: 8px;
-      display: block;
+    .garden-meadow-counter {
+      position: absolute; top: 20px; left: 50%; transform: translateX(-50%);
+      background: rgba(255,255,255,.85); backdrop-filter: blur(8px);
+      border-radius: 100px; padding: 8px 20px;
+      display: flex; align-items: center; gap: 8px;
+      font-size: 13px; font-weight: 500; color: #1A1A1A;
+      box-shadow: 0 2px 12px rgba(0,0,0,.10);
+      pointer-events: none; white-space: nowrap;
     }
-    .bag-item-svg {
-      display: flex; align-items: center; justify-content: center;
-      width: 48px; height: 48px;
+    .garden-count-num {
+      font-family: 'Instrument Serif', serif;
+      font-size: 22px; color: #2E7D32; line-height: 1;
     }
-    .bag-item-label {
-      font-size: 11px;
-      font-weight: 500;
-      color: #666;
-      text-align: center;
-      line-height: 1.3;
-    }
-    .bag-item .tooltip {
-      position: absolute;
-      bottom: calc(100% + 8px);
-      left: 50%;
-      transform: translateX(-50%);
-      background: #1A1A1A;
-      color: white;
-      padding: 5px 10px;
-      border-radius: 6px;
-      font-size: 11px;
-      white-space: nowrap;
-      opacity: 0;
-      pointer-events: none;
-      transition: opacity 0.2s;
-      z-index: 10;
-    }
-    .bag-item:hover .tooltip { opacity: 1; }
-    .bag-hint {
-      text-align: center;
-      font-size: 12px;
-      color: #999;
-      margin-top: 16px;
-    }
+    .garden-plant { position: absolute; pointer-events: none; line-height: 1; z-index: 3; }
+    .garden-side { display: flex; flex-direction: column; gap: 20px; }
 
     /* ── CURRENTLY WIDGET ── */
     .currently-widget {
-      position: absolute;
-      top: 80px; right: 80px;
-      width: 260px;
-      background: white;
-      border-radius: 16px;
-      box-shadow: 0 8px 32px rgba(0,0,0,.10);
-      overflow: hidden;
+      background: white; border-radius: 16px;
+      box-shadow: 0 8px 32px rgba(0,0,0,.10); overflow: hidden;
       animation: float2 5s ease-in-out infinite;
-      z-index: 4;
     }
     @keyframes float2 {
       0%, 100% { transform: translateY(0); }
       50%       { transform: translateY(-8px); }
     }
     .cw-chrome {
-      height: 32px;
-      background: #F5F3F1;
-      display: flex;
-      align-items: center;
-      padding: 0 12px;
-      gap: 0;
+      height: 32px; background: #F5F3F1;
+      display: flex; align-items: center; padding: 0 12px;
     }
     .cw-dots { display: flex; gap: 5px; align-items: center; }
     .cw-dot { width: 8px; height: 8px; border-radius: 50%; }
@@ -666,26 +613,29 @@
     .cw-url { font-size: 10px; color: #999; margin-left: 10px; }
     .cw-content { padding: 20px; }
     .cw-label {
-      font-size: 10px;
-      color: var(--accent);
-      text-transform: uppercase;
-      letter-spacing: 0.12em;
-      font-weight: 600;
-      margin-bottom: 12px;
+      font-size: 10px; color: var(--accent);
+      text-transform: uppercase; letter-spacing: 0.12em;
+      font-weight: 600; margin-bottom: 12px;
     }
     .cw-row {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 6px 0;
-      border-bottom: 1px solid #F0EDEA;
-      font-size: 12px;
-      gap: 12px;
+      display: flex; justify-content: space-between;
+      align-items: center; padding: 6px 0;
+      border-bottom: 1px solid #F0EDEA; font-size: 12px; gap: 12px;
     }
     .cw-row:last-child { border-bottom: none; }
     .cw-key { color: #999; flex-shrink: 0; }
     .cw-val { font-weight: 500; color: #1A1A1A; text-align: right; }
     .cw-val.accent { color: var(--accent); }
+
+    /* garden note card */
+    .garden-note {
+      background: white; border-radius: 14px;
+      padding: 20px 22px;
+      box-shadow: 0 4px 20px rgba(0,0,0,.07);
+      font-size: 13px; color: var(--text-mid); line-height: 1.6;
+      border-left: 3px solid #A5D6A7;
+    }
+    .garden-note strong { color: var(--text); font-weight: 600; }
 
     /* ── VIVIEN IN NUMBERS ── */
     .numbers-section {
@@ -737,16 +687,9 @@
 
     /* ── RESPONSIVE: new sections ── */
     @media (max-width: 900px) {
-      .bag-section { padding: 60px 32px; min-height: 0; }
-      /* currently widget moves below bag in normal flow */
-      .currently-widget {
-        position: relative;
-        top: auto; right: auto;
-        width: 280px;
-        margin: 40px auto 0;
-        animation: none;
-        float: none;
-      }
+      .garden-section { padding: 60px 32px; }
+      .garden-body { grid-template-columns: 1fr; }
+      .garden-meadow { height: 340px; }
       .numbers-section { padding: 60px 32px; }
     }
     @media (max-width: 768px) {
@@ -758,21 +701,9 @@
       .counter-number { font-size: 52px; }
     }
     @media (max-width: 480px) {
-      .bag-section { padding: 48px 0 56px; overflow-x: hidden; } /* clip card edge overflow */
-      .bag-sup { padding: 0 24px; }
-      .bag-title { font-size: 40px; letter-spacing: -1px; padding: 0 24px; }
-      .bag-hint  { padding: 0 24px; }
-      /* Scale the whole 400×400 container down so cards fit.
-         overflow-x: hidden on section clips the ~8px left/right edge overflow cleanly. */
-      .bag-container {
-        width: 400px;
-        height: 400px;
-        transform: scale(0.77);
-        transform-origin: center top;
-        margin: 40px auto -92px; /* centered; bottom compensates layout height */
-      }
-      .bag-item.open { transform: translate(-50%, -50%) scale(1); } /* don't double-scale */
-      .currently-widget { width: calc(100% - 48px); }
+      .garden-section { padding: 48px 20px 56px; }
+      .garden-meadow { height: 280px; }
+      .currently-widget { width: 100%; animation: none; }
       .numbers-section { padding: 48px 20px; }
       .number-box { padding: 32px 16px; }
     }
@@ -927,134 +858,66 @@
 
   </section>
 
-  <!-- ══ WHAT'S IN MY BAG + CURRENTLY ══ -->
-  <section class="bag-section">
+  <!-- ══ GARDEN ══ -->
+  <section class="garden-section">
 
-    <div class="bag-sup reveal">WHAT'S IN MY BAG</div>
-    <h2 class="bag-title reveal">Everything I need.</h2>
+    <div class="garden-sup reveal">MY LITTLE GARDEN</div>
+    <h2 class="garden-title reveal">Plant something here.</h2>
 
-    <div class="bag-container" id="bag-container">
+    <div class="garden-body">
 
-      <img src="images/about/bag.png" id="the-bag" alt="My bag">
-
-      <!-- Card 1: Mordlust -->
-      <div class="bag-item" style="left:-20px;top:20px;transition-delay:0s;">
-        <img src="images/about/mordlust.jpg" class="bag-item-icon" alt="Mordlust" style="border-radius:8px;">
-        <span class="bag-item-label">Mordlust</span>
-        <span class="tooltip">true crime. always.</span>
+      <!-- Meadow -->
+      <div class="garden-meadow reveal" id="about-meadow">
+        <div class="garden-meadow-counter" id="garden-counter">
+          <span class="garden-count-num" id="garden-count-num">48</span>
+          <span>plants planted by visitors</span>
+        </div>
+        <div class="garden-meadow-hint" id="garden-hint">click anywhere to plant a flower 🌱</div>
       </div>
 
-      <!-- Card 2: Iced Coffee -->
-      <div class="bag-item" style="left:30px;top:-30px;transition-delay:0.08s;">
-        <img src="images/about/coffeechat.png" class="bag-item-icon" alt="Iced Coffee" style="border-radius:8px;object-position:center top;">
-        <span class="bag-item-label">Iced Coffee</span>
-        <span class="tooltip">oat milk, always</span>
-      </div>
+      <!-- Right sidebar -->
+      <div class="garden-side">
 
-      <!-- Card 3: MacBook Air -->
-      <div class="bag-item" style="right:-20px;top:10px;transition-delay:0.16s;">
-        <div class="bag-item-svg">
-          <svg viewBox="0 0 80 52" width="64" height="42">
-            <rect x="4" y="2" width="72" height="44" rx="4" fill="#1B3A6B"/>
-            <rect x="8" y="6" width="64" height="36" rx="2" fill="#2A4F8A" opacity="0.6"/>
-            <rect x="0" y="46" width="80" height="4" rx="2" fill="#1B3A6B"/>
-            <rect x="28" y="44" width="24" height="4" rx="1" fill="#152E57"/>
-          </svg>
+        <!-- Currently widget -->
+        <div class="currently-widget">
+          <div class="cw-chrome">
+            <div class="cw-dots">
+              <div class="cw-dot"></div>
+              <div class="cw-dot"></div>
+              <div class="cw-dot"></div>
+            </div>
+            <span class="cw-url">currently.app</span>
+          </div>
+          <div class="cw-content">
+            <div class="cw-label">CURRENTLY</div>
+            <div class="cw-row">
+              <span class="cw-key">Listening</span>
+              <span class="cw-val">Mordlust</span>
+            </div>
+            <div class="cw-row">
+              <span class="cw-key">Drinking</span>
+              <span class="cw-val">Iced Oat Coffee</span>
+            </div>
+            <div class="cw-row">
+              <span class="cw-key">Working on</span>
+              <span class="cw-val accent">Your brand</span>
+            </div>
+            <div class="cw-row">
+              <span class="cw-key">Based in</span>
+              <span class="cw-val">Hamburg, DE</span>
+            </div>
+          </div>
         </div>
-        <span class="bag-item-label">MacBook Air</span>
-        <span class="tooltip">dark blue. obviously.</span>
-      </div>
 
-      <!-- Card 4: iPhone 15 Pro -->
-      <div class="bag-item" style="right:-10px;top:120px;transition-delay:0.24s;">
-        <div class="bag-item-svg">
-          <svg viewBox="0 0 36 72" width="28" height="56">
-            <rect x="0" y="0" width="36" height="72" rx="8" fill="#8E8E93"/>
-            <rect x="2" y="2" width="32" height="68" rx="7" fill="#1C1C1E"/>
-            <rect x="8" y="4" width="20" height="3" rx="1.5" fill="#3A3A3C"/>
-          </svg>
+        <!-- Garden note -->
+        <div class="garden-note reveal">
+          <strong>Everyone gets one click.</strong><br>
+          Leave a flower and it stays — counted with everyone else who passed through here.
         </div>
-        <span class="bag-item-label">iPhone 15 Pro</span>
-        <span class="tooltip">probably taking a photo right now</span>
-      </div>
 
-      <!-- Card 5: AirPods -->
-      <div class="bag-item" style="left:-10px;top:140px;transition-delay:0.32s;">
-        <div class="bag-item-svg">
-          <svg viewBox="0 0 60 48" width="54" height="44">
-            <rect x="15" y="8" width="30" height="36" rx="15" fill="#E8E8E8" stroke="#D0D0D0" stroke-width="1"/>
-            <ellipse cx="22" cy="12" rx="4" ry="6" fill="white" stroke="#D0D0D0" stroke-width="0.5"/>
-            <ellipse cx="38" cy="12" rx="4" ry="6" fill="white" stroke="#D0D0D0" stroke-width="0.5"/>
-            <circle cx="30" cy="38" r="2" fill="#4CAF50" opacity="0.8"/>
-          </svg>
-        </div>
-        <span class="bag-item-label">AirPods</span>
-        <span class="tooltip">never without</span>
-      </div>
+      </div><!-- /garden-side -->
 
-      <!-- Card 6: Lipgloss -->
-      <div class="bag-item" style="right:20px;top:240px;transition-delay:0.40s;">
-        <div class="bag-item-svg">
-          <svg viewBox="0 0 20 64" width="18" height="58">
-            <rect x="4" y="16" width="12" height="44" rx="4" fill="#E8A0B4"/>
-            <rect x="2" y="4" width="16" height="16" rx="4" fill="#D4607A"/>
-            <rect x="7" y="20" width="3" height="20" rx="1.5" fill="white" opacity="0.3"/>
-            <ellipse cx="10" cy="8" rx="3" ry="4" fill="#C04060"/>
-          </svg>
-        </div>
-        <span class="bag-item-label">Lipgloss</span>
-        <span class="tooltip">essential</span>
-      </div>
-
-      <!-- Card 7: Handcreme -->
-      <div class="bag-item" style="left:30px;top:260px;transition-delay:0.48s;">
-        <div class="bag-item-svg">
-          <svg viewBox="0 0 28 64" width="26" height="58">
-            <rect x="2" y="12" width="24" height="48" rx="4" fill="#F5F0E8"/>
-            <rect x="6" y="2" width="16" height="14" rx="4" fill="#E8DCC8"/>
-            <rect x="4" y="24" width="20" height="20" rx="2" fill="#EDE5D5"/>
-            <rect x="7" y="28" width="14" height="2" rx="1" fill="#C8B89A" opacity="0.6"/>
-            <rect x="9" y="32" width="10" height="1.5" rx="0.75" fill="#C8B89A" opacity="0.4"/>
-          </svg>
-        </div>
-        <span class="bag-item-label">Handcreme</span>
-        <span class="tooltip">detail-oriented, remember?</span>
-      </div>
-
-    </div><!-- /bag-container -->
-
-    <p class="bag-hint" id="bag-hint">click to open</p>
-
-    <!-- Currently widget — absolute top-right on desktop, flows below bag on mobile -->
-    <div class="currently-widget">
-      <div class="cw-chrome">
-        <div class="cw-dots">
-          <div class="cw-dot"></div>
-          <div class="cw-dot"></div>
-          <div class="cw-dot"></div>
-        </div>
-        <span class="cw-url">currently.app</span>
-      </div>
-      <div class="cw-content">
-        <div class="cw-label">CURRENTLY</div>
-        <div class="cw-row">
-          <span class="cw-key">Listening</span>
-          <span class="cw-val">Mordlust</span>
-        </div>
-        <div class="cw-row">
-          <span class="cw-key">Drinking</span>
-          <span class="cw-val">Iced Oat Coffee</span>
-        </div>
-        <div class="cw-row">
-          <span class="cw-key">Working on</span>
-          <span class="cw-val accent">Your brand</span>
-        </div>
-        <div class="cw-row">
-          <span class="cw-key">Based in</span>
-          <span class="cw-val">Hamburg, DE</span>
-        </div>
-      </div>
-    </div>
+    </div><!-- /garden-body -->
 
   </section>
 
@@ -1071,7 +934,7 @@
         <div class="number-label">years of experience</div>
       </div>
       <div class="number-box">
-        <span class="counter-number" data-target="10">10+</span>
+        <span class="counter-number" data-target="15">15+</span>
         <div class="number-label">events produced</div>
       </div>
       <div class="number-box">
@@ -1244,22 +1107,99 @@
       obsIM.observe(container);
     })();
 
-    /* ── BAG TOGGLE ── */
+    /* ── GARDEN MEADOW ── */
     (function() {
-      let bagOpen = false;
-      const bagEl   = document.getElementById('the-bag');
-      const bagHint = document.getElementById('bag-hint');
-      const items   = document.querySelectorAll('.bag-item');
-      if (!bagEl) return;
+      const meadow  = document.getElementById('about-meadow');
+      const hint    = document.getElementById('garden-hint');
+      const countEl = document.getElementById('garden-count-num');
+      if (!meadow) return;
 
-      bagEl.addEventListener('click', () => {
-        bagOpen = !bagOpen;
-        items.forEach((item, i) => {
-          setTimeout(() => {
-            item.classList.toggle('open', bagOpen);
-          }, bagOpen ? i * 80 : (items.length - 1 - i) * 60);
-        });
-        if (bagHint) bagHint.textContent = bagOpen ? 'click to close' : 'click to open';
+      const plants = ['🌸','🌺','🌻','🌹','🌷','🪷','🌼','🌿','🍀','🌱','🪴','🌵','🪻','🌾','🦋'];
+      const LS_KEY = 'vivien_garden_count';
+      const LS_PLANTED = 'vivien_garden_planted';
+
+      /* Load count — start at 48 if no value stored yet */
+      let totalCount = parseInt(localStorage.getItem(LS_KEY) || '48', 10);
+      const hasPlanted = localStorage.getItem(LS_PLANTED) === '1';
+      if (countEl) countEl.textContent = totalCount;
+
+      /* Seed some random plants on load */
+      const seeds = [
+        {x:15,y:65},{x:28,y:80},{x:42,y:55},{x:58,y:72},{x:73,y:60},
+        {x:85,y:78},{x:20,y:40},{x:50,y:85},{x:65,y:42},{x:38,y:70},
+        {x:80,y:50},{x:10,y:85},{x:92,y:70},{x:55,y:35},{x:30,y:90}
+      ];
+      seeds.forEach((s, i) => {
+        setTimeout(() => {
+          const el = document.createElement('span');
+          el.textContent = plants[Math.floor(Math.random() * plants.length)];
+          el.className = 'garden-plant';
+          el.style.cssText = `left:${s.x}%;top:${s.y}%;font-size:${16+Math.random()*10}px;transform:translate(-50%,-50%) scale(0);transition:transform 0.5s cubic-bezier(0.34,1.56,0.64,1);`;
+          meadow.appendChild(el);
+          requestAnimationFrame(() => requestAnimationFrame(() => {
+            el.style.transform = 'translate(-50%,-50%) scale(1)';
+          }));
+        }, i * 80);
+      });
+
+      if (hasPlanted && hint) {
+        hint.innerHTML = 'you already planted one 🌸';
+      }
+
+      meadow.addEventListener('click', e => {
+        /* Ignore if clicking counter */
+        if (e.target.closest('#garden-counter')) return;
+
+        const rect   = meadow.getBoundingClientRect();
+        const clickX = e.clientX - rect.left;
+        const clickY = e.clientY - rect.top;
+
+        const el = document.createElement('span');
+        el.textContent = plants[Math.floor(Math.random() * plants.length)];
+        el.className = 'garden-plant';
+        el.style.cssText = `position:absolute;left:${clickX}px;top:${clickY}px;font-size:${20+Math.random()*12}px;transform:translate(-50%,-50%) scale(0);z-index:3;pointer-events:none;line-height:1;transition:transform 0.4s cubic-bezier(0.34,1.56,0.64,1);`;
+        meadow.appendChild(el);
+
+        requestAnimationFrame(() => requestAnimationFrame(() => {
+          el.style.transform = 'translate(-50%,-50%) scale(1)';
+        }));
+
+        /* Remove oldest if too many */
+        const all = meadow.querySelectorAll('.garden-plant');
+        if (all.length > 40) all[0].remove();
+
+        /* Increment counter */
+        totalCount++;
+        if (countEl) countEl.textContent = totalCount;
+        localStorage.setItem(LS_KEY, totalCount);
+
+        /* Mark this visitor as planted */
+        if (!hasPlanted) {
+          localStorage.setItem(LS_PLANTED, '1');
+          if (hint) {
+            hint.style.transition = 'opacity .3s';
+            hint.style.opacity = '0';
+            setTimeout(() => {
+              hint.innerHTML = 'you planted one 🌸 thank you';
+              hint.style.opacity = '';
+            }, 300);
+          }
+        }
+
+        /* Burst emojis on click */
+        for (let i = 0; i < 5; i++) {
+          const p = document.createElement('div');
+          p.textContent = plants[Math.floor(Math.random() * plants.length)];
+          p.style.cssText = `position:fixed;left:${e.clientX}px;top:${e.clientY}px;pointer-events:none;z-index:9999;font-size:${10+Math.random()*8}px;transition:all 0.5s ease-out;transform:translate(-50%,-50%);`;
+          document.body.appendChild(p);
+          const angle = (Math.PI * 2 / 5) * i + Math.random();
+          const dist  = 30 + Math.random() * 40;
+          requestAnimationFrame(() => {
+            p.style.transform = `translate(calc(-50% + ${Math.cos(angle)*dist}px),calc(-50% + ${Math.sin(angle)*dist}px)) scale(0)`;
+            p.style.opacity = '0';
+          });
+          setTimeout(() => p.remove(), 550);
+        }
       });
     })();
 

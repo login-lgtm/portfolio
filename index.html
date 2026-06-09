@@ -2627,7 +2627,7 @@
         period: 'Dec 2022 — today',
         desc: 'Co-founded in 2022. Helped build the brand over time — identity, print, campaigns and events. Creative Lead since 2025.',
         stats: [
-          { value: '10+', label: 'Events', primary: true },
+          { value: '15+', label: 'Events', primary: true },
           { value: '400', label: 'Guests' },
           { value: '3',   label: 'Formats' }
         ],
@@ -2926,24 +2926,27 @@
 
       setTimeout(() => {
         const photo = camPhotos[camIdx];
-        if (img) {
-          img.src     = photo.src;
-          img.onerror = () => {
-            img.style.display = 'none';
-            if (placeholder) {
-              placeholder.style.background = photo.placeholder;
-              placeholder.style.display    = 'flex';
-              placeholder.textContent = '📷';
-            }
-          };
-          img.onload = () => {
-            img.style.display = 'block';
-            if (placeholder) placeholder.style.display = 'none';
-          };
-        }
         if (caption) caption.textContent = photo.caption;
         if (counter) counter.textContent = `${camIdx + 1} / ${camPhotos.length}`;
         if (screen)  screen.style.opacity = '1';
+        if (img && placeholder) {
+          // Show placeholder immediately while loading
+          img.style.display = 'none';
+          placeholder.style.background = photo.placeholder;
+          placeholder.style.display    = 'flex';
+          placeholder.textContent      = '📷';
+          img.onerror = () => {
+            img.style.display = 'none';
+            placeholder.style.background = photo.placeholder;
+            placeholder.style.display    = 'flex';
+            placeholder.textContent = '📷';
+          };
+          img.onload = () => {
+            img.style.display = 'block';
+            placeholder.style.display = 'none';
+          };
+          img.src = photo.src;
+        }
       }, 150);
 
       // Klick-Ton
@@ -2962,16 +2965,18 @@
       const mobPh   = document.getElementById('mob-placeholder');
       const mobCap  = document.getElementById('mob-caption');
       const photo   = camPhotos[camIdx];
-      if (mobImg) {
-        mobImg.src     = photo.src;
+      if (mobImg && mobPh) {
+        mobImg.style.display = 'none';
+        mobPh.style.background = photo.placeholder; mobPh.style.display = 'flex'; mobPh.textContent = '📷';
         mobImg.onerror = () => {
           mobImg.style.display = 'none';
-          if (mobPh) { mobPh.style.background = photo.placeholder; mobPh.style.display = 'flex'; mobPh.textContent = '📷'; }
+          mobPh.style.background = photo.placeholder; mobPh.style.display = 'flex'; mobPh.textContent = '📷';
         };
         mobImg.onload = () => {
           mobImg.style.display = 'block';
-          if (mobPh) mobPh.style.display = 'none';
+          mobPh.style.display = 'none';
         };
+        mobImg.src = photo.src;
       }
       if (mobCap) mobCap.textContent = photo.caption;
     }

@@ -155,6 +155,31 @@
       position: relative;
       overflow: hidden;
       z-index: 1;
+      display: flex;
+      align-items: flex-end;
+      justify-content: space-between;
+      gap: 40px;
+    }
+    .cv-hero-text { flex: 1; min-width: 0; }
+    .cv-hero-photo {
+      flex-shrink: 0;
+      width: 160px; height: 160px;
+      border-radius: 50%;
+      overflow: hidden;
+      border: 3px solid rgba(107,92,231,.5);
+      box-shadow: 0 0 0 6px rgba(107,92,231,.12), 0 8px 32px rgba(0,0,0,.4);
+      align-self: flex-end;
+      margin-bottom: 4px;
+    }
+    .cv-hero-photo img {
+      width: 100%; height: 100%;
+      object-fit: cover;
+      object-position: center top;
+      display: block;
+    }
+    @media (max-width: 768px) {
+      .cv-hero { flex-direction: column; align-items: flex-start; padding-bottom: 48px; }
+      .cv-hero-photo { width: 100px; height: 100px; }
     }
     .cv-hero::before {
       content: '';
@@ -604,9 +629,14 @@
 
     <!-- ══ HERO ═══════════════════════════════════════════════════ -->
     <section class="cv-hero">
-      <div class="cv-terminal-path"><span>~/vivien/</span>cv</div>
-      <h1 class="cv-hero-title">Vivien <em>Evers</em></h1>
-      <p class="cv-hero-sub">Product, brand and digital experiences.</p>
+      <div class="cv-hero-text">
+        <div class="cv-terminal-path"><span>~/vivien/</span>cv</div>
+        <h1 class="cv-hero-title">Vivien <em>Evers</em></h1>
+        <p class="cv-hero-sub">Product, brand and digital experiences.</p>
+      </div>
+      <div class="cv-hero-photo">
+        <img src="images/about/vivien.evers.jpg" alt="Vivien Evers">
+      </div>
     </section>
 
     <!-- ══ INTRO ══════════════════════════════════════════════════ -->
@@ -620,7 +650,7 @@
       <div class="section-label">At a Glance</div>
       <div class="glance-grid">
         <div class="glance-card reveal">
-          <div class="glance-number">10<span>+</span></div>
+          <div class="glance-number">15<span>+</span></div>
           <div class="glance-label">Events &amp;<br>campaigns</div>
         </div>
         <div class="glance-card reveal">
@@ -794,7 +824,7 @@
         </div>
 
         <div class="edu-entry reveal">
-          <div class="edu-year">2021 – 2023</div>
+          <div class="edu-year">2019 – 2023</div>
           <div class="edu-body">
             <div class="edu-degree">Career Exploration</div>
             <div class="edu-school">Worked across different industries while figuring out where creativity, communication and problem-solving intersected — ultimately leading me to pursue media design.</div>
