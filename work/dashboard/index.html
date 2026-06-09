@@ -520,7 +520,7 @@
     (function(){
       const navEl=document.querySelector('nav');
       let lastY=window.scrollY;
-      window.addEventListener('scroll',()=>{const y=window.scrollY;if(window.innerWidth<=768){lastY=y;return;}if(y>lastY&&y>80)navEl.classList.add('nav-hidden');else navEl.classList.remove('nav-hidden');lastY=y;},{passive:true});
+      window.addEventListener('scroll',()=>{const y=window.scrollY;if(window.innerWidth<=768){lastY=window.scrollY;return;}if(y>lastY&&y>80)navEl.classList.add('nav-hidden');else navEl.classList.remove('nav-hidden');lastY=y;},{passive:true});
     })();
     const hamburger=document.getElementById('nav-hamburger');
     const overlay=document.getElementById('nav-overlay');
