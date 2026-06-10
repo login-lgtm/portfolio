@@ -448,6 +448,36 @@
       margin-left: 6px;
     }
 
+    /* ── DOWNLOADS NOTE ─────────────────────────── */
+    .cv-downloads-note { padding: 0 80px 80px; }
+    .cv-dl-card {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      background: white;
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 20px 28px;
+      text-decoration: none;
+      transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease;
+    }
+    .cv-dl-card:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 12px 40px rgba(0,0,0,0.08);
+      border-color: var(--accent);
+    }
+    .cv-dl-icon { font-size: 22px; flex-shrink: 0; }
+    .cv-dl-text { font-size: 15px; color: var(--text-mid); line-height: 1.5; }
+    .cv-dl-text strong { color: var(--text); }
+    .cv-dl-arrow {
+      margin-left: auto;
+      font-size: 18px;
+      color: var(--accent);
+      transition: transform 0.25s ease;
+      flex-shrink: 0;
+    }
+    .cv-dl-card:hover .cv-dl-arrow { transform: translateX(4px); }
+
     /* ── FOOTER ─────────────────────────────────── */
     .cv-footer {
       background: var(--dark);
@@ -489,7 +519,8 @@
     /* ── 900px — tablet ─────────────────────── */
     @media (max-width: 900px) {
       .cv-hero, .cv-glance, .cv-experience,
-      .cv-skills, .cv-education, .cv-languages { padding-left: 32px; padding-right: 32px; }
+      .cv-skills, .cv-education, .cv-languages,
+      .cv-downloads-note { padding-left: 32px; padding-right: 32px; }
       .cv-intro { padding: 56px 32px 44px; }
       nav { padding: 14px 24px; }
       .glance-grid { grid-template-columns: 1fr; }
@@ -514,7 +545,10 @@
 
       /* Sections */
       .cv-glance, .cv-experience,
-      .cv-skills, .cv-education, .cv-languages { padding-left: 20px; padding-right: 20px; }
+      .cv-skills, .cv-education, .cv-languages,
+      .cv-downloads-note { padding-left: 20px; padding-right: 20px; }
+      .cv-dl-card { flex-wrap: wrap; gap: 8px 16px; padding: 18px 20px; }
+      .cv-dl-arrow { margin-left: 0; }
       .cv-intro { padding: 40px 20px 32px; }
       .cv-glance { padding-top: 40px; padding-bottom: 36px; }
       .section-label { margin-bottom: 20px; }
@@ -859,6 +893,15 @@
         <div class="lang-chip">German <span>(native)</span></div>
         <div class="lang-chip">English <span>(business fluent)</span></div>
       </div>
+    </section>
+
+    <!-- ══ DOWNLOADS NOTE ═════════════════════════════════════════ -->
+    <section class="cv-downloads-note">
+      <a href="downloads.html" class="cv-dl-card reveal">
+        <span class="cv-dl-icon">📁</span>
+        <span class="cv-dl-text">Full CV as PDF, plus certificates and references — all in <strong>Downloads</strong>.</span>
+        <span class="cv-dl-arrow">→</span>
+      </a>
     </section>
 
   </div><!-- /cv-content -->
