@@ -158,6 +158,11 @@
     .mac-win-body { padding:28px; }
     .mac-win-title { font-family:'Instrument Serif',serif; font-size:22px; margin-bottom:12px; }
     .mac-win-text { font-size:15px; color:var(--text-mid); line-height:1.7; }
+    .ctx-label { font-size:11px; font-weight:600; letter-spacing:.12em; text-transform:uppercase; color:var(--accent); margin-bottom:10px; }
+    .ctx-question { font-family:'Instrument Serif',serif; font-style:italic; font-size:clamp(20px,2.2vw,26px); line-height:1.4; color:var(--text); margin-bottom:28px; }
+    .ctx-approach-list { list-style:none; display:flex; flex-direction:column; gap:12px; }
+    .ctx-approach-list li { display:flex; align-items:flex-start; gap:12px; font-size:15px; color:var(--text-mid); line-height:1.6; }
+    .ctx-approach-list li::before { content:'→'; color:var(--accent); flex-shrink:0; font-weight:600; }
 
     /* ── DIVIDER LABEL ── */
     .divider-label { display:flex; align-items:center; gap:16px; margin-bottom:32px; }
@@ -438,12 +443,14 @@
         <span class="mac-label">studio-liebe-nrg — context</span>
       </div>
       <div class="mac-win-body">
-        <div class="mac-win-title">Building on an existing foundation.</div>
-        <div class="mac-win-text">
-          <p><strong style="font-weight:600;color:var(--text)">Challenge:</strong> How do you keep two very different event formats visually distinct while making them work as part of a coherent brand world?</p>
-          <p>Studio Liebe and NRG already had their own identities — each with its own audience, atmosphere and design direction. My role was to take those foundations and develop them further across communication, campaigns, print production and event branding.</p>
-          <p>The goal wasn't to reinvent them, but to strengthen and scale what was already there.</p>
-        </div>
+        <div class="ctx-label">Challenge</div>
+        <div class="ctx-question">How do you keep two very different event formats visually distinct — while making them feel like part of one coherent brand world?</div>
+        <div class="ctx-label">Approach</div>
+        <ul class="ctx-approach-list">
+          <li>Took over two existing identities — Studio Liebe (disco &amp; house) and NRG — and developed them further instead of starting from scratch.</li>
+          <li>Extended both visual systems across campaigns, print production and event branding.</li>
+          <li>Scaled the identities for large-format use, including the 2024 OMR appearance.</li>
+        </ul>
       </div>
     </div>
   </div>
