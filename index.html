@@ -3444,25 +3444,25 @@
 
       /* Hamburg weather API */
       const weatherMap = {
-        0:{icon:'☀️',quote:'sunny day, sunny ideas ✨'},
+        0:{icon:'☀️',quote:'sunny day, sunny ideas'},
         1:{icon:'⛅',quote:'cloudy outside, clear vision inside'},
         2:{icon:'⛅',quote:'cloudy outside, clear vision inside'},
         3:{icon:'⛅',quote:'cloudy outside, clear vision inside'},
-        45:{icon:'🌫️',quote:'foggy outside, focused inside 🎯'},
-        48:{icon:'🌫️',quote:'foggy outside, focused inside 🎯'},
-        51:{icon:'🌧️',quote:'Hamburg weather, Hamburg hustle 💪'},
-        53:{icon:'🌧️',quote:'Hamburg weather, Hamburg hustle 💪'},
-        55:{icon:'🌧️',quote:'Hamburg weather, Hamburg hustle 💪'},
-        61:{icon:'🌧️',quote:'Hamburg weather, Hamburg hustle 💪'},
-        63:{icon:'🌧️',quote:'Hamburg weather, Hamburg hustle 💪'},
-        65:{icon:'🌧️',quote:'Hamburg weather, Hamburg hustle 💪'},
-        71:{icon:'❄️',quote:'cold outside, warm ideas inside 🔥'},
-        73:{icon:'❄️',quote:'cold outside, warm ideas inside 🔥'},
-        75:{icon:'❄️',quote:'cold outside, warm ideas inside 🔥'},
+        45:{icon:'🌫️',quote:'foggy outside, focused inside'},
+        48:{icon:'🌫️',quote:'foggy outside, focused inside'},
+        51:{icon:'🌧️',quote:'Hamburg weather, Hamburg hustle'},
+        53:{icon:'🌧️',quote:'Hamburg weather, Hamburg hustle'},
+        55:{icon:'🌧️',quote:'Hamburg weather, Hamburg hustle'},
+        61:{icon:'🌧️',quote:'Hamburg weather, Hamburg hustle'},
+        63:{icon:'🌧️',quote:'Hamburg weather, Hamburg hustle'},
+        65:{icon:'🌧️',quote:'Hamburg weather, Hamburg hustle'},
+        71:{icon:'❄️',quote:'cold outside, warm ideas inside'},
+        73:{icon:'❄️',quote:'cold outside, warm ideas inside'},
+        75:{icon:'❄️',quote:'cold outside, warm ideas inside'},
         80:{icon:'🌦️',quote:'a little rain never stopped a good idea'},
         81:{icon:'🌦️',quote:'a little rain never stopped a good idea'},
         82:{icon:'🌦️',quote:'a little rain never stopped a good idea'},
-        95:{icon:'⛈️',quote:'stormy weather, electric ideas ⚡'},
+        95:{icon:'⛈️',quote:'stormy weather, electric ideas'},
       };
       const wiEl = document.getElementById('fc-wi');
       const wtEl = document.getElementById('fc-wt');
@@ -3470,7 +3470,7 @@
       fetch('https://api.open-meteo.com/v1/forecast?latitude=53.5753&longitude=10.0153&current=temperature_2m,weathercode&timezone=Europe/Berlin')
         .then(r => r.json())
         .then(d => {
-          const w = weatherMap[d.current.weathercode] || {icon:'🌤️', quote:'Hamburg, always 🌊'};
+          const w = weatherMap[d.current.weathercode] || {icon:'🌤️', quote:'Hamburg, always'};
           if (wiEl) wiEl.textContent = w.icon;
           if (wtEl) wtEl.textContent = Math.round(d.current.temperature_2m) + '°';
           if (wqEl) wqEl.textContent = w.quote;
