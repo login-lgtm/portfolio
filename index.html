@@ -2439,6 +2439,86 @@
   </section>
 
   <!-- ══════════════════════════════════════════
+       THROUGH MY LENS — Digitalkamera
+  ══════════════════════════════════════════ -->
+  <section id="about">
+    <div class="lens-label">Through My Lens</div>
+    <h2 class="lens-title">A few things that make me, me.</h2>
+
+    <!--
+      FOTOS HINZUFÜGEN:
+      1. Speichere deine Fotos als:
+         images/lens-1.jpg bis images/lens-6.jpg
+      2. Empfohlene Größe: 560x420px (4:3)
+      3. In Photoshop: File > Save for Web
+         Format: JPEG, Quality: 80
+      Bis echte Fotos da sind werden
+      Platzhalter-Farben angezeigt.
+    -->
+
+    <!-- ── DESKTOP: Kamera-Element ── -->
+    <div class="cam-wrap">
+      <div class="cam-body">
+
+        <!-- Modellname -->
+        <div class="cam-model">VIVI CAM</div>
+
+        <!-- REC-Dot -->
+        <div class="cam-rec"></div>
+
+        <!-- Blitz -->
+        <div class="cam-flash" id="cam-flash"></div>
+
+        <!-- Objektiv -->
+        <div class="cam-lens">
+          <div class="cam-lens-mid">
+            <div class="cam-lens-inner">
+              <div class="cam-lens-highlight"></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- LCD Screen -->
+        <div class="cam-screen-wrap">
+          <div class="cam-screen" id="cam-screen">
+            <img src="" alt="" style="display:none;">
+            <div class="cam-placeholder" id="cam-placeholder"></div>
+            <div class="cam-scanlines"></div>
+            <div class="cam-hud-top"><span id="cam-counter">1 / 6</span></div>
+            <div class="cam-hud-bottom"><span id="cam-caption"></span></div>
+            <div class="cam-focus-box" id="cam-focus"></div>
+          </div>
+        </div>
+
+        <!-- ◀ Prev -->
+        <button class="cam-btn cam-btn-prev" id="cam-prev" aria-label="Previous photo">&#9664;</button>
+        <!-- ▶ Next -->
+        <button class="cam-btn cam-btn-next" id="cam-next" aria-label="Next photo">&#9654;</button>
+
+      </div>
+    </div>
+
+    <!-- ── MOBILE: einfache Slideshow ── -->
+    <div class="cam-mobile">
+      <div class="cam-mobile-screen">
+        <img id="mob-img" src="" alt="" style="display:none;">
+        <div class="cam-placeholder" id="mob-placeholder"></div>
+      </div>
+      <div class="cam-mobile-caption" id="mob-caption"></div>
+      <div class="cam-mobile-nav">
+        <button class="cam-mobile-btn" id="mob-prev" aria-label="Previous">&#9664;</button>
+        <button class="cam-mobile-btn" id="mob-next" aria-label="Next">&#9654;</button>
+      </div>
+    </div>
+
+    <div class="lens-statement">
+      <p class="lens-statement-main">"Collecting moments, ideas and little obsessions."</p>
+      <p class="lens-statement-sub">fragments of my world</p>
+    </div>
+
+  </section>
+
+  <!-- ══════════════════════════════════════════
        SKILLS
   ══════════════════════════════════════════ -->
   <section id="skills">
@@ -2598,86 +2678,6 @@
       </div><!-- /skills-right -->
 
     </div><!-- /skills-inner -->
-  </section>
-
-  <!-- ══════════════════════════════════════════
-       THROUGH MY LENS — Digitalkamera
-  ══════════════════════════════════════════ -->
-  <section id="about">
-    <div class="lens-label">Through My Lens</div>
-    <h2 class="lens-title">A few things that make me, me.</h2>
-
-    <!--
-      FOTOS HINZUFÜGEN:
-      1. Speichere deine Fotos als:
-         images/lens-1.jpg bis images/lens-6.jpg
-      2. Empfohlene Größe: 560x420px (4:3)
-      3. In Photoshop: File > Save for Web
-         Format: JPEG, Quality: 80
-      Bis echte Fotos da sind werden
-      Platzhalter-Farben angezeigt.
-    -->
-
-    <!-- ── DESKTOP: Kamera-Element ── -->
-    <div class="cam-wrap">
-      <div class="cam-body">
-
-        <!-- Modellname -->
-        <div class="cam-model">VIVI CAM</div>
-
-        <!-- REC-Dot -->
-        <div class="cam-rec"></div>
-
-        <!-- Blitz -->
-        <div class="cam-flash" id="cam-flash"></div>
-
-        <!-- Objektiv -->
-        <div class="cam-lens">
-          <div class="cam-lens-mid">
-            <div class="cam-lens-inner">
-              <div class="cam-lens-highlight"></div>
-            </div>
-          </div>
-        </div>
-
-        <!-- LCD Screen -->
-        <div class="cam-screen-wrap">
-          <div class="cam-screen" id="cam-screen">
-            <img src="" alt="" style="display:none;">
-            <div class="cam-placeholder" id="cam-placeholder"></div>
-            <div class="cam-scanlines"></div>
-            <div class="cam-hud-top"><span id="cam-counter">1 / 6</span></div>
-            <div class="cam-hud-bottom"><span id="cam-caption"></span></div>
-            <div class="cam-focus-box" id="cam-focus"></div>
-          </div>
-        </div>
-
-        <!-- ◀ Prev -->
-        <button class="cam-btn cam-btn-prev" id="cam-prev" aria-label="Previous photo">&#9664;</button>
-        <!-- ▶ Next -->
-        <button class="cam-btn cam-btn-next" id="cam-next" aria-label="Next photo">&#9654;</button>
-
-      </div>
-    </div>
-
-    <!-- ── MOBILE: einfache Slideshow ── -->
-    <div class="cam-mobile">
-      <div class="cam-mobile-screen">
-        <img id="mob-img" src="" alt="" style="display:none;">
-        <div class="cam-placeholder" id="mob-placeholder"></div>
-      </div>
-      <div class="cam-mobile-caption" id="mob-caption"></div>
-      <div class="cam-mobile-nav">
-        <button class="cam-mobile-btn" id="mob-prev" aria-label="Previous">&#9664;</button>
-        <button class="cam-mobile-btn" id="mob-next" aria-label="Next">&#9654;</button>
-      </div>
-    </div>
-
-    <div class="lens-statement">
-      <p class="lens-statement-main">"Collecting moments, ideas and little obsessions."</p>
-      <p class="lens-statement-sub">fragments of my world</p>
-    </div>
-
   </section>
 
   <!-- ══════════════════════════════════════════
