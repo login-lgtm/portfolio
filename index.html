@@ -1831,6 +1831,7 @@
 .panel-anim-jco          { animation: elegant-up   0.6s cubic-bezier(.25,.46,.45,.94) forwards; }
 .panel-anim-apprenticeship{ animation: warm-slide  0.3s ease-out forwards; }
 .panel-anim-dashboard    { animation: elegant-up   0.5s cubic-bezier(.25,.46,.45,.94) forwards; }
+.panel-anim-portfolio    { animation: warm-slide   0.3s ease-out forwards; }
 
 /* ══════════════════════════════════════════════════
    FINDER — APPRENTICESHIP BANNER (updated)
@@ -2425,6 +2426,10 @@
               <svg width="20" height="20" viewBox="0 0 20 20" fill="none" style="flex-shrink:0;" xmlns="http://www.w3.org/2000/svg"><rect x="2" y="2" width="7" height="7" rx="1.5" fill="#6B5CE7" opacity=".7"/><rect x="11" y="2" width="7" height="7" rx="1.5" fill="#6B5CE7" opacity=".4"/><rect x="2" y="11" width="7" height="7" rx="1.5" fill="#6B5CE7" opacity=".4"/><rect x="11" y="11" width="7" height="7" rx="1.5" fill="#6B5CE7" opacity=".7"/></svg>
               <span class="fw-sidebar-name">Workflow Dashboard</span>
             </li>
+            <li class="fw-sidebar-item" data-idx="5">
+              <svg width="20" height="20" viewBox="0 0 20 20" fill="none" style="flex-shrink:0;" xmlns="http://www.w3.org/2000/svg"><rect x="1" y="2" width="18" height="16" rx="2" fill="#EDE9F7" stroke="#6B5CE7" stroke-width="1"/><rect x="1" y="2" width="18" height="4" rx="2" fill="#6B5CE7" opacity=".6"/><circle cx="3.5" cy="4" r="0.6" fill="white"/><circle cx="5.5" cy="4" r="0.6" fill="white"/><circle cx="7.5" cy="4" r="0.6" fill="white"/></svg>
+              <span class="fw-sidebar-name">This Portfolio</span>
+            </li>
           </ul>
 
         </aside>
@@ -2789,6 +2794,20 @@
         tags: ['Product Thinking','Information Architecture','Claude Code'],
         url: 'work/dashboard/index.html',
         anim: 'dashboard'
+      },
+      {
+        name: 'This Portfolio',
+        category: 'WEB DESIGN · SELF-INITIATED',
+        period: '2026',
+        desc: 'Designed and built from scratch — including this Mac Finder-inspired interface. A way to show how I think and work, not just the results.',
+        stats: [
+          { value: '2026',   label: 'Year', primary: true },
+          { value: 'Custom', label: 'Built' },
+          { value: 'AI-Assisted', label: 'Process' }
+        ],
+        tags: ['Web Design','UI/UX','Self-Initiated'],
+        url: null,
+        anim: 'portfolio'
       }
     ];
 
@@ -2844,12 +2863,20 @@
             <div class="app-pills-row">${pillsHTML}</div>
             <div class="app-banner-tagline">Built real things while learning.</div>
           </div>`;
-      } else {
+      } else if (idx === 4) {
         bannerHTML = `
           <div class="mood-banner mood-banner-dashboard" style="display:flex;align-items:flex-end;padding:12px 14px;">
             <div style="position:relative;z-index:1;font-family:'Courier New',monospace;font-size:11px;color:rgba(255,255,255,.6);line-height:1.8;">
               <div><span style="color:#6B5CE7;">→</span> Problem: too many tools, no overview</div>
               <div><span style="color:#6B5CE7;">→</span> Solution: <span style="color:rgba(255,255,255,.9);">build my own</span></div>
+            </div>
+          </div>`;
+      } else {
+        bannerHTML = `
+          <div class="mood-banner mood-banner-dashboard" style="display:flex;align-items:flex-end;padding:12px 14px;">
+            <div style="position:relative;z-index:1;font-family:'Courier New',monospace;font-size:11px;color:rgba(255,255,255,.6);line-height:1.8;">
+              <div><span style="color:#6B5CE7;">→</span> Goal: show process, not just results</div>
+              <div><span style="color:#6B5CE7;">→</span> Built with: <span style="color:rgba(255,255,255,.9);">code + AI pair-programming</span></div>
             </div>
           </div>`;
       }
@@ -2877,7 +2904,7 @@
               <div class="fw-stats">${statsHTML}</div>
               <div class="fw-proj-tags">${p.tags.map(t => `<span class="fw-tag">${t}</span>`).join('')}</div>
             </div>
-            <a class="fw-open-btn" href="${p.url}">Open project →</a>
+            ${p.url ? `<a class="fw-open-btn" href="${p.url}">Open project →</a>` : ''}
           </div>`;
         content.style.opacity = '1';
 
@@ -2930,7 +2957,7 @@
         { label: 'Favorites', indices: [0, 1] },
         { label: 'Freelance', indices: [2] },
         { label: 'Experience', indices: [3] },
-        { label: 'Personal', indices: [4] }
+        { label: 'Personal', indices: [4, 5] }
       ];
 
       const ICONS = [
@@ -2943,7 +2970,9 @@
         /* 3 Apprenticeship */
         `<div class="fw-ios-icon-wrap"><img src="images/icons/folder-custom.png" style="width:22px;height:22px;object-fit:contain;width:100%;height:100%;object-fit:cover" alt=""></div>`,
         /* 4 Dashboard */
-        `<div class="fw-ios-icon-wrap" style="background:#EDE9F7"><svg viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg"><rect x="2" y="2" width="7" height="7" rx="1.5" fill="#6B5CE7" opacity=".8"/><rect x="11" y="2" width="7" height="7" rx="1.5" fill="#6B5CE7" opacity=".5"/><rect x="2" y="11" width="7" height="7" rx="1.5" fill="#6B5CE7" opacity=".5"/><rect x="11" y="11" width="7" height="7" rx="1.5" fill="#6B5CE7" opacity=".8"/></svg></div>`
+        `<div class="fw-ios-icon-wrap" style="background:#EDE9F7"><svg viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg"><rect x="2" y="2" width="7" height="7" rx="1.5" fill="#6B5CE7" opacity=".8"/><rect x="11" y="2" width="7" height="7" rx="1.5" fill="#6B5CE7" opacity=".5"/><rect x="2" y="11" width="7" height="7" rx="1.5" fill="#6B5CE7" opacity=".5"/><rect x="11" y="11" width="7" height="7" rx="1.5" fill="#6B5CE7" opacity=".8"/></svg></div>`,
+        /* 5 This Portfolio */
+        `<div class="fw-ios-icon-wrap" style="background:#EDE9F7"><svg width="22" height="22" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg"><rect x="1" y="2" width="18" height="16" rx="2" fill="#EDE9F7" stroke="#6B5CE7" stroke-width="1"/><rect x="1" y="2" width="18" height="4" rx="2" fill="#6B5CE7" opacity=".6"/><circle cx="3.5" cy="4" r="0.6" fill="white"/><circle cx="5.5" cy="4" r="0.6" fill="white"/><circle cx="7.5" cy="4" r="0.6" fill="white"/></svg></div>`
       ];
 
       function buildPanel() {
@@ -2968,7 +2997,7 @@
                 <p class="fw-ios-detail-desc">${p.desc}</p>
                 <div class="fw-ios-detail-stats">${statsHTML}</div>
                 <div class="fw-ios-tags">${p.tags.map(t => `<span class="fw-ios-tag">${t}</span>`).join('')}</div>
-                <a class="fw-ios-open-btn" href="${p.url}">Open project →</a>
+                ${p.url ? `<a class="fw-ios-open-btn" href="${p.url}">Open project →</a>` : ''}
               </div>`;
           });
         });
