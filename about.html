@@ -546,20 +546,21 @@
         width: 100%;
         gap: 24px;
       }
-      .photo-left { width: 100%; height: auto; rotate: 0deg; }
+      .photo-left { width: 100%; height: auto; rotate: 0deg; order: 1; }
       .photo-left img { height: 400px; }
-      .photo-right { width: 100%; padding: 10px; rotate: 0deg; transform-origin: center; }
+      .photo-right { width: 100%; padding: 10px; rotate: 0deg; transform-origin: center; order: 3; }
       .photo-right img { height: 300px; }
       .intro-card {
         position: relative;
         bottom: auto;
         left: auto;
-        margin: 16px auto 0;
+        margin: 16px auto;
         width: calc(100% - 64px);
         max-width: 400px;
         opacity: 1;
         transform: none;
         animation: none;
+        order: 2;
       }
       .about-imessage {
         position: relative;
@@ -567,9 +568,10 @@
         left: auto;
         transform: none;
         align-self: center;
-        margin-top: 16px;
+        margin-top: -36px;
         animation: none;
         transition: none;
+        order: 4;
       }
       .about-imessage:hover { transform: none; }
       /* Section padding */
