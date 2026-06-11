@@ -548,8 +548,15 @@
       }
       .photo-left { width: 100%; height: auto; rotate: 0deg; order: 1; }
       .photo-left img { height: 400px; }
-      .photo-right { width: 100%; padding: 10px; rotate: 0deg; transform-origin: center; order: 3; }
-      .photo-right img { height: 300px; }
+      .photo-right {
+        width: 58%;
+        align-self: flex-start;
+        padding: 10px;
+        rotate: -1.5deg;
+        transform-origin: center;
+        order: 3;
+      }
+      .photo-right img { width: 100%; height: auto; aspect-ratio: 3/4; object-fit: cover; }
       .intro-card {
         position: relative;
         bottom: auto;
@@ -568,15 +575,15 @@
         position: relative;
         top: auto;
         left: auto;
-        transform: rotate(2deg);
+        width: 175px;
+        transform: rotate(3deg);
         align-self: flex-end;
-        margin: -32px 16px 28px 0;
+        margin: -170px 12px 28px -45px;
         animation: none;
         transition: none;
         order: 4;
       }
-      .about-imessage:hover { transform: rotate(2deg); }
-      .about-imessage:hover { transform: none; }
+      .about-imessage:hover { transform: rotate(3deg); }
       /* Section padding */
       .statements { padding: 48px 32px; }
       .values { padding: 60px 32px; }
@@ -586,9 +593,8 @@
     @media (max-width: 480px) {
       .about-hero { padding: calc(56px + env(safe-area-inset-top, 0px) + 16px) 20px 40px; }
       .photo-left img { height: 280px; }
-      .photo-right img { height: 200px; }
       .intro-card { max-width: 220px; margin-left: 12px; }
-      .about-imessage { margin-right: 12px; }
+      .about-imessage { width: 150px; margin: -135px 8px 28px -36px; }
       .statements { padding: 40px 20px; }
       .stmt-headline { font-size: 28px; letter-spacing: -0.5px; }
       .stmt-sub.serif { font-size: 22px; }
