@@ -226,6 +226,68 @@
       line-height: 1.15;
     }
 
+    /* ── STUFF I LIKE ── */
+    .likes-section {
+      padding: 0 80px 80px;
+      position: relative;
+      z-index: 1;
+    }
+    .likes-sup {
+      font-size: 11px; color: var(--accent);
+      text-transform: uppercase; letter-spacing: .12em; font-weight: 600;
+    }
+    .likes-title {
+      font-family: 'Instrument Serif', serif;
+      font-style: italic;
+      font-size: clamp(36px, 4.5vw, 56px);
+      letter-spacing: -1px;
+      margin: 8px 0 48px;
+    }
+    .likes-grid {
+      display: flex; flex-wrap: wrap; justify-content: center;
+      gap: 36px 28px; max-width: 1100px; margin: 0 auto;
+    }
+    .like-card {
+      flex: 0 1 180px;
+      background: white; border-radius: 4px; padding: 12px 12px 0;
+      box-shadow: 0 8px 28px rgba(0,0,0,.10), 0 2px 8px rgba(0,0,0,.06);
+      transition: transform .3s ease, box-shadow .3s ease;
+    }
+    .like-card:hover {
+      transform: rotate(0deg) scale(1.05) translateY(-6px) !important;
+      box-shadow: 0 16px 40px rgba(0,0,0,.16);
+      z-index: 2;
+    }
+    .like-card:nth-child(1) { transform: rotate(-3deg); }
+    .like-card:nth-child(2) { transform: rotate(2deg); }
+    .like-card:nth-child(3) { transform: rotate(-1.5deg); }
+    .like-card:nth-child(4) { transform: rotate(2.5deg); }
+    .like-card:nth-child(5) { transform: rotate(-2deg); }
+    .like-card:nth-child(6) { transform: rotate(1.5deg); }
+    .like-photo {
+      width: 100%; aspect-ratio: 1/1; border-radius: 2px;
+      overflow: hidden; position: relative; background: #eee;
+    }
+    .like-photo img { width: 100%; height: 100%; object-fit: cover; display: block; }
+    .like-placeholder {
+      width: 100%; height: 100%; display: none;
+      align-items: center; justify-content: center; font-size: 44px;
+    }
+    .like-caption {
+      font-family: 'Caveat', cursive; font-size: 21px; font-weight: 600;
+      color: #444; text-align: center; padding: 10px 0 16px;
+    }
+    @media (max-width: 768px) {
+      .likes-section { padding: 0 32px 60px; }
+      .likes-title { margin-bottom: 32px; }
+      .likes-grid { gap: 24px 16px; }
+      .like-card { flex-basis: 130px; }
+    }
+    @media (max-width: 480px) {
+      .likes-section { padding: 0 20px 48px; }
+      .like-card { flex-basis: calc(50% - 8px); }
+    }
+
 
     /* ── VALUES ── */
     .values {
@@ -872,6 +934,50 @@
       <div class="stmt-sub serif">where product, brand and craft come together.</div>
     </div>
 
+  </section>
+
+  <!-- ══ STUFF I LIKE ══ -->
+  <section class="likes-section">
+    <div class="likes-sup reveal">STUFF I LIKE</div>
+    <h2 class="likes-title reveal">i like...</h2>
+
+    <div class="likes-grid">
+      <div class="like-card reveal">
+        <div class="like-photo">
+          <img src="images/about/stuff-i-like/brunch.jpg" alt="Hosting brunches" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';">
+          <div class="like-placeholder" style="background:#F4D9B8;">🥐</div>
+        </div>
+        <div class="like-caption">hosting brunches</div>
+      </div>
+      <div class="like-card reveal">
+        <div class="like-photo">
+          <img src="images/about/stuff-i-like/cake.jpg" alt="Cake" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';">
+          <div class="like-placeholder" style="background:#F0C9D6;">🍰</div>
+        </div>
+        <div class="like-caption">cake</div>
+      </div>
+      <div class="like-card reveal">
+        <div class="like-photo">
+          <img src="images/about/stuff-i-like/italy.jpg" alt="Italy" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';">
+          <div class="like-placeholder" style="background:#C9DCE8;">🍋</div>
+        </div>
+        <div class="like-caption">italy</div>
+      </div>
+      <div class="like-card reveal">
+        <div class="like-photo">
+          <img src="images/about/stuff-i-like/reading.jpg" alt="Reading" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';">
+          <div class="like-placeholder" style="background:#D9E0C9;">📖</div>
+        </div>
+        <div class="like-caption">reading</div>
+      </div>
+      <div class="like-card reveal">
+        <div class="like-photo">
+          <img src="images/about/stuff-i-like/funny.jpg" alt="Being funny with friends" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';">
+          <div class="like-placeholder" style="background:#E8D9C9;">😄</div>
+        </div>
+        <div class="like-caption">being funny</div>
+      </div>
+    </div>
   </section>
 
   <!-- ══ GARDEN ══ -->
