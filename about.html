@@ -140,7 +140,7 @@
     .photo-right {
       width: 420px;
       background: white;
-      padding: 14px 14px 52px 14px;
+      padding: 14px;
       border-radius: 4px;
       box-shadow: 0 8px 32px rgba(0,0,0,.15), 0 2px 8px rgba(0,0,0,.08);
       rotate: 2.5deg;
@@ -151,13 +151,6 @@
       will-change: transform;
     }
     .photo-right img { width:100%; height:360px; object-fit:cover; border-radius:2px; display:block; }
-    .photo-right-label {
-      text-align: center;
-      font-family: 'Caveat', cursive;
-      font-size: 16px;
-      color: #666;
-      margin-top: 8px;
-    }
     .intro-card {
       position: absolute;
       bottom: -20px;
@@ -555,7 +548,7 @@
       }
       .photo-left { width: 100%; height: auto; rotate: 0deg; }
       .photo-left img { height: 400px; }
-      .photo-right { width: 100%; padding: 10px 10px 40px 10px; rotate: 0deg; transform-origin: center; }
+      .photo-right { width: 100%; padding: 10px; rotate: 0deg; transform-origin: center; }
       .photo-right img { height: 300px; }
       .intro-card {
         position: relative;
@@ -884,7 +877,6 @@
       <!-- Right: coffee chat photo (Polaroid) -->
       <div class="photo-right reveal">
         <img src="images/about/coffeechat.png" alt="Vivien — Coffee Chat" loading="lazy">
-        <div class="photo-right-label">coffee first</div>
       </div>
 
       <!-- Intro card: bottom-left of photos area -->
