@@ -1608,7 +1608,8 @@
         flex-direction: row;
         overflow-x: auto;
         gap: 12px;
-        padding: 16px 24px 20px;
+        padding: 16px 24px 32px;
+        scroll-padding-left: 24px;
         scroll-snap-type: x mandatory;
         -webkit-overflow-scrolling: touch;
         scrollbar-width: none;
@@ -1630,7 +1631,8 @@
       }
 
       /* All cards: flow in the scroll strip */
-      .float-card {
+      .float-card,
+      .hero-right .float-card {
         position: relative;
         flex-shrink: 0;
         scroll-snap-align: start;

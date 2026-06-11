@@ -238,9 +238,9 @@
       body { overflow-y: auto; overflow-x: hidden; }
       .sidebar { display:none; }
       .detail-panel { display:none; }
-      .main { flex-direction: column; overflow: visible; }
+      .main { flex-direction: column; overflow: visible; min-width: 0; }
       .board-area { flex: none; overflow: visible; }
-      .board { padding:12px; overflow-x: auto; }
+      .board { padding:12px; overflow-x: auto; min-width: 0; -webkit-overflow-scrolling: touch; scroll-snap-type: x mandatory; }
       .board-columns { overflow-x: auto; -webkit-overflow-scrolling: touch; scroll-snap-type: x mandatory; padding-bottom: 16px; }
       .col { width: min(260px, 80vw); flex-shrink: 0; scroll-snap-align: start; }
       .board-header { padding: 12px 16px 8px; }
