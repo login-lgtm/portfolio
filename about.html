@@ -242,23 +242,13 @@
     }
     .like-card {
       flex: 0 1 180px;
-      background: white; border-radius: 4px; padding: 12px 12px 0;
-      box-shadow: 0 8px 28px rgba(0,0,0,.10), 0 2px 8px rgba(0,0,0,.06);
-      transition: transform .3s ease, box-shadow .3s ease;
+      transition: transform .3s ease;
     }
     .like-card:hover {
-      transform: rotate(0deg) scale(1.05) translateY(-6px) !important;
-      box-shadow: 0 16px 40px rgba(0,0,0,.16);
-      z-index: 2;
+      transform: translateY(-6px);
     }
-    .like-card:nth-child(1) { transform: rotate(-3deg); }
-    .like-card:nth-child(2) { transform: rotate(2deg); }
-    .like-card:nth-child(3) { transform: rotate(-1.5deg); }
-    .like-card:nth-child(4) { transform: rotate(2.5deg); }
-    .like-card:nth-child(5) { transform: rotate(-2deg); }
-    .like-card:nth-child(6) { transform: rotate(1.5deg); }
     .like-photo {
-      width: 100%; aspect-ratio: 1/1; border-radius: 2px;
+      width: 100%; aspect-ratio: 1/1; border-radius: 12px;
       overflow: hidden; position: relative; background: #eee;
     }
     .like-photo img { width: 100%; height: 100%; object-fit: cover; display: block; }
@@ -268,7 +258,7 @@
     }
     .like-caption {
       font-family: 'Caveat', cursive; font-size: 21px; font-weight: 600;
-      color: #444; text-align: center; padding: 10px 0 16px;
+      color: #444; text-align: center; padding: 10px 0 0;
     }
     @media (max-width: 768px) {
       .likes-section { padding: 0 32px 60px; }
@@ -578,8 +568,8 @@
         left: auto;
         width: 175px;
         transform: rotate(3deg);
-        align-self: flex-end;
-        margin: -170px 12px 28px -45px;
+        align-self: flex-start;
+        margin: -140px 0 28px 14px;
         animation: none;
         transition: none;
         order: 4;
@@ -595,7 +585,7 @@
       .about-hero { padding: calc(56px + env(safe-area-inset-top, 0px) + 16px) 20px 40px; }
       .photo-left img { height: 280px; }
       .intro-card { max-width: 220px; margin-left: 12px; }
-      .about-imessage { width: 150px; margin: -135px 8px 28px -36px; }
+      .about-imessage { width: 150px; margin: -110px 0 28px 22px; }
       .statements { padding: 40px 20px; }
       .stmt-headline { font-size: 28px; letter-spacing: -0.5px; }
       .stmt-sub.serif { font-size: 22px; }
