@@ -147,17 +147,14 @@
     .proj-note { background:white; border-left:3px solid #6B5CE7; padding:16px 20px; border-radius:0 8px 8px 0; font-family:'DM Sans',sans-serif; font-size:14px; color:#666; line-height:1.6; margin-top:24px; max-width:640px; }
     .proj-role { font-size:15px; color:var(--text-mid); margin-top:24px; }
 
-    /* ── INFO 2-COL ── */
-    .info-grid { display:grid; grid-template-columns:1fr 360px; gap:32px; padding:0 80px 80px; position:relative; z-index:1; }
+    /* ── KONTEXT MAC ── */
+    .kontext-section { padding:0 80px 80px; position:relative; z-index:1; }
     .mac-win-body { padding:28px; }
-    .mac-win-quote { font-family:'Instrument Serif',serif; font-style:italic; font-size:22px; color:var(--accent); margin-bottom:20px; }
-    .mac-win-text { font-size:15px; color:var(--text-mid); line-height:1.7; }
-    .mac-win-text p+p { margin-top:12px; }
-    .stats-col { display:flex; flex-direction:column; gap:16px; }
-    .stat-box { background:white; border-radius:12px; box-shadow:0 2px 16px rgba(0,0,0,.06); padding:24px; display:flex; align-items:baseline; gap:16px; }
-    .stat-num { font-family:'Instrument Serif',serif; font-size:64px; line-height:1; color:var(--accent); }
-    .stat-num.dark { color:var(--text); }
-    .stat-unit { font-size:11px; font-weight:500; letter-spacing:.1em; color:var(--text-light); text-transform:uppercase; }
+    .ctx-label { font-size:11px; font-weight:600; letter-spacing:.12em; text-transform:uppercase; color:var(--accent); margin-bottom:10px; }
+    .ctx-question { font-family:'Instrument Serif',serif; font-style:italic; font-size:clamp(20px,2.2vw,26px); line-height:1.4; color:var(--text); margin-bottom:28px; }
+    .ctx-approach-list { list-style:none; display:flex; flex-direction:column; gap:12px; }
+    .ctx-approach-list li { display:flex; align-items:flex-start; gap:12px; font-size:15px; color:var(--text-mid); line-height:1.6; }
+    .ctx-approach-list li::before { content:'→'; color:var(--accent); flex-shrink:0; font-weight:600; }
 
     /* ── TIMELINE ── */
     .timeline-section { padding:80px; position:relative; z-index:1; }
@@ -203,9 +200,7 @@
     /* ── RESPONSIVE ── */
     @media (max-width:900px) {
       .proj-header { padding:48px 32px; }
-      .info-grid { grid-template-columns:1fr; padding:0 32px 48px; }
-      .stats-col { flex-direction:row; flex-wrap:wrap; }
-      .stat-box { flex:1; min-width:120px; }
+      .kontext-section { padding:0 32px 48px; }
       .timeline-section { padding:48px 32px; }
       .timeline-track { grid-template-columns:1fr; gap:32px; }
       .timeline-track::before { display:none; }
@@ -224,7 +219,7 @@
       .proj-header { padding:40px 20px; }
       .proj-name { font-size:32px; letter-spacing:-0.5px; }
       .proj-opinion { font-size:17px; }
-      .info-grid { padding:0 20px 40px; }
+      .kontext-section { padding:0 20px 40px; }
       .timeline-section,.subbrand-section,.learnings-section { padding:40px 20px; }
       .nav-footer { padding:24px 20px; }
     }
@@ -428,35 +423,21 @@
     <div class="proj-role">Co-founded with two friends in 2022 · Creative Lead since 2025 · 15+ events across Hamburg</div>
   </section>
 
-  <!-- ══ PROJEKT-INFO ══ -->
-  <div class="info-grid">
-    <div class="mac-win reveal">
+  <!-- ══ KONTEXT MAC-FENSTER ══ -->
+  <div class="kontext-section">
+    <div class="mac-win reveal" style="max-width:700px;">
       <div class="mac-chrome">
         <span class="mac-dot r"></span><span class="mac-dot y"></span><span class="mac-dot g"></span>
-        <span class="mac-label">mi4l — project info</span>
+        <span class="mac-label">mi4l — context</span>
       </div>
       <div class="mac-win-body">
-        <div class="mac-win-quote">From an idea to a brand.</div>
-        <div class="mac-win-text">
-          <p>MI4L started as a small event series founded by friends who wanted to create the kind of events they couldn't find themselves.</p>
-          <p>I was involved from the beginning, helping build the brand while learning through real projects, real events and real audiences.</p>
-          <p>Over time, the project evolved into multiple formats, collaborations and a distinct visual identity — a space for community, experimentation and creative growth.</p>
-          <p>In 2025, I stepped into the role of Creative Lead, taking responsibility for communication, campaign assets and the ongoing visual development of the brand.</p>
-        </div>
-      </div>
-    </div>
-    <div class="stats-col">
-      <div class="stat-box reveal">
-        <div class="stat-num">15+</div>
-        <div class="stat-unit">Events</div>
-      </div>
-      <div class="stat-box reveal">
-        <div class="stat-num dark">400</div>
-        <div class="stat-unit">Guests Max</div>
-      </div>
-      <div class="stat-box reveal">
-        <div class="stat-num dark">3</div>
-        <div class="stat-unit">Formats</div>
+        <div class="ctx-label">Challenge</div>
+        <div class="ctx-question">How do you grow a friends' side-project into a brand with its own identity — and stay hands-on at every step?</div>
+        <div class="ctx-label">Approach</div>
+        <ul class="ctx-approach-list">
+          <li>Co-founded MI4L in 2022 and helped build the brand from the ground up — across 15+ events and 3 formats.</li>
+          <li>Stepped into the Creative Lead role in 2025, owning communication, campaign assets and ongoing visual development.</li>
+        </ul>
       </div>
     </div>
   </div>
