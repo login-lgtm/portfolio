@@ -146,6 +146,9 @@
     .proj-opinion { font-family:'Instrument Serif',serif; font-style:italic; font-size:clamp(20px,2.5vw,28px); color:var(--accent); line-height:1.3; margin-bottom:24px; max-width:800px; }
     .proj-note { background:white; border-left:3px solid #6B5CE7; padding:16px 20px; border-radius:0 8px 8px 0; font-family:'DM Sans',sans-serif; font-size:14px; color:#666; line-height:1.6; margin-top:24px; max-width:640px; }
     .proj-role { font-size:15px; color:var(--text-mid); margin-top:24px; }
+    .role-badges { display:flex; flex-wrap:wrap; gap:8px; margin-top:24px; }
+    .role-badge { font-size:13px; font-weight:500; color:var(--text-mid); background:var(--tag-bg); border-radius:100px; padding:6px 16px; }
+    .role-badge.active { color:var(--accent); background:var(--accent-light); }
 
     /* ── KONTEXT MAC + STATS ── */
     .info-grid { display:grid; grid-template-columns:1fr 360px; gap:32px; padding:0 80px 80px; position:relative; z-index:1; }
@@ -427,7 +430,10 @@
       <span class="tag-pill">Print</span>
       <span class="tag-pill">Events</span>
     </div>
-    <div class="proj-role">Co-founded with two friends in 2022 · Creative Lead since 2025 · 15+ events across Hamburg</div>
+    <div class="role-badges">
+      <span class="role-badge">Co-Founder · 2022</span>
+      <span class="role-badge active">Creative Lead · since 2025</span>
+    </div>
   </section>
 
   <!-- ══ KONTEXT MAC-FENSTER + STATS ══ -->
@@ -442,8 +448,8 @@
         <div class="ctx-question">How do you grow a friends' side-project into a brand with its own identity — and stay hands-on at every step?</div>
         <div class="ctx-label">Approach</div>
         <ul class="ctx-approach-list">
-          <li>Co-founded MI4L in 2022 and helped build the brand from the ground up — across 15+ events and 3 formats.</li>
-          <li>Stepped into the Creative Lead role in 2025, owning communication, campaign assets and ongoing visual development.</li>
+          <li>Helped build the brand from the ground up — visual identity, campaigns and on-site presence, event after event.</li>
+          <li>Now own communication, campaign assets and ongoing visual development.</li>
         </ul>
       </div>
     </div>
