@@ -412,6 +412,18 @@
     }
     .dl-notice strong { color: var(--text-mid); }
 
+    /* Missing something note */
+    .dl-missing {
+      margin-top: 16px;
+      max-width: 560px;
+      padding: 16px 20px;
+      background: var(--accent-light);
+      border-radius: 10px;
+      font-size: 13px; color: var(--text); line-height: 1.6;
+    }
+    .dl-missing a { color: var(--accent); font-weight: 600; text-decoration: none; }
+    .dl-missing a:hover { text-decoration: underline; }
+
     /* ── RESPONSIVE ── */
     @media (max-width: 900px) {
       .dl-page { padding: 100px 40px 60px; }
@@ -646,6 +658,10 @@
 
     <p class="dl-notice">
       <strong>Confidential.</strong> These documents are shared exclusively with recruiters and HR professionals for application purposes. Please do not redistribute without prior consent.
+    </p>
+
+    <p class="dl-missing">
+      🔍 Looking for something that's not here? If a document is missing, just <a href="mailto:hallo@vivienevers.de">drop me a line</a> — happy to send it over.
     </p>
   </main>
 

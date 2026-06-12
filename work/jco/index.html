@@ -148,6 +148,11 @@
     .mac-win-title { font-family:'Instrument Serif',serif; font-size:22px; margin-bottom:12px; }
     .mac-win-text { font-size:15px; color:var(--text-mid); line-height:1.7; }
     .mac-win-text p+p { margin-top:12px; }
+    .ctx-label { font-size:11px; font-weight:600; letter-spacing:.12em; text-transform:uppercase; color:var(--accent); margin-bottom:10px; }
+    .ctx-question { font-family:'Instrument Serif',serif; font-style:italic; font-size:clamp(20px,2.2vw,26px); line-height:1.4; color:var(--text); margin-bottom:28px; }
+    .ctx-approach-list { list-style:none; display:flex; flex-direction:column; gap:12px; }
+    .ctx-approach-list li { display:flex; align-items:flex-start; gap:12px; font-size:15px; color:var(--text-mid); line-height:1.6; }
+    .ctx-approach-list li::before { content:'→'; color:var(--accent); flex-shrink:0; font-weight:600; }
     .big-quote { font-family:'Instrument Serif',serif; font-style:italic; font-size:clamp(28px,3.5vw,40px); color:var(--accent); line-height:1.3; padding-top:24px; }
 
     /* ── APPROACH CARDS ── */
@@ -419,13 +424,13 @@
         <span class="mac-label">jco — project info</span>
       </div>
       <div class="mac-win-body">
-        <div class="mac-win-title">Translating culture.</div>
-        <div class="mac-win-text">
-          <p>The challenge wasn't making classical music simpler.</p>
-          <p>It was making it feel approachable without losing the depth that makes it meaningful.</p>
-          <p>My role is to help translate that experience into digital communication — evolving the institution's presence while working within an existing identity.</p>
-          <p>More recently, that has meant exploring how audiences participate in culture, not just consume it.</p>
-        </div>
+        <div class="ctx-label">Challenge</div>
+        <div class="ctx-question">The challenge wasn't making classical music simpler — it was making it feel approachable without losing the depth that makes it meaningful.</div>
+        <div class="ctx-label">Approach</div>
+        <ul class="ctx-approach-list">
+          <li>Help translate that experience into digital communication — evolving the institution's presence while working within an existing identity.</li>
+          <li>More recently, that has meant exploring how audiences participate in culture, not just consume it.</li>
+        </ul>
       </div>
     </div>
     <div class="big-quote reveal">

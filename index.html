@@ -1075,12 +1075,8 @@
     .lens-statement {
       margin-top: 60px; text-align: center;
     }
-    .lens-statement-main {
-      font-family: 'Instrument Serif', serif;
-      font-style: italic; font-size: 28px; color: #666;
-    }
     .lens-statement-sub {
-      font-size: 16px; color: #999; margin-top: 8px;
+      font-size: 16px; color: #999;
     }
 
     /* ── MOBILE: einfache Slideshow ── */
@@ -1396,7 +1392,7 @@
     .name-highlight-wrap::before {
       content: '';
       position: absolute;
-      top: 18px; bottom: 18px; left: -6px; right: -6px;
+      top: 2px; bottom: 2px; left: -6px; right: -6px;
       background: var(--accent-light);
       transform-origin: left center;
       transform: scaleX(0);
@@ -1607,6 +1603,7 @@
         display: flex;
         flex-direction: row;
         overflow-x: auto;
+        align-items: flex-start;
         gap: 12px;
         padding: 16px 24px 32px;
         scroll-padding-left: 24px;
@@ -1651,8 +1648,8 @@
       .fc-meadow-card-text { font-size: 12px; }
       .float-card.fc-coffee { width: 160px; }
       .float-card.fc-folder { width: 130px; }
-      .fc-folder .fc-folder-inner > div:last-child { padding: 14px 16px; }
-      .fc-folder img { width: 36px !important; height: 36px !important; }
+      .fc-folder .fc-folder-inner > div:last-child { padding: 10px 16px; }
+      .fc-folder img { width: 30px !important; height: 30px !important; }
       /* Spotify slightly wider */
       .float-card.fc-spotify { width: 240px; }
       /* Tag modal: stay within viewport on mobile */
@@ -2221,7 +2218,7 @@
             <span class="fc-meadow-card-text">Looking for a place to grow.</span>
           </div>
           <span id="garden-seed">🌱</span>
-          <div class="fc-meadow-hint" id="fc-meadow-hint">your garden<br>click to plant</div>
+          <div class="fc-meadow-hint" id="fc-meadow-hint">click to plant</div>
         </div>
       </div>
 
@@ -2519,7 +2516,6 @@
     </div>
 
     <div class="lens-statement">
-      <p class="lens-statement-main">"Collecting moments, ideas and little obsessions."</p>
       <p class="lens-statement-sub">fragments of my world</p>
     </div>
 
