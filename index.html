@@ -1392,7 +1392,7 @@
     .name-highlight-wrap::before {
       content: '';
       position: absolute;
-      top: 2px; bottom: 2px; left: -6px; right: -6px;
+      top: 0.18em; bottom: 0.18em; left: -6px; right: -6px;
       background: var(--accent-light);
       transform-origin: left center;
       transform: scaleX(0);
@@ -1404,6 +1404,9 @@
       animation: markerSweep 0.8s cubic-bezier(0.4, 0, 0.2, 1) forwards;
     }
     @keyframes markerSweep { to { transform: scaleX(1); } }
+    @media (min-width: 769px) {
+      .name-highlight-wrap::before { top: 0.4em; bottom: 0.4em; }
+    }
 
     /* ── MEMORY GAME EASTER EGG ── */
     .memory-modal {
