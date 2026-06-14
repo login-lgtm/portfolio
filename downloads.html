@@ -347,9 +347,9 @@
     /* ── Download Cards (Mac-chrome style) ── */
     .dl-grid {
       display: grid;
-      grid-template-columns: repeat(2, 1fr);
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
       gap: 24px;
-      max-width: 640px;
+      max-width: 1160px;
     }
     .dl-card {
       background: white;
@@ -427,7 +427,7 @@
     /* ── RESPONSIVE ── */
     @media (max-width: 900px) {
       .dl-page { padding: 100px 40px 60px; }
-      .dl-grid { grid-template-columns: 1fr 1fr; }
+      .dl-grid { grid-template-columns: repeat(2, 1fr); }
     }
     @media (max-width: 768px) {
       nav {
