@@ -600,6 +600,97 @@
     .section-sub2 { font-size:15px; color:var(--text-light); font-weight:300; max-width:560px; margin-top:8px; }
 
     /* ─────────────────────────────────────────────
+       MY DIRECTION — Journey Bar
+    ───────────────────────────────────────────── */
+    .direction-section {
+      padding: 120px 80px;
+      position: relative; z-index: 1;
+    }
+    .direction-header { margin-bottom: 56px; text-align: center; }
+    .direction-header .section-sub { margin: 0 auto; }
+    .spotlight-wrap {
+      max-width: 580px;
+      margin: 0 auto;
+      border-radius: 14px;
+      overflow: hidden;
+      background: white;
+      box-shadow: 0 8px 40px rgba(0,0,0,.10), 0 0 0 1px rgba(0,0,0,.06);
+    }
+    .spotlight-search {
+      display: flex; align-items: center; gap: 10px;
+      padding: 14px 18px;
+      background: #F5F3F1;
+      border-bottom: 1px solid var(--border);
+    }
+    .spotlight-search svg { width: 18px; height: 18px; flex-shrink: 0; }
+    .spotlight-search-text {
+      font-size: 16px; font-weight: 400;
+      color: var(--text);
+      font-family: 'DM Sans', sans-serif;
+    }
+    .spotlight-search-cursor {
+      width: 1.5px; height: 18px;
+      background: var(--accent); border-radius: 1px;
+      animation: tBlink .8s step-end infinite;
+    }
+    .spotlight-cat {
+      font-size: 10px; font-weight: 600;
+      letter-spacing: .1em; text-transform: uppercase;
+      color: var(--text-light);
+      padding: 14px 18px 6px;
+    }
+    .spotlight-results {
+      padding: 0 6px 8px;
+    }
+    .spotlight-row {
+      display: flex; align-items: center; gap: 14px;
+      padding: 10px 12px;
+      border-radius: 8px;
+      transition: background .15s;
+    }
+    .spotlight-row.active {
+      background: var(--accent-light);
+    }
+    .spotlight-row-icon {
+      width: 36px; height: 36px;
+      border-radius: 8px;
+      display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0;
+    }
+    .spotlight-row-icon svg { width: 18px; height: 18px; }
+    .spotlight-row-icon.past { background: var(--tag-bg); }
+    .spotlight-row-icon.present { background: var(--accent); }
+    .spotlight-row-text { flex: 1; min-width: 0; }
+    .spotlight-row-name {
+      font-size: 14px; font-weight: 500;
+      color: var(--text);
+      margin-bottom: 1px;
+    }
+    .spotlight-row-sub {
+      font-size: 11px; color: var(--text-light);
+    }
+    .spotlight-row.active .spotlight-row-name { color: var(--accent); font-weight: 600; }
+    .spotlight-row-badge {
+      font-size: 9px; font-weight: 600;
+      letter-spacing: .06em; text-transform: uppercase;
+      color: white; background: var(--accent);
+      padding: 2px 8px; border-radius: 100px;
+      flex-shrink: 0;
+    }
+    @media (max-width: 768px) {
+      .direction-section { padding: 80px 32px; }
+      .direction-header { margin-bottom: 40px; }
+      .spotlight-wrap { max-width: 100%; }
+    }
+    @media (max-width: 480px) {
+      .direction-section { padding: 60px 20px; }
+      .spotlight-search-text { font-size: 14px; }
+      .spotlight-row-name { font-size: 13px; }
+      .spotlight-row-icon { width: 32px; height: 32px; border-radius: 7px; }
+      .spotlight-row-icon svg { width: 16px; height: 16px; }
+    }
+
+    /* ─────────────────────────────────────────────
        WORK SECTION
     ───────────────────────────────────────────── */
     #work { padding: 120px 80px; position: relative; z-index: 1; }
@@ -758,6 +849,12 @@
       font-family: 'DM Sans', sans-serif;
       font-size: 16px; font-weight: 500;
       color: #1A1A1A; margin: 0 0 2px; line-height: 1.2;
+    }
+    .fw-proj-context {
+      font-family: 'DM Sans', sans-serif;
+      font-size: 11px; font-style: italic;
+      color: var(--text-light); line-height: 1.5;
+      margin: 4px 0 6px;
     }
     .fw-proj-period {
       font-family: 'DM Sans', sans-serif;
@@ -2081,7 +2178,24 @@
       <li class="nav-work-wrapper">
         <a href="#work">Work <span class="nav-caret">▾</span></a>
         <div class="nav-dropdown">
-          <div class="nav-dropdown-cat">Favorites</div>
+          <div class="nav-dropdown-cat">Product & Experience</div>
+          <a class="nav-dropdown-item" href="work/dashboard/index.html">
+            <span class="nav-dropdown-item-icon">
+              <svg viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg"><rect x="2" y="2" width="7" height="7" rx="1.5" fill="#6B5CE7" opacity=".7"/><rect x="11" y="2" width="7" height="7" rx="1.5" fill="#6B5CE7" opacity=".4"/><rect x="2" y="11" width="7" height="7" rx="1.5" fill="#6B5CE7" opacity=".4"/><rect x="11" y="11" width="7" height="7" rx="1.5" fill="#6B5CE7" opacity=".7"/></svg>
+            </span>
+            <span class="nav-dropdown-item-text">
+              <span class="nav-dropdown-item-name">Workflow Dashboard</span>
+              <span class="nav-dropdown-item-sub">Product Thinking · Self-Initiated</span>
+            </span>
+          </a>
+          <a class="nav-dropdown-item" href="work/ebru-physio/index.html">
+            <span class="nav-dropdown-item-icon"><img src="images/icons/folder-custom.png" width="20" height="20" alt="" style="object-fit:contain;display:block;"></span>
+            <span class="nav-dropdown-item-text">
+              <span class="nav-dropdown-item-name">Physiotherapie mit Herz</span>
+              <span class="nav-dropdown-item-sub">Web Design · UX/UI</span>
+            </span>
+          </a>
+          <div class="nav-dropdown-cat">Brand & Cultural Work</div>
           <a class="nav-dropdown-item" href="work/mi4l/index.html">
             <span class="nav-dropdown-item-icon"><img src="images/icons/folder-custom.png" width="20" height="20" alt="" style="object-fit:contain;display:block;"></span>
             <span class="nav-dropdown-item-text">
@@ -2096,37 +2210,11 @@
               <span class="nav-dropdown-item-sub">Visual Identity · Print Production</span>
             </span>
           </a>
-          <div class="nav-dropdown-cat">Freelance</div>
           <a class="nav-dropdown-item" href="work/jco/index.html">
             <span class="nav-dropdown-item-icon"><img src="images/icons/folder-custom.png" width="20" height="20" alt="" style="object-fit:contain;display:block;"></span>
             <span class="nav-dropdown-item-text">
               <span class="nav-dropdown-item-name">JCO Hamburg</span>
               <span class="nav-dropdown-item-sub">Brand Communication · Visual Strategy</span>
-            </span>
-          </a>
-          <a class="nav-dropdown-item" href="work/ebru-physio/index.html">
-            <span class="nav-dropdown-item-icon"><img src="images/icons/folder-custom.png" width="20" height="20" alt="" style="object-fit:contain;display:block;"></span>
-            <span class="nav-dropdown-item-text">
-              <span class="nav-dropdown-item-name">Physiotherapie mit Herz</span>
-              <span class="nav-dropdown-item-sub">Web Design · UX/UI</span>
-            </span>
-          </a>
-          <div class="nav-dropdown-cat">Experience</div>
-          <a class="nav-dropdown-item" href="work/apprenticeship/index.html">
-            <span class="nav-dropdown-item-icon"><img src="images/icons/folder-custom.png" width="20" height="20" alt="" style="object-fit:contain;display:block;"></span>
-            <span class="nav-dropdown-item-text">
-              <span class="nav-dropdown-item-name">During my Apprenticeship</span>
-              <span class="nav-dropdown-item-sub">Web Design · Corporate Design · Print</span>
-            </span>
-          </a>
-          <div class="nav-dropdown-cat">Personal</div>
-          <a class="nav-dropdown-item" href="work/dashboard/index.html">
-            <span class="nav-dropdown-item-icon">
-              <svg viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg"><rect x="2" y="2" width="7" height="7" rx="1.5" fill="#6B5CE7" opacity=".7"/><rect x="11" y="2" width="7" height="7" rx="1.5" fill="#6B5CE7" opacity=".4"/><rect x="2" y="11" width="7" height="7" rx="1.5" fill="#6B5CE7" opacity=".4"/><rect x="11" y="11" width="7" height="7" rx="1.5" fill="#6B5CE7" opacity=".7"/></svg>
-            </span>
-            <span class="nav-dropdown-item-text">
-              <span class="nav-dropdown-item-name">Workflow Dashboard</span>
-              <span class="nav-dropdown-item-sub">Product Thinking · Self-Initiated</span>
             </span>
           </a>
           <div class="nav-dropdown-divider"></div>
@@ -2155,16 +2243,13 @@
       <div class="nav-overlay-item">
         <span class="nav-overlay-label is-label">Work</span>
         <div class="nav-overlay-sub">
-          <div class="nav-overlay-cat">Favorites</div>
+          <div class="nav-overlay-cat">Product & Experience</div>
+          <a href="work/dashboard/index.html"><svg viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg" style="width:16px;height:16px;flex-shrink:0;"><rect x="2" y="2" width="7" height="7" rx="1.5" fill="#6B5CE7" opacity=".7"/><rect x="11" y="2" width="7" height="7" rx="1.5" fill="#6B5CE7" opacity=".4"/><rect x="2" y="11" width="7" height="7" rx="1.5" fill="#6B5CE7" opacity=".4"/><rect x="11" y="11" width="7" height="7" rx="1.5" fill="#6B5CE7" opacity=".7"/></svg> Workflow Dashboard</a>
+          <a href="work/ebru-physio/index.html"><img src="images/icons/folder-custom.png" style="width:18px;height:18px;object-fit:contain;margin-right:6px;vertical-align:middle;"> Physiotherapie mit Herz</a>
+          <div class="nav-overlay-cat">Brand & Cultural Work</div>
           <a href="work/mi4l/index.html"><img src="images/icons/folder-custom.png" style="width:18px;height:18px;object-fit:contain;margin-right:6px;vertical-align:middle;"> Music is for Lovers</a>
           <a href="work/studio-liebe-nrg/index.html"><img src="images/icons/folder-custom.png" style="width:18px;height:18px;object-fit:contain;margin-right:6px;vertical-align:middle;"> Studio Liebe &amp; NRG</a>
-          <div class="nav-overlay-cat">Freelance</div>
           <a href="work/jco/index.html"><img src="images/icons/folder-custom.png" style="width:18px;height:18px;object-fit:contain;margin-right:6px;vertical-align:middle;"> JCO Hamburg</a>
-          <a href="work/ebru-physio/index.html"><img src="images/icons/folder-custom.png" style="width:18px;height:18px;object-fit:contain;margin-right:6px;vertical-align:middle;"> Physiotherapie mit Herz</a>
-          <div class="nav-overlay-cat">Experience</div>
-          <a href="work/apprenticeship/index.html"><img src="images/icons/folder-custom.png" style="width:18px;height:18px;object-fit:contain;margin-right:6px;vertical-align:middle;"> During my Apprenticeship</a>
-          <div class="nav-overlay-cat">Personal</div>
-          <a href="work/dashboard/index.html"><svg viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg" style="width:16px;height:16px;flex-shrink:0;"><rect x="2" y="2" width="7" height="7" rx="1.5" fill="#6B5CE7" opacity=".7"/><rect x="11" y="2" width="7" height="7" rx="1.5" fill="#6B5CE7" opacity=".4"/><rect x="2" y="11" width="7" height="7" rx="1.5" fill="#6B5CE7" opacity=".4"/><rect x="11" y="11" width="7" height="7" rx="1.5" fill="#6B5CE7" opacity=".7"/></svg> Workflow Dashboard</a>
         </div>
       </div>
       <div class="nav-overlay-item">
@@ -2209,8 +2294,7 @@
       <h1 class="hero-name" id="hero-name">
         <span class="name-highlight-wrap" id="name-highlight-wrap">Vivien <em>Evers</em></span>
       </h1>
-      <p class="hero-sub">Building brands, experiences and digital communication.</p>
-      <p class="hero-direction">Started in print design. Built through real projects.<br>Increasingly interested in digital products, user experiences and brand communication.</p>
+      <p class="hero-sub">I design experiences — from real-world events to digital products.</p>
       <div class="hero-ctas">
         <a href="#work" class="btn-primary">View my work ▶</a>
         <a href="#contact" class="btn-secondary">Let's chat</a>
@@ -2330,32 +2414,101 @@
   ══════════════════════════════════════════ -->
   <div class="marquee-section">
     <div class="marquee-track">
-      <div class="marquee-item"><span class="marquee-dot"></span>Brand Development</div>
-      <div class="marquee-item"><span class="marquee-dot"></span>Visual Development</div>
-      <div class="marquee-item"><span class="marquee-dot"></span>Visual Identity</div>
-      <div class="marquee-item"><span class="marquee-dot"></span>Print Production</div>
-      <div class="marquee-item"><span class="marquee-dot"></span>Event Marketing</div>
-      <div class="marquee-item"><span class="marquee-dot"></span>Figma</div>
-      <div class="marquee-item"><span class="marquee-dot"></span>Adobe Suite</div>
-      <div class="marquee-item"><span class="marquee-dot"></span>Web Design</div>
-      <div class="marquee-item"><span class="marquee-dot"></span>Brand Communication</div>
+      <div class="marquee-item"><span class="marquee-dot"></span>Product Thinking</div>
       <div class="marquee-item"><span class="marquee-dot"></span>UI Design</div>
-      <div class="marquee-item"><span class="marquee-dot"></span>Large Format</div>
-      <div class="marquee-item"><span class="marquee-dot"></span>Campaign Design</div>
-      <div class="marquee-item"><span class="marquee-dot"></span>Brand Development</div>
-      <div class="marquee-item"><span class="marquee-dot"></span>Visual Development</div>
-      <div class="marquee-item"><span class="marquee-dot"></span>Visual Identity</div>
-      <div class="marquee-item"><span class="marquee-dot"></span>Print Production</div>
-      <div class="marquee-item"><span class="marquee-dot"></span>Event Marketing</div>
-      <div class="marquee-item"><span class="marquee-dot"></span>Figma</div>
-      <div class="marquee-item"><span class="marquee-dot"></span>Adobe Suite</div>
       <div class="marquee-item"><span class="marquee-dot"></span>Web Design</div>
+      <div class="marquee-item"><span class="marquee-dot"></span>UX/UI</div>
+      <div class="marquee-item"><span class="marquee-dot"></span>Figma</div>
+      <div class="marquee-item"><span class="marquee-dot"></span>Experience Design</div>
+      <div class="marquee-item"><span class="marquee-dot"></span>Brand Development</div>
+      <div class="marquee-item"><span class="marquee-dot"></span>Visual Identity</div>
+      <div class="marquee-item"><span class="marquee-dot"></span>Adobe Suite</div>
       <div class="marquee-item"><span class="marquee-dot"></span>Brand Communication</div>
-      <div class="marquee-item"><span class="marquee-dot"></span>UI Design</div>
-      <div class="marquee-item"><span class="marquee-dot"></span>Large Format</div>
       <div class="marquee-item"><span class="marquee-dot"></span>Campaign Design</div>
+      <div class="marquee-item"><span class="marquee-dot"></span>Event Design</div>
+      <div class="marquee-item"><span class="marquee-dot"></span>Product Thinking</div>
+      <div class="marquee-item"><span class="marquee-dot"></span>UI Design</div>
+      <div class="marquee-item"><span class="marquee-dot"></span>Web Design</div>
+      <div class="marquee-item"><span class="marquee-dot"></span>UX/UI</div>
+      <div class="marquee-item"><span class="marquee-dot"></span>Figma</div>
+      <div class="marquee-item"><span class="marquee-dot"></span>Experience Design</div>
+      <div class="marquee-item"><span class="marquee-dot"></span>Brand Development</div>
+      <div class="marquee-item"><span class="marquee-dot"></span>Visual Identity</div>
+      <div class="marquee-item"><span class="marquee-dot"></span>Adobe Suite</div>
+      <div class="marquee-item"><span class="marquee-dot"></span>Brand Communication</div>
+      <div class="marquee-item"><span class="marquee-dot"></span>Campaign Design</div>
+      <div class="marquee-item"><span class="marquee-dot"></span>Event Design</div>
     </div>
   </div>
+
+  <!-- ══════════════════════════════════════════
+       MY DIRECTION
+  ══════════════════════════════════════════ -->
+  <section class="direction-section">
+    <div class="direction-header reveal">
+      <div class="section-label">My Direction</div>
+      <h2 class="section-title">Where I'm headed.</h2>
+      <p class="section-sub">From building live experiences to designing digital products.</p>
+    </div>
+
+    <div class="spotlight-wrap reveal">
+      <div class="spotlight-search">
+        <svg viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <circle cx="8.5" cy="8.5" r="5.5" stroke="#999" stroke-width="1.5"/>
+          <path d="M13 13l4 4" stroke="#999" stroke-width="1.5" stroke-linecap="round"/>
+        </svg>
+        <span class="spotlight-search-text">My direction</span>
+        <span class="spotlight-search-cursor"></span>
+      </div>
+      <div class="spotlight-cat">Top Hits</div>
+      <div class="spotlight-results">
+
+        <div class="spotlight-row">
+          <div class="spotlight-row-icon past">
+            <svg viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M10 2l2 4.5 5 .7-3.6 3.5.9 5L10 13.5 5.7 15.7l.9-5L3 7.2l5-.7L10 2z" stroke="#999" stroke-width="1.2" stroke-linejoin="round"/>
+            </svg>
+          </div>
+          <div class="spotlight-row-text">
+            <div class="spotlight-row-name">Events & Community</div>
+            <div class="spotlight-row-sub">Building real experiences — co-founding, curating, creating atmosphere</div>
+          </div>
+        </div>
+
+        <div class="spotlight-row">
+          <div class="spotlight-row-icon past">
+            <svg viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <rect x="3" y="4" width="14" height="12" rx="1.5" stroke="#999" stroke-width="1.2"/>
+              <path d="M3 7h14" stroke="#999" stroke-width="1.2"/>
+              <path d="M6 10.5l2.5-2L11 10.5l3-2.5" stroke="#999" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </div>
+          <div class="spotlight-row-text">
+            <div class="spotlight-row-name">Brand & Communication</div>
+            <div class="spotlight-row-sub">Visual systems, identity design, campaign thinking</div>
+          </div>
+        </div>
+
+        <div class="spotlight-row active">
+          <div class="spotlight-row-icon present">
+            <svg viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <rect x="2" y="3" width="16" height="11" rx="2" stroke="white" stroke-width="1.2"/>
+              <rect x="5" y="6" width="4.5" height="4" rx=".8" stroke="white" stroke-width="1"/>
+              <rect x="11" y="6" width="4.5" height="1.8" rx=".6" stroke="white" stroke-width="1"/>
+              <rect x="11" y="9.2" width="3" height=".8" rx=".4" fill="white" opacity=".5"/>
+              <path d="M7.5 16.5h5" stroke="white" stroke-width="1.2" stroke-linecap="round"/>
+            </svg>
+          </div>
+          <div class="spotlight-row-text">
+            <div class="spotlight-row-name">Digital Products</div>
+            <div class="spotlight-row-sub">UX, interfaces, systems thinking — where I'm headed</div>
+          </div>
+          <span class="spotlight-row-badge">Now</span>
+        </div>
+
+      </div>
+    </div>
+  </section>
 
   <!-- ══════════════════════════════════════════
        WORK — Mac Finder Window
@@ -2364,7 +2517,7 @@
     <div class="work-header reveal">
       <div class="section-label">Selected Work</div>
       <h2 class="section-title">Projects</h2>
-      <p class="section-sub">A mix of real client work and self-initiated projects — digital experiences, cultural communication, websites and personal tools.</p>
+      <p class="section-sub">Product thinking, digital experiences and the brand work that got me here.</p>
     </div>
 
     <div class="finder-window reveal">
@@ -2382,13 +2535,26 @@
       <!-- Body: Sidebar links + Content rechts -->
       <div class="fw-body">
 
-        <!-- ── SIDEBAR: 3 Kategorien ── -->
+        <!-- ── SIDEBAR ── -->
         <aside class="fw-sidebar">
 
-          <!-- FAVORITES -->
-          <div class="fw-sidebar-category">FAVORITES</div>
+          <!-- PRODUCT & EXPERIENCE -->
+          <div class="fw-sidebar-category">PRODUCT & EXPERIENCE</div>
           <ul class="fw-sidebar-list">
-            <li class="fw-sidebar-item active" data-idx="0" data-url="work/mi4l/index.html">
+            <li class="fw-sidebar-item active" data-idx="5" data-url="work/dashboard/index.html">
+              <svg width="20" height="20" viewBox="0 0 20 20" fill="none" style="flex-shrink:0;" xmlns="http://www.w3.org/2000/svg"><rect x="2" y="2" width="7" height="7" rx="1.5" fill="#6B5CE7" opacity=".7"/><rect x="11" y="2" width="7" height="7" rx="1.5" fill="#6B5CE7" opacity=".4"/><rect x="2" y="11" width="7" height="7" rx="1.5" fill="#6B5CE7" opacity=".4"/><rect x="11" y="11" width="7" height="7" rx="1.5" fill="#6B5CE7" opacity=".7"/></svg>
+              <span class="fw-sidebar-name">Workflow Dashboard</span>
+            </li>
+            <li class="fw-sidebar-item" data-idx="3" data-url="work/ebru-physio/index.html">
+              <img src="images/icons/folder-custom.png" alt="" width="20" height="20" style="object-fit:contain;flex-shrink:0;">
+              <span class="fw-sidebar-name">Physiotherapie mit Herz</span>
+            </li>
+          </ul>
+
+          <!-- BRAND & CULTURAL WORK -->
+          <div class="fw-sidebar-category">BRAND & CULTURAL WORK</div>
+          <ul class="fw-sidebar-list">
+            <li class="fw-sidebar-item" data-idx="0" data-url="work/mi4l/index.html">
               <div class="fw-icon-soundwave">
                 <img class="fw-icon-profile" src="work/mi4l/media/mi4l-profile.jpg" alt="" loading="lazy"
                   onerror="this.style.display='none'">
@@ -2407,37 +2573,24 @@
               </div>
               <span class="fw-sidebar-name">Studio Liebe & NRG</span>
             </li>
-          </ul>
-
-          <!-- FREELANCE -->
-          <div class="fw-sidebar-category">FREELANCE</div>
-          <ul class="fw-sidebar-list">
             <li class="fw-sidebar-item" data-idx="2" data-url="work/jco/index.html">
               <img src="images/icons/folder-custom.png" alt="" width="20" height="20" style="object-fit:contain;flex-shrink:0;">
               <span class="fw-sidebar-name fw-name-jco">JCO Hamburg</span>
             </li>
-            <li class="fw-sidebar-item" data-idx="3" data-url="work/ebru-physio/index.html">
-              <img src="images/icons/folder-custom.png" alt="" width="20" height="20" style="object-fit:contain;flex-shrink:0;">
-              <span class="fw-sidebar-name">Physiotherapie mit Herz</span>
-            </li>
           </ul>
 
-          <!-- EXPERIENCE -->
-          <div class="fw-sidebar-category">EXPERIENCE</div>
+          <!-- BACKGROUND -->
+          <div class="fw-sidebar-category">BACKGROUND</div>
           <ul class="fw-sidebar-list">
-            <li class="fw-sidebar-item" data-idx="4" data-url="work/apprenticeship/index.html">
+            <li class="fw-sidebar-item" data-idx="4" data-url="about.html">
               <img src="images/icons/folder-custom.png" alt="" width="20" height="20" style="object-fit:contain;flex-shrink:0;">
-              <span class="fw-sidebar-name">Apprenticeship</span>
+              <span class="fw-sidebar-name">Building my Foundation</span>
             </li>
           </ul>
 
           <!-- PERSONAL -->
           <div class="fw-sidebar-category">PERSONAL</div>
           <ul class="fw-sidebar-list">
-            <li class="fw-sidebar-item" data-idx="5" data-url="work/dashboard/index.html">
-              <svg width="20" height="20" viewBox="0 0 20 20" fill="none" style="flex-shrink:0;" xmlns="http://www.w3.org/2000/svg"><rect x="2" y="2" width="7" height="7" rx="1.5" fill="#6B5CE7" opacity=".7"/><rect x="11" y="2" width="7" height="7" rx="1.5" fill="#6B5CE7" opacity=".4"/><rect x="2" y="11" width="7" height="7" rx="1.5" fill="#6B5CE7" opacity=".4"/><rect x="11" y="11" width="7" height="7" rx="1.5" fill="#6B5CE7" opacity=".7"/></svg>
-              <span class="fw-sidebar-name">Workflow Dashboard</span>
-            </li>
             <li class="fw-sidebar-item" data-idx="6">
               <svg width="20" height="20" viewBox="0 0 20 20" fill="none" style="flex-shrink:0;" xmlns="http://www.w3.org/2000/svg"><rect x="1" y="2" width="18" height="16" rx="2" fill="#EDE9F7" stroke="#6B5CE7" stroke-width="1"/><rect x="1" y="2" width="18" height="4" rx="2" fill="#6B5CE7" opacity=".6"/><circle cx="3.5" cy="4" r="0.6" fill="white"/><circle cx="5.5" cy="4" r="0.6" fill="white"/><circle cx="7.5" cy="4" r="0.6" fill="white"/></svg>
               <span class="fw-sidebar-name">This Portfolio</span>
@@ -2458,84 +2611,6 @@
     </div><!-- /finder-window -->
   </section>
 
-  <!-- ══════════════════════════════════════════
-       THROUGH MY LENS — Digitalkamera
-  ══════════════════════════════════════════ -->
-  <section id="about">
-    <div class="lens-label">Through My Lens</div>
-    <h2 class="lens-title">A few things that make me, me.</h2>
-
-    <!--
-      FOTOS HINZUFÜGEN:
-      1. Speichere deine Fotos als:
-         images/lens-1.jpg bis images/lens-6.jpg
-      2. Empfohlene Größe: 560x420px (4:3)
-      3. In Photoshop: File > Save for Web
-         Format: JPEG, Quality: 80
-      Bis echte Fotos da sind werden
-      Platzhalter-Farben angezeigt.
-    -->
-
-    <!-- ── DESKTOP: Kamera-Element ── -->
-    <div class="cam-wrap">
-      <div class="cam-body">
-
-        <!-- Modellname -->
-        <div class="cam-model">VIVI CAM</div>
-
-        <!-- REC-Dot -->
-        <div class="cam-rec"></div>
-
-        <!-- Blitz -->
-        <div class="cam-flash" id="cam-flash"></div>
-
-        <!-- Objektiv -->
-        <div class="cam-lens">
-          <div class="cam-lens-mid">
-            <div class="cam-lens-inner">
-              <div class="cam-lens-highlight"></div>
-            </div>
-          </div>
-        </div>
-
-        <!-- LCD Screen -->
-        <div class="cam-screen-wrap">
-          <div class="cam-screen" id="cam-screen">
-            <img src="" alt="" style="display:none;">
-            <div class="cam-placeholder" id="cam-placeholder"></div>
-            <div class="cam-scanlines"></div>
-            <div class="cam-hud-top"><span id="cam-counter">1 / 6</span></div>
-            <div class="cam-hud-bottom"><span id="cam-caption"></span></div>
-            <div class="cam-focus-box" id="cam-focus"></div>
-          </div>
-        </div>
-
-        <!-- ◀ Prev -->
-        <button class="cam-btn cam-btn-prev" id="cam-prev" aria-label="Previous photo">&#9664;</button>
-        <!-- ▶ Next -->
-        <button class="cam-btn cam-btn-next" id="cam-next" aria-label="Next photo">&#9654;</button>
-
-      </div>
-    </div>
-
-    <!-- ── MOBILE: einfache Slideshow ── -->
-    <div class="cam-mobile">
-      <div class="cam-mobile-screen">
-        <img id="mob-img" src="" alt="" style="display:none;">
-        <div class="cam-placeholder" id="mob-placeholder"></div>
-      </div>
-      <div class="cam-mobile-caption" id="mob-caption"></div>
-      <div class="cam-mobile-nav">
-        <button class="cam-mobile-btn" id="mob-prev" aria-label="Previous">&#9664;</button>
-        <button class="cam-mobile-btn" id="mob-next" aria-label="Next">&#9654;</button>
-      </div>
-    </div>
-
-    <div class="lens-statement">
-      <p class="lens-statement-sub">fragments of my world</p>
-    </div>
-
-  </section>
 
   <!-- ══════════════════════════════════════════
        SKILLS
@@ -2545,8 +2620,8 @@
       <!-- LEFT: label + title + dock -->
       <div class="skills-left">
         <div class="reveal">
-          <div class="section-label">Skills &amp; Tools</div>
-          <h2 class="section-title">What I work with</h2>
+          <div class="section-label">This is how I think about design</div>
+          <h2 class="section-title">Skills &amp; Tools</h2>
         </div>
         <div class="skills-dock-divider"></div>
         <!-- ── MAC DOCK ──────────────────────────────────────── -->
@@ -2697,13 +2772,92 @@
   </section>
 
   <!-- ══════════════════════════════════════════
+       THROUGH MY LENS — Digitalkamera
+  ══════════════════════════════════════════ -->
+  <section id="about">
+    <div class="lens-label">Through My Lens</div>
+    <h2 class="lens-title">A few things that make me, me.</h2>
+
+    <!--
+      FOTOS HINZUFÜGEN:
+      1. Speichere deine Fotos als:
+         images/lens-1.jpg bis images/lens-6.jpg
+      2. Empfohlene Größe: 560x420px (4:3)
+      3. In Photoshop: File > Save for Web
+         Format: JPEG, Quality: 80
+      Bis echte Fotos da sind werden
+      Platzhalter-Farben angezeigt.
+    -->
+
+    <!-- ── DESKTOP: Kamera-Element ── -->
+    <div class="cam-wrap">
+      <div class="cam-body">
+
+        <!-- Modellname -->
+        <div class="cam-model">VIVI CAM</div>
+
+        <!-- REC-Dot -->
+        <div class="cam-rec"></div>
+
+        <!-- Blitz -->
+        <div class="cam-flash" id="cam-flash"></div>
+
+        <!-- Objektiv -->
+        <div class="cam-lens">
+          <div class="cam-lens-mid">
+            <div class="cam-lens-inner">
+              <div class="cam-lens-highlight"></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- LCD Screen -->
+        <div class="cam-screen-wrap">
+          <div class="cam-screen" id="cam-screen">
+            <img src="" alt="" style="display:none;">
+            <div class="cam-placeholder" id="cam-placeholder"></div>
+            <div class="cam-scanlines"></div>
+            <div class="cam-hud-top"><span id="cam-counter">1 / 6</span></div>
+            <div class="cam-hud-bottom"><span id="cam-caption"></span></div>
+            <div class="cam-focus-box" id="cam-focus"></div>
+          </div>
+        </div>
+
+        <!-- ◀ Prev -->
+        <button class="cam-btn cam-btn-prev" id="cam-prev" aria-label="Previous photo">&#9664;</button>
+        <!-- ▶ Next -->
+        <button class="cam-btn cam-btn-next" id="cam-next" aria-label="Next photo">&#9654;</button>
+
+      </div>
+    </div>
+
+    <!-- ── MOBILE: einfache Slideshow ── -->
+    <div class="cam-mobile">
+      <div class="cam-mobile-screen">
+        <img id="mob-img" src="" alt="" style="display:none;">
+        <div class="cam-placeholder" id="mob-placeholder"></div>
+      </div>
+      <div class="cam-mobile-caption" id="mob-caption"></div>
+      <div class="cam-mobile-nav">
+        <button class="cam-mobile-btn" id="mob-prev" aria-label="Previous">&#9664;</button>
+        <button class="cam-mobile-btn" id="mob-next" aria-label="Next">&#9654;</button>
+      </div>
+    </div>
+
+    <div class="lens-statement">
+      <p class="lens-statement-sub">Matchdays, coffee runs, late nights building things — the stuff between the work.</p>
+    </div>
+
+  </section>
+
+  <!-- ══════════════════════════════════════════
        CONTACT
   ══════════════════════════════════════════ -->
   <section id="contact">
     <div class="contact-inner">
       <div class="imessage-wrapper">
         <div class="imessage-time">Today 09:48 AM</div>
-        <div class="imessage-bubble">Looking for opportunities in product, brand and digital experiences.</div>
+        <div class="imessage-bubble">Looking for opportunities in product design and digital experiences.</div>
         <div class="imessage-bubble second">Let's talk.</div>
       </div>
       <h2 class="contact-title">Let's build something.</h2>
@@ -2743,6 +2897,7 @@
         name: 'Music is for Lovers',
         category: 'COMMUNITY BUILDING · CO-FOUNDED',
         period: 'Dec 2022 — today',
+        context: 'Building and scaling a cultural event brand — where I learned how to design experiences, not just visuals.',
         desc: 'Co-founded in 2022. Built the visual and communication systems behind a growing event brand. Creative Lead since 2024.',
         stats: [
           { value: '15+', label: 'Events', primary: true },
@@ -2757,6 +2912,7 @@
         name: 'Studio Liebe & NRG',
         category: 'SYSTEM DESIGN · SUB-FORMATS',
         period: '2024 — today',
+        context: 'Evolving visual systems across campaigns and live experiences.',
         desc: 'Scaled and evolved two existing identities across campaigns, print and live experiences.',
         stats: [
           { value: '2',    label: 'Formats', primary: true },
@@ -2771,6 +2927,7 @@
         name: 'Jewish Chamber Orchestra Hamburg',
         category: 'AUDIENCE EXPERIENCE · CULTURAL',
         period: '2025 — today',
+        context: 'Translating complex cultural content into engaging digital communication.',
         desc: 'Making cultural content more accessible for younger audiences through digital communication and brand tone.',
         stats: [
           { value: '2025',    label: 'Joined', primary: true },
@@ -2784,6 +2941,7 @@
         name: 'Physiotherapie mit Herz',
         category: 'WEB DESIGN · UX/UI · FREELANCE',
         period: '2026',
+        context: 'Designing a full digital experience — from brand to interface.',
         desc: 'Designed and built a clear, mobile-first website focused on trust, accessibility and ease of use.',
         stats: [
           { value: '2026',      label: 'Year', primary: true },
@@ -2795,30 +2953,33 @@
         anim: 'ebruphysio'
       },
       {
-        name: 'During my Apprenticeship',
-        category: 'LEARNING BY BUILDING · REAL CLIENT WORK',
+        name: 'Building my Foundation',
+        category: 'APPRENTICESHIP · FREELANCE · SELF-DIRECTED',
         period: 'Aug 2023 — Jan 2026',
-        desc: 'Learned through real projects, real deadlines and real clients — from print production to websites and digital communication.',
+        context: 'Where I outgrew the curriculum — and started building my own path.',
+        desc: 'Finished my apprenticeship as a media designer, freelanced in brand & web, co-founded event formats, and taught myself everything the classroom didn\'t cover.',
         stats: [
-          { value: '3',   label: 'Years', primary: true },
-          { value: '5',   label: 'Web Projects' },
-          { value: 'IHK', label: 'Certified' }
+          { value: 'IHK',       label: 'Certified', primary: true },
+          { value: 'Freelance',  label: 'Since 2025' },
+          { value: 'Self-taught', label: 'Beyond curriculum' }
         ],
-        tags: ['Digital Design','Web Design','Problem Solving'],
-        url: 'work/apprenticeship/index.html',
+        tags: ['Self-directed Learning','Web & Digital','Experience Design'],
+        url: 'about.html',
+        btnLabel: 'See my path →',
         anim: 'apprenticeship'
       },
       {
         name: 'Workflow Dashboard',
         category: 'PRODUCT THINKING · SELF-INITIATED',
         period: '2026',
+        context: 'First steps into product thinking — designing systems instead of isolated visuals.',
         desc: 'Built to reduce friction in my own application workflow by bringing projects, contacts, documents and follow-ups into one system.',
         stats: [
           { value: '2026',        label: 'Built', primary: true },
           { value: '1',           label: 'Problem Solved' },
-          { value: 'Claude Code', label: 'Powered' }
+          { value: 'AI', label: 'Workflow' }
         ],
-        tags: ['Product Thinking','Information Architecture','Claude Code'],
+        tags: ['Product Thinking','Information Architecture','AI Workflow'],
         url: 'work/dashboard/index.html',
         anim: 'dashboard'
       },
@@ -2826,6 +2987,7 @@
         name: 'This Portfolio',
         category: 'DESIGN + CODE · SELF-INITIATED',
         period: '2026',
+        context: 'Showing how I think and work — design and code, side by side.',
         desc: 'Designed and built to communicate how I think, work and solve problems — using AI as part of the process, not the outcome.',
         stats: [
           { value: '2026', label: 'Built', primary: true },
@@ -2934,12 +3096,13 @@
             <div class="fw-proj-info">
               <div class="fw-proj-category">${p.category}</div>
               <div class="fw-proj-name">${p.name}</div>
+              ${p.context ? `<div class="fw-proj-context">${p.context}</div>` : ''}
               <div class="fw-proj-period">${p.period}</div>
               <p class="fw-proj-desc">${p.desc}</p>
               <div class="fw-stats">${statsHTML}</div>
               <div class="fw-proj-tags">${p.tags.map(t => `<span class="fw-tag">${t}</span>`).join('')}</div>
             </div>
-            ${p.url ? `<a class="fw-open-btn" href="${p.url}">Open project →</a>` : ''}
+            ${p.url ? `<a class="fw-open-btn" href="${p.url}">${p.btnLabel || 'Open project →'}</a>` : ''}
           </div>`;
         content.style.opacity = '1';
 
@@ -2978,7 +3141,7 @@
     if (_finderEl) _folderObserver.observe(_finderEl);
 
     /* ── MI4L aktiv + Panel beim Laden ── */
-    renderContent(0);
+    renderContent(5);
 
     /* ── iOS Files-style mobile panel ── */
     (function() {
@@ -2986,10 +3149,10 @@
       if (!finderEl) return;
 
       const CATS = [
-        { label: 'Favorites', indices: [0, 1] },
-        { label: 'Freelance', indices: [2, 3] },
-        { label: 'Experience', indices: [4] },
-        { label: 'Personal', indices: [5, 6] }
+        { label: 'Product & Experience', indices: [5, 3] },
+        { label: 'Brand & Cultural Work', indices: [0, 1, 2] },
+        { label: 'Background', indices: [4] },
+        { label: 'Personal', indices: [6] }
       ];
 
       const ICONS = [
@@ -3031,7 +3194,7 @@
                 <p class="fw-ios-detail-desc">${p.desc}</p>
                 <div class="fw-ios-detail-stats">${statsHTML}</div>
                 <div class="fw-ios-tags">${p.tags.map(t => `<span class="fw-ios-tag">${t}</span>`).join('')}</div>
-                ${p.url ? `<a class="fw-ios-open-btn" href="${p.url}">Open project →</a>` : ''}
+                ${p.url ? `<a class="fw-ios-open-btn" href="${p.url}">${p.btnLabel || 'Open project →'}</a>` : ''}
               </div>`;
           });
         });
