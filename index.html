@@ -75,10 +75,10 @@
     /* "Vivien Evers" — Instrument Serif, groß */
     #load-sub {
       font-family: 'Instrument Serif', serif;
-      font-size: clamp(42px, 7vw, 68px);
+      font-size: clamp(72px, 10vw, 140px);
       color: var(--text);
-      letter-spacing: -2px;
-      line-height: 1.1;
+      letter-spacing: -4px;
+      line-height: 1.0;
       min-height: 1.2em;
       display: block;
       border-radius: 6px;
@@ -86,6 +86,7 @@
       margin-left: -8px;
       transition: background-color 0.35s ease;
     }
+    #load-sub em { font-style: italic; color: var(--accent); }
 
     /* blinking text cursor  */
     .t-cursor {
@@ -564,10 +565,19 @@
     .fc-skel-quote { width:140px; height:32px; margin:8px auto; }
 
     /* ── CARD 6 — Coffee ── */
-    .fc-coffee { width:190px; top:40px; right:340px; z-index:3; padding:16px 18px; transition:background .3s; }
-    .fc-coffee:hover { background:#FFF8F0; }
-    .fc-coffee-header { font-weight:500; font-size:12px; color:#999; margin-bottom:10px; }
-    .fc-coffee-cups { display:flex; gap:8px; font-size:22px; margin-bottom:8px; }
+    .fc-reminders { width:200px; top:40px; right:340px; z-index:3; padding:0; overflow:hidden; }
+    .fc-rem-header { display:flex; align-items:center; justify-content:space-between; padding:10px 14px 6px; }
+    .fc-rem-title { font-size:13px; font-weight:700; color:var(--accent); }
+    .fc-rem-count { font-size:10px; color:var(--text-light); }
+    .fc-rem-list { padding:0 10px 10px; display:flex; flex-direction:column; gap:0; }
+    .fc-rem-item { display:flex; align-items:center; gap:8px; padding:5px 4px; font-size:11px; color:var(--text-mid); border-bottom:1px solid rgba(0,0,0,.04); cursor:default; }
+    .fc-rem-item:last-child { border-bottom:none; }
+    .fc-rem-check { width:16px; height:16px; border-radius:50%; border:1.5px solid var(--border); flex-shrink:0; display:flex; align-items:center; justify-content:center; font-size:9px; transition:all .2s; }
+    .fc-rem-item.done .fc-rem-check { background:var(--accent); border-color:var(--accent); color:white; }
+    .fc-rem-item.done .fc-rem-text { text-decoration:line-through; color:var(--text-light); }
+    .fc-rem-item.open .fc-rem-check { cursor:pointer; }
+    .fc-rem-item.open .fc-rem-check:hover { border-color:var(--accent); background:var(--accent-light); }
+    .fc-rem-item.open .fc-rem-text { color:var(--text); font-weight:500; }
     .fc-cup-full { position:relative; display:inline-block; }
     .fc-cup-full::after { content:'~'; position:absolute; top:-8px; left:50%; transform:translateX(-50%); font-size:10px; color:#ccc; animation:steam 2s ease-in-out infinite; }
     .fc-cup-full:nth-child(2)::after { animation-delay:.7s; }
@@ -1746,7 +1756,7 @@
       .fc-meadow-hint { opacity: 1 !important; z-index: 10; }
       .fc-meadow-card { top: 16px; padding: 6px 12px; white-space: nowrap; }
       .fc-meadow-card-text { font-size: 12px; }
-      .float-card.fc-coffee { width: 160px; }
+      .float-card.fc-reminders { width: 170px; }
       .float-card.fc-folder { width: 130px; }
       .fc-folder .fc-folder-inner > div:last-child { padding: 10px 16px; }
       .fc-folder img { width: 30px !important; height: 30px !important; }
@@ -2379,15 +2389,18 @@
       </div>
 
       <!-- CARD 6: Coffee -->
-      <div class="float-card fc-coffee" id="fc-c6" style="--base-rotate:-2deg">
-        <div class="fc-coffee-header">today's fuel</div>
-        <div class="fc-coffee-cups">
-          <div class="fc-cup fc-cup-full">☕</div>
-          <div class="fc-cup fc-cup-full">☕</div>
-          <div class="fc-cup fc-cup-empty" id="fc-cup3">🫙</div>
+      <div class="float-card fc-reminders" id="fc-c6" style="--base-rotate:-2deg">
+        <div class="fc-rem-header">
+          <span class="fc-rem-title">Reminders</span>
+          <span class="fc-rem-count" id="fc-rem-count">4 of 5</span>
         </div>
-        <div class="fc-coffee-count" id="fc-ccount">2 of 3 coffees</div>
-        <div class="fc-coffee-quote" id="fc-cquote">probably thinking<br>about your brand</div>
+        <div class="fc-rem-list">
+          <div class="fc-rem-item done"><span class="fc-rem-check">✓</span><span class="fc-rem-text">Finish apprenticeship</span></div>
+          <div class="fc-rem-item done"><span class="fc-rem-check">✓</span><span class="fc-rem-text">Build event formats from scratch</span></div>
+          <div class="fc-rem-item done"><span class="fc-rem-check">✓</span><span class="fc-rem-text">Freelance for real clients</span></div>
+          <div class="fc-rem-item done"><span class="fc-rem-check">✓</span><span class="fc-rem-text">Ship my own portfolio</span></div>
+          <div class="fc-rem-item open" id="fc-rem-dream"><span class="fc-rem-check" id="fc-rem-dream-check"></span><span class="fc-rem-text">Land my next role</span></div>
+        </div>
       </div>
 
       <!-- Floating folder card — opens Memory Game -->
@@ -3443,10 +3456,8 @@
           setTimeout(() => {
             // Zeile 2: "Vivien Evers" in Instrument Serif (groß)
             type(subEl, 'Vivien Evers', 0, 72, function() {
-              // nur Vivien Evers bekommt den lila Highlight
+              subEl.innerHTML = 'Vivien <em>Evers</em>';
               setTimeout(() => {
-                subEl.classList.add('selected');
-                // fade out nach 0.8s
                 setTimeout(() => {
                   screen.classList.add('fade-out');
                   document.body.classList.remove('is-loading');
@@ -3710,25 +3721,32 @@
           if (wqEl) wqEl.textContent = 'perfect weather to build brands';
         });
 
-      /* Coffee hover */
-      const cc    = document.getElementById('fc-c6');
-      const cup3  = document.getElementById('fc-cup3');
-      const ccEl  = document.getElementById('fc-ccount');
-      const cqEl  = document.getElementById('fc-cquote');
-      if (cc && cup3) {
-        cc.addEventListener('mouseenter', () => {
-          cup3.textContent = '☕';
-          cup3.classList.remove('fc-cup-empty');
-          cup3.classList.add('popped');
-          if (ccEl) ccEl.textContent = '3 of 3 coffees ⚡';
-          if (cqEl) cqEl.innerHTML = 'fully charged. let\'s go.';
-        });
-        cc.addEventListener('mouseleave', () => {
-          cup3.textContent = '🫙';
-          cup3.classList.add('fc-cup-empty');
-          cup3.classList.remove('popped');
-          if (ccEl) ccEl.textContent = '2 of 3 coffees';
-          if (cqEl) cqEl.innerHTML = 'probably thinking<br>about your brand';
+      /* Reminders — dream job check */
+      const dreamCheck = document.getElementById('fc-rem-dream-check');
+      const dreamItem = document.getElementById('fc-rem-dream');
+      const remCount = document.getElementById('fc-rem-count');
+      if (dreamCheck && dreamItem) {
+        dreamCheck.addEventListener('click', function(e) {
+          e.stopPropagation();
+          if (dreamItem.classList.contains('done')) return;
+          dreamItem.classList.remove('open');
+          dreamItem.classList.add('done');
+          dreamCheck.innerHTML = '✓';
+          if (remCount) remCount.textContent = '5 of 5 ✨';
+          for (let i = 0; i < 12; i++) {
+            const p = document.createElement('div');
+            p.textContent = ['🎉','✨','💜','🚀','⭐'][Math.floor(Math.random()*5)];
+            const rect = dreamCheck.getBoundingClientRect();
+            p.style.cssText = 'position:fixed;left:'+(rect.left+8)+'px;top:'+(rect.top+8)+'px;pointer-events:none;z-index:9999;font-size:'+(12+Math.random()*10)+'px;transition:all 0.6s ease-out;transform:translate(-50%,-50%);';
+            document.body.appendChild(p);
+            const angle = (Math.PI*2/12)*i + Math.random();
+            const dist = 30 + Math.random()*50;
+            requestAnimationFrame(() => {
+              p.style.transform = 'translate(calc(-50% + '+Math.cos(angle)*dist+'px),calc(-50% + '+Math.sin(angle)*dist+'px)) scale(0)';
+              p.style.opacity = '0';
+            });
+            setTimeout(() => p.remove(), 650);
+          }
         });
       }
     })();

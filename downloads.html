@@ -109,7 +109,7 @@
     .nav-breadcrumb .crumb  { color: var(--text-mid); }
     .nav-breadcrumb .crumb-active { color: var(--accent); }
 
-    .nav-links { display: flex; gap: 28px; list-style: none; align-items: center; }
+    .nav-links { display: flex; gap: 28px; list-style: none; align-items: center; padding-right: 8px; }
     .nav-links > li > a {
       font-size: 14px; font-weight: 500; color: var(--text);
       text-decoration: none; position: relative; transition: color .2s;
@@ -689,13 +689,14 @@
 
     </div>
 
-    <p class="dl-notice">
-      <strong>Confidential.</strong> These documents are shared exclusively with recruiters and HR professionals for application purposes. Please do not redistribute without prior consent.
-    </p>
-
-    <p class="dl-missing">
-      🔍 Looking for something that's not here? If a document is missing, just <a href="mailto:hallo@vivienevers.de">get in touch</a> — happy to send it over.
-    </p>
+    <div style="display:flex;gap:16px;flex-wrap:wrap;margin-top:48px;">
+      <p class="dl-notice" style="margin-top:0;flex:1;min-width:240px;">
+        <strong>Confidential.</strong> These documents are shared exclusively with recruiters and HR professionals for application purposes. Please do not redistribute without prior consent.
+      </p>
+      <p class="dl-missing" style="margin-top:0;flex:1;min-width:240px;">
+        🔍 Looking for something that's not here? If a document is missing, just <a href="mailto:hallo@vivienevers.de">get in touch</a> — happy to send it over.
+      </p>
+    </div>
   </main>
 
   <script>
