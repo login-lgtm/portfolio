@@ -418,6 +418,119 @@
     }
     .airdrop-btn.decline:hover { background:rgba(255,255,255,.1); color:rgba(255,255,255,.7); }
 
+    /* ── COFFEE CHAT CTA ── */
+    .coffee-cta {
+      position:relative; z-index:1;
+      background-color:var(--bg);
+      background-image:
+        linear-gradient(rgba(0,0,0,.035) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(0,0,0,.035) 1px, transparent 1px);
+      background-size:40px 40px;
+      padding:0;
+      overflow:hidden;
+    }
+    .coffee-cta-inner {
+      max-width:600px;
+      margin:0 auto;
+      padding:80px 40px;
+    }
+    .coffee-photo-wrap {
+      position:relative;
+      border-radius:20px;
+      overflow:hidden;
+      box-shadow:0 24px 64px rgba(0,0,0,.3);
+    }
+    .coffee-photo {
+      width:100%;
+      display:block;
+      filter:brightness(.95);
+    }
+    .coffee-phone-overlay {
+      position:absolute;
+      top:69%; left:54%;
+      transform:translate(-50%,-50%) rotate(-1.5deg);
+      width:28%;
+      max-width:160px;
+      text-align:center;
+      cursor:pointer;
+    }
+    .coffee-screen {
+      display:flex;
+      flex-direction:column;
+      gap:3px;
+      transition:all .3s ease;
+    }
+    .coffee-bubble {
+      background:#0B93F6;
+      color:white;
+      font-size:10px;
+      font-weight:500;
+      padding:5px 10px;
+      border-radius:10px 10px 4px 10px;
+      align-self:flex-end;
+      box-shadow:0 2px 8px rgba(0,0,0,.15);
+      line-height:1.3;
+    }
+    .coffee-bubble-expand {
+      background:#0B93F6;
+      color:white;
+      font-size:9px;
+      font-weight:500;
+      padding:5px 10px;
+      border-radius:10px 10px 4px 10px;
+      align-self:flex-end;
+      box-shadow:0 2px 8px rgba(0,0,0,.15);
+      max-height:0; opacity:0; overflow:hidden; padding:0 10px;
+      transition:all .3s ease;
+      line-height:1.3;
+    }
+    .coffee-phone-overlay:hover .coffee-bubble-expand {
+      max-height:40px; opacity:1; padding:5px 10px;
+    }
+    .coffee-delivered {
+      font-size:8px;
+      color:rgba(0,0,0,.35);
+      text-align:right;
+      margin-top:1px;
+    }
+    .coffee-typing {
+      display:inline-flex; gap:3px; align-items:center;
+      background:#E8E8E8; border-radius:10px 10px 10px 4px;
+      padding:5px 10px; align-self:flex-start;
+      max-height:24px; overflow:hidden; opacity:1;
+      transition:all .3s ease;
+    }
+    .coffee-phone-overlay:hover .coffee-typing {
+      max-height:0; opacity:0; padding:0 10px;
+    }
+    .coffee-tdot {
+      width:5px; height:5px; border-radius:50%; background:#999;
+      animation:coffeeDot 1.2s ease-in-out infinite;
+    }
+    .coffee-tdot:nth-child(2) { animation-delay:.2s; }
+    .coffee-tdot:nth-child(3) { animation-delay:.4s; }
+    @keyframes coffeeDot {
+      0%,60%,100%{transform:translateY(0);opacity:.4} 30%{transform:translateY(-3px);opacity:1}
+    }
+    .coffee-reply {
+      background:white; border-radius:10px 10px 10px 4px;
+      padding:5px 10px; align-self:flex-start;
+      font-size:9px; color:var(--accent); font-weight:600;
+      box-shadow:0 2px 8px rgba(0,0,0,.1);
+      max-height:0; opacity:0; overflow:hidden; padding:0 10px;
+      transition:all .3s ease .15s;
+    }
+    .coffee-phone-overlay:hover .coffee-reply {
+      max-height:30px; opacity:1; padding:5px 10px;
+    }
+    @media (max-width:640px) {
+      .coffee-cta-inner { padding:48px 20px; }
+      .coffee-screen { padding:6px 10px; }
+      .coffee-screen-initial { font-size:11px; }
+      .coffee-expand-sub { font-size:9px; }
+      .coffee-expand-btn { font-size:10px; padding:5px 10px; }
+    }
+
     /* ── TERMINAL / DIRECTION ── */
     .direction-section { background:var(--dark); padding:80px; position:relative; z-index:1; }
     .terminal-win { max-width:720px; margin:0 auto; background:#1C1C1E; border-radius:12px; box-shadow:0 8px 48px rgba(0,0,0,.3); overflow:hidden; }
@@ -678,6 +791,16 @@
     </div>
   </section>
 
+  <!-- ══ IN ACTION ══ -->
+  <section class="action-photos" style="padding:0;position:relative;z-index:1;display:grid;grid-template-columns:1fr 1fr;gap:0;">
+    <div class="reveal" style="overflow:hidden;height:480px;">
+      <img src="images/about/L1014081.jpg" alt="Vivien — Content Production for Porsche Hamburg" loading="lazy" style="width:100%;height:100%;object-fit:cover;display:block;filter:grayscale(0);transition:transform .4s ease;" onmouseover="this.style.transform='scale(1.03)'" onmouseout="this.style.transform=''">
+    </div>
+    <div class="reveal" style="overflow:hidden;height:480px;">
+      <img src="images/about/L1014088.jpg" alt="Vivien — Working on location" loading="lazy" style="width:100%;height:100%;object-fit:cover;display:block;transition:transform .4s ease;" onmouseover="this.style.transform='scale(1.03)'" onmouseout="this.style.transform=''">
+    </div>
+  </section>
+
   <!-- ══ GARDEN ══ -->
   <section class="garden-section">
     <div class="garden-sup reveal">MY LITTLE GARDEN</div>
@@ -805,18 +928,20 @@
     </div>
   </section>
 
-  <!-- ══ CTA ══ -->
-  <section class="cta-section" style="background:var(--accent);padding:100px 80px;position:relative;z-index:1;text-align:center;overflow:hidden;">
-    <div style="position:relative;z-index:1;">
-      <div style="display:flex;flex-direction:column;align-items:flex-end;gap:8px;width:fit-content;margin:0 auto 48px;">
-        <div style="font-size:12px;color:rgba(255,255,255,.6);margin-bottom:4px;">Today 09:48 AM</div>
-        <div style="background:rgba(255,255,255,.2);backdrop-filter:blur(8px);color:white;padding:14px 22px;border-radius:20px 20px 4px 20px;font-size:18px;font-weight:500;max-width:360px;">Looking for opportunities in product design and digital experiences.</div>
-        <div style="background:rgba(255,255,255,.2);backdrop-filter:blur(8px);color:white;padding:14px 22px;border-radius:20px 20px 4px 20px;font-size:16px;font-weight:400;">Let's talk.</div>
-      </div>
-      <h2 style="font-family:'Instrument Serif',serif;font-size:clamp(40px,6vw,72px);color:white;line-height:1.1;margin-bottom:32px;letter-spacing:-1px;">Let's build something.</h2>
-      <div style="display:flex;gap:16px;justify-content:center;flex-wrap:wrap;">
-        <a href="mailto:hallo@vivienevers.de" style="display:inline-flex;align-items:center;gap:8px;background:white;color:var(--accent);padding:16px 32px;border-radius:100px;font-size:15px;font-weight:600;text-decoration:none;transition:transform .2s,box-shadow .2s;" onmouseover="this.style.transform='translateY(-2px)';this.style.boxShadow='0 8px 24px rgba(0,0,0,.2)'" onmouseout="this.style.transform='';this.style.boxShadow=''">hallo@vivienevers.de</a>
-        <a href="https://linkedin.com/in/vivien-victoria-evers" target="_blank" style="display:inline-flex;align-items:center;gap:8px;background:transparent;color:white;border:1.5px solid rgba(255,255,255,.5);padding:16px 32px;border-radius:100px;font-size:15px;font-weight:600;text-decoration:none;transition:transform .2s,border-color .2s;" onmouseover="this.style.transform='translateY(-2px)';this.style.borderColor='white'" onmouseout="this.style.transform='';this.style.borderColor='rgba(255,255,255,.5)'">LinkedIn</a>
+  <!-- ══ COFFEE CHAT CTA ══ -->
+  <section class="coffee-cta">
+    <div class="coffee-cta-inner">
+      <div class="coffee-photo-wrap reveal">
+        <img src="images/about/coffeechat-cta.png" alt="Vivien — Let's have a coffee chat" loading="lazy" class="coffee-photo">
+        <div class="coffee-phone-overlay" onclick="window.location='mailto:hallo@vivienevers.de'">
+          <div class="coffee-screen">
+            <div class="coffee-bubble">Coffee chat? ☕</div>
+            <div class="coffee-bubble-expand">I'd love to hear about yours.</div>
+            <div class="coffee-delivered">Delivered</div>
+            <div class="coffee-typing"><span class="coffee-tdot"></span><span class="coffee-tdot"></span><span class="coffee-tdot"></span></div>
+            <div class="coffee-reply">Sure, let's talk! →</div>
+          </div>
+        </div>
       </div>
     </div>
   </section>
