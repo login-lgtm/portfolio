@@ -86,6 +86,8 @@
       .nav-pill-divider { display:none; }
       .nav-breadcrumb { display:none; } .nav-links { display:none; } .nav-hamburger { display:flex; } body { cursor:auto !important; } .cursor,.cursor-ring { display:none !important; }
       a.nav-breadcrumb { white-space:nowrap; overflow:hidden; max-width:calc(100vw - 70px); }
+      .desktop-only { display:none !important; }
+      .mobile-only { display:block !important; }
     }
 
     /* ── SHARED ── */
@@ -303,6 +305,15 @@
     </div>
     <div class="nav-overlay-list">
       <div class="nav-overlay-item">
+        <a class="nav-overlay-label" href="../../index.html" style="display:flex;align-items:center;gap:10px;">
+          <span style="display:inline-flex;flex-direction:column;gap:1px;">
+            <span style="width:12px;height:4px;background:#90BEDD;border-radius:2px 2px 0 0;display:block;"></span>
+            <span style="width:18px;height:13px;background:#689DCF;border-radius:0 2px 2px 2px;display:block;"></span>
+          </span>
+          Home
+        </a>
+      </div>
+      <div class="nav-overlay-item">
         <span class="nav-overlay-label is-label">Work</span>
         <div class="nav-overlay-sub">
           <div class="nav-overlay-cat">Product & Experience</div>
@@ -358,8 +369,10 @@
   <section class="demo-section">
     <div class="demo-header reveal">
       <div class="section-label">Live Preview</div>
-      <h2 class="section-title" style="font-size:clamp(28px,3vw,40px);margin-bottom:8px;">Desktop &amp; mobile.</h2>
-      <p style="font-size:15px;color:var(--text-light);margin-bottom:24px;">A look at the site on both screen sizes.</p>
+      <h2 class="section-title desktop-only" style="font-size:clamp(28px,3vw,40px);margin-bottom:8px;">Desktop &amp; mobile.</h2>
+      <h2 class="section-title mobile-only" style="font-size:clamp(28px,3vw,40px);margin-bottom:8px;display:none;">Mobile preview.</h2>
+      <p class="desktop-only" style="font-size:15px;color:var(--text-light);margin-bottom:24px;">A look at the site on both screen sizes.</p>
+      <p class="mobile-only" style="font-size:15px;color:var(--text-light);margin-bottom:24px;display:none;">A look at the mobile experience.</p>
     </div>
     <div class="demo-row">
       <div class="demo-frame-wrap reveal">
@@ -458,7 +471,7 @@
     <div style="position:relative;z-index:1;">
       <div style="display:flex;flex-direction:column;align-items:flex-end;gap:8px;width:fit-content;margin:0 auto 48px;">
         <div style="font-size:12px;color:rgba(255,255,255,.6);margin-bottom:4px;">Today 09:48 AM</div>
-        <div style="background:rgba(255,255,255,.12);backdrop-filter:blur(8px);color:white;padding:14px 22px;border-radius:20px 20px 4px 20px;font-size:18px;font-weight:500;max-width:360px;">Looking for opportunities in product design and digital experiences.</div>
+        <div style="background:rgba(255,255,255,.12);backdrop-filter:blur(8px);color:white;padding:14px 22px;border-radius:20px 20px 4px 20px;font-size:18px;font-weight:500;max-width:360px;text-align:right;">Looking for opportunities in product design and digital experiences.</div>
         <div style="background:rgba(255,255,255,.12);backdrop-filter:blur(8px);color:white;padding:14px 22px;border-radius:20px 20px 4px 20px;font-size:16px;font-weight:400;">Let's talk.</div>
       </div>
       <h2 style="font-family:'Instrument Serif',serif;font-size:clamp(40px,6vw,72px);color:white;line-height:1.1;margin-bottom:32px;letter-spacing:-1px;">Let's build something.</h2>
