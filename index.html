@@ -1050,6 +1050,12 @@
       border-radius:8px; padding:10px 14px; font-size:14px; color:var(--text);
       text-align:center; outline:none; font-family:'Commissioner',sans-serif;
       margin-bottom:12px; letter-spacing:3px; transition:border-color .2s;
+      /* This is a plain text input, not type="password" — see the markup
+         comment below for why. -webkit-text-security keeps the same
+         dot-masked look in Chrome/Safari; Firefox (no support) just
+         falls back to showing the characters, which is harmless since
+         this "password" is decorative, not a real credential. */
+      -webkit-text-security: disc;
     }
     .pw-input:focus { border-color:var(--accent); }
     .pw-input.error { border-color:#FF5F57; animation:shake .3s; }
@@ -1566,8 +1572,8 @@
       .lock-slider-label {
         position:absolute; inset:0;
         display:flex; align-items:center; justify-content:center;
-        font-size:12px; font-weight:600; letter-spacing:.2em;
-        text-transform:uppercase; color:rgba(26,26,26,.45);
+        font-size:12px; font-weight:600; letter-spacing:.04em;
+        color:rgba(26,26,26,.45);
         pointer-events:none;
       }
       .lock-knob {
@@ -1582,8 +1588,8 @@
       .lock-knob.dragging { transition:none; }
       .lock-knob svg { width:20px; height:20px; display:block; }
       .lock-hint {
-        margin-top:14px; font-size:10.5px; letter-spacing:.16em;
-        text-transform:uppercase; color:rgba(26,26,26,.45);
+        margin-top:14px; font-size:10.5px; letter-spacing:.03em;
+        color:rgba(26,26,26,.45);
       }
 
       /* ── HOME SCREEN — narrow desktop ──
@@ -2757,6 +2763,13 @@
         </div>
         <span class="contact-row-chev">›</span>
       </a>
+      <a href="https://linkedin.com/in/vivien-evers" target="_blank" class="contact-row">
+        <span class="contact-row-icon ci-mail"><i data-icon="card"></i></span>
+        <div>
+          <div class="contact-row-title">LinkedIn</div>
+        </div>
+        <span class="contact-row-chev">›</span>
+      </a>
     </div>
   </div>
 </div>
@@ -2842,7 +2855,16 @@
     <div class="pw-icon"><i data-icon="lock"></i></div>
     <div class="pw-title">Protected area</div>
     <div class="pw-sub">Enter the password to continue.</div>
-    <input type="password" class="pw-input" id="pw-input" placeholder="••••••••"
+    <!-- Deliberately type="text", not type="password": this "lock" is a
+         portfolio gag (the check runs entirely client-side against a
+         hardcoded string below, nothing is ever submitted anywhere),
+         but a real password field on a page styled like a login/lock
+         screen is exactly the pattern browsers' on-device phishing
+         heuristics look for — it was triggering "this site may be
+         impersonating..." warnings on real devices. -webkit-text-security
+         above keeps the same dot-masked look without that signal. -->
+    <input type="text" class="pw-input" id="pw-input" placeholder="••••••••"
+           autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false"
            onkeydown="if(event.key==='Enter')checkPw()">
     <button class="pw-btn" onclick="checkPw()">Unlock</button>
     <button class="pw-cancel" onclick="closePwModal()">Cancel</button>
@@ -4297,6 +4319,13 @@ const MOB_CONTENT = {
         </div>
         <span class="contact-row-chev">›</span>
       </a>
+      <a href="https://linkedin.com/in/vivien-evers" target="_blank" class="contact-row">
+        <span class="contact-row-icon ci-mail">${icon('card')}</span>
+        <div>
+          <div class="contact-row-title">LinkedIn</div>
+        </div>
+        <span class="contact-row-chev">›</span>
+      </a>
     </div>`},
   work:{title:'Work',html:CASES.map((c,i)=>`
     <div onclick="mobOpenCase(${i})" style="padding:14px 0;border-bottom:1px solid var(--glass-border);cursor:pointer">
@@ -4331,7 +4360,7 @@ const MOB_CONTENT = {
       ${[['folder','Work','All case studies — password-protected, ask if you need the code'],
          ['doc','Downloads','CV and certificates — same password'],
          ['person','About','Who I am, what I do, how I got here'],
-         ['palette','Theme','Tap the Theme icon to switch light and dark']
+         ['chatdots','Contact','Coffee chat, email, or LinkedIn — whichever is easiest']
         ].map(([i,t,d])=>`
         <div style="display:flex;gap:12px;align-items:flex-start">
           <span style="font-size:18px;color:var(--accent);display:inline-flex;flex-shrink:0">${icon(i)}</span>
@@ -4387,7 +4416,7 @@ function mobOpenSheet(key){
   // the next frame, keeps the open animation to just fade + scale.
   sheet.style.transition = 'none';
   sheet.classList.remove('open');
-  sheet.classList.toggle('mob-window', key==='about'||key==='contact');
+  sheet.classList.toggle('mob-window', key==='about'||key==='contact'||key==='tools'||key==='help');
   void sheet.offsetWidth;
   sheet.style.transition = '';
   document.getElementById('mob-sheet-title').textContent=d.title;
