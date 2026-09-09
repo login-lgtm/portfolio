@@ -1,0 +1,11 @@
+BEGIN:VCARD
+VERSION:3.0
+N:Evers;Vivien;;;
+FN:Vivien Evers
+TITLE:Brand & Product Designer
+EMAIL;TYPE=INTERNET,PREF:hallo@vivienevers.de
+URL:https://www.vivienevers.de
+URL;TYPE=LinkedIn:https://www.linkedin.com/in/vivien-evers
+ADR;TYPE=WORK:;;;Hamburg;;;Germany
+NOTE:Brand & Product Designer based in Hamburg. Open to work.
+END:VCARD

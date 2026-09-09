@@ -9,7 +9,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
   <style>
     :root {
-      --bg: #EEECEA; --accent: #6B5CE7; --accent-light: #DDD9F7;
+      --bg: #EEECEA; --accent: #2E7DD1; --accent-light: #DCEBFB;
       --text: #1A1A1A; --text-mid: #666666; --text-light: #999999;
       --border: #D8D4D0; --tag-bg: #E8E4E0; --dark: #1E1A2E;
     }
@@ -49,7 +49,7 @@
     }
     a.nav-breadcrumb { display:inline-flex; align-items:center; gap:6px; background: rgba(0,0,0,0.05); padding: 5px 12px; border-radius: 100px; border: none; font-size:12px; font-weight:500; color:var(--text); text-decoration:none; cursor:pointer; transition:box-shadow .2s; }
     a.nav-breadcrumb { position:relative; }
-    a.nav-breadcrumb:hover { background: rgba(107,92,231,0.1); box-shadow: none; }
+    a.nav-breadcrumb:hover { background: rgba(46,125,209,0.1); box-shadow: none; }
     a.nav-breadcrumb::after { content:'← Home'; position:absolute; top:calc(100% + 8px); left:50%; transform:translateX(-50%); background:#1E1A2E; color:white; font-size:11px; font-weight:500; padding:4px 10px; border-radius:6px; white-space:nowrap; opacity:0; pointer-events:none; transition:opacity .2s; z-index:200; }
     a.nav-breadcrumb:hover::after { opacity:1; }
     .nav-breadcrumb .folder-icon { display:inline-flex; flex-direction:column; gap:1px; margin-right:2px; }
@@ -79,7 +79,7 @@
     .nav-dropdown-item-sub { font-size:12px; color:var(--text-light); margin-top:1px; }
     .nav-dropdown-divider { height:1px; background:#E8E4E0; margin:4px 0; }
     .nav-dropdown-viewall { display:block; padding:10px 14px; border-radius:10px; font-size:13px; color:var(--accent); text-decoration:none; transition:background .15s; }
-    .nav-dropdown-viewall:hover { background:#F0EDFF; }
+    .nav-dropdown-viewall:hover { background:#E8F2FC; }
     .nav-hamburger { display:none; flex-direction:column; gap:5px; background:none; border:none; cursor:pointer; padding:4px; }
     .nav-hamburger span { display:block; width:22px; height:2px; background:var(--text); border-radius:2px; transition:transform .25s ease,opacity .25s ease; }
     .nav-overlay { position:fixed; inset:0; z-index:200; background:white; transform:translateY(-100%); transition:transform .3s cubic-bezier(.4,0,.2,1); overflow-y:auto; }
@@ -128,12 +128,17 @@
       margin-bottom: 60px;
     }
 
-    /* ── MAC WINDOW ── */
+    /* ── MAC WINDOW ── — a real frosted-glass panel now, matching the
+       macOS-style pop-ups on the main site: translucent, blurred, with
+       a light border and inset highlight instead of a flat white card. */
     .impr-window {
       max-width: 600px;
-      background: white;
+      background: rgba(255,255,255,.55);
+      backdrop-filter: blur(20px) saturate(160%);
+      -webkit-backdrop-filter: blur(20px) saturate(160%);
+      border: 1px solid rgba(255,255,255,.7);
       border-radius: 16px;
-      box-shadow: 0 12px 48px rgba(0,0,0,.10), 0 2px 8px rgba(0,0,0,.06);
+      box-shadow: 0 12px 48px rgba(0,0,0,.10), 0 2px 8px rgba(0,0,0,.06), inset 0 1px 0 rgba(255,255,255,.8);
       overflow: hidden;
     }
     .impr-chrome {
@@ -141,8 +146,8 @@
       align-items: center;
       gap: 6px;
       padding: 10px 14px;
-      background: #F5F3F1;
-      border-bottom: 1px solid var(--border);
+      background: rgba(245,243,241,.5);
+      border-bottom: 1px solid rgba(0,0,0,.08);
     }
     .mac-dot { width:10px; height:10px; border-radius:50%; flex-shrink:0; }
     .mac-dot.r { background:#FF5F57; }
@@ -238,7 +243,7 @@
         <div class="nav-dropdown">
           <div class="nav-dropdown-cat">Product & Experience</div>
           <a class="nav-dropdown-item" href="work/dashboard/index.html">
-            <span class="nav-dropdown-item-icon"><svg viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg"><rect x="2" y="2" width="7" height="7" rx="1.5" fill="#6B5CE7" opacity=".7"/><rect x="11" y="2" width="7" height="7" rx="1.5" fill="#6B5CE7" opacity=".4"/><rect x="2" y="11" width="7" height="7" rx="1.5" fill="#6B5CE7" opacity=".4"/><rect x="11" y="11" width="7" height="7" rx="1.5" fill="#6B5CE7" opacity=".7"/></svg></span>
+            <span class="nav-dropdown-item-icon"><svg viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg"><rect x="2" y="2" width="7" height="7" rx="1.5" fill="#2E7DD1" opacity=".7"/><rect x="11" y="2" width="7" height="7" rx="1.5" fill="#2E7DD1" opacity=".4"/><rect x="2" y="11" width="7" height="7" rx="1.5" fill="#2E7DD1" opacity=".4"/><rect x="11" y="11" width="7" height="7" rx="1.5" fill="#2E7DD1" opacity=".7"/></svg></span>
             <span class="nav-dropdown-item-text"><span class="nav-dropdown-item-name">Workflow Dashboard</span><span class="nav-dropdown-item-sub">Product Thinking · Self-Initiated</span></span>
           </a>
           <a class="nav-dropdown-item" href="work/ebru-physio/index.html">
@@ -293,7 +298,7 @@
         <span class="nav-overlay-label is-label">Work</span>
         <div class="nav-overlay-sub">
           <div class="nav-overlay-cat">Product & Experience</div>
-          <a href="work/dashboard/index.html"><svg viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg" style="width:16px;height:16px;flex-shrink:0;"><rect x="2" y="2" width="7" height="7" rx="1.5" fill="#6B5CE7" opacity=".7"/><rect x="11" y="2" width="7" height="7" rx="1.5" fill="#6B5CE7" opacity=".4"/><rect x="2" y="11" width="7" height="7" rx="1.5" fill="#6B5CE7" opacity=".4"/><rect x="11" y="11" width="7" height="7" rx="1.5" fill="#6B5CE7" opacity=".7"/></svg> Workflow Dashboard</a>
+          <a href="work/dashboard/index.html"><svg viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg" style="width:16px;height:16px;flex-shrink:0;"><rect x="2" y="2" width="7" height="7" rx="1.5" fill="#2E7DD1" opacity=".7"/><rect x="11" y="2" width="7" height="7" rx="1.5" fill="#2E7DD1" opacity=".4"/><rect x="2" y="11" width="7" height="7" rx="1.5" fill="#2E7DD1" opacity=".4"/><rect x="11" y="11" width="7" height="7" rx="1.5" fill="#2E7DD1" opacity=".7"/></svg> Workflow Dashboard</a>
           <a href="work/ebru-physio/index.html"><img src="images/icons/folder-custom.png" style="width:18px;height:18px;object-fit:contain;margin-right:6px;vertical-align:middle;"> Physiotherapie mit Herz</a>
           <div class="nav-overlay-cat">Brand & Cultural Work</div>
           <a href="work/mi4l/index.html"><img src="images/icons/folder-custom.png" style="width:18px;height:18px;object-fit:contain;margin-right:6px;vertical-align:middle;"> Music is for Lovers</a>
