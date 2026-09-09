@@ -1452,7 +1452,7 @@
          Two screens stacked: a lock screen you dismiss, and the home screen
          behind it. Both need their own stacking position — #wallpaper is
          fixed at z-index 0 and would otherwise paint over them. */
-      #phone { position:fixed; inset:0; z-index:1; overflow:hidden; }
+      #phone { position:fixed; inset:0; height:100vh; height:100dvh; z-index:1; overflow:hidden; }
 
       /* ── LOCK SCREEN ──
          Same grainy texture + grid as the desktop lock screen — fixed
@@ -1593,7 +1593,7 @@
       #homescreen {
         position:absolute; inset:0; z-index:2;
         display:flex; flex-direction:column;
-        padding:calc(18px + env(safe-area-inset-top)) 0 calc(14px + env(safe-area-inset-bottom));
+        padding:calc(18px + env(safe-area-inset-top)) 0 calc(128px + env(safe-area-inset-bottom));
         overflow-y:auto;
         /* The live sky wallpaper shows straight through this screen and
            swings from bright midday blue to near-black night, so the
@@ -1699,10 +1699,15 @@
          dead-middle of the viewport regardless of what the hero above
          or the folders below need. */
       .m-welcome {
-        position:absolute; top:50%; left:0; right:0;
-        transform:translateY(-50%);
+        /* Auto top/bottom margins on a flex-column child centre it in
+           whatever free space is actually left between the hero and the
+           folders — unlike a fixed position:absolute top:50%, this
+           adapts to the real visible height on every device instead of
+           assuming one, and never fights the scroll container. */
+        margin:auto 0;
         text-align:center; padding:0 20px;
         pointer-events:none;
+        flex-shrink:0;
       }
       .m-welcome-eyebrow {
         font-family:'Commissioner',sans-serif; font-size:14px; font-weight:500;
@@ -1717,7 +1722,7 @@
       /* Folders — real desktop icons, just two, side by side — pushed
          further down the screen now that "Welcome to my Portfolio." no
          longer holds space in the flow above them. */
-      .m-desktop { display:flex; gap:28px; justify-content:center; padding:4px 18px 30px; margin-top:280px; }
+      .m-desktop { display:flex; gap:28px; justify-content:center; padding:4px 18px 30px; flex-shrink:0; }
       .m-folder {
         background:none; border:none; padding:0;
         display:flex; flex-direction:column; align-items:center; gap:8px;
@@ -1758,10 +1763,17 @@
       .ha-tile-grey   { background:linear-gradient(145deg,#8C8C96,#5E5E68); }
 
       /* Bottom dock — just the functional trio + tools/help, no work-app
-         showcase icons (those live on the desktop dock instead). */
+         showcase icons (those live on the desktop dock instead). Pinned
+         to the physical bottom of the phone via position:fixed rather
+         than sitting in #homescreen's scrollable flow, so it — like the
+         footer below it — stays permanently visible instead of
+         scrolling out of view when the content above overflows a short
+         screen. */
       .home-dock {
-        align-self:center; width:fit-content;
-        margin:auto 0 0; padding:9px 8px;
+        position:fixed; left:50%; bottom:calc(46px + env(safe-area-inset-bottom));
+        transform:translateX(-50%);
+        width:fit-content;
+        z-index:5; padding:9px 8px;
         background:var(--dock-bg); border:1px solid var(--glass-border);
         border-radius:24px;
         backdrop-filter:blur(24px) saturate(180%);
@@ -1779,12 +1791,13 @@
       }
       .home-dock .ha-icon.plain img { width:122%; height:122%; }
 
-      /* Mini footer — in normal flow right after the dock, so it can
-         never collide with it (unlike the desktop version, which is
-         fixed and hidden here). */
+      /* Mini footer — pinned under the dock, same reasoning: fixed to
+         the screen so it's always visible rather than living at the
+         bottom of whatever the scrollable content adds up to. */
       .m-footer {
+        position:fixed; left:0; right:0; bottom:0; z-index:5;
         flex-shrink:0;
-        padding:10px 24px calc(6px + env(safe-area-inset-bottom));
+        padding:6px 24px calc(6px + env(safe-area-inset-bottom));
         display:flex; flex-wrap:wrap; align-items:center; justify-content:center;
         gap:6px;
         font-size:9.5px; color:var(--text-soft);
