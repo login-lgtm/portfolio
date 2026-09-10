@@ -724,7 +724,7 @@
       position: fixed;
       z-index: 500;
       border-radius: 12px;
-      box-shadow: 0 24px 80px var(--shadow), inset 0 1px 0 rgba(255,255,255,0.2);
+      box-shadow: 0 24px 80px var(--shadow), inset 0 1px 0 rgba(255,255,255,0.6);
       background: var(--glass-strong);
       backdrop-filter: blur(40px) saturate(220%);
       -webkit-backdrop-filter: blur(40px) saturate(220%);
@@ -732,24 +732,20 @@
       display: none;
       flex-direction: column;
       min-width: 320px;
-      transition: background 0.5s, border-color 0.5s;
-      /* Same fix as the mobile sheet: this glass panel sits over the
-         live sky too, and its near-white text was unreadable once
-         body.sky-light lightens --glass-strong for a bright midday sky. */
-      --text-mid: rgba(242,242,245,0.85);
-      --text-soft: rgba(242,242,245,0.72);
+      /* Fixed white/grey surface, independent of the sky-driven --glass
+         tokens elsewhere on the page — this panel needs to stay legible
+         over every wallpaper phase (including sunrise/sunset), not just
+         swap dark-glass for light-glass with the sky. Only lightly
+         transparent, so the wallpaper still reads faintly behind it. */
+      --glass-strong: rgba(255,255,255,0.88);
+      --glass: rgba(60,60,70,0.06);
+      --glass-border: rgba(60,60,70,0.12);
+      --text: #3C3C43;
+      --text-mid: rgba(60,60,67,0.7);
+      --text-soft: rgba(60,60,67,0.48);
     }
     .window.open { display: flex; }
     .window.focused { z-index: 600; }
-    .window, .window * { text-shadow: 0 1px 2px rgba(0,0,0,.25); }
-    body.sky-light .window {
-      --text: #2E3138;
-      --text-mid: rgba(46,49,56,0.78);
-      --text-soft: rgba(46,49,56,0.62);
-    }
-    body.sky-light .window, body.sky-light .window * {
-      text-shadow: 0 1px 2px rgba(255,255,255,.4);
-    }
 
     .win-titlebar {
       display: flex;
@@ -1036,6 +1032,15 @@
     }
     #pw-modal.open { display:flex; }
     .pw-box {
+      /* Same fixed, lightly-transparent white surface as the desktop
+         windows, so the password prompt stays legible over every sky
+         phase instead of following the page-wide dark/light glass. */
+      --glass-strong: rgba(255,255,255,0.9);
+      --glass: rgba(60,60,70,0.06);
+      --glass-border: rgba(60,60,70,0.12);
+      --text: #3C3C43;
+      --text-mid: rgba(60,60,67,0.7);
+      --text-soft: rgba(60,60,67,0.48);
       background:var(--glass-strong); backdrop-filter:blur(40px);
       border:1px solid var(--glass-border); border-radius:18px;
       padding:32px 28px; width:320px;
@@ -1837,22 +1842,17 @@
         transform:translateY(100%);
         transition:transform .35s cubic-bezier(.32,.72,0,1);
         padding-bottom:env(safe-area-inset-bottom);
-        /* This sheet lives outside #homescreen in the DOM, so it never
-           picked up that scope's light/dark text flip — its content sat
-           at full white opacity no matter how bright the glass behind it
-           got, and mostly disappeared against a daytime sky. Same fix,
-           same tokens. */
-        --text-mid: rgba(242,242,245,0.85);
-        --text-soft: rgba(242,242,245,0.72);
-      }
-      .mob-sheet, .mob-sheet * { text-shadow: 0 1px 2px rgba(0,0,0,.25); }
-      body.sky-light .mob-sheet {
-        --text: #2E3138;
-        --text-mid: rgba(46,49,56,0.78);
-        --text-soft: rgba(46,49,56,0.62);
-      }
-      body.sky-light .mob-sheet, body.sky-light .mob-sheet * {
-        text-shadow: 0 1px 2px rgba(255,255,255,.4);
+        /* Fixed, lightly-transparent white surface — same reasoning as
+           the desktop windows: this sheet sits over the live sky and
+           needs to stay legible in every phase (sunrise/sunset included),
+           not just flip with body.sky-light. */
+        --glass-strong: rgba(255,255,255,0.9);
+        --glass: rgba(60,60,70,0.06);
+        --glass-border: rgba(60,60,70,0.12);
+        --dock-bg: rgba(255,255,255,0.9);
+        --text: #3C3C43;
+        --text-mid: rgba(60,60,67,0.7);
+        --text-soft: rgba(60,60,67,0.48);
       }
       .mob-sheet.open { transform:translateY(0); }
       .mob-sheet-handle {
