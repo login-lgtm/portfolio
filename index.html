@@ -1729,6 +1729,20 @@
          further down the screen now that "Welcome to my Portfolio." no
          longer holds space in the flow above them. */
       .m-desktop { display:flex; gap:28px; justify-content:center; padding:4px 18px 30px; flex-shrink:0; }
+
+      /* Short viewports (e.g. iPhone SE, 320x568): content overflows and
+         .m-welcome's auto-margin centring collapses to 0, so the folders'
+         screen position is driven purely by cumulative height above them.
+         Compress the hero and welcome title so the folders clear the
+         fixed .home-dock instead of overlapping it. */
+      @media (max-height: 600px) {
+        .m-hero { padding:16px 26px 12px; }
+        .m-hero-photo { width:64px; height:64px; margin-bottom:10px; }
+        .m-hero-intro { margin-top:6px; }
+        .m-hero-otw { margin-top:8px; }
+        .m-welcome-title { font-size:32px; }
+        .m-desktop { padding-bottom:16px; }
+      }
       .m-folder {
         background:none; border:none; padding:0;
         display:flex; flex-direction:column; align-items:center; gap:8px;
@@ -3827,9 +3841,10 @@ function clampWindowToViewport(win) {
    of where a visitor last dragged it. */
 function centerBottom(win) {
   const margin = 190;
+  const minTop = 50; /* stay clear of the menubar even on short viewports */
   const r = win.getBoundingClientRect();
   win.style.left = Math.round((window.innerWidth  - r.width) / 2) + 'px';
-  win.style.top  = Math.round(window.innerHeight - r.height - margin) + 'px';
+  win.style.top  = Math.max(minTop, Math.round(window.innerHeight - r.height - margin)) + 'px';
 }
 
 function openWindow(id) {
