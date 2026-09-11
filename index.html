@@ -1730,17 +1730,16 @@
         font-size:14px; font-weight:600; color:var(--text-mid);
         font-variant-numeric:tabular-nums;
       }
-      /* The hero now carries the "Hi, I'm / Vivien Evers" headline
-         itself (previously a separate "Welcome to my Portfolio." block
-         floated mid-screen) — margin-bottom:auto on this flex-column
-         child soaks up whatever space is left before the folders,
-         instead of that floating block doing the centring. A viewport-
-         relative top margin nudges the hero down into the upper-middle
-         of the screen rather than pinning it flush under the navbar. */
+      /* The hero now carries the "Welcome, my name is / Vivien Evers"
+         headline itself (previously a separate "Welcome to my
+         Portfolio." block floated mid-screen) — auto margins on both
+         sides of this flex-column child centre it in whatever space is
+         left between the navbar and the folders, the same trick that
+         floating block used to use. */
       .m-hero {
         display:flex; flex-direction:column; align-items:center;
         padding:26px 26px 22px; text-align:center;
-        margin-top:8vh;
+        margin-top:auto;
         margin-bottom:auto;
       }
       .m-hero-photo {
