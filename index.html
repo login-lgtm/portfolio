@@ -1665,8 +1665,6 @@
         --text-mid: rgba(242,242,245,0.85);
         --text-soft: rgba(242,242,245,0.72);
       }
-      #homescreen .m-hero-name,
-      #homescreen .m-hero-role,
       #homescreen .m-hero-intro,
       #homescreen .m-hero-otw,
       #homescreen .m-folder-label,
@@ -1700,8 +1698,6 @@
         --text-mid: rgba(46,49,56,0.78);
         --text-soft: rgba(46,49,56,0.62);
       }
-      body.sky-light #homescreen .m-hero-name,
-      body.sky-light #homescreen .m-hero-role,
       body.sky-light #homescreen .m-hero-intro,
       body.sky-light #homescreen .m-hero-otw,
       body.sky-light #homescreen .m-folder-label,
@@ -1734,18 +1730,24 @@
         font-size:14px; font-weight:600; color:var(--text-mid);
         font-variant-numeric:tabular-nums;
       }
-      .m-hero { display:flex; flex-direction:column; align-items:center; padding:26px 26px 22px; text-align:center; }
+      /* The hero now carries the "Hi, I'm / Vivien Evers" headline
+         itself (previously a separate "Welcome to my Portfolio." block
+         floated mid-screen) — margin-bottom:auto on this flex-column
+         child soaks up whatever space is left before the folders,
+         instead of that floating block doing the centring. */
+      .m-hero {
+        display:flex; flex-direction:column; align-items:center;
+        padding:26px 26px 22px; text-align:center;
+        margin-bottom:auto;
+      }
       .m-hero-photo {
         display:block; width:88px; height:88px; border-radius:50%; overflow:hidden;
         box-shadow:0 10px 28px var(--shadow); margin-bottom:14px;
       }
       .m-hero-photo img { width:100%; height:100%; object-fit:cover; object-position:50% 30%; display:block; }
-      .m-hero-name { font-family:'Milky Cream',cursive; font-size:27px; line-height:1.1; color:var(--text); }
-      .m-hero-name em { font-style:normal; color:var(--text); }
-      .m-hero-role { font-size:12.5px; color:var(--text-mid); margin-top:6px; }
       .m-hero-intro {
         font-size:11.5px; color:var(--text-soft); line-height:1.5;
-        margin-top:8px; max-width:280px;
+        margin-top:12px; max-width:280px;
       }
       .m-hero-otw {
         display:inline-flex; align-items:center; gap:6px; margin-top:12px;
@@ -1753,21 +1755,9 @@
         text-transform:uppercase; letter-spacing:.06em;
       }
 
-      /* Same sticker headline as the desktop wallpaper, sized down —
-         now the screen's focal point: pulled out of flow and centred
-         dead-middle of the viewport regardless of what the hero above
-         or the folders below need. */
-      .m-welcome {
-        /* Auto top/bottom margins on a flex-column child centre it in
-           whatever free space is actually left between the hero and the
-           folders — unlike a fixed position:absolute top:50%, this
-           adapts to the real visible height on every device instead of
-           assuming one, and never fights the scroll container. */
-        margin:auto 0;
-        text-align:center; padding:0 20px;
-        pointer-events:none;
-        flex-shrink:0;
-      }
+      /* Same sticker-headline treatment as the desktop wallpaper's
+         "Welcome to my Portfolio." — reused here for "Hi, I'm /
+         Vivien Evers", flat white with no shadow/glow by design. */
       .m-welcome-eyebrow {
         font-family:'Commissioner',sans-serif; font-size:14px; font-weight:500;
         color:#fff; margin-bottom:3px;
@@ -1777,15 +1767,13 @@
         color:#fff;
       }
 
-      /* Folders — real desktop icons, just two, side by side — pushed
-         further down the screen now that "Welcome to my Portfolio." no
-         longer holds space in the flow above them. */
+      /* Folders — real desktop icons, just two, side by side. */
       .m-desktop { display:flex; gap:28px; justify-content:center; padding:4px 18px 30px; flex-shrink:0; }
 
       /* Short viewports (e.g. iPhone SE, 320x568): content overflows and
-         .m-welcome's auto-margin centring collapses to 0, so the folders'
+         .m-hero's auto bottom margin collapses to 0, so the folders'
          screen position is driven purely by cumulative height above them.
-         Compress the hero and welcome title so the folders clear the
+         Compress the hero and headline so the folders clear the
          fixed .home-dock instead of overlapping it. */
       @media (max-height: 600px) {
         .m-hero { padding:16px 26px 12px; }
@@ -3125,14 +3113,9 @@
       <a href="mailto:hallo@vivienevers.de" class="m-hero-photo" aria-label="Email Vivien Evers">
         <img src="images/about/itsme.jpg" alt="Vivien Evers">
       </a>
-      <div class="m-hero-name">Vivien <em>Evers</em></div>
-      <div class="m-hero-role">Digital Designer</div>
+      <div class="m-welcome-eyebrow">Hi, I'm</div>
+      <div class="m-welcome-title">Vivien Evers</div>
       <p class="m-hero-intro">From brand and socials to digital design — every chapter gets crafted with love. Early in this one, hungry for what's next.</p>
-    </div>
-
-    <div class="m-welcome">
-      <div class="m-welcome-eyebrow">Welcome to my</div>
-      <div class="m-welcome-title">Portfolio.</div>
     </div>
 
     <div class="m-desktop">
