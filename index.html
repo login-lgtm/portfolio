@@ -1204,13 +1204,19 @@
       filter: drop-shadow(0 2px 5px rgba(0,0,0,0.25));
       -webkit-user-drag: none;
     }
-    /* Placeholder tile — neutral grey so it reads as "not final yet" */
+    /* Placeholder tile — neutral grey so it reads as "not final yet".
+       Every other dock icon is real artwork with ~20% built-in
+       transparent padding, so it visually fills only ~80% of the 44px
+       box; this solid tile filled the box edge-to-edge, which read as
+       tighter spacing around it than everywhere else in the dock even
+       though the CSS gap is identical. Sized down to match. */
     .dock-icon.di-placeholder {
-      border-radius: 11px;
+      width: 36px; height: 36px;
+      border-radius: 9px;
       background: linear-gradient(145deg,#8C8C96,#5E5E68);
       box-shadow: 0 2px 5px rgba(0,0,0,0.25), inset 0 1px 0 rgba(255,255,255,0.22);
     }
-    .dock-icon svg { width: 26px; height: 26px; display: block; }
+    .dock-icon svg { width: 21px; height: 21px; display: block; }
     .dock-dot { width:4px; height:4px; border-radius:50%; background:transparent; }
     .dock-item.active .dock-dot { background:var(--text-mid); }
     .dock-tooltip {
