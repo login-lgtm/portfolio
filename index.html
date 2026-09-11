@@ -760,50 +760,110 @@
     .win-scroll::-webkit-scrollbar { width:4px; }
     .win-scroll::-webkit-scrollbar-thumb { background:var(--glass-border); border-radius:2px; }
 
-    /* ── FINDER ── */
+    /* ── FINDER ── — restyled after a chat-app layout: a list of rows
+       (avatar tile + title + one-line preview) on the left, a header
+       bar for the open item on the right, instead of the old flat
+       Finder-sidebar + floating ‹ › toolbar. */
     #win-work {
       top: 52px; left: 110px;
       width: calc(100vw - 220px);
       height: calc(100vh - 190px);
     }
-    .finder-toolbar {
-      display:flex; align-items:center; gap:10px;
-      padding:8px 14px;
-      border-bottom: 1px solid var(--glass-border);
-      flex-shrink: 0;
-    }
-    .finder-navbtn {
-      background:var(--glass); border:1px solid var(--glass-border);
-      border-radius:5px; color:var(--text-mid); font-size:13px;
-      width:26px; height:22px;
-      display:flex; align-items:center; justify-content:center;
-      cursor:pointer; user-select:none;
-    }
-    .finder-search {
-      flex:1; background:rgba(0,0,0,0.07); border:1px solid var(--glass-border);
-      border-radius:6px; padding:4px 10px; font-size:11px;
-      color:var(--text); font-family:'Commissioner',sans-serif; outline:none;
-    }
-    .finder-search::placeholder { color:var(--text-soft); }
     .finder-body { display:flex; flex:1; overflow:hidden; }
-    .finder-sidebar {
-      width:164px; flex-shrink:0;
+
+    .finder-sidebar-col {
+      width: 248px; flex-shrink:0;
+      display:flex; flex-direction:column;
       border-right:1px solid var(--glass-border);
-      padding:12px 0; overflow-y:auto;
+    }
+    .fs-top { padding:14px 16px 10px; flex-shrink:0; }
+    .fs-top-title { font-size:19px; font-weight:700; color:var(--text); }
+    .finder-search-wrap { position:relative; margin:0 12px 10px; flex-shrink:0; }
+    .finder-search-ico {
+      position:absolute; left:9px; top:50%; transform:translateY(-50%);
+      color:var(--text-soft); pointer-events:none;
+    }
+    .finder-search-ico .ico { width:13px; height:13px; }
+    .finder-search {
+      width:100%; background:var(--glass); border:1px solid var(--glass-border);
+      border-radius:8px; padding:7px 10px 7px 28px; font-size:12px;
+      color:var(--text); font-family:'Commissioner',sans-serif; outline:none;
+      transition:border-color .15s;
+    }
+    .finder-search:focus { border-color:var(--accent); }
+    .finder-search::placeholder { color:var(--text-soft); }
+
+    .finder-sidebar {
+      flex:1; overflow-y:auto; padding:2px 8px 12px;
     }
     .fs-section-label {
-      font-size:9px; font-weight:700; text-transform:uppercase;
-      letter-spacing:0.1em; color:var(--text-soft);
-      padding:8px 14px 4px;
+      font-size:10px; font-weight:700; text-transform:uppercase;
+      letter-spacing:0.08em; color:var(--text-soft);
+      padding:12px 8px 6px;
     }
     .fs-item {
-      display:flex; align-items:center; gap:7px;
-      padding:5px 14px; font-size:12px; color:var(--text-mid);
-      cursor:pointer; border-radius:6px;
-      margin:1px 6px; transition:all 0.15s;
+      display:flex; align-items:center; gap:11px;
+      padding:7px 8px; border-radius:10px;
+      cursor:pointer; margin-bottom:1px; transition:background .15s;
     }
-    .fs-item:hover { background:var(--glass); color:var(--text); }
-    .fs-item.active { background:var(--accent); color:#fff; }
+    .fs-item:hover { background:var(--glass); }
+    .fs-item.active { background:var(--accent); }
+    .fs-avatar {
+      width:38px; height:38px; border-radius:11px; flex-shrink:0;
+      display:flex; align-items:center; justify-content:center; color:#fff;
+      box-shadow:inset 0 1px 0 rgba(255,255,255,.3), 0 1px 3px rgba(0,0,0,.18);
+    }
+    .fs-avatar .ico { width:17px; height:17px; }
+    .fs-avatar.grp-product  { background:linear-gradient(135deg, var(--accent2), var(--accent)); }
+    .fs-avatar.grp-brand    { background:linear-gradient(135deg, #FFC24B, #FF8A65); }
+    .fs-avatar.grp-personal { background:linear-gradient(135deg, #6BE0B8, #29B98A); }
+    .fs-text { min-width:0; flex:1; }
+    .fs-name {
+      font-size:13px; font-weight:600; color:var(--text);
+      white-space:nowrap; overflow:hidden; text-overflow:ellipsis;
+    }
+    .fs-item.active .fs-name { color:#fff; }
+    .fs-preview {
+      font-size:11px; color:var(--text-soft); margin-top:1px;
+      white-space:nowrap; overflow:hidden; text-overflow:ellipsis;
+    }
+    .fs-item.active .fs-preview { color:rgba(255,255,255,.78); }
+
+    /* Right column: header bar (avatar + name + kicker + prev/next),
+       same visual language as the sidebar rows it opens. */
+    .case-col { flex:1; display:flex; flex-direction:column; min-width:0; overflow:hidden; }
+    .case-header {
+      display:flex; align-items:center; gap:12px;
+      padding:10px 20px;
+      border-bottom:1px solid var(--glass-border);
+      flex-shrink:0;
+    }
+    .ch-avatar {
+      width:34px; height:34px; border-radius:10px; flex-shrink:0;
+      display:flex; align-items:center; justify-content:center; color:#fff;
+      box-shadow:inset 0 1px 0 rgba(255,255,255,.3), 0 1px 3px rgba(0,0,0,.18);
+    }
+    .ch-avatar .ico { width:15px; height:15px; }
+    .ch-text { min-width:0; flex:1; }
+    .ch-name {
+      font-size:13.5px; font-weight:700; color:var(--text);
+      white-space:nowrap; overflow:hidden; text-overflow:ellipsis;
+    }
+    .ch-sub {
+      font-size:11px; color:var(--text-soft); margin-top:1px;
+      white-space:nowrap; overflow:hidden; text-overflow:ellipsis;
+    }
+    .ch-nav { display:flex; gap:4px; flex-shrink:0; }
+    .ch-navbtn {
+      width:26px; height:26px; border-radius:7px;
+      background:var(--glass); border:1px solid var(--glass-border); color:var(--text-mid);
+      display:flex; align-items:center; justify-content:center; cursor:pointer; font-size:13px;
+      transition:background .15s, color .15s;
+    }
+    .ch-navbtn:hover { background:var(--glass-strong); color:var(--text); }
+    .ch-navbtn:disabled { opacity:.35; cursor:default; }
+    .ch-navbtn:disabled:hover { background:var(--glass); color:var(--text-mid); }
+
     /* Project detail */
     .proj-detail { animation:fadeInUp 0.2s ease; }
     @keyframes fadeInUp {
@@ -2226,10 +2286,6 @@
     /* Window titles — hidden; the traffic lights are enough chrome */
     .win-title { display: none; }
 
-    /* Finder sidebar project icons */
-    .fs-item { gap: 8px; }
-    .fs-ico { width: 15px; height: 15px; opacity: .75; flex-shrink: 0; }
-    .fs-item.active .fs-ico { opacity: 1; }
 
     /* Contact rows */
     .imsg-ico { font-size: 18px; color: var(--accent); display: inline-flex; }
@@ -2453,14 +2509,19 @@
     <span class="win-title"><i data-icon="folder"></i> Case Studies — Vivien Evers</span>
     <span style="width:52px"></span>
   </div>
-  <div class="finder-toolbar">
-    <div class="finder-navbtn">‹</div>
-    <div class="finder-navbtn">›</div>
-    <input class="finder-search" placeholder="Search projects…" oninput="filterProjects(this.value)">
-  </div>
   <div class="finder-body">
-    <div class="finder-sidebar" id="finder-sidebar"><!-- generated from CASES --></div>
-    <div class="case-scroll" id="case-scroll"></div>
+    <div class="finder-sidebar-col">
+      <div class="fs-top"><div class="fs-top-title">Case Studies</div></div>
+      <div class="finder-search-wrap">
+        <span class="finder-search-ico"><i data-icon="search"></i></span>
+        <input class="finder-search" placeholder="Search projects…" oninput="filterProjects(this.value)">
+      </div>
+      <div class="finder-sidebar" id="finder-sidebar"><!-- generated from CASES --></div>
+    </div>
+    <div class="case-col">
+      <div class="case-header" id="case-header"><!-- generated on selectProject --></div>
+      <div class="case-scroll" id="case-scroll"></div>
+    </div>
   </div>
 </div>
 
@@ -3871,6 +3932,14 @@ async function checkSession() {
 
 /* ── FINDER: sidebar + inline case rendering ──────────────────── */
 
+/* One accent tint per group — purely visual grouping, same idea as a
+   chat app giving each conversation's avatar a different colour. */
+function groupClass(group) {
+  if (group === 'Personal') return 'grp-personal';
+  if (group === 'Brand &amp; Culture') return 'grp-brand';
+  return 'grp-product';
+}
+
 /* Sidebar is generated from CASES so the two can never drift apart. */
 function buildSidebar() {
   const el = document.getElementById('finder-sidebar');
@@ -3881,7 +3950,13 @@ function buildSidebar() {
       html += `<div class="fs-section-label">${c.group}</div>`;
       lastGroup = c.group;
     }
-    html += `<div class="fs-item" data-idx="${i}" onclick="selectProject(${i})">${icon(c.icon,'fs-ico')} ${c.nav}</div>`;
+    html += `<div class="fs-item" data-idx="${i}" onclick="selectProject(${i})">
+      <span class="fs-avatar ${groupClass(c.group)}">${icon(c.icon)}</span>
+      <span class="fs-text">
+        <span class="fs-name">${c.nav}</span>
+        <span class="fs-preview">${c.kicker}</span>
+      </span>
+    </div>`;
   });
   el.innerHTML = html;
 }
@@ -4006,10 +4081,27 @@ function renderCase(i) {
 }
 
 function selectProject(idx) {
+  const c = CASES[idx];
+  if (!c) return;
   currentProject = idx;
   document.querySelectorAll('.fs-item').forEach(el =>
     el.classList.toggle('active', parseInt(el.dataset.idx) === idx)
   );
+
+  const header = document.getElementById('case-header');
+  if (header) {
+    header.innerHTML = `
+      <span class="ch-avatar ${groupClass(c.group)}">${icon(c.icon)}</span>
+      <span class="ch-text">
+        <span class="ch-name">${c.nav}</span>
+        <span class="ch-sub">${c.kicker}</span>
+      </span>
+      <span class="ch-nav">
+        <button class="ch-navbtn" onclick="selectProject(${idx-1})" ${idx<=0?'disabled':''} aria-label="Previous project">‹</button>
+        <button class="ch-navbtn" onclick="selectProject(${idx+1})" ${idx>=CASES.length-1?'disabled':''} aria-label="Next project">›</button>
+      </span>`;
+  }
+
   const scroll = document.getElementById('case-scroll');
   if (!scroll) return;
   scroll.innerHTML = renderCase(idx);
