@@ -1072,12 +1072,18 @@
     }
     /* Invisible hover halo — widens the zone that counts as "near the
        dock" well past the dock's own edges, so the hint can react before
-       the cursor actually touches it. Sits behind the dock (z-index -1),
-       so it never intercepts clicks on the icons themselves. */
+       the cursor actually touches it. The z-index:-1 only ranks it below
+       its own dock-wrap siblings — #dock-wrap itself still establishes a
+       stacking context at z-index:900, so without a capped bottom inset
+       this halo silently sat on top of (and ate clicks meant for) the
+       lower-z-index #site-footer beneath it. Capped short on that one
+       side rather than disabled outright, so hovering in from the sides/
+       top still widens the zone as intended. */
     #dock-wrap::before {
       content: '';
       position: absolute;
-      inset: -36px -48px;
+      top: -36px; right: -48px; left: -48px;
+      bottom: -6px;
       z-index: -1;
     }
     /* Mini footer, pinned below the dock — deliberately quiet: small,
