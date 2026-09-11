@@ -4113,9 +4113,12 @@ function downloadFile(type) { openFile(type); }
 const MOB_CONTENT = {
   about:{title:'About',html:`
     <div style="display:flex;flex-direction:column;align-items:center;text-align:center;margin-bottom:26px">
-      <img src="images/about/itsme.jpg" style="width:132px;height:132px;border-radius:50%;object-fit:cover;margin-bottom:16px;box-shadow:0 10px 28px rgba(0,0,0,.3)" onerror="this.style.display='none'">
-      <div style="font-family:'Milky Cream',cursive;font-size:32px;color:#fff">Vivien <em style="font-style:italic;color:#fff">Evers</em></div>
-      <div style="font-size:12.5px;color:var(--text-mid);margin-top:6px">Digital Designer</div>
+      <div style="position:relative;display:inline-block;margin-bottom:16px">
+        <img src="images/about/itsme.jpg" style="width:132px;height:132px;border-radius:50%;object-fit:cover;display:block;box-shadow:0 10px 28px rgba(0,0,0,.3)" onerror="this.style.display='none'">
+        <span style="position:absolute;top:-8px;left:-10px;background:#0B93F6;color:#fff;font-family:'Commissioner',sans-serif;font-size:10px;font-weight:600;padding:5px 10px;border-radius:12px 12px 12px 3px;box-shadow:0 4px 12px rgba(11,147,246,.4);white-space:nowrap">Digital Designer</span>
+      </div>
+      <div style="font-family:'Milky Cream',cursive;font-size:32px;color:var(--text)">Vivien <em style="font-style:italic;color:inherit">Evers</em></div>
+      <div style="font-size:12.5px;color:var(--text-mid);margin-top:6px">26 · Hamburg · always building something</div>
     </div>
     <p style="font-size:13px;color:var(--text-mid);line-height:1.7;margin-bottom:12px">Digital Designer, certified in Media Design (IHK Hamburg, Jan 2026).</p>
     <p style="font-size:13px;color:var(--text-mid);line-height:1.7;margin-bottom:12px">Trained as a media designer — alongside that, founded house music event brands in 2022 and have been co-running them since 2024. Everything the curriculum didn't cover, I taught myself.</p>
