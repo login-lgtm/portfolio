@@ -993,34 +993,54 @@
     .imsg-link-btn { display:flex; align-items:center; gap:8px; padding:10px 14px; background:var(--glass); border:1px solid var(--glass-border); border-radius:10px; font-size:12px; color:var(--text); text-decoration:none; cursor:pointer; transition:all .15s; font-family:'Commissioner',sans-serif; }
     .imsg-link-btn:hover { background:var(--glass-strong); }
 
-    /* "Got a project…" CTA, sent as an actual iMessage-style bubble
-       (blue, tailed bottom-right, "me" alignment) instead of a plain
-       paragraph + separate button — it pops in like a just-sent
-       message, then settles with a slow breathing glow so it still
-       reads as tappable after the entrance finishes. */
-    @keyframes msgSendIn {
+    /* "Got a project…" CTA, staged as a received iMessage (white,
+       tailed bottom-left, "them" side — it's a message TO the visitor)
+       with a tiny iOS-style keyboard sliding up underneath as if about
+       to answer it. The whole block is one tap target into Contact. */
+    @keyframes msgReceiveIn {
       0%   { opacity:0; transform:scale(.6) translateY(10px); }
       55%  { opacity:1; transform:scale(1.04) translateY(0); }
       80%  { transform:scale(.98); }
       100% { transform:scale(1); }
     }
-    @keyframes msgGlow {
-      0%, 100% { box-shadow:0 4px 14px rgba(46,125,209,.35); }
-      50%      { box-shadow:0 4px 20px rgba(46,125,209,.6); }
+    @keyframes mkSlideUp {
+      0%   { opacity:0; transform:translateY(100%); }
+      100% { opacity:1; transform:translateY(0); }
     }
-    .about-cta-row { display:flex; justify-content:flex-end; margin-bottom:16px; }
+    @keyframes mkKeyPress {
+      0%, 100% { transform:translateY(0); background:#fff; }
+      50%      { transform:translateY(1px); background:#E4E7EC; }
+    }
+    .about-cta-wrap { cursor:pointer; margin-bottom:16px; }
+    .about-cta-row { display:flex; justify-content:flex-start; }
     .about-cta-bubble {
       display:inline-block; max-width:78%;
-      background:var(--accent); color:#fff;
+      background:#fff; color:#1a1a1a;
       font-family:'Commissioner',sans-serif; font-size:13px; font-weight:600;
-      line-height:1.5; text-align:right;
-      padding:10px 16px; border-radius:16px 16px 4px 16px;
-      border:none; cursor:pointer;
-      animation: msgSendIn .5s cubic-bezier(.34,1.56,.64,1) both,
-                 msgGlow 2.4s ease-in-out .6s infinite;
-      transition: transform .15s ease;
+      line-height:1.5; text-align:left;
+      padding:10px 16px; border-radius:16px 16px 16px 4px;
+      box-shadow:0 4px 14px rgba(0,0,0,.14);
+      animation: msgReceiveIn .5s cubic-bezier(.34,1.56,.64,1) both;
     }
-    .about-cta-bubble:active { transform:scale(.95); }
+    .about-cta-wrap:active .about-cta-bubble { transform:scale(.96); }
+    /* Decorative mini keyboard — no real input, just staged UI implying
+       "type a reply here" before handing off to the real Contact sheet. */
+    .mini-keyboard {
+      margin-top:8px; padding:8px 6px calc(8px + env(safe-area-inset-bottom));
+      background:linear-gradient(180deg,#C8CCD3,#B7BBC2);
+      border-radius:12px;
+      display:flex; flex-direction:column; gap:6px;
+      animation: mkSlideUp .45s cubic-bezier(.34,1.1,.64,1) .25s both;
+    }
+    .mk-row { display:flex; gap:5px; }
+    .mk-row span {
+      flex:1; height:26px; background:#fff; border-radius:5px;
+      box-shadow:0 1px 0 rgba(0,0,0,.15);
+    }
+    .mk-row .mk-wide  { flex:1.6; }
+    .mk-row .mk-space { flex:5; }
+    .mk-row .mk-return{ flex:1.8; background:var(--accent); }
+    .mk-row span.mk-typing { animation: mkKeyPress 1.6s ease-in-out .9s infinite; }
 
     /* ── DOWNLOADS WINDOW ── */
     #win-downloads { top:80px; left:320px; width:480px; height:380px; }
@@ -4153,8 +4173,16 @@ const MOB_CONTENT = {
     <p style="font-size:13px;color:var(--text-mid);line-height:1.7;margin-bottom:12px">Trained as a media designer — alongside that, founded house music event brands in 2022 and have been co-running them since 2024. Everything the curriculum didn't cover, I taught myself.</p>
     <p style="font-size:13px;color:var(--text-mid);line-height:1.7;margin-bottom:12px">Started freelancing during my apprenticeship in 2025. In 2026, I built a handful of web projects — this portfolio and my workflow dashboard.</p>
     <p style="font-size:13px;color:var(--text-mid);line-height:1.7;margin-bottom:12px">I'm not chasing one narrow title. I'm looking for a place where I can keep building and crafting — <strong style="color:var(--text)">digital, print, whatever the team needs</strong> — and bring the energy, curiosity, and range that got me here.</p>
-    <div class="about-cta-row">
-      <button class="about-cta-bubble" onclick="closeMobSheet();mobOpenSheet('contact')">Got a project — or just curious? Let's talk.</button>
+    <div class="about-cta-wrap" onclick="closeMobSheet();mobOpenSheet('contact')" role="button" aria-label="Open Contact">
+      <div class="about-cta-row">
+        <div class="about-cta-bubble">Got a project — or just curious? Let's talk.</div>
+      </div>
+      <div class="mini-keyboard" aria-hidden="true">
+        <div class="mk-row"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></div>
+        <div class="mk-row"><span class="mk-wide"></span><span></span><span class="mk-typing"></span><span></span><span></span><span></span><span></span><span></span><span class="mk-wide"></span></div>
+        <div class="mk-row"><span class="mk-wide"></span><span></span><span></span><span></span><span></span><span></span><span class="mk-wide"></span></div>
+        <div class="mk-row"><span class="mk-wide"></span><span class="mk-space"></span><span class="mk-return"></span></div>
+      </div>
     </div>`},
   contact:{title:'Contact',html:`
     <div class="coffee-photo-wrap" style="margin-bottom:20px">
