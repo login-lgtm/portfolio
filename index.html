@@ -4349,19 +4349,6 @@ buildSidebar();
 paintIcons();
 checkSession();
 
-/* First visit → open help, once the visitor has actually unlocked the
-   desktop. This used to fire 700ms after page load unconditionally,
-   which meant the tour's backdrop (z-index 4000) painted right over the
-   still-showing lock screen (z-index 3000) — a "help" popup appearing
-   before anyone had even unlocked anything. */
-if (!sessionStorage.getItem('vivien_help_seen')) {
-  window.addEventListener('vivien:unlocked', () => {
-    setTimeout(() => {
-      startTour();
-      sessionStorage.setItem('vivien_help_seen', '1');
-    }, 700);
-  }, { once: true });
-}
 
 /* ── CUSTOM CURSOR — dot + liquid-glass circle ───────────────────
    Idle: a small solid dot tracks the pointer directly. Over anything
