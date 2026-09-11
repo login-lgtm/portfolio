@@ -6,270 +6,232 @@
   <title>Vivien Evers — Imprint</title>
   <link rel="icon" type="image/png" href="images/icons/favicon.png">
   <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Commissioner:wght@300..800&display=swap" rel="stylesheet">
   <style>
+    /* Self-hosted — licensed commercial copy, not a Google Font. Same
+       @font-face as index.html, so headings render identically. */
+    @font-face {
+      font-family: 'Milky Cream';
+      src: url('fonts/MilkyCream.otf') format('opentype');
+      font-weight: normal;
+      font-style: normal;
+      font-display: swap;
+    }
+    /* Same dark-theme token set as index.html — this page borrows the
+       site's colour system directly rather than keeping its own. */
     :root {
-      --bg: #EEECEA; --accent: #2E7DD1; --accent-light: #DCEBFB;
-      --text: #1A1A1A; --text-mid: #666666; --text-light: #999999;
-      --border: #D8D4D0; --tag-bg: #E8E4E0; --dark: #1E1A2E;
+      --accent:        #2E7DD1;
+      --accent2:       #6BB3FF;
+      --g-a:           #17181C;
+      --g-b:           #1F2128;
+      --g-c:           #1A1C22;
+      --glass:         rgba(255,255,255,0.07);
+      --glass-border:  rgba(255,255,255,0.11);
+      --glass-strong:  rgba(255,255,255,0.12);
+      --menubar-bg:    rgba(15,16,19,0.62);
+      --menubar-border:rgba(255,255,255,0.08);
+      --text:          #F2F2F5;
+      --text-mid:      rgba(242,242,245,0.58);
+      --text-soft:     rgba(242,242,245,0.33);
+      --shadow:        rgba(0,0,0,0.55);
     }
     * { margin: 0; padding: 0; box-sizing: border-box; }
     html { scroll-behavior: smooth; }
-    body { font-family: 'DM Sans', sans-serif; background: var(--bg); color: var(--text); cursor: none; overflow-x: hidden; }
-
-    /* ── GRAIN + GRID ── */
-    body::before { content:''; position:fixed; inset:0; background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E"); pointer-events:none; z-index:9990; opacity:.4; }
-    body::after { content:''; position:fixed; inset:0; background-image:linear-gradient(rgba(0,0,0,.035) 1px,transparent 1px),linear-gradient(90deg,rgba(0,0,0,.035) 1px,transparent 1px); background-size:40px 40px; pointer-events:none; z-index:0; }
-
-    /* ── CURSOR ── */
-    .cursor { width:10px; height:10px; background:var(--accent); border-radius:50%; position:fixed; pointer-events:none; z-index:9999; transform:translate(-50%,-50%); transition:width .2s,height .2s,opacity .3s ease; mix-blend-mode:multiply; }
-    .cursor-ring { width:36px; height:36px; border:1.5px solid var(--accent); border-radius:50%; position:fixed; pointer-events:none; z-index:9998; transform:translate(-50%,-50%); opacity:.5; transition:width .25s,height .25s,opacity .2s; }
-
-    /* ── NAV ── */
-    nav {
-      position: fixed; top: 20px; left: 50%; right: auto; z-index: 100;
-      transform: translateX(-50%);
-      height: 48px; padding: 0 8px;
-      display: flex; align-items: center; gap: 4px;
-      backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px);
-      background: rgba(238,236,234,.92);
-      border: 1px solid rgba(0,0,0,0.08);
-      border-radius: 100px;
-      box-shadow: 0 4px 24px rgba(0,0,0,0.08), 0 1px 4px rgba(0,0,0,0.04);
-      transition: transform 0.35s cubic-bezier(0.4,0,0.2,1), opacity 0.35s ease;
-      white-space: nowrap;
+    body {
+      font-family: 'Commissioner', sans-serif;
+      background: var(--g-a);
+      color: var(--text);
+      cursor: none;
+      overflow-x: hidden;
     }
-    nav.nav-hidden {
-      transform: translateX(-50%) translateY(calc(-100% - 28px));
-      opacity: 0;
+    @media (max-width: 768px), (hover: none) {
+      *, *::before, *::after { cursor: auto !important; }
+      a, button { cursor: pointer !important; }
+      #vcur-dot { display: none !important; }
+    }
+
+    /* ── WALLPAPER — same flat gradient + 40px grid as the lock screen
+       on the main site, so this page reads as the same desktop rather
+       than a different product. ── */
+    body::before {
+      content: ''; position: fixed; inset: 0; z-index: -1;
+      background-color: var(--g-a);
+      background-image:
+        linear-gradient(rgba(255,255,255,.06) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,.06) 1px, transparent 1px),
+        radial-gradient(ellipse 80% 80% at 12% 10%, var(--g-b), transparent 65%),
+        radial-gradient(ellipse 70% 70% at 88% 85%, var(--g-c), transparent 65%);
+      background-size: 40px 40px, 40px 40px, auto, auto;
+    }
+
+    /* ── CUSTOM CURSOR — the same warm dot used across the whole site,
+       just ported over rather than reinvented for one page. ── */
+    #vcur-dot {
+      width: 9px; height: 9px;
+      background: radial-gradient(circle, #FFF3D6 0%, #FFD976 65%, #FFC24B 100%);
+      border-radius: 50%;
+      position: fixed; top: 0; left: 0;
       pointer-events: none;
+      z-index: 9999;
+      opacity: 0;
+      transform: translate(-50%, -50%);
+      box-shadow: 0 0 5px 1.5px rgba(255,201,90,.65), 0 0 14px 4px rgba(255,201,90,.3);
+      transition: opacity .2s ease, transform .2s cubic-bezier(.34,1.4,.64,1), box-shadow .2s ease;
     }
-    .nav-pill-divider {
-      width: 1px; height: 20px; background: var(--border); flex-shrink: 0; margin: 0 4px;
+    #vcur-dot.hover {
+      transform: translate(-50%, -50%) scale(1.6);
+      box-shadow: 0 0 8px 3px rgba(255,201,90,.85), 0 0 22px 8px rgba(255,201,90,.45);
     }
-    a.nav-breadcrumb { display:inline-flex; align-items:center; gap:6px; background: rgba(0,0,0,0.05); padding: 5px 12px; border-radius: 100px; border: none; font-size:12px; font-weight:500; color:var(--text); text-decoration:none; cursor:pointer; transition:box-shadow .2s; }
-    a.nav-breadcrumb { position:relative; }
-    a.nav-breadcrumb:hover { background: rgba(46,125,209,0.1); box-shadow: none; }
-    a.nav-breadcrumb::after { content:'← Home'; position:absolute; top:calc(100% + 8px); left:50%; transform:translateX(-50%); background:#1E1A2E; color:white; font-size:11px; font-weight:500; padding:4px 10px; border-radius:6px; white-space:nowrap; opacity:0; pointer-events:none; transition:opacity .2s; z-index:200; }
-    a.nav-breadcrumb:hover::after { opacity:1; }
-    .nav-breadcrumb .folder-icon { display:inline-flex; flex-direction:column; gap:1px; margin-right:2px; }
-    .folder-tab { width:12px; height:4px; background:#90BEDD; border-radius:2px 2px 0 0; }
-    .folder-body { width:18px; height:13px; background:#689DCF; border-radius:0 2px 2px 2px; }
-    .nav-breadcrumb .sep { color:var(--text-light); }
-    .nav-breadcrumb .crumb { color:var(--text-mid); }
-    .nav-breadcrumb .crumb-active { color:var(--accent); }
-    .nav-links { display:flex; gap:20px; list-style:none; align-items:center; padding-right:8px; }
-    .nav-links > li > a { font-size:14px; font-weight:500; color:var(--text); text-decoration:none; position:relative; transition:color .2s; }
-    .nav-links > li > a:hover { color:var(--accent); }
-    .nav-links > li > a::after { content:''; position:absolute; bottom:-2px; left:0; width:0; height:1.5px; background:var(--accent); transition:width .2s; }
-    .nav-links > li > a:hover::after { width:100%; }
-    .nav-work-wrapper { position:relative; height:48px; display:flex; align-items:center; padding:8px 4px; margin:-8px -4px; }
-    .nav-work-wrapper::after { content:''; position:absolute; top:100%; left:-20px; right:-20px; height:16px; background:transparent; }
-    .nav-work-wrapper > a .nav-caret { display:inline-block; font-size:10px; margin-left:3px; transition:transform .2s; }
-    .nav-work-wrapper:hover > a .nav-caret { transform:rotate(180deg); }
-    .nav-dropdown { position:absolute; top:100%; right:0; margin-top:0; background:white; border:1px solid #E8E4E0; border-radius:16px; padding:4px 8px 8px; min-width:280px; box-shadow:0 8px 40px rgba(0,0,0,.12); opacity:0; pointer-events:none; transform:translateY(-4px); transition:opacity .25s ease .1s,transform .25s ease .1s; }
-    .nav-work-wrapper:hover .nav-dropdown { opacity:1; pointer-events:auto; transform:translateY(0); transition:opacity .15s ease 0s,transform .15s ease 0s; }
-    .nav-work-wrapper:focus-within .nav-dropdown { opacity:1; pointer-events:auto; transform:translateY(0); transition:opacity .15s ease 0s,transform .15s ease 0s; }
-    .nav-dropdown-item { display:flex; align-items:center; gap:12px; padding:10px 14px; border-radius:10px; text-decoration:none; transition:background .15s; }
-    .nav-dropdown-item:hover { background:#F5F3F1; }
-    .nav-dropdown-item-icon { width:20px; height:20px; flex-shrink:0; display:flex; align-items:center; justify-content:center; }
-    .nav-dropdown-item-icon svg { width:18px; height:18px; }
-    .nav-dropdown-item-text { display:flex; flex-direction:column; }
-    .nav-dropdown-item-name { font-size:14px; font-weight:500; color:var(--text); }
-    .nav-dropdown-item-sub { font-size:12px; color:var(--text-light); margin-top:1px; }
-    .nav-dropdown-divider { height:1px; background:#E8E4E0; margin:4px 0; }
-    .nav-dropdown-viewall { display:block; padding:10px 14px; border-radius:10px; font-size:13px; color:var(--accent); text-decoration:none; transition:background .15s; }
-    .nav-dropdown-viewall:hover { background:#E8F2FC; }
-    .nav-hamburger { display:none; flex-direction:column; gap:5px; background:none; border:none; cursor:pointer; padding:4px; }
-    .nav-hamburger span { display:block; width:22px; height:2px; background:var(--text); border-radius:2px; transition:transform .25s ease,opacity .25s ease; }
-    .nav-overlay { position:fixed; inset:0; z-index:200; background:white; transform:translateY(-100%); transition:transform .3s cubic-bezier(.4,0,.2,1); overflow-y:auto; }
-    .nav-overlay.open { transform:translateY(0); }
-    .nav-overlay-header { display:flex; align-items:center; justify-content:space-between; padding:20px 24px; border-bottom:1px solid var(--border); }
-    .nav-overlay-close { background:none; border:none; font-size:22px; cursor:pointer; color:var(--text); line-height:1; padding:4px; }
-    .nav-overlay-list { padding:8px 0 32px; }
-    .nav-overlay-item { border-bottom:1px solid var(--border); }
-    .nav-overlay-label { font-family:'Instrument Serif',serif; font-size:32px; color:var(--text); padding:20px 24px; display:block; text-decoration:none; transition:color .2s; }
-    .nav-overlay-label:hover { color:var(--accent); }
-    .nav-overlay-label.is-label { cursor:default; }
-    .nav-overlay-sub { padding:0 24px 18px; display:flex; flex-direction:column; gap:4px; }
-    .nav-overlay-sub a { display:flex; align-items:center; gap:10px; padding:10px 0; font-size:16px; font-weight:500; color:var(--text-mid); text-decoration:none; padding-left:24px; transition:color .15s; }
-    .nav-overlay-sub a:hover { color:var(--accent); }
-    @media (max-width:768px) {
-      nav {
-        top: 0; left: 0; right: 0; transform: none; width: auto;
-        border-radius: 0; border: none; border-bottom: 1px solid var(--border);
-        height: 56px; padding: 0 20px; justify-content: flex-end;
-        background: rgba(238,236,234,.97); box-shadow: none; white-space: normal;
-      }
-      nav.nav-hidden { transform: translateY(-100%); opacity: 1; pointer-events: auto; }
-      .nav-pill-divider { display: none; }
-      .nav-breadcrumb { display:none; } .nav-links { display:none; } .nav-hamburger { display:flex; } body { cursor:auto !important; } .cursor,.cursor-ring { display:none !important; }
+
+    /* ── MENUBAR — the same top strip as the desktop site, not a
+       floating pill in a different style. ── */
+    #menubar {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      height: 38px;
+      z-index: 1000;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 18px;
+      background: var(--menubar-bg);
+      backdrop-filter: blur(24px) saturate(180%);
+      -webkit-backdrop-filter: blur(24px) saturate(180%);
+      border-bottom: 1px solid var(--menubar-border);
     }
+    .mb-left { display: flex; align-items: center; gap: 3px; }
+    .mb-logo {
+      font-family: 'Commissioner', sans-serif;
+      font-size: 12.5px; font-weight: 600; letter-spacing: .01em;
+      color: var(--text); text-decoration: none;
+      padding: 4px 8px; margin-right: 2px; border-radius: 6px;
+      transition: background .15s;
+    }
+    .mb-logo:hover { background: var(--glass); }
+    .mb-logo em { font-style: normal; }
+    .mb-crumb-sep { color: var(--text-soft); font-size: 12.5px; margin: 0 2px; }
+    .mb-crumb-active {
+      font-size: 12.5px; font-weight: 500; color: var(--accent);
+      padding: 4px 8px;
+    }
+    .mb-linkedin {
+      display: flex; align-items: center;
+      color: var(--text-mid); transition: color .15s;
+    }
+    .mb-linkedin:hover { color: var(--text); }
+    .mb-linkedin svg { width: 13px; height: 13px; fill: currentColor; }
 
     /* ── PAGE ── */
     .impr-page {
       min-height: 100vh;
       padding: 120px 80px 80px;
-      position: relative;
-      z-index: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
     }
     .impr-heading {
-      font-family: 'Instrument Serif', serif;
-      font-size: clamp(40px, 5vw, 64px);
-      letter-spacing: -2px;
+      font-family: 'Milky Cream', cursive;
+      font-size: clamp(40px, 6vw, 64px);
       line-height: 1.05;
       color: var(--text);
-      margin-bottom: 12px;
+      margin-bottom: 10px;
+      text-align: center;
     }
     .impr-subtitle {
-      font-size: 18px;
+      font-size: 14px;
       color: var(--text-mid);
-      font-weight: 400;
-      margin-bottom: 60px;
+      font-weight: 500;
+      margin-bottom: 48px;
+      text-align: center;
     }
 
-    /* ── MAC WINDOW ── — a real frosted-glass panel now, matching the
-       macOS-style pop-ups on the main site: translucent, blurred, with
-       a light border and inset highlight instead of a flat white card. */
+    /* ── WINDOW — the exact same fixed, lightly-transparent white glass
+       as every popup on the main site (windows, password prompt,
+       mobile sheets, guided tour), so this reads as the same product
+       rather than a leftover from an older design. ── */
     .impr-window {
+      width: 100%;
       max-width: 600px;
-      background: rgba(255,255,255,.55);
-      backdrop-filter: blur(20px) saturate(160%);
-      -webkit-backdrop-filter: blur(20px) saturate(160%);
-      border: 1px solid rgba(255,255,255,.7);
-      border-radius: 16px;
-      box-shadow: 0 12px 48px rgba(0,0,0,.10), 0 2px 8px rgba(0,0,0,.06), inset 0 1px 0 rgba(255,255,255,.8);
+      --glass-strong: rgba(255,255,255,0.9);
+      --glass: rgba(60,60,70,0.06);
+      --glass-border: rgba(60,60,70,0.12);
+      --text: #3C3C43;
+      --text-mid: rgba(60,60,67,0.7);
+      --text-soft: rgba(60,60,67,0.48);
+      background: var(--glass-strong);
+      backdrop-filter: blur(40px) saturate(220%);
+      -webkit-backdrop-filter: blur(40px) saturate(220%);
+      border: 1px solid var(--glass-border);
+      border-radius: 12px;
+      box-shadow: 0 24px 80px var(--shadow), inset 0 1px 0 rgba(255,255,255,.6);
       overflow: hidden;
     }
     .impr-chrome {
-      display: flex;
-      align-items: center;
-      gap: 6px;
-      padding: 10px 14px;
-      background: rgba(245,243,241,.5);
-      border-bottom: 1px solid rgba(0,0,0,.08);
+      display: flex; align-items: center; gap: 6px;
+      padding: 11px 14px 10px;
+      border-bottom: 1px solid var(--glass-border);
     }
-    .mac-dot { width:10px; height:10px; border-radius:50%; flex-shrink:0; }
-    .mac-dot.r { background:#FF5F57; }
-    .mac-dot.y { background:#FFBD2E; }
-    .mac-dot.g { background:#28C940; }
+    .mac-dot { width: 12px; height: 12px; border-radius: 50%; flex-shrink: 0; }
+    .mac-dot.r { background: #FF5F57; }
+    .mac-dot.y { background: #FEBC2E; }
+    .mac-dot.g { background: #28C840; }
     .impr-chrome-label {
       margin-left: 6px;
-      font-size: 12px;
-      color: var(--text-light);
-      font-weight: 500;
+      font-size: 12px; font-weight: 500;
+      color: var(--text-soft);
     }
-    .impr-body {
-      padding: 40px;
-    }
+    .impr-body { padding: 32px 36px; }
 
-    /* ── SECTIONS ── */
-    .impr-section { margin-top: 32px; }
+    .impr-section { margin-top: 28px; }
     .impr-section:first-child { margin-top: 0; }
     .impr-label {
-      font-size: 11px;
-      color: var(--accent);
-      font-weight: 600;
-      text-transform: uppercase;
-      letter-spacing: 0.12em;
-      margin-bottom: 12px;
+      font-size: 10px; font-weight: 700; text-transform: uppercase;
+      letter-spacing: .1em; color: var(--accent); margin-bottom: 10px;
     }
     .impr-text {
-      font-size: 16px;
-      color: var(--text);
-      line-height: 1.8;
+      font-size: 14px; color: var(--text); line-height: 1.7;
       white-space: pre-line;
     }
-    .impr-text a {
-      color: var(--accent);
-      text-decoration: none;
-    }
+    .impr-text a { color: var(--accent); text-decoration: none; }
     .impr-text a:hover { text-decoration: underline; }
-    .impr-note {
-      font-size: 14px;
-      color: var(--text-mid);
-      line-height: 1.7;
-    }
     .impr-disclaimer {
-      margin-top: 32px;
-      padding-top: 16px;
-      border-top: 1px solid #E8E4E0;
-      font-size: 12px;
-      color: var(--text-light);
-      line-height: 1.7;
+      margin-top: 28px; padding-top: 16px;
+      border-top: 1px solid var(--glass-border);
+      font-size: 11.5px; color: var(--text-soft); line-height: 1.6;
     }
 
     /* ── FOOTER ── */
     .site-foot {
       text-align: center;
-      font-size: 13px;
-      color: var(--text-light);
-      padding: 24px 40px;
-      border-top: 1px solid var(--border);
-      position: relative;
-      z-index: 1;
+      font-size: 11px;
+      color: var(--text-soft);
+      padding: 24px 40px 40px;
     }
-    .impr-link { color: inherit; opacity: 0.6; text-decoration: none; transition: opacity .2s; }
-    .impr-link:hover { opacity: 1; text-decoration: underline; }
+    .impr-link { color: inherit; text-decoration: none; transition: color .15s; }
+    .impr-link:hover { color: var(--text); text-decoration: underline; }
 
     @media (max-width: 768px) {
-      .impr-page { padding: 100px 24px 60px; }
+      .impr-page { padding: 76px 20px 60px; }
       .impr-body { padding: 24px; }
-      .site-foot { padding: 24px 20px; }
     }
-    @media (hover: none) { body { cursor: auto; } .cursor, .cursor-ring { display: none; } }
   </style>
 </head>
 <body>
 
-  <div class="cursor" id="cursor"></div>
-  <div class="cursor-ring" id="cursorRing"></div>
+  <div id="vcur-dot"></div>
 
-  <nav>
-    <a class="nav-breadcrumb" href="index.html">
-      <span class="folder-icon">
-        <div class="folder-tab"></div>
-        <div class="folder-body"></div>
-      </span>
-      <span class="sep">›</span>
-      <span class="crumb">Vivien Evers</span>
-      <span class="sep">›</span>
-      <span class="crumb-active">Imprint</span>
+  <nav id="menubar">
+    <div class="mb-left">
+      <a class="mb-logo" href="index.html">Vivien <em>Evers</em></a>
+      <span class="mb-crumb-sep">›</span>
+      <span class="mb-crumb-active">Imprint</span>
+    </div>
+    <a href="https://linkedin.com/in/vivien-evers" target="_blank" class="mb-linkedin" title="LinkedIn" aria-label="LinkedIn">
+      <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+        <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/>
+      </svg>
     </a>
-    <div class="nav-pill-divider"></div>
-    <ul class="nav-links">
-      <li><a href="index.html">Work</a></li>
-      <li><a href="index.html">About</a></li>
-      <li><a href="index.html">Contact</a></li>
-    </ul>
-    <button class="nav-hamburger" id="nav-hamburger" aria-label="Open menu">
-      <span></span><span></span><span></span>
-    </button>
   </nav>
-
-  <div class="nav-overlay" id="nav-overlay">
-    <div class="nav-overlay-header">
-      <a class="nav-breadcrumb" href="index.html" style="background:var(--tag-bg);">
-        <span class="folder-icon"><div class="folder-tab"></div><div class="folder-body"></div></span>
-        <span class="sep">›</span><span class="crumb">Vivien Evers</span>
-      </a>
-      <button class="nav-overlay-close" id="nav-overlay-close">✕</button>
-    </div>
-    <div class="nav-overlay-list">
-      <div class="nav-overlay-item">
-        <a class="nav-overlay-label" href="index.html" style="display:flex;align-items:center;gap:10px;">
-          <span style="display:inline-flex;flex-direction:column;gap:1px;">
-            <span style="width:12px;height:4px;background:#90BEDD;border-radius:2px 2px 0 0;display:block;"></span>
-            <span style="width:18px;height:13px;background:#689DCF;border-radius:0 2px 2px 2px;display:block;"></span>
-          </span>
-          Home
-        </a>
-      </div>
-      <div class="nav-overlay-item"><a class="nav-overlay-label" href="index.html">Work</a></div>
-      <div class="nav-overlay-item"><a class="nav-overlay-label" href="index.html">About</a></div>
-      <div class="nav-overlay-item"><a class="nav-overlay-label" href="index.html">Contact</a></div>
-    </div>
-  </div>
 
   <main class="impr-page">
     <h1 class="impr-heading">Imprint</h1>
@@ -298,11 +260,6 @@ Germany</p>
 Web: <a href="https://vivienevers.de" target="_blank">vivienevers.de</a></p>
         </div>
 
-        <div class="impr-section">
-          <div class="impr-label">Notice</div>
-          <p class="impr-note">This website is solely intended for personal presentation in the context of job applications and has no commercial purpose.</p>
-        </div>
-
         <div class="impr-disclaimer">
           Despite careful editorial review, we assume no liability for the content of external links. The operators of linked pages are solely responsible for their content.
         </div>
@@ -316,39 +273,23 @@ Web: <a href="https://vivienevers.de" target="_blank">vivienevers.de</a></p>
   </footer>
 
   <script>
-    /* ── CURSOR ── */
-    const cur = document.getElementById('cursor');
-    const ring = document.getElementById('cursorRing');
-    let mx=0,my=0,rx=0,ry=0;
-    let cursorTimeout;
-    document.addEventListener('mousemove', e => { mx=e.clientX; my=e.clientY; cur.style.left=mx+'px'; cur.style.top=my+'px'; cur.style.opacity='1'; ring.style.opacity='0.5'; clearTimeout(cursorTimeout); cursorTimeout=setTimeout(()=>{cur.style.opacity='0';ring.style.opacity='0';},3000); });
-    document.addEventListener('mouseleave', () => { cur.style.opacity='0'; ring.style.opacity='0'; });
-    (function loop(){ rx+=(mx-rx)*.12; ry+=(my-ry)*.12; ring.style.left=rx+'px'; ring.style.top=ry+'px'; requestAnimationFrame(loop); })();
-    document.querySelectorAll('a,button').forEach(el => {
-      el.addEventListener('mouseenter', () => { cur.style.width=cur.style.height='20px'; ring.style.width=ring.style.height='56px'; ring.style.opacity='.3'; });
-      el.addEventListener('mouseleave', () => { cur.style.width=cur.style.height='10px'; ring.style.width=ring.style.height='36px'; ring.style.opacity='.5'; });
-    });
-
-    /* ── NAV SCROLL HIDE / SHOW ─────────────────────────── */
+    /* ── CUSTOM CURSOR — identical behaviour to index.html's dot. ── */
     (function() {
-      const navEl = document.querySelector('nav');
-      let lastY = window.scrollY;
-      window.addEventListener('scroll', () => {
-        const y = window.scrollY;
-        if (y > lastY && y > 80) navEl.classList.add('nav-hidden');
-        else navEl.classList.remove('nav-hidden');
-        lastY = y;
-      }, { passive: true });
-    })();
+      const dot = document.getElementById('vcur-dot');
+      if (!dot) return;
+      if (window.matchMedia('(hover: none)').matches) return;
 
-    /* ── HAMBURGER NAV ── */
-    const hamburger = document.getElementById('nav-hamburger');
-    const overlay   = document.getElementById('nav-overlay');
-    const overlayClose = document.getElementById('nav-overlay-close');
-    function openOverlay()  { overlay.classList.add('open'); document.body.style.overflow='hidden'; }
-    function closeOverlay() { overlay.classList.remove('open'); document.body.style.overflow=''; }
-    if (hamburger) hamburger.addEventListener('click', openOverlay);
-    if (overlayClose) overlayClose.addEventListener('click', closeOverlay);
+      const HOVER_SEL = 'a, button, [onclick]';
+      let shown = false;
+
+      document.addEventListener('mousemove', e => {
+        dot.style.left = e.clientX + 'px'; dot.style.top = e.clientY + 'px';
+        if (!shown) { shown = true; dot.style.opacity = '1'; }
+      });
+      document.addEventListener('mouseleave', () => { shown = false; dot.style.opacity = '0'; });
+      document.addEventListener('mouseover', e => { if (e.target.closest(HOVER_SEL)) dot.classList.add('hover'); });
+      document.addEventListener('mouseout', e => { if (e.target.closest(HOVER_SEL)) dot.classList.remove('hover'); });
+    })();
   </script>
 </body>
 </html>
