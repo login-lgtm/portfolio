@@ -98,6 +98,17 @@
       transform: translate(-50%, -50%) scale(1.6);
       box-shadow: 0 0 8px 3px rgba(255,201,90,.85), 0 0 22px 8px rgba(255,201,90,.45);
     }
+    /* Warm-on-warm: against a bright midday sky the gold dot loses most
+       of its contrast — the glow is the same hue as the background it's
+       supposed to pop against. A thin dark ring fixes that without
+       touching the dot's own colour, so night/evening skies (where it
+       already reads fine) stay exactly as they were. */
+    body.sky-light #vcur-dot {
+      box-shadow: 0 0 0 1.5px rgba(20,20,15,.4), 0 0 5px 1.5px rgba(255,201,90,.65), 0 0 14px 4px rgba(255,201,90,.3);
+    }
+    body.sky-light #vcur-dot.hover {
+      box-shadow: 0 0 0 1.5px rgba(20,20,15,.4), 0 0 8px 3px rgba(255,201,90,.85), 0 0 22px 8px rgba(255,201,90,.45);
+    }
     #vcur-glass { display: none; }
 
     /* ═══════════════════════════════════════════════════════════════
