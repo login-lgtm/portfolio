@@ -1621,12 +1621,10 @@
       #homescreen .m-topbar-star {
         filter: drop-shadow(0 1px 3px rgba(0,0,0,.4));
       }
-      /* "Welcome to my Portfolio." stays white in every sky phase too —
-         instead of flipping colour, it gets a soft dark glow behind it
-         so it still pops against a bright midday blue. */
+      /* "Welcome to my Portfolio." stays white in every sky phase —
+         no shadow/glow, just flat white text. */
       #homescreen .m-welcome-eyebrow {
         color: #fff;
-        text-shadow: 0 3px 14px rgba(0,0,0,.4), 0 18px 80px rgba(0,0,0,.4);
       }
       /* Pale daytime sky: flip to dark-grey text with a light shadow
          instead of light text with a dark one — white simply disappears
@@ -1711,7 +1709,6 @@
       .m-welcome-title {
         font-family:'Milky Cream',cursive; font-size:44px; line-height:1;
         color:#fff;
-        filter: drop-shadow(0 6px 16px rgba(0,0,0,.35)) drop-shadow(0 18px 54px rgba(0,0,0,.4));
       }
 
       /* Folders — real desktop icons, just two, side by side — pushed
