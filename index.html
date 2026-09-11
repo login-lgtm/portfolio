@@ -995,21 +995,12 @@
 
     /* "Got a project…" CTA, staged as a received iMessage (white,
        tailed bottom-left, "them" side — it's a message TO the visitor)
-       with a tiny iOS-style keyboard sliding up underneath as if about
-       to answer it. The whole block is one tap target into Contact. */
+       — pops in, whole bubble is the tap target into Contact. */
     @keyframes msgReceiveIn {
       0%   { opacity:0; transform:scale(.6) translateY(10px); }
       55%  { opacity:1; transform:scale(1.04) translateY(0); }
       80%  { transform:scale(.98); }
       100% { transform:scale(1); }
-    }
-    @keyframes mkSlideUp {
-      0%   { opacity:0; transform:translateY(100%); }
-      100% { opacity:1; transform:translateY(0); }
-    }
-    @keyframes mkKeyPress {
-      0%, 100% { transform:translateY(0); background:#fff; }
-      50%      { transform:translateY(1px); background:#E4E7EC; }
     }
     .about-cta-wrap { cursor:pointer; margin-bottom:16px; }
     .about-cta-row { display:flex; justify-content:flex-start; }
@@ -1023,24 +1014,6 @@
       animation: msgReceiveIn .5s cubic-bezier(.34,1.56,.64,1) both;
     }
     .about-cta-wrap:active .about-cta-bubble { transform:scale(.96); }
-    /* Decorative mini keyboard — no real input, just staged UI implying
-       "type a reply here" before handing off to the real Contact sheet. */
-    .mini-keyboard {
-      margin-top:8px; padding:8px 6px calc(8px + env(safe-area-inset-bottom));
-      background:linear-gradient(180deg,#C8CCD3,#B7BBC2);
-      border-radius:12px;
-      display:flex; flex-direction:column; gap:6px;
-      animation: mkSlideUp .45s cubic-bezier(.34,1.1,.64,1) .25s both;
-    }
-    .mk-row { display:flex; gap:5px; }
-    .mk-row span {
-      flex:1; height:26px; background:#fff; border-radius:5px;
-      box-shadow:0 1px 0 rgba(0,0,0,.15);
-    }
-    .mk-row .mk-wide  { flex:1.6; }
-    .mk-row .mk-space { flex:5; }
-    .mk-row .mk-return{ flex:1.8; background:var(--accent); }
-    .mk-row span.mk-typing { animation: mkKeyPress 1.6s ease-in-out .9s infinite; }
 
     /* ── DOWNLOADS WINDOW ── */
     #win-downloads { top:80px; left:320px; width:480px; height:380px; }
@@ -4176,12 +4149,6 @@ const MOB_CONTENT = {
     <div class="about-cta-wrap" onclick="closeMobSheet();mobOpenSheet('contact')" role="button" aria-label="Open Contact">
       <div class="about-cta-row">
         <div class="about-cta-bubble">Got a project — or just curious? Let's talk.</div>
-      </div>
-      <div class="mini-keyboard" aria-hidden="true">
-        <div class="mk-row"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></div>
-        <div class="mk-row"><span class="mk-wide"></span><span></span><span class="mk-typing"></span><span></span><span></span><span></span><span></span><span></span><span class="mk-wide"></span></div>
-        <div class="mk-row"><span class="mk-wide"></span><span></span><span></span><span></span><span></span><span></span><span class="mk-wide"></span></div>
-        <div class="mk-row"><span class="mk-wide"></span><span class="mk-space"></span><span class="mk-return"></span></div>
       </div>
     </div>`},
   contact:{title:'Contact',html:`
