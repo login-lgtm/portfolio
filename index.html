@@ -993,6 +993,35 @@
     .imsg-link-btn { display:flex; align-items:center; gap:8px; padding:10px 14px; background:var(--glass); border:1px solid var(--glass-border); border-radius:10px; font-size:12px; color:var(--text); text-decoration:none; cursor:pointer; transition:all .15s; font-family:'Commissioner',sans-serif; }
     .imsg-link-btn:hover { background:var(--glass-strong); }
 
+    /* "Got a project…" CTA, sent as an actual iMessage-style bubble
+       (blue, tailed bottom-right, "me" alignment) instead of a plain
+       paragraph + separate button — it pops in like a just-sent
+       message, then settles with a slow breathing glow so it still
+       reads as tappable after the entrance finishes. */
+    @keyframes msgSendIn {
+      0%   { opacity:0; transform:scale(.6) translateY(10px); }
+      55%  { opacity:1; transform:scale(1.04) translateY(0); }
+      80%  { transform:scale(.98); }
+      100% { transform:scale(1); }
+    }
+    @keyframes msgGlow {
+      0%, 100% { box-shadow:0 4px 14px rgba(46,125,209,.35); }
+      50%      { box-shadow:0 4px 20px rgba(46,125,209,.6); }
+    }
+    .about-cta-row { display:flex; justify-content:flex-end; margin-bottom:16px; }
+    .about-cta-bubble {
+      display:inline-block; max-width:78%;
+      background:var(--accent); color:#fff;
+      font-family:'Commissioner',sans-serif; font-size:13px; font-weight:600;
+      line-height:1.5; text-align:right;
+      padding:10px 16px; border-radius:16px 16px 4px 16px;
+      border:none; cursor:pointer;
+      animation: msgSendIn .5s cubic-bezier(.34,1.56,.64,1) both,
+                 msgGlow 2.4s ease-in-out .6s infinite;
+      transition: transform .15s ease;
+    }
+    .about-cta-bubble:active { transform:scale(.95); }
+
     /* ── DOWNLOADS WINDOW ── */
     #win-downloads { top:80px; left:320px; width:480px; height:380px; }
     .dl-grid { display:grid; grid-template-columns:1fr 1fr; gap:14px; padding:20px; }
@@ -4124,8 +4153,9 @@ const MOB_CONTENT = {
     <p style="font-size:13px;color:var(--text-mid);line-height:1.7;margin-bottom:12px">Trained as a media designer — alongside that, founded house music event brands in 2022 and have been co-running them since 2024. Everything the curriculum didn't cover, I taught myself.</p>
     <p style="font-size:13px;color:var(--text-mid);line-height:1.7;margin-bottom:12px">Started freelancing during my apprenticeship in 2025. In 2026, I built a handful of web projects — this portfolio and my workflow dashboard.</p>
     <p style="font-size:13px;color:var(--text-mid);line-height:1.7;margin-bottom:12px">I'm not chasing one narrow title. I'm looking for a place where I can keep building and crafting — <strong style="color:var(--text)">digital, print, whatever the team needs</strong> — and bring the energy, curiosity, and range that got me here.</p>
-    <p style="font-size:13px;color:var(--text);font-weight:600;line-height:1.7;margin-bottom:16px">Got a project — or just curious? Let's talk.</p>
-    <button onclick="closeMobSheet();mobOpenSheet('contact')" style="display:inline-block;background:var(--accent);color:#fff;padding:10px 18px;border-radius:8px;font-size:13px;font-weight:600;border:none;cursor:pointer;font-family:'Commissioner',sans-serif">Let's talk →</button>`},
+    <div class="about-cta-row">
+      <button class="about-cta-bubble" onclick="closeMobSheet();mobOpenSheet('contact')">Got a project — or just curious? Let's talk.</button>
+    </div>`},
   contact:{title:'Contact',html:`
     <div class="coffee-photo-wrap" style="margin-bottom:20px">
       <img src="images/about/coffeechat-cta-square.png" alt="Vivien — let's have a coffee chat" class="coffee-photo">
