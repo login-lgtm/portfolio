@@ -1,0 +1,11 @@
+{
+  "routes": [
+    { "src": "/private/(.*)", "status": 404 },
+    { "handle": "filesystem" }
+  ],
+  "functions": {
+    "api/download.js": {
+      "includeFiles": "private/downloads/**"
+    }
+  }
+}
