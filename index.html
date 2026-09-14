@@ -2166,12 +2166,6 @@
     }
     .lk-enter:hover, .lk-enter:focus-visible { color: #1a1a1a; }
     .lk-enter:focus-visible { outline: none; text-decoration: underline; }
-    .lk-ready {
-      margin-top: 2px;
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 10.5px; font-weight: 500;
-      color: rgba(26,26,26,.4);
-    }
 
     /* Menubar lock button */
     .mb-lock {
@@ -2356,8 +2350,7 @@
     <div class="lk-name">Vivien <em>Evers</em></div>
     <div class="lk-role">Digital Designer</div>
     <div class="lk-user-gap"></div>
-    <button class="lk-enter" id="lk-enter" type="button">Slide to unlock</button>
-    <div class="lk-ready">Desktop is ready</div>
+    <button class="lk-enter" id="lk-enter" type="button">Click to continue</button>
   </div>
 </div>
 
@@ -3102,7 +3095,7 @@
     <div class="lock-spacer lock-spacer-bottom"></div>
 
     <div class="lock-slider" id="lock-slider">
-      <span class="lock-slider-label">slide to unlock</span>
+      <span class="lock-slider-label">Slide to unlock</span>
       <div class="lock-knob" id="lock-knob">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
           <g transform="translate(0,-1.4)">
@@ -3111,7 +3104,7 @@
         </svg>
       </div>
     </div>
-    <div class="lock-hint">preparing everything for you</div>
+    <div class="lock-hint">Desktop is ready</div>
   </div>
 
   <!-- HOME SCREEN — a narrow desktop, not an iOS grid: the same hero used
