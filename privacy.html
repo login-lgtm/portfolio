@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
-  <title>Vivien Evers — Imprint</title>
+  <title>Vivien Evers — Privacy Policy</title>
   <link rel="icon" type="image/png" href="images/icons/favicon.png">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@100..800&display=swap" rel="stylesheet">
@@ -17,8 +17,7 @@
       font-style: normal;
       font-display: swap;
     }
-    /* Same dark-theme token set as index.html — this page borrows the
-       site's colour system directly rather than keeping its own. */
+    /* Same dark-theme token set as index.html/impressum.html. */
     :root {
       --accent:        #2E7DD1;
       --accent2:       #6BB3FF;
@@ -50,9 +49,6 @@
       #vcur-dot { display: none !important; }
     }
 
-    /* ── WALLPAPER — same flat gradient + 40px grid as the lock screen
-       on the main site, so this page reads as the same desktop rather
-       than a different product. ── */
     body::before {
       content: ''; position: fixed; inset: 0; z-index: -1;
       background-color: var(--g-a);
@@ -64,8 +60,6 @@
       background-size: 40px 40px, 40px 40px, auto, auto;
     }
 
-    /* ── CUSTOM CURSOR — the same warm dot used across the whole site,
-       just ported over rather than reinvented for one page. ── */
     #vcur-dot {
       width: 9px; height: 9px;
       background: radial-gradient(circle, #FFF3D6 0%, #FFD976 65%, #FFC24B 100%);
@@ -83,8 +77,6 @@
       box-shadow: 0 0 8px 3px rgba(255,201,90,.85), 0 0 22px 8px rgba(255,201,90,.45);
     }
 
-    /* ── MENUBAR — the same top strip as the desktop site, not a
-       floating pill in a different style. ── */
     #menubar {
       position: fixed;
       top: 0; left: 0; right: 0;
@@ -121,7 +113,6 @@
     .mb-linkedin:hover { color: var(--text); }
     .mb-linkedin svg { width: 13px; height: 13px; fill: currentColor; }
 
-    /* ── PAGE ── */
     .impr-page {
       min-height: 100vh;
       padding: 120px 80px 80px;
@@ -145,13 +136,9 @@
       text-align: center;
     }
 
-    /* ── WINDOW — the exact same fixed, lightly-transparent white glass
-       as every popup on the main site (windows, password prompt,
-       mobile sheets, guided tour), so this reads as the same product
-       rather than a leftover from an older design. ── */
     .impr-window {
       width: 100%;
-      max-width: 600px;
+      max-width: 640px;
       --glass-strong: rgba(255,255,255,0.9);
       --glass: rgba(60,60,70,0.06);
       --glass-border: rgba(60,60,70,0.12);
@@ -182,25 +169,29 @@
     }
     .impr-body { padding: 32px 36px; }
 
-    .impr-section { margin-top: 28px; }
+    .impr-section { margin-top: 26px; }
     .impr-section:first-child { margin-top: 0; }
     .impr-label {
       font-size: 10px; font-weight: 700; text-transform: uppercase;
-      letter-spacing: .1em; color: var(--accent); margin-bottom: 10px;
+      letter-spacing: .1em; color: var(--accent); margin-bottom: 8px;
+    }
+    .impr-title {
+      font-size: 13.5px; font-weight: 700; color: var(--text);
+      margin-bottom: 6px;
     }
     .impr-text {
-      font-size: 14px; color: var(--text); line-height: 1.7;
+      font-size: 13.5px; color: var(--text); line-height: 1.7;
       white-space: pre-line;
     }
+    .impr-text + .impr-title { margin-top: 14px; }
     .impr-text a { color: var(--accent); text-decoration: none; }
     .impr-text a:hover { text-decoration: underline; }
     .impr-disclaimer {
-      margin-top: 28px; padding-top: 16px;
+      margin-top: 26px; padding-top: 16px;
       border-top: 1px solid var(--glass-border);
       font-size: 11.5px; color: var(--text-soft); line-height: 1.6;
     }
 
-    /* ── FOOTER ── */
     .site-foot {
       text-align: center;
       font-size: 11px;
@@ -224,7 +215,7 @@
     <div class="mb-left">
       <a class="mb-logo" href="index.html">Vivien <em>Evers</em></a>
       <span class="mb-crumb-sep">›</span>
-      <span class="mb-crumb-active">Imprint</span>
+      <span class="mb-crumb-active">Privacy</span>
     </div>
     <a href="https://linkedin.com/in/vivien-evers" target="_blank" class="mb-linkedin" title="LinkedIn" aria-label="LinkedIn">
       <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
@@ -234,39 +225,63 @@
   </nav>
 
   <main class="impr-page">
-    <h1 class="impr-heading">Imprint</h1>
-    <p class="impr-subtitle">Legal notice — as required by § 5 DDG</p>
+    <h1 class="impr-heading">Privacy</h1>
+    <p class="impr-subtitle">How this site handles your data — per Art. 13 GDPR</p>
 
     <div class="impr-window">
       <div class="impr-chrome">
         <span class="mac-dot r"></span>
         <span class="mac-dot y"></span>
         <span class="mac-dot g"></span>
-        <span class="impr-chrome-label">impressum.txt</span>
+        <span class="impr-chrome-label">privacy.txt</span>
       </div>
       <div class="impr-body">
 
         <div class="impr-section">
-          <div class="impr-label">Responsible Party</div>
+          <div class="impr-label">Controller</div>
           <p class="impr-text">Vivien Victoria Evers
 Diagonalstr. 50
-20537 Hamburg
-Germany</p>
+20537 Hamburg, Germany
+Email: <a href="mailto:hi@vivienevers.de">hi@vivienevers.de</a></p>
         </div>
 
         <div class="impr-section">
-          <div class="impr-label">Contact</div>
-          <p class="impr-text">Email: <a href="mailto:hi@vivienevers.de">hi@vivienevers.de</a>
-Web: <a href="https://vivienevers.de" target="_blank">vivienevers.de</a></p>
+          <div class="impr-label">The short version</div>
+          <p class="impr-text">This site doesn't run analytics or advertising trackers. The only things that touch your data are: fonts loaded from Google, a login cookie for the password-protected sections, and the standard server logs every website generates.</p>
         </div>
 
         <div class="impr-section">
-          <div class="impr-label">Consumer Dispute Resolution</div>
-          <p class="impr-text">I am not willing and not obligated to participate in dispute resolution proceedings before a consumer arbitration board (§ 36 VSBG).</p>
+          <div class="impr-label">Hosting &amp; server logs</div>
+          <p class="impr-text">This site is hosted on Vercel Inc. (USA), which — like virtually every host — automatically records short-lived technical logs for each request (IP address, browser/device type, referring page, date and time), used only to keep the site running and secure. Legal basis: Art. 6(1)(f) GDPR (legitimate interest in a functioning, secure website). See Vercel's own privacy policy for details on their infrastructure.</p>
+        </div>
+
+        <div class="impr-section">
+          <div class="impr-label">Google Fonts</div>
+          <p class="impr-text">This site loads the typefaces JetBrains Mono from Google Fonts (fonts.googleapis.com / fonts.gstatic.com). Loading a font this way sends your IP address to Google when the page loads. Google's data practices are outside my control — see Google's privacy policy at policies.google.com/privacy. Legal basis: Art. 6(1)(f) GDPR (legitimate interest in fast, reliable typography).</p>
+        </div>
+
+        <div class="impr-section">
+          <div class="impr-label">Login cookie</div>
+          <p class="impr-text">The password-protected Case Studies and Downloads areas set one cookie (vivien_auth) after a correct password entry, so you don't have to re-enter it on every visit. It's HttpOnly (invisible to page scripts), stores no personal information — just a signed, expiring token — and lasts 30 days or until you clear it. Legal basis: Art. 6(1)(b) GDPR (necessary to provide the protected content you asked to access).</p>
+        </div>
+
+        <div class="impr-section">
+          <div class="impr-label">Getting in touch</div>
+          <p class="impr-text">Emailing me (or the LinkedIn link) sends your message through that provider directly — nothing is stored on this site's server beyond what your own inbox and mine already handle. See the respective provider's own privacy policy for how they handle that message in transit.</p>
+        </div>
+
+        <div class="impr-section">
+          <div class="impr-label">No analytics, no ads, no tracking</div>
+          <p class="impr-text">No Google Analytics, no Meta/Facebook Pixel, no advertising networks, no third-party tracking cookies. This site doesn't build a profile of you.</p>
+        </div>
+
+        <div class="impr-section">
+          <div class="impr-label">Your rights</div>
+          <p class="impr-text">Under the GDPR you have the right to access, correct, or delete data concerning you, restrict or object to its processing, and data portability. Since this site keeps essentially no personal data of its own beyond the two points above, most of these will have nothing to act on — but if you have a question, email me. You can also lodge a complaint with your local data protection authority at any time.</p>
         </div>
 
         <div class="impr-disclaimer">
-          Despite careful editorial review, we assume no liability for the content of external links. The operators of linked pages are solely responsible for their content.
+          This policy may change as the site changes. Last updated September 2026.
         </div>
 
       </div>
@@ -278,7 +293,6 @@ Web: <a href="https://vivienevers.de" target="_blank">vivienevers.de</a></p>
   </footer>
 
   <script>
-    /* ── CUSTOM CURSOR — identical behaviour to index.html's dot. ── */
     (function() {
       const dot = document.getElementById('vcur-dot');
       if (!dot) return;
