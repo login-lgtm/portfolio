@@ -1664,11 +1664,6 @@
       #homescreen .m-topbar-star {
         filter: drop-shadow(0 1px 3px rgba(0,0,0,.4));
       }
-      /* "Welcome to my Portfolio." stays white in every sky phase —
-         no shadow/glow, just flat white text. */
-      #homescreen .m-welcome-eyebrow {
-        color: #fff;
-      }
       /* Pale daytime sky: flip to dark-grey text with a light shadow
          instead of light text with a dark one — white simply disappears
          into a bright midday blue no matter how much shadow it gets. */
@@ -1709,8 +1704,8 @@
         font-size:14px; font-weight:600; color:var(--text-mid);
         font-variant-numeric:tabular-nums;
       }
-      /* The hero now carries the "Welcome, my name is / Vivien Evers"
-         headline itself (previously a separate "Welcome to my
+      /* The hero now carries the "Hi, I'm Vivien" headline itself
+         (previously a separate "Welcome to my
          Portfolio." block floated mid-screen) — auto margins on both
          sides of this flex-column child centre it in whatever space is
          left between the navbar and the folders, the same trick that
@@ -1737,12 +1732,8 @@
       }
 
       /* Same sticker-headline treatment as the desktop wallpaper's
-         "Welcome to my Portfolio." — reused here for "Hi, I'm /
-         Vivien Evers", flat white with no shadow/glow by design. */
-      .m-welcome-eyebrow {
-        font-family:'JetBrains Mono',monospace; font-size:14px; font-weight:500;
-        color:#fff; margin-bottom:3px;
-      }
+         "Welcome to my Portfolio." — reused here for "Hi, I'm Vivien",
+         flat white with no shadow/glow by design. */
       .m-welcome-title {
         font-family:'Milky Cream',cursive; font-size:44px; line-height:1;
         color:#fff;
@@ -3128,8 +3119,7 @@
       </a>
     </div>
     <div class="m-hero">
-      <div class="m-welcome-eyebrow">Welcome, my name is</div>
-      <div class="m-welcome-title">Vivien Evers</div>
+      <div class="m-welcome-title">Hi, I'm Vivien</div>
       <p class="m-hero-intro">From brand and socials to digital design — every chapter gets crafted with love. Early in this one, hungry for what's next.</p>
     </div>
 
