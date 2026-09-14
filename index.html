@@ -2166,6 +2166,12 @@
     }
     .lk-enter:hover, .lk-enter:focus-visible { color: #1a1a1a; }
     .lk-enter:focus-visible { outline: none; text-decoration: underline; }
+    .lk-ready {
+      margin-top: 2px;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 10.5px; font-weight: 500;
+      color: rgba(26,26,26,.4);
+    }
 
     /* Menubar lock button */
     .mb-lock {
@@ -2350,7 +2356,8 @@
     <div class="lk-name">Vivien <em>Evers</em></div>
     <div class="lk-role">Digital Designer</div>
     <div class="lk-user-gap"></div>
-    <button class="lk-enter" id="lk-enter" type="button">Click to continue</button>
+    <button class="lk-enter" id="lk-enter" type="button">Slide to unlock</button>
+    <div class="lk-ready">Desktop is ready</div>
   </div>
 </div>
 
@@ -3214,7 +3221,7 @@
   const msgEl = document.getElementById('boot-msg-text');
   if (!boot || !msgEl) return;
 
-  const MESSAGE = "Starting up Vivien's Desktop…";
+  const MESSAGE = "Preparing everything for you...";
   const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
   if (reduceMotion) {
