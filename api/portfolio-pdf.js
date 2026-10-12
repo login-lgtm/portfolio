@@ -55,7 +55,7 @@ module.exports = async (req, res) => {
     res.setHeader('Cache-Control', 'no-store, max-age=0');
     res.status(200).send(Buffer.from(pdf));
   } catch (e) {
-    console.error('portfolio-pdf failed', e);
+    console.error('portfolio-pdf failed', e, 'env:', process.env.AWS_EXECUTION_ENV, process.env.AWS_LAMBDA_JS_RUNTIME, process.env.LD_LIBRARY_PATH, process.version);
     res.status(500).json({ error: 'pdf failed' });
   } finally {
     if (browser) await browser.close().catch(() => {});
