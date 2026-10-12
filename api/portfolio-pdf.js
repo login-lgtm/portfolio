@@ -2,7 +2,6 @@
 // Because it prints the live viewer (which reads api/_data/cases.js), the PDFs
 // always match the website's case studies. The CDN caches the result; a new
 // deployment (= content change) produces a fresh one.
-const puppeteer = require('puppeteer-core');
 
 const LOCAL_CHROME = [
   process.env.CHROME_PATH,
@@ -15,8 +14,10 @@ const LOCAL_CHROME = [
 const ALLOWED_HOST = /^(localhost(:\d+)?|127\.0\.0\.1(:\d+)?|(www\.)?vivienevers\.de|[a-z0-9-]+\.vercel\.app)$/i;
 
 async function launch() {
+  // both packages are ES modules: load them with import() (require() fails on Vercel's Node)
+  const puppeteer = (await import('puppeteer-core')).default;
   if (process.env.VERCEL) {
-    const mod = require('@sparticuz/chromium');
+    const mod = await import('@sparticuz/chromium');
     const chromium = mod.default || mod;
     return puppeteer.launch({
       args: chromium.args, executablePath: await chromium.executablePath(),
