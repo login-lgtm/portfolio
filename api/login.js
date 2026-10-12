@@ -37,7 +37,7 @@ module.exports = (req, res) => {
   }
 
   if (typeof password === 'string' && password === process.env.SITE_PASSWORD) {
-    setAuthCookie(res);
+    setAuthCookie(res, req);
     res.status(200).json({ ok: true });
   } else {
     res.status(401).json({ ok: false, error: 'wrong password' });

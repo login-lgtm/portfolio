@@ -52,11 +52,18 @@ function isAuthenticated(req) {
   return verifyToken(cookies[COOKIE_NAME]);
 }
 
-function setAuthCookie(res) {
+// Browsers like Safari drop "Secure" cookies on plain-http localhost, so
+// only demand it when the request actually came in over https.
+function secureFlag(req) {
+  const proto = req && req.headers && req.headers['x-forwarded-proto'];
+  return proto && String(proto).split(',')[0].trim() !== 'https' ? '' : ' Secure;';
+}
+
+function setAuthCookie(res, req) {
   const token = makeToken();
   res.setHeader(
     'Set-Cookie',
-    `${COOKIE_NAME}=${token}; HttpOnly; Secure; SameSite=Lax; Path=/; Max-Age=${MAX_AGE_SECONDS}`
+    `${COOKIE_NAME}=${token}; HttpOnly;${secureFlag(req)} SameSite=Lax; Path=/; Max-Age=${MAX_AGE_SECONDS}`
   );
 }
 

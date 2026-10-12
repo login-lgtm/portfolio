@@ -1,0 +1,11 @@
+{
+  "name": "vivien-evers-portfolio",
+  "private": true,
+  "version": "1.0.0",
+  "description": "vivienevers.de — portfolio desktop + PDF export",
+  "engines": { "node": ">=20" },
+  "dependencies": {
+    "@sparticuz/chromium": "^131.0.1",
+    "puppeteer-core": "^23.11.1"
+  }
+}

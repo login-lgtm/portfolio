@@ -5,8 +5,11 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
   <title>Vivien´s Desktop</title>
   <link rel="icon" type="image/png" href="images/icons/favicon.png">
+  <!-- Seen the lock screen this session already? Then a refresh goes
+       straight to the desktop: no boot screen, no lock screen. -->
+  <script>try { if (sessionStorage.getItem('ve-unlocked')) document.documentElement.classList.add('ve-return'); } catch (e) {}</script>
   <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@100..800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@100..800&family=Anton&family=Nunito+Sans:ital,opsz,wght@0,6..12,200..1000;1,6..12,200..1000&display=swap" rel="stylesheet">
   <style>
     /* Self-hosted — licensed commercial copy, not a Google Font. */
     @font-face {
@@ -92,22 +95,28 @@
       opacity: 0;
       transform: translate(-50%, -50%);
       box-shadow: 0 0 5px 1.5px rgba(255,201,90,.65), 0 0 14px 4px rgba(255,201,90,.3);
-      transition: opacity .2s ease, transform .2s cubic-bezier(.34,1.4,.64,1), box-shadow .2s ease;
+      transition: opacity .2s ease, transform .2s cubic-bezier(.34,1.4,.64,1), box-shadow .2s ease, background .25s ease;
     }
     #vcur-dot.hover {
       transform: translate(-50%, -50%) scale(1.6);
       box-shadow: 0 0 8px 3px rgba(255,201,90,.85), 0 0 22px 8px rgba(255,201,90,.45);
     }
-    /* Warm-on-warm: against a bright midday sky the gold dot loses most
-       of its contrast — the glow is the same hue as the background it's
-       supposed to pop against. A thin dark ring fixes that without
-       touching the dot's own colour, so night/evening skies (where it
-       already reads fine) stay exactly as they were. */
+    /* Warm-on-warm: against a bright midday sky — or any of the white
+       glass windows/modals, which stay light regardless of time of day —
+       the gold dot loses most of its contrast, being roughly the same
+       luma as what it needs to pop against. Rather than just outlining
+       it, the dot itself swaps to a cool graphite tone. ".on-light" is
+       set by JS while hovering a light surface (windows, modals, the
+       lock screen); "body.sky-light" covers the open desktop once the
+       live sky itself turns pale midday blue — either one, same swap. */
+    #vcur-dot.on-light,
     body.sky-light #vcur-dot {
-      box-shadow: 0 0 0 1.5px rgba(20,20,15,.4), 0 0 5px 1.5px rgba(255,201,90,.65), 0 0 14px 4px rgba(255,201,90,.3);
+      background: radial-gradient(circle, #6B6B76 0%, #3E3E48 65%, #26262E 100%);
+      box-shadow: 0 0 5px 1.5px rgba(0,0,0,.4), 0 0 14px 4px rgba(0,0,0,.2);
     }
+    #vcur-dot.on-light.hover,
     body.sky-light #vcur-dot.hover {
-      box-shadow: 0 0 0 1.5px rgba(20,20,15,.4), 0 0 8px 3px rgba(255,201,90,.85), 0 0 22px 8px rgba(255,201,90,.45);
+      box-shadow: 0 0 8px 3px rgba(0,0,0,.5), 0 0 22px 8px rgba(0,0,0,.28);
     }
     #vcur-glass { display: none; }
 
@@ -815,6 +824,54 @@
     }
     .fs-item:hover { background:var(--glass); color:var(--text); }
     .fs-item.active { background:var(--accent); color:#fff; }
+    .fs-item-name { flex:1; min-width:0; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+    /* Current / Past Work hint — shown once a project is actually open
+       (top-right of its case-hero), not in the list. See renderCase(). */
+    .cs-outcome { display:grid; grid-template-columns:repeat(auto-fit,minmax(180px,1fr)); gap:12px; margin-bottom:18px; }
+    .cs-oc { background:var(--glass); border:1px solid var(--glass-border); border-radius:12px; padding:14px 16px; }
+    .cs-oc-tag { font-size:9px; font-weight:700; letter-spacing:.1em; text-transform:uppercase; color:var(--accent); }
+    .cs-oc h4 { font-size:14px; margin:6px 0 4px; color:var(--text); }
+    .cs-oc p { font-size:12.5px; line-height:1.55; color:var(--text-mid); margin:0; }
+    .cs-meaning { margin-top:6px; padding:16px 20px; border-radius:12px; border:1px solid rgba(46,125,209,.3); background:rgba(46,125,209,.08); }
+    .cs-meaning-l { font-size:9px; font-weight:700; letter-spacing:.1em; text-transform:uppercase; color:var(--accent); margin-bottom:6px; }
+    .cs-meaning p { margin:0; font-size:14px; line-height:1.6; color:var(--text); }
+    .case-status {
+      position:absolute; top:38px; right:40px;
+      font-size:9px; font-weight:700; text-transform:uppercase;
+      letter-spacing:0.08em; padding:4px 11px; border-radius:20px;
+      white-space:nowrap; z-index:1;
+    }
+    .case-status-current { background:rgba(46,125,209,.14); color:var(--accent); border:1px solid rgba(46,125,209,.3); }
+    .case-status-past { background:var(--glass); color:var(--text-soft); border:1px solid var(--glass-border); }
+    .case-status-paused { background:rgba(249,141,32,.12); color:#B8560A; border:1px solid rgba(249,141,32,.3); }
+    @media (max-width:900px) {
+      .case-status { top:24px; right:24px; }
+    }
+    /* Filter by topic — narrows the list above by tag, combines with search */
+    .fs-filters {
+      display:flex; flex-wrap:wrap; gap:5px;
+      padding:2px 12px 12px; margin-bottom:6px;
+      border-bottom:1px solid var(--glass-border);
+    }
+    .fs-filter-chip {
+      font-family:'JetBrains Mono',monospace; font-size:9.5px; font-weight:600;
+      color:var(--text-mid); background:var(--glass);
+      border:1px solid var(--glass-border); border-radius:20px;
+      padding:3px 9px; cursor:pointer; transition:all .15s;
+    }
+    .fs-filter-chip:hover { color:var(--text); }
+    .fs-filter-chip.active { background:var(--accent); border-color:var(--accent); color:#fff; }
+    /* Mobile equivalent — chip row above the "Case Studies" list in the
+       Tools/Work bottom sheet. Bigger targets than the desktop sidebar
+       chips since these are tapped, not clicked. */
+    .mwf-bar { display:flex; flex-wrap:wrap; gap:6px; margin-bottom:16px; }
+    .mwf-chip {
+      font-family:'JetBrains Mono',monospace; font-size:11px; font-weight:600;
+      color:var(--text-mid); background:var(--glass);
+      border:1px solid var(--glass-border); border-radius:20px;
+      padding:6px 12px; cursor:pointer;
+    }
+    .mwf-chip.active { background:var(--accent); border-color:var(--accent); color:#fff; }
     /* Project detail */
     .proj-detail { animation:fadeInUp 0.2s ease; }
     @keyframes fadeInUp {
@@ -1025,6 +1082,38 @@
     .dl-card-meta { font-size:10px; color:var(--text-soft); }
     .dl-card-btn { margin-top:auto; font-size:10px; font-weight:600; color:var(--accent); }
 
+    /* ── TRASH WINDOW ── */
+    #win-trash { top:110px; left:360px; width:460px; height:440px; }
+    .trash-toolbar {
+      display:flex; align-items:center; justify-content:space-between; gap:12px;
+      padding:14px 18px; border-bottom:1px solid var(--glass-border); flex-shrink:0;
+    }
+    .trash-count { font-size:11px; color:var(--text-soft); }
+    .trash-empty-btn {
+      font-family:'JetBrains Mono',monospace; font-size:11px; font-weight:600;
+      color:#fff; background:#E24C4C; border:none; border-radius:20px;
+      padding:6px 14px; cursor:pointer; transition:filter .15s;
+      flex-shrink:0;
+    }
+    .trash-empty-btn:hover { filter:brightness(1.08); }
+    .trash-list { flex:1; overflow-y:auto; padding:6px 8px; transition:opacity .3s ease, transform .3s ease; }
+    .trash-list.trash-clearing { opacity:0; transform:scale(.97); pointer-events:none; }
+    .trash-row {
+      display:flex; align-items:flex-start; gap:12px;
+      padding:10px 10px; border-radius:10px; transition:background .15s;
+    }
+    .trash-row:hover { background:var(--glass); }
+    .trash-row-icon { font-size:20px; color:var(--text-soft); flex-shrink:0; margin-top:1px; }
+    .trash-row-name { font-family:'JetBrains Mono',monospace; font-size:12px; font-weight:600; color:var(--text); word-break:break-word; }
+    .trash-row-joke { font-size:11.5px; color:var(--text-mid); margin-top:2px; line-height:1.4; }
+    .trash-empty-msg {
+      display:none; flex-direction:column; align-items:center; justify-content:center;
+      gap:8px; flex:1; text-align:center; padding:24px;
+    }
+    .trash-empty-emoji { font-size:34px; }
+    .trash-empty-title { font-family:'JetBrains Mono',monospace; font-weight:700; font-size:16px; color:var(--text); }
+    .trash-empty-sub { font-size:12px; color:var(--text-mid); max-width:32ch; line-height:1.5; }
+
     /* ── HELP WINDOW ── */
 
     /* ── REMINDERS WINDOW ── */
@@ -1040,53 +1129,96 @@
     .rem-item.open .rem-check { border-color:var(--accent); }
 
     /* ═══════════════════════════════════════════════════════════════
-       PASSWORD MODAL
+       PASSWORD MODAL — styled like a macOS system prompt: the locked
+       folder with a lock badge, a pill field whose dots pop in as you
+       type, shake on a wrong guess, lock springs open on success.
     ═══════════════════════════════════════════════════════════════ */
     #pw-modal {
-      display:none; position:fixed; inset:0; z-index:2000;
-      background:rgba(0,0,0,0.4); backdrop-filter:blur(10px);
-      align-items:center; justify-content:center;
+      display:none; position:fixed; inset:0; z-index:2000; padding:16px;
+      background:rgba(10,12,20,.32); backdrop-filter:blur(14px) saturate(140%); -webkit-backdrop-filter:blur(14px) saturate(140%);
+      align-items:center; justify-content:center; opacity:0; transition:opacity .25s ease;
     }
     #pw-modal.open { display:flex; }
+    #pw-modal.show { opacity:1; }
     .pw-box {
-      /* Same fixed, lightly-transparent white surface as the desktop
-         windows, so the password prompt stays legible over every sky
-         phase instead of following the page-wide dark/light glass. */
-      --glass-strong: rgba(255,255,255,0.9);
-      --glass: rgba(60,60,70,0.06);
-      --glass-border: rgba(60,60,70,0.12);
-      --text: #3C3C43;
-      --text-mid: rgba(60,60,67,0.7);
-      --text-soft: rgba(60,60,67,0.48);
-      background:var(--glass-strong); backdrop-filter:blur(40px);
-      border:1px solid var(--glass-border); border-radius:18px;
-      padding:32px 28px; width:320px;
-      box-shadow:0 32px 80px rgba(0,0,0,0.4);
-      text-align:center;
+      /* Fixed light glass, independent of the sky-driven page glass, so
+         the prompt stays legible over every sky phase. */
+      position:relative; width:340px; max-width:100%; padding:30px 26px 18px; border-radius:28px;
+      text-align:center; color:#1d1d1f; font-family:'JetBrains Mono',monospace;
+      background:linear-gradient(180deg, rgba(255,255,255,.88), rgba(255,255,255,.72));
+      backdrop-filter:blur(40px) saturate(180%); -webkit-backdrop-filter:blur(40px) saturate(180%);
+      border:1px solid rgba(255,255,255,.85);
+      box-shadow:0 40px 100px rgba(0,0,0,.35), inset 0 1px 0 rgba(255,255,255,.95), 0 0 0 .5px rgba(0,0,0,.08);
+      transform:scale(.94) translateY(10px); transition:transform .5s cubic-bezier(.34,1.4,.64,1);
     }
-    .pw-icon { font-size:36px; margin-bottom:12px; }
-    .pw-title { font-size:16px; font-weight:700; color:var(--text); margin-bottom:4px; }
-    .pw-sub   { font-size:12px; color:var(--text-soft); margin-bottom:20px; }
+    #pw-modal.show .pw-box { transform:none; }
+    .pw-box.shake { animation:pwShake .5s cubic-bezier(.36,.07,.19,.97); }
+    @keyframes pwShake { 10%,90% { translate:-2px 0; } 20%,80% { translate:4px 0; } 30%,50%,70% { translate:-8px 0; } 40%,60% { translate:8px 0; } }
+    .pw-art { position:relative; width:78px; height:78px; margin:0 auto 14px; }
+    .pw-art img { width:100%; height:100%; object-fit:contain; filter:drop-shadow(0 10px 18px rgba(0,0,0,.18)); }
+    .pw-badge {
+      position:absolute; right:-6px; bottom:-4px; width:32px; height:32px; border-radius:50%;
+      display:flex; align-items:center; justify-content:center; color:#1d1d1f;
+      background:rgba(255,255,255,.92); box-shadow:0 6px 14px rgba(0,0,0,.18), inset 0 0 0 .5px rgba(0,0,0,.08);
+      transition:background .3s ease, color .3s ease, transform .45s cubic-bezier(.34,1.56,.64,1);
+    }
+    .pw-badge svg { width:17px; height:17px; fill:none; stroke:currentColor; stroke-width:1.7; stroke-linecap:round; stroke-linejoin:round; overflow:visible; }
+    .pw-shackle { transform-origin:13.6px 8.8px; transition:transform .45s cubic-bezier(.34,1.56,.64,1); }
+    .pw-box.ok .pw-badge { background:#34C759; color:#fff; transform:scale(1.12) rotate(-6deg); }
+    .pw-box.ok .pw-shackle { transform:translateY(-1.8px) rotate(30deg); }
+    .pw-title { font-size:15px; font-weight:700; letter-spacing:-.01em; margin-bottom:5px; }
+    .pw-sub { font-size:11.5px; line-height:1.5; color:rgba(60,60,67,.6); margin-bottom:18px; }
+    .pw-field {
+      position:relative; display:flex; align-items:center; gap:10px; height:46px; border-radius:999px;
+      padding:0 6px 0 18px; background:rgba(120,120,128,.12); box-shadow:inset 0 0 0 1px rgba(60,60,67,.1);
+      transition:box-shadow .2s ease, background .2s ease;
+    }
+    .pw-field:focus-within { background:rgba(255,255,255,.92); box-shadow:inset 0 0 0 1.5px var(--accent), 0 0 0 4px rgba(46,125,209,.16); }
+    .pw-box.err .pw-field { box-shadow:inset 0 0 0 1.5px #FF453A, 0 0 0 4px rgba(255,69,58,.14); }
+    .pw-box.ok .pw-field { box-shadow:inset 0 0 0 1.5px #34C759, 0 0 0 4px rgba(52,199,89,.16); }
+    /* The real input sits invisibly on top of the dot display, so typing,
+       pasting and focus all behave natively. */
     .pw-input {
-      width:100%; background:var(--glass); border:1px solid var(--glass-border);
-      border-radius:8px; padding:10px 14px; font-size:14px; color:var(--text);
-      text-align:center; outline:none; font-family:'JetBrains Mono',monospace;
-      margin-bottom:12px; letter-spacing:3px; transition:border-color .2s;
-      /* This is a plain text input, not type="password" — see the markup
-         comment below for why. -webkit-text-security keeps the same
-         dot-masked look in Chrome/Safari; Firefox (no support) just
-         falls back to showing the characters, which is harmless since
-         this "password" is decorative, not a real credential. */
-      -webkit-text-security: disc;
+      position:absolute; inset:0; width:100%; height:100%; opacity:0; border:0; outline:none; padding:0 50px 0 18px;
+      font-size:16px; cursor:text; z-index:1;
+      /* Plain text input, not type="password" — see the markup comment. */
+      -webkit-text-security:disc;
     }
-    .pw-input:focus { border-color:var(--accent); }
-    .pw-input.error { border-color:#FF5F57; animation:shake .3s; }
-    @keyframes shake { 0%,100%{transform:translateX(0)} 25%{transform:translateX(-6px)} 75%{transform:translateX(6px)} }
-    .pw-btn { width:100%; background:var(--accent); border:none; border-radius:8px; padding:10px; color:#fff; font-size:13px; font-weight:600; cursor:pointer; font-family:'JetBrains Mono',monospace; margin-bottom:8px; transition:opacity .2s; }
-    .pw-btn:hover { opacity:.85; }
-    .pw-cancel { font-size:11px; color:var(--text-soft); cursor:pointer; background:none; border:none; font-family:'JetBrains Mono',monospace; }
-    .pw-cancel:hover { color:var(--text); }
-    .pw-hint { font-size:10px; color:var(--text-soft); margin-top:8px; }
+    .pw-dots { flex:1; min-width:0; display:flex; align-items:center; gap:7px; height:100%; overflow:hidden; pointer-events:none; }
+    .pw-dots i { flex-shrink:0; width:9px; height:9px; border-radius:50%; background:#1d1d1f; animation:pwDot .28s cubic-bezier(.34,1.56,.64,1); }
+    @keyframes pwDot { from { transform:scale(0); opacity:0; } }
+    .pw-ph { font-size:12.5px; color:rgba(60,60,67,.42); white-space:nowrap; }
+    .pw-caret { flex-shrink:0; width:2px; height:18px; border-radius:1px; background:var(--accent); opacity:0; }
+    .pw-field:focus-within .pw-caret { animation:pwBlink 1s steps(1) infinite; }
+    @keyframes pwBlink { 0%,49% { opacity:1; } 50%,100% { opacity:0; } }
+    .pw-go {
+      position:relative; z-index:2; flex-shrink:0; margin-left:auto; width:34px; height:34px; border-radius:50%; border:0; cursor:pointer;
+      display:flex; align-items:center; justify-content:center; color:#fff; background:var(--accent);
+      box-shadow:0 4px 12px rgba(46,125,209,.35); transition:transform .2s ease, opacity .2s ease, background .3s ease;
+    }
+    .pw-go:hover { transform:scale(1.06); }
+    .pw-go:disabled { opacity:.35; cursor:default; transform:none; box-shadow:none; }
+    .pw-go svg { width:16px; height:16px; fill:none; stroke:currentColor; stroke-width:2.4; stroke-linecap:round; stroke-linejoin:round; }
+    .pw-go.busy svg { display:none; }
+    .pw-go.busy::after { content:''; width:14px; height:14px; border-radius:50%; border:2px solid rgba(255,255,255,.4); border-top-color:#fff; animation:pwSpin .7s linear infinite; }
+    @keyframes pwSpin { to { transform:rotate(360deg); } }
+    .pw-box.ok .pw-go { background:#34C759; box-shadow:0 4px 12px rgba(52,199,89,.35); }
+    .pw-hint { min-height:16px; margin-top:9px; font-size:11px; color:#E0362C; }
+    .pw-foot { display:flex; justify-content:space-between; align-items:center; gap:10px; margin-top:8px; padding-top:13px; border-top:1px solid rgba(60,60,67,.1); }
+    .pw-foot button { background:none; border:0; padding:4px 2px; cursor:pointer; font:600 11.5px 'JetBrains Mono',monospace; color:rgba(60,60,67,.6); transition:color .2s ease; }
+    .pw-foot button:hover { color:#1d1d1f; }
+    .pw-foot .pw-ask { color:var(--accent); }
+    .pw-foot .pw-ask:hover { color:var(--accent); text-decoration:underline; text-underline-offset:3px; }
+    @media (prefers-reduced-motion: reduce) { .pw-box, .pw-box.shake, .pw-dots i { animation:none; transition:none; } }
+    /* Phones: sit in the upper part of the screen so the on-screen
+       keyboard never covers the field, with thumb-sized buttons. */
+    @media (max-width: 600px) {
+      #pw-modal { align-items:flex-start; padding:calc(env(safe-area-inset-top, 0px) + 11vh) 16px 16px; }
+      .pw-box { width:100%; max-width:360px; padding:28px 22px 12px; border-radius:30px; transform:scale(.96) translateY(-14px); }
+      .pw-field { height:50px; }
+      .pw-go { width:38px; height:38px; }
+      .pw-foot button { min-height:40px; padding:8px 4px; font-size:12px; }
+    }
 
     /* ═══════════════════════════════════════════════════════════════
        DOCK (Programs / Tools)
@@ -1205,18 +1337,21 @@
       -webkit-user-drag: none;
     }
     /* Placeholder tile — neutral grey so it reads as "not final yet".
-       Every other dock icon is real artwork with ~20% built-in
-       transparent padding, so it visually fills only ~80% of the 44px
-       box; this solid tile filled the box edge-to-edge, which read as
-       tighter spacing around it than everywhere else in the dock even
-       though the CSS gap is identical. Sized down to match. */
-    .dock-icon.di-placeholder {
-      width: 36px; height: 36px;
-      border-radius: 9px;
+       Every other dock icon is a PNG rendered at 122% of the 44px box,
+       with its own visible artwork measured (via alpha bbox) at ~80-87%
+       of that PNG's own canvas — net effective size ~45px. This tile is
+       sized to that same measured footprint, on its own inner element
+       so .dock-icon itself can stay 44x44 like every other icon (keeps
+       it on the same baseline as its neighbours). */
+    .dock-icon.di-placeholder { background: none; box-shadow: none; }
+    .di-tile {
+      width: 45px; height: 45px;
+      display: flex; align-items: center; justify-content: center;
+      border-radius: 11px;
       background: linear-gradient(145deg,#8C8C96,#5E5E68);
       box-shadow: 0 2px 5px rgba(0,0,0,0.25), inset 0 1px 0 rgba(255,255,255,0.22);
     }
-    .dock-icon svg { width: 21px; height: 21px; display: block; }
+    .dock-icon svg { width: 26px; height: 26px; display: block; }
     .dock-dot { width:4px; height:4px; border-radius:50%; background:transparent; }
     .dock-item.active .dock-dot { background:var(--text-mid); }
     .dock-tooltip {
@@ -1253,6 +1388,7 @@
 
     /* ── Case hero ── */
     .case-hero {
+      position:relative;
       padding:38px 40px 30px;
       border-bottom:1px solid var(--glass-border);
       background:linear-gradient(160deg, var(--glass) 0%, transparent 70%);
@@ -1262,9 +1398,9 @@
       color:var(--accent); margin-bottom:10px;
     }
     .case-title {
-      font-family:'Milky Cream',cursive;
-      font-size:clamp(30px,3.4vw,46px); line-height:1.05;
-      color:var(--text); margin-bottom:14px; letter-spacing:-.5px;
+      font-family:'JetBrains Mono',monospace; font-weight:700;
+      font-size:clamp(26px,3vw,40px); line-height:1.1;
+      color:var(--text); margin-bottom:14px; letter-spacing:-.02em;
     }
     .case-lede {
       font-size:16px; line-height:1.6; color:var(--text-mid);
@@ -1290,6 +1426,26 @@
     }
     .cf-value { font-size:13px; font-weight:500; color:var(--text); line-height:1.4; }
 
+    /* ── In-page jump nav — sticks to the top of the scroll area so a
+       reader can drop straight into Key Decisions or Outcome without
+       reading the whole case top to bottom. ── */
+    .cs-jumpnav {
+      position:sticky; top:0; z-index:4;
+      display:flex; gap:4px; overflow-x:auto; scrollbar-width:none;
+      padding:10px 40px; background:var(--glass-strong);
+      backdrop-filter:blur(20px) saturate(160%); -webkit-backdrop-filter:blur(20px) saturate(160%);
+      border-bottom:1px solid var(--glass-border);
+    }
+    .cs-jumpnav::-webkit-scrollbar { display:none; }
+    .cs-jump-item {
+      font-family:'JetBrains Mono',monospace; font-size:11px; font-weight:600;
+      white-space:nowrap; color:var(--text-mid); background:transparent;
+      border:1px solid transparent; border-radius:20px; padding:5px 12px;
+      cursor:pointer; transition:all .15s; flex-shrink:0;
+    }
+    .cs-jump-item:hover { background:var(--glass); color:var(--text); }
+    .cs-jump-item.active { background:var(--accent); color:#fff; }
+
     /* ── Generic section ── */
     .case-section { padding:34px 40px; border-bottom:1px solid var(--glass-border); }
     .case-section:last-child { border-bottom:none; }
@@ -1298,8 +1454,8 @@
       color:var(--accent); margin-bottom:12px;
     }
     .cs-title {
-      font-family:'Milky Cream',cursive; font-size:26px; line-height:1.2;
-      color:var(--text); margin-bottom:16px; letter-spacing:-.3px;
+      font-family:'JetBrains Mono',monospace; font-weight:700; font-size:22px; line-height:1.25;
+      color:var(--text); margin-bottom:16px; letter-spacing:-.01em;
     }
     .cs-body { font-size:14px; line-height:1.75; color:var(--text-mid); max-width:66ch; }
     .cs-body p + p { margin-top:12px; }
@@ -1307,7 +1463,7 @@
 
     /* Pull quote for the challenge */
     .cs-pull {
-      font-family:'Milky Cream',cursive; font-size:22px; line-height:1.45;
+      font-family:'JetBrains Mono',monospace; font-weight:700; font-size:18px; line-height:1.5;
       color:var(--text); max-width:52ch; margin-bottom:18px;
       padding-left:18px; border-left:3px solid var(--accent);
     }
@@ -1320,7 +1476,7 @@
     }
     .cs-step:last-child { border-bottom:none; }
     .cs-step-n {
-      font-family:'Milky Cream',cursive; font-size:20px; color:var(--accent);
+      font-family:'JetBrains Mono',monospace; font-weight:700; font-size:16px; color:var(--accent);
       flex-shrink:0; line-height:1.3; width:26px;
     }
     .cs-step-t { font-size:14px; line-height:1.6; color:var(--text-mid); }
@@ -1367,8 +1523,8 @@
       background:var(--glass-strong);
     }
     .preview-invite span {
-      font-family:'Milky Cream',cursive; font-style:italic;
-      font-size:15px; color:var(--text-mid); line-height:1.35;
+      font-family:'JetBrains Mono',monospace; font-style:normal;
+      font-size:13px; color:var(--text-mid); line-height:1.45;
     }
     .preview-invite a {
       font-size:11px; font-weight:600; color:#fff; background:var(--accent);
@@ -1399,6 +1555,55 @@
     .cs-dec-title { font-size:15px; font-weight:600; color:var(--text); line-height:1.4; }
     .cs-dec-why { font-size:13px; line-height:1.65; color:var(--text-mid); }
     .cs-dec-why b { color:var(--text); font-weight:600; }
+    .cs-dec-n { display:none; }
+
+    /* ── Full-bleed photo break — an editorial breather between dense
+       sections. Only rendered when a case sets c.heroBreak. ── */
+    .cs-photobreak { margin:0 -40px; }
+    .cs-photobreak img { width:100%; display:block; }
+    .cs-photobreak-cap {
+      display:block; font-size:11px; color:var(--text-soft);
+      padding:10px 40px 0;
+    }
+
+    /* ── Overview / Dive Deeper — a case can opt in (c.overview) to a
+       skim-first layout: hero, a handful of visual placeholders, facts,
+       the pull quote and decision titles only, then a button that reveals
+       the full write-up (.case-detail, hidden until opened). ── */
+    .cs-ov-visuals {
+      display:grid; grid-template-columns:repeat(auto-fit,minmax(130px,1fr));
+      gap:10px; padding:0 40px 30px;
+    }
+    .cs-ov-visuals .cs-visual { aspect-ratio:4/5; }
+    .cs-ov-visuals .cs-visual .ov-brand {
+      font-family:'JetBrains Mono',monospace; font-size:9px; font-weight:700;
+      letter-spacing:.08em; text-transform:uppercase; color:var(--accent); opacity:.75;
+    }
+    .cs-ov-quote { padding:2px 40px 24px; }
+    .cs-ov-quote .cs-pull { margin-bottom:0; }
+    .cs-ov-decisions {
+      padding:0 40px 8px; display:flex; flex-direction:column; gap:11px; max-width:68ch;
+    }
+    .cs-ov-dec {
+      display:flex; align-items:baseline; gap:10px; font-size:14px; color:var(--text);
+      line-height:1.4;
+    }
+    .cs-ov-dec-tag {
+      flex-shrink:0; min-width:62px; font-size:9px; font-weight:700;
+      letter-spacing:.08em; text-transform:uppercase; color:var(--accent);
+    }
+    .cs-dive-wrap { padding:22px 40px 6px; }
+    .cs-dive-btn {
+      display:inline-flex; align-items:center; gap:8px;
+      font-family:'JetBrains Mono',monospace; font-size:12px; font-weight:700;
+      color:#fff; background:var(--accent); border:none; border-radius:24px;
+      padding:11px 20px; cursor:pointer; transition:opacity .15s;
+    }
+    .cs-dive-btn:hover { opacity:.86; }
+    .cs-dive-btn .cs-dive-arrow { transition:transform .2s; font-size:13px; }
+    .cs-dive-btn.open .cs-dive-arrow { transform:rotate(180deg); }
+    .case-detail { display:none; }
+    .case-detail.open { display:block; animation:fadeInUp .25s ease; }
 
     /* ── Outcome stats ── */
     .cs-stats { display:flex; gap:12px; flex-wrap:wrap; margin-bottom:18px; }
@@ -1407,7 +1612,7 @@
       border-radius:12px; padding:14px 20px; min-width:100px;
     }
     .cs-stat-v {
-      font-family:'Milky Cream',cursive; font-size:28px; line-height:1;
+      font-family:'JetBrains Mono',monospace; font-weight:700; font-size:24px; line-height:1;
       color:var(--accent); display:block; margin-bottom:4px;
     }
     .cs-stat-l {
@@ -1421,6 +1626,24 @@
       color:var(--text-mid); max-width:66ch;
     }
     .cs-todo b { color:var(--text); font-weight:600; }
+
+    /* ── Visual placeholder — a labelled stand-in for a screenshot or
+       shot Vivien hasn't dropped in yet, sitting right in the image grid
+       next to real media. Deliberately distinct from .cs-todo (yellow,
+       "I need info from you") — this one just says "a picture belongs
+       here", in the same accent blue used for links elsewhere. ── */
+    .cs-visual {
+      aspect-ratio:4/3; border-radius:12px;
+      border:1.5px dashed rgba(46,125,209,.4);
+      background:rgba(46,125,209,.06);
+      display:flex; flex-direction:column; align-items:center; justify-content:center;
+      gap:8px; padding:16px; text-align:center;
+    }
+    .cs-visual .ico { width:22px; height:22px; opacity:.55; color:var(--accent); }
+    .cs-visual span {
+      font-family:'JetBrains Mono',monospace; font-size:11px; font-weight:600;
+      color:var(--accent); line-height:1.5; max-width:24ch;
+    }
 
     /* ── Media ── */
     .cs-media { display:grid; gap:12px; margin-top:4px; }
@@ -1478,6 +1701,90 @@
     @media (max-width:900px) {
       .case-hero, .case-section { padding-left:24px; padding-right:24px; }
       .case-foot { padding-left:24px; padding-right:24px; }
+      .cs-photobreak { margin:0 -24px; }
+      .cs-photobreak-cap { padding-left:24px; padding-right:24px; }
+      .cs-ov-visuals, .cs-ov-quote, .cs-ov-decisions { padding-left:24px; padding-right:24px; }
+      .cs-dive-wrap { padding-left:24px; padding-right:24px; }
+    }
+
+    /* ── Case theme: JCO ──────────────────────────────────────────────
+       A case study can carry the actual brand's CI, scoped entirely to
+       [data-theme="…"] so nothing leaks into the rest of the site. JCO:
+       Anton headlines, Nunito Sans body, JCO's own blue/beige/umbra. */
+    .case[data-theme="jco"] {
+      --accent: #009FE3;
+      --accent2: #183A68;
+    }
+    .case[data-theme="jco"] .case-hero {
+      position:relative; overflow:hidden;
+      background:linear-gradient(160deg, rgba(0,159,227,.10) 0%, transparent 65%);
+    }
+    .case[data-theme="jco"] .case-hero::after {
+      content:''; position:absolute; top:-50px; right:-70px;
+      width:340px; height:340px;
+      background:url('work/jco/brand/jco-mark-pattern.webp') no-repeat center/contain;
+      opacity:.16; pointer-events:none;
+    }
+    .case[data-theme="jco"] .case-kicker,
+    .case[data-theme="jco"] .cs-label {
+      font-family:'Anton', sans-serif; font-weight:400; letter-spacing:.1em;
+    }
+    .case[data-theme="jco"] .case-title,
+    .case[data-theme="jco"] .cs-title,
+    .case[data-theme="jco"] .cs-pull,
+    .case[data-theme="jco"] .cs-stat-v {
+      font-family:'Anton', sans-serif; font-weight:400;
+      text-transform:uppercase; letter-spacing:.01em;
+    }
+    .case[data-theme="jco"] .case-lede,
+    .case[data-theme="jco"] .cs-body,
+    .case[data-theme="jco"] .cs-dec-why,
+    .case[data-theme="jco"] .cs-step-t {
+      font-family:'Nunito Sans', sans-serif;
+    }
+    .case[data-theme="jco"] .case-tag {
+      font-family:'Nunito Sans', sans-serif; font-weight:700;
+      border-radius:3px; background:rgba(0,159,227,.1);
+      border-color:rgba(0,159,227,.25); color:#183A68;
+    }
+    .case[data-theme="jco"] .cs-stat {
+      background:rgba(185,157,107,.08); border-color:rgba(185,157,107,.28);
+    }
+
+    /* Editorial layout — bigger typographic moments, fewer boxes, more
+       breathing room. Requested for JCO specifically: [[portfolio-2-0-umbau]]. */
+    .case[data-theme="jco"] .case-title {
+      font-size:clamp(32px, 5.4vw, 58px); line-height:.98; max-width:15ch;
+    }
+    .case[data-theme="jco"] .case-lede { font-size:17px; max-width:54ch; }
+
+    .case[data-theme="jco"] .case-facts {
+      background:none; gap:0;
+      border-top:1px solid rgba(24,58,104,.14); border-bottom:1px solid rgba(24,58,104,.14);
+    }
+    .case[data-theme="jco"] .case-fact {
+      background:none; border-right:1px solid rgba(24,58,104,.14);
+    }
+
+    .case[data-theme="jco"] .cs-pull {
+      font-size:clamp(21px, 3.4vw, 32px); line-height:1.18; letter-spacing:0;
+      border-left:none; padding-left:0; max-width:19ch; margin-bottom:22px;
+    }
+
+    .case[data-theme="jco"] .cs-decisions { gap:0; }
+    .case[data-theme="jco"] .cs-decision {
+      display:grid; grid-template-columns:40px 1fr; gap:12px;
+      background:none; border:none; border-radius:0;
+      border-top:1px solid rgba(24,58,104,.14); padding:22px 0;
+    }
+    .case[data-theme="jco"] .cs-decision:first-child { border-top:none; padding-top:2px; }
+    .case[data-theme="jco"] .cs-dec-n {
+      display:block; font-family:'Anton', sans-serif; font-size:24px; line-height:1.1;
+      color:rgba(0,159,227,.35);
+    }
+    .case[data-theme="jco"] .cs-dec-tag {
+      font-family:'Nunito Sans', sans-serif; font-weight:800;
+      background:none; border:none; padding:0; letter-spacing:.09em;
     }
 
     /* ═══════════════════════════════════════════════════════════════
@@ -1921,7 +2228,14 @@
       .mob-sheet-content .case-foot { padding-left:0; padding-right:0; }
       .mob-sheet-content .case-facts { border-radius:12px; overflow:hidden; }
       .mob-sheet-content .case-title { font-size:30px; }
+      .mob-sheet-content .cs-ov-visuals,
+      .mob-sheet-content .cs-ov-quote,
+      .mob-sheet-content .cs-ov-decisions,
+      .mob-sheet-content .cs-dive-wrap { padding-left:0; padding-right:0; }
       .mob-sheet-content .cs-media.two { grid-template-columns:1fr; }
+      .mob-sheet-content .cs-jumpnav {
+        top:70px; margin:0 -22px 0; padding:8px 22px; border-radius:0;
+      }
     }
     @media (min-width: 769px) {
       #phone { display:none; }
@@ -1987,32 +2301,54 @@
     }
 
     /* ═══════════════════════════════════════════════════════════════
-       BOOT SCREEN — a few-second "the Mac is starting up" beat before
-       the lock screen appears at all, on both desktop and mobile.
-       Highest z-index on the page; fades itself out via boot-init IIFE.
+       BOOT SCREEN — the lock screen's own paper + grid, empty, with one
+       slim loading bar sitting exactly where the name and role appear.
+       Once the page has loaded, the overlay fades and the lock screen's
+       content takes the bar's place. Highest z-index on the page.
     ═══════════════════════════════════════════════════════════════ */
     #boot {
       position: fixed; inset: 0; z-index: 6000;
-      background: var(--g-a);
-      display: flex; flex-direction: column; align-items: center; justify-content: center;
-      gap: 22px;
-      transition: opacity .5s ease, visibility .5s;
+      background-image:
+        linear-gradient(rgba(128,128,128,.22) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(128,128,128,.22) 1px, transparent 1px),
+        url('images/bg/lock-texture.jpg');
+      background-size: 40px 40px, 40px 40px, cover;
+      background-position: center, center, center;
+      background-repeat: repeat, repeat, no-repeat;
+      background-color: #ececec;
+      transition: opacity .6s ease, visibility .6s;
     }
     #boot.hide { opacity: 0; visibility: hidden; pointer-events: none; }
-    .boot-bar { width: 180px; height: 3px; background: rgba(255,255,255,.14); border-radius: 2px; overflow: hidden; }
+    /* Returning within the same session: skip boot + lock entirely */
+    .ve-return #boot { display: none; }
+    .ve-return #lock, .ve-return #lockscreen { transition: none !important; }
+    .ve-return #lock.showing { opacity: 0; visibility: hidden; }
+    .ve-return #lockscreen:not(.unlocked) { visibility: hidden; }
+    /* Glass pill track + accent fill, the same language as the windows
+       and the dock; the line under it sits where the role appears. */
+    .boot-load {
+      position: absolute; left: 50%; top: var(--boot-y, 70%);
+      transform: translate(-50%, -5px); width: 200px;
+      display: flex; flex-direction: column; align-items: center; gap: 12px;
+    }
+    .boot-bar {
+      width: 100%; height: 10px; border-radius: 999px; overflow: hidden; padding: 1.5px;
+      background: rgba(255,255,255,.55);
+      box-shadow: inset 0 0 0 1px rgba(26,26,26,.08), inset 0 1px 2px rgba(26,26,26,.08), 0 6px 18px rgba(26,26,26,.08);
+      backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
+    }
     .boot-bar-fill {
-      height: 100%; width: 0%; background: var(--accent); border-radius: 2px;
-      animation: bootFill 1.7s cubic-bezier(.4,0,.2,1) forwards;
+      height: 100%; width: 0; border-radius: 999px;
+      background: linear-gradient(90deg, var(--accent), var(--accent2, #5AA9F0));
+      box-shadow: 0 0 10px rgba(46,125,209,.45);
+      transition: width .45s cubic-bezier(.4,0,.2,1);
     }
-    @keyframes bootFill { to { width: 100%; } }
     .boot-msg {
-      font-family: 'JetBrains Mono', monospace; font-size: 13px; font-weight: 500;
-      color: var(--text-mid); letter-spacing: .01em; min-height: 16px;
+      font-family: 'JetBrains Mono', monospace; font-size: 12px; font-weight: 500;
+      color: rgba(26,26,26,.55); letter-spacing: .01em; white-space: nowrap; margin: 0;
     }
-    .boot-cursor { display: inline-block; margin-left: 1px; color: var(--text-mid); animation: bootBlink .9s step-end infinite; }
-    @keyframes bootBlink { 0%, 49% { opacity: 1; } 50%, 100% { opacity: 0; } }
     @media (prefers-reduced-motion: reduce) {
-      .boot-bar-fill, .boot-cursor { animation: none; }
+      .boot-bar-fill { transition: none; }
     }
 
     /* ═══════════════════════════════════════════════════════════════
@@ -2277,8 +2613,10 @@
 
     /* Finder sidebar project icons */
     .fs-item { gap: 8px; }
-    .fs-ico { width: 15px; height: 15px; opacity: .75; flex-shrink: 0; }
+    .fs-ico { width: 16px; height: 16px; opacity: .9; flex-shrink: 0; border-radius: 50%; object-fit: cover; }
+    .fs-ico-fallback { background: var(--text-soft); opacity: .35; }
     .fs-item.active .fs-ico { opacity: 1; }
+    .fs-item.active .fs-ico-fallback { background: #fff; opacity: .6; }
 
     /* Contact rows */
     .imsg-ico { font-size: 18px; color: var(--accent); display: inline-flex; }
@@ -2289,15 +2627,38 @@
 
     /* Help rows */
 
-    /* Password modal */
-    .pw-icon { font-size: 36px; color: var(--accent); display: flex; justify-content: center; }
 
     /* Mobile */
     .mob-sb-right [data-icon] { font-size: 13px; color: var(--text); }
 
     /* ── CONFETTI ── */
     @keyframes confFall{from{opacity:1;transform:translateY(0) scale(1)}to{opacity:0;transform:translateY(60px) scale(.5)}}
+    /* trax — "coming soon" preview: big liquid-morphing logo */
+    .fs-badge { font-family:'JetBrains Mono',monospace; font-size:8.5px; font-weight:700; letter-spacing:.08em; text-transform:uppercase; padding:2px 6px; border-radius:999px; background:rgba(60,60,67,.1); color:var(--text-soft); flex-shrink:0; }
+    .fs-item.active .fs-badge { background:rgba(255,255,255,.22); color:#fff; }
+    .tx { min-height: 560px; display: grid; place-items: center; padding: 40px 24px; background: radial-gradient(60% 60% at 50% 45%, rgba(60,60,67,.06), transparent 70%); }
+    .tx-stage { display: flex; flex-direction: column; align-items: center; gap: 26px; width: 100%; }
+    .tx-logo { width: min(520px, 78%); height: auto; overflow: visible; }
+    .tx-ink { fill: #111; }
+    .tx-meta { display: flex; flex-direction: column; align-items: center; gap: 10px; }
+    .tx-pill { display: inline-flex; align-items: center; gap: 8px; font: 700 10.5px 'JetBrains Mono', monospace; letter-spacing: .12em; text-transform: uppercase; color: #111; padding: 7px 14px; border-radius: 999px;
+      background: rgba(255,255,255,.55); border: 1px solid rgba(60,60,67,.14); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px); }
+    .tx-pill i { width: 7px; height: 7px; border-radius: 50%; background: #111; animation: txPulse 1.6s ease-in-out infinite; }
+    @keyframes txPulse { 0%,100% { opacity: .25; transform: scale(.8); } 50% { opacity: 1; transform: scale(1); } }
+    .tx-lead { font: 700 14px/1.5 'JetBrains Mono', monospace; color: #111; margin: 10px 0 0; text-align: center; max-width: 52ch; text-wrap: balance; }
+    .tx-sub { font: 12.5px/1.7 'JetBrains Mono', monospace; color: var(--text-soft); max-width: 60ch; text-align: center; margin: 4px 0 0; text-wrap: balance; }
+    .case-status-progress { background:rgba(60,60,67,.08); color:var(--text); border:1px solid rgba(60,60,67,.18); }
+    /* ══ Custom case studies (bento heroes) ══
+       Each case's own scoped CSS ships inside its customHTML (api/_data/cases.js,
+       generated from the mockups); only page-level bits live here. */
+    .jx-lightbox { position: fixed; inset: 0; background: rgba(8,12,18,.88); display: none; align-items: center; justify-content: center; z-index: 99999; padding: 40px; cursor: zoom-out; }
+    .jx-lightbox.open { display: flex; }
+    .jx-lightbox img { max-width: 100%; max-height: 100%; border-radius: 10px; box-shadow: 0 30px 80px rgba(0,0,0,.5); }
+    .case.case-custom { padding-bottom: 0; }
+    .case.case-custom .case-foot { padding: 20px 40px 40px; }
+    /* ══ end JCO custom case ══ */
   </style>
+  <link rel="stylesheet" href="assets/basteln.css">
 </head>
 <body data-theme="dark">
 
@@ -2306,14 +2667,16 @@
      lock screen even appears, not just before it unlocks.
 ══════════════════════════════════════════════════════ -->
 <div id="boot" aria-hidden="true">
-  <div class="boot-bar"><div class="boot-bar-fill"></div></div>
-  <p class="boot-msg"><span id="boot-msg-text"></span><span class="boot-cursor">|</span></p>
+  <div class="boot-load">
+    <div class="boot-bar" id="boot-bar"><div class="boot-bar-fill" id="boot-fill"></div></div>
+    <p class="boot-msg">Preparing everything for you…</p>
+  </div>
 </div>
 
 <!-- ══════════════════════════════════════════════════════
      LOCK SCREEN (desktop)
 ══════════════════════════════════════════════════════ -->
-<div id="lock" class="showing" role="dialog" aria-label="Locked — press enter to continue">
+<div id="lock" class="showing" role="dialog" aria-label="Locked: press enter to continue">
   <div id="lock-veil"></div>
   <div class="lk-time" id="lk-time">00:00</div>
   <div class="lk-date" id="lk-date"></div>
@@ -2324,7 +2687,7 @@
       <div class="lk-note-icon"><i data-icon="spark"></i></div>
       <div class="lk-note-body">
         <div class="lk-note-top">
-          <span class="lk-note-title">Open to Work</span>
+          <span class="lk-note-title">Open to in-house roles</span>
           <span class="lk-note-time">now</span>
         </div>
         <div class="lk-note-text">Hamburg or remote.</div>
@@ -2339,7 +2702,7 @@
       <img class="lk-avatar" src="images/about/itsme.jpg" alt="Vivien Evers">
     </span>
     <div class="lk-name">Vivien <em>Evers</em></div>
-    <div class="lk-role">Digital Designer</div>
+    <div class="lk-role">Brand &amp; Graphic Designer</div>
     <div class="lk-user-gap"></div>
     <button class="lk-enter" id="lk-enter" type="button">Click to continue</button>
   </div>
@@ -2416,11 +2779,11 @@
       <div class="badge-clip" aria-hidden="true"></div>
       <div class="badge-greeting">Hi, I'm</div>
       <h1 class="badge-name">Vivien <em>Evers</em></h1>
-      <p class="badge-role">Digital Designer</p>
-      <p class="badge-intro">From brand and socials to digital design — every chapter gets crafted with love. Early in this one, hungry for what's next.</p>
+      <p class="badge-role">Brand &amp; Graphic Designer</p>
+      <p class="badge-intro">I keep brands recognisable, from the poster on the wall to the story on your phone. Early in this chapter, hungry for what's next.</p>
       <div class="badge-otw">
         <span class="otw-dot"></span>
-        Open to Work
+        Available · In-house
       </div>
       <span class="badge-photo-wrap">
         <span class="badge-bubble">Say hello?</span>
@@ -2460,6 +2823,20 @@
     </span>
     <span class="fi-label">Downloads</span>
   </button>
+  <button class="folder-icon" data-folder="basteln" style="right:220px; bottom:90px;"
+          onclick="openBasteln()" aria-label="Open Basteln">
+    <span class="fi-img">
+      <img src="images/icons/basteln.png" alt="" draggable="false">
+    </span>
+    <span class="fi-label">Basteln</span>
+  </button>
+  <button class="folder-icon trash-icon" id="desktop-trash" style="right:60px; bottom:60px;"
+          onclick="openWindow('trash')" aria-label="Open Trash">
+    <span class="fi-img">
+      <img id="trash-icon-img" src="images/icons/trash-full.png" alt="" draggable="false">
+    </span>
+    <span class="fi-label">Trash</span>
+  </button>
 
   <!-- RIGHT: Widgets -->
   <div class="widgets">
@@ -2467,7 +2844,7 @@
     <!-- Looking for a place to grow — click the meadow to plant -->
     <div class="widget w-grow" id="w-grow">
       <div class="garden" id="garden" role="button" tabindex="0"
-           aria-label="Interactive meadow — click to plant something">
+           aria-label="Interactive meadow: click to plant something">
         <span class="garden-caption">Looking for a place to grow.</span>
         <span class="garden-seed" id="garden-seed" aria-hidden="true">🌱</span>
         <div class="garden-hint" id="garden-hint">click to plant</div>
@@ -2508,7 +2885,7 @@
       <button class="win-btn min"   onclick="closeWindow('work')"></button>
       <button class="win-btn max"   onclick="toggleMax('work')"></button>
     </div>
-    <span class="win-title"><i data-icon="folder"></i> Case Studies — Vivien Evers</span>
+    <span class="win-title"><i data-icon="folder"></i> Case Studies · Vivien Evers</span>
     <span style="width:52px"></span>
   </div>
   <div class="finder-toolbar">
@@ -2548,11 +2925,12 @@
           </div>
         </div>
         <div class="about-rows">
-          <div class="about-row"><span class="ar-label">Role</span><span class="ar-value">Digital Designer</span></div>
+          <div class="about-row"><span class="ar-label">Role</span><span class="ar-value">Brand &amp; Graphic Designer</span></div>
           <div class="about-row"><span class="ar-label">Certification</span><span class="ar-value">Media Design, IHK Hamburg · Jan 2026</span></div>
-          <div class="about-row"><span class="ar-label">Focus</span><span class="ar-value">Digital (sometimes print)</span></div>
-          <div class="about-row"><span class="ar-label">Freelance</span><span class="ar-value">Brand & Web since 2025</span></div>
-          <div class="about-row"><span class="ar-label">Side project</span><span class="ar-value">Events · House Music</span></div>
+          <div class="about-row"><span class="ar-label">Focus</span><span class="ar-value">Brand, campaigns, social &amp; print</span></div>
+          <div class="about-row"><span class="ar-label">Freelance</span><span class="ar-value">Brand &amp; social · since 2025</span></div>
+          <div class="about-row"><span class="ar-label">Side project</span><span class="ar-value">Co-founder of an event label · House music</span></div>
+          <div class="about-row"><span class="ar-label">Before</span><span class="ar-value">7 years in retail &amp; fashion</span></div>
         </div>
         <div style="margin-top:18px">
           <button class="proj-btn" onclick="openWindow('about-more')" style="border:none;cursor:pointer;font-family:'JetBrains Mono',monospace">More →</button>
@@ -2562,7 +2940,23 @@
     <div class="win-scroll" id="about-skills" style="display:none">
       <div class="skills-grid">
         <div>
-          <div class="skill-group-title">Product & Web</div>
+          <div class="skill-group-title">Design &amp; Production</div>
+          <div class="skill-pills">
+            <span class="skill-pill">Adobe InDesign</span>
+            <span class="skill-pill">Photoshop</span>
+            <span class="skill-pill">Illustrator</span>
+          </div>
+        </div>
+        <div>
+          <div class="skill-group-title">Communication &amp; Content</div>
+          <div class="skill-pills">
+            <span class="skill-pill">Brand Strategy</span>
+            <span class="skill-pill">Content</span>
+            <span class="skill-pill">Copywriting</span>
+          </div>
+        </div>
+        <div>
+          <div class="skill-group-title">Product &amp; Web</div>
           <div class="skill-pills">
             <span class="skill-pill accent">Figma</span>
             <span class="skill-pill accent">UI Design</span>
@@ -2573,27 +2967,11 @@
           </div>
         </div>
         <div>
-          <div class="skill-group-title">AI & Workflow</div>
+          <div class="skill-group-title">AI &amp; Workflow</div>
           <div class="skill-pills">
             <span class="skill-pill accent">Claude</span>
             <span class="skill-pill accent">ChatGPT</span>
             <span class="skill-pill accent">AI-assisted Design</span>
-          </div>
-        </div>
-        <div>
-          <div class="skill-group-title">Communication</div>
-          <div class="skill-pills">
-            <span class="skill-pill">Brand Strategy</span>
-            <span class="skill-pill">Content</span>
-            <span class="skill-pill">Copywriting</span>
-          </div>
-        </div>
-        <div>
-          <div class="skill-group-title">Design & Production</div>
-          <div class="skill-pills">
-            <span class="skill-pill">Adobe InDesign</span>
-            <span class="skill-pill">Photoshop</span>
-            <span class="skill-pill">Illustrator</span>
           </div>
         </div>
       </div>
@@ -2601,16 +2979,16 @@
     <div class="win-scroll" id="about-path" style="display:none">
       <div style="padding:20px">
         <p style="font-size:13px;color:var(--text-mid);line-height:1.7;margin-bottom:14px">
-          Trained as a media designer — alongside that, founded house music event brands in 2022 and have been co-running them since 2024. Everything the curriculum didn't cover, I taught myself.
+          Trained as a media designer. Alongside that, I founded house music event brands in 2022 and have led their visual side since 2025. Everything the curriculum didn't cover, I taught myself.
         </p>
         <p style="font-size:13px;color:var(--text-mid);line-height:1.7;margin-bottom:14px">
-          Started freelancing during my apprenticeship in 2025. In 2026, I built a handful of web projects — this portfolio and my workflow dashboard.
+          Started freelancing during my apprenticeship in 2025. In 2026, I built a few small web projects on the side: this portfolio and my workflow dashboard.
         </p>
         <p style="font-size:13px;color:var(--text-mid);line-height:1.7;margin-bottom:14px">
-          I'm not chasing one narrow title. I'm looking for a place where I can keep building and crafting — digital, print, whatever the team needs — and bring the energy, curiosity, and range that got me here.
+          I'm looking for an in-house place where I can look after a brand properly: print, social, campaigns, whatever the team needs. I bring the energy, curiosity and range that got me here.
         </p>
         <p style="font-size:13px;color:var(--text);font-weight:600;line-height:1.7">
-          Got a project — or just curious? Let's talk.
+          Got a project, or just curious? Let's talk.
         </p>
       </div>
     </div>
@@ -2644,11 +3022,12 @@
         </div>
 
         <div class="case-facts">
-          <div class="case-fact"><div class="cf-label">Role</div><div class="cf-value">Digital Designer</div></div>
+          <div class="case-fact"><div class="cf-label">Role</div><div class="cf-value">Brand &amp; Graphic Designer</div></div>
           <div class="case-fact"><div class="cf-label">Certification</div><div class="cf-value">Media Design, IHK Hamburg · Jan 2026</div></div>
-          <div class="case-fact"><div class="cf-label">Focus</div><div class="cf-value">Digital (sometimes print)</div></div>
-          <div class="case-fact"><div class="cf-label">Freelance</div><div class="cf-value">Brand &amp; Web · Since 2025</div></div>
-          <div class="case-fact"><div class="cf-label">Side project</div><div class="cf-value">Events · House Music</div></div>
+          <div class="case-fact"><div class="cf-label">Focus</div><div class="cf-value">Brand, campaigns, social &amp; print</div></div>
+          <div class="case-fact"><div class="cf-label">Freelance</div><div class="cf-value">Brand &amp; social · since 2025</div></div>
+          <div class="case-fact"><div class="cf-label">Side project</div><div class="cf-value">Co-founder of an event label · House music</div></div>
+          <div class="case-fact"><div class="cf-label">Before</div><div class="cf-value">7 years in retail &amp; fashion</div></div>
         </div>
 
         <!-- What I work with -->
@@ -2656,6 +3035,24 @@
           <div class="cs-label">What I Work With</div>
           <div class="cs-title">I learned by doing. Still do.</div>
           <div class="skills-grid" style="padding:0">
+            <div>
+              <div class="skill-group-title">Design &amp; Production</div>
+              <div class="skill-pills">
+                <span class="skill-pill">Photoshop</span>
+                <span class="skill-pill">Illustrator</span>
+                <span class="skill-pill">InDesign</span>
+                <span class="skill-pill">Print Production</span>
+              </div>
+            </div>
+            <div>
+              <div class="skill-group-title">Communication &amp; Content</div>
+              <div class="skill-pills">
+                <span class="skill-pill">Brand Communication</span>
+                <span class="skill-pill">Visual Identity</span>
+                <span class="skill-pill">Campaign Design</span>
+                <span class="skill-pill">Content Strategy</span>
+              </div>
+            </div>
             <div>
               <div class="skill-group-title">Product &amp; Web</div>
               <div class="skill-pills">
@@ -2675,25 +3072,6 @@
                 <span class="skill-pill">Figma Sites</span>
               </div>
             </div>
-            <div>
-              <div class="skill-group-title">Communication &amp; Content</div>
-              <div class="skill-pills">
-                <span class="skill-pill">Brand Communication</span>
-                <span class="skill-pill">Visual Identity</span>
-                <span class="skill-pill">Campaign Design</span>
-                <span class="skill-pill">Content Strategy</span>
-              </div>
-            </div>
-            <div>
-              <div class="skill-group-title">Design &amp; Production</div>
-              <div class="skill-pills">
-                <span class="skill-pill">Photoshop</span>
-                <span class="skill-pill">Illustrator</span>
-                <span class="skill-pill">InDesign</span>
-                <span class="skill-pill">Canva</span>
-                <span class="skill-pill">Print Production</span>
-              </div>
-            </div>
           </div>
         </section>
 
@@ -2702,10 +3080,10 @@
           <div class="cs-label">In Action</div>
           <div class="cs-media two">
             <figure class="cs-figure">
-              <img src="images/about/L1014081.jpg" alt="Vivien — content production for Porsche Hamburg" loading="lazy">
+              <img src="images/about/L1014081.jpg" alt="Vivien: content production for Porsche Hamburg" loading="lazy">
             </figure>
             <figure class="cs-figure">
-              <img src="images/about/L1014088.jpg" alt="Vivien — working on location" loading="lazy">
+              <img src="images/about/L1014088.jpg" alt="Vivien: working on location" loading="lazy">
               <figcaption class="cs-cap">Photos by <a href="https://www.leojaerisch.com/" target="_blank" rel="noopener" style="color:var(--text-soft)">Leo Jaerisch</a></figcaption>
             </figure>
           </div>
@@ -2773,9 +3151,9 @@
         <!-- Closing -->
         <section class="case-section">
           <div class="cs-label">Just Getting Started</div>
-          <div class="cs-pull">I've done more before finishing my apprenticeship than most do in their first years.</div>
+          <div class="cs-pull">I spent seven years in retail watching what a brand does to people in a store. Then I learned how to make one.</div>
           <div class="cs-body">
-            <p>Freelance clients, self-initiated products, event brands built from scratch — all while learning the craft. This is just the beginning.</p>
+            <p>Freelance clients, an event label, brands built from scratch, all while I was still in training. This is just the beginning.</p>
           </div>
           <div style="margin-top:20px">
             <button class="proj-btn" onclick="closeWindow('about-more');openWindow('contact')" style="border:none;cursor:pointer;font-family:'JetBrains Mono',monospace">Let's talk →</button>
@@ -2801,7 +3179,7 @@
   <div class="win-body">
     <div class="coffee-photo-pad">
       <div class="coffee-photo-wrap">
-        <img src="images/about/coffeechat-cta.png" alt="Vivien — let's have a coffee chat" class="coffee-photo">
+        <img src="images/about/coffeechat-cta.png" alt="Vivien: let's have a coffee chat" class="coffee-photo">
         <a href="mailto:hi@vivienevers.de" class="coffee-phone-overlay" aria-label="Email Vivien to set up a coffee chat">
           <div class="coffee-screen">
             <div class="coffee-bubble">Coffee chat? ☕</div>
@@ -2844,15 +3222,21 @@
   </div>
   <div class="win-body">
     <div class="dl-grid">
+      <div class="dl-card" onclick="window.open('/portfolio/','_blank','noopener')">
+        <div class="dl-card-icon"><i data-icon="doc"></i></div>
+        <div class="dl-card-name">Portfolio</div>
+        <div class="dl-card-meta">Interactive · PDF Short + Deep Dive</div>
+        <div class="dl-card-btn">Open →</div>
+      </div>
       <div class="dl-card" onclick="openFile('cv-en')">
         <div class="dl-card-icon"><i data-icon="doc"></i></div>
-        <div class="dl-card-name">CV — English</div>
+        <div class="dl-card-name">CV (English)</div>
         <div class="dl-card-meta">PDF · 2026</div>
         <div class="dl-card-btn">Preview →</div>
       </div>
       <div class="dl-card" onclick="openFile('cv-de')">
         <div class="dl-card-icon"><i data-icon="doc"></i></div>
-        <div class="dl-card-name">CV — German</div>
+        <div class="dl-card-name">CV (German)</div>
         <div class="dl-card-meta">PDF · 2026</div>
         <div class="dl-card-btn">Preview →</div>
       </div>
@@ -2870,6 +3254,101 @@
       </div>
     </div>
     <div style="padding:0 20px 16px;font-size:11px;color:var(--text-soft)">Please don't share publicly. Thanks!</div>
+  </div>
+</div>
+
+<!-- BASTELN — pinboard of things I made by hand (assets/basteln.js builds it on first open) -->
+<div class="window" id="win-basteln">
+  <div class="win-titlebar" id="tb-basteln">
+    <div class="win-traffic">
+      <button class="win-btn close" onclick="closeWindow('basteln')"></button>
+      <button class="win-btn min"   onclick="closeWindow('basteln')"></button>
+      <button class="win-btn max"   onclick="toggleMax('basteln')"></button>
+    </div>
+    <span class="win-title"><i data-icon="folder"></i> Basteln · Vivien Evers</span>
+    <span style="width:52px"></span>
+  </div>
+  <div class="finder-toolbar">
+    <button class="back" id="bst-back" hidden onclick="closeWindow('basteln'); focusWindow('work')">← Back to case study</button>
+    <span class="ft-title"><b>Basteln</b> · Handmade for friends &amp; brands</span>
+    <div class="chips" id="bst-chips" role="group" aria-label="Filter by brand"></div>
+    <span class="ft-sp"></span>
+    <div class="zoom"><button id="bst-zo" aria-label="Zoom out">−</button><button id="bst-zi" aria-label="Zoom in">+</button><button class="fit" id="bst-fit">Fit</button></div>
+  </div>
+  <div class="finder-body">
+    <div class="vp" id="bst-vp">
+      <div class="board" id="bst-board"></div>
+      <div class="hint">Drag to pan · pinch or ⌘ + scroll to zoom · move things around</div>
+      <aside class="drawer" id="bst-drawer" aria-live="polite"></aside>
+    </div>
+  </div>
+</div>
+
+<!-- TRASH -->
+<div class="window" id="win-trash">
+  <div class="win-titlebar" id="tb-trash">
+    <div class="win-traffic">
+      <button class="win-btn close" onclick="closeWindow('trash')"></button>
+      <button class="win-btn min"   onclick="closeWindow('trash')"></button>
+      <button class="win-btn max"   onclick="toggleMax('trash')"></button>
+    </div>
+    <span class="win-title"><i data-icon="folder"></i> Trash</span>
+    <span style="width:52px"></span>
+  </div>
+  <div class="win-body">
+    <div class="trash-toolbar">
+      <span class="trash-count">6 items · nothing here can hurt you anymore</span>
+      <button class="trash-empty-btn" onclick="emptyTrash()">Empty Trash</button>
+    </div>
+    <div class="trash-list" id="trash-list">
+      <div class="trash-row">
+        <span class="trash-row-icon"><i data-icon="palette"></i></span>
+        <div>
+          <div class="trash-row-name">logo-v1-client-said-make-it-pop.ai</div>
+          <div class="trash-row-joke">It popped. The client did not survive.</div>
+        </div>
+      </div>
+      <div class="trash-row">
+        <span class="trash-row-icon"><i data-icon="palette"></i></span>
+        <div>
+          <div class="trash-row-name">portfolio-2019-please-forget.psd</div>
+          <div class="trash-row-joke">Comic Sans, drop shadows on everything, a background GIF. We've all been there.</div>
+        </div>
+      </div>
+      <div class="trash-row">
+        <span class="trash-row-icon"><i data-icon="doc"></i></span>
+        <div>
+          <div class="trash-row-name">motivation-monday.txt</div>
+          <div class="trash-row-joke">0 KB. Concept only.</div>
+        </div>
+      </div>
+      <div class="trash-row">
+        <span class="trash-row-icon"><i data-icon="doc"></i></span>
+        <div>
+          <div class="trash-row-name">just-one-more-font.otf</div>
+          <div class="trash-row-joke">Narrator: it was never just one more font.</div>
+        </div>
+      </div>
+      <div class="trash-row">
+        <span class="trash-row-icon"><i data-icon="mail"></i></span>
+        <div>
+          <div class="trash-row-name">unpaid-invoice-reminder-draft-14.eml</div>
+          <div class="trash-row-joke">Politeness level: maximum. Response rate: pending.</div>
+        </div>
+      </div>
+      <div class="trash-row">
+        <span class="trash-row-icon"><i data-icon="image"></i></span>
+        <div>
+          <div class="trash-row-name">kerning-is-my-cardio.png</div>
+          <div class="trash-row-joke">Deleted for the safety of everyone who had to hear this pun out loud.</div>
+        </div>
+      </div>
+    </div>
+    <div class="trash-empty-msg" id="trash-empty-msg">
+      <div class="trash-empty-emoji">🗑️</div>
+      <div class="trash-empty-title">All cleared.</div>
+      <div class="trash-empty-sub">The bad puns are gone forever. They respawn every time you open this again, though.</div>
+    </div>
   </div>
 </div>
 
@@ -2895,7 +3374,7 @@
                 font-weight="700" fill="#fff" text-anchor="middle">PDF</text>
         </svg>
       </span>
-      <span class="pv-file-name" id="pv-name">—</span>
+      <span class="pv-file-name" id="pv-name">Untitled</span>
       <span class="pv-file-meta" id="pv-meta"></span>
     </div>
     <a class="pv-open" id="pv-open" target="_blank" rel="noopener" href="#">Open in tab</a>
@@ -2907,25 +3386,32 @@
 </div>
 
 <!-- PASSWORD MODAL -->
-<div id="pw-modal">
-  <div class="pw-box">
-    <div class="pw-icon"><i data-icon="lock"></i></div>
-    <div class="pw-title">Protected area</div>
-    <div class="pw-sub">Enter the password to continue.</div>
-    <!-- Deliberately type="text", not type="password": this "lock" is a
-         portfolio gag (the check runs entirely client-side against a
-         hardcoded string below, nothing is ever submitted anywhere),
-         but a real password field on a page styled like a login/lock
-         screen is exactly the pattern browsers' on-device phishing
-         heuristics look for — it was triggering "this site may be
-         impersonating..." warnings on real devices. -webkit-text-security
-         above keeps the same dot-masked look without that signal. -->
-    <input type="text" class="pw-input" id="pw-input" placeholder="••••••••"
-           autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false"
-           onkeydown="if(event.key==='Enter')checkPw()">
-    <button class="pw-btn" onclick="checkPw()">Unlock</button>
-    <button class="pw-cancel" onclick="closePwModal()">Cancel</button>
-    <div class="pw-hint" id="pw-hint"></div>
+<div id="pw-modal" onclick="if(event.target===this)closePwModal()">
+  <div class="pw-box" role="dialog" aria-modal="true" aria-labelledby="pw-title">
+    <div class="pw-art">
+      <img id="pw-folder" src="images/icons/casestudies.png" alt="">
+      <span class="pw-badge"><svg viewBox="0 0 20 20" aria-hidden="true"><path class="pw-shackle" d="M6.4 8.8V7a3.6 3.6 0 0 1 7.2 0v1.8"/><rect x="4.6" y="8.8" width="10.8" height="7.8" rx="2"/></svg></span>
+    </div>
+    <div class="pw-title" id="pw-title">“Case Studies” is locked</div>
+    <div class="pw-sub">Enter the password to open it.</div>
+    <div class="pw-field">
+      <!-- Deliberately type="text", not type="password": the check happens
+           server-side (/api/login), but a real password field on a page
+           styled like a login/lock screen is exactly the pattern browsers'
+           on-device phishing heuristics look for — it was triggering
+           "this site may be impersonating..." warnings on real devices.
+           The input itself is invisible; .pw-dots draws the masked dots. -->
+      <input type="text" class="pw-input" id="pw-input" aria-label="Password"
+             autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false"
+             oninput="pwRender()" onkeydown="if(event.key==='Enter')checkPw(); else if(event.key==='Escape')closePwModal()">
+      <span class="pw-dots" id="pw-dots"><span class="pw-ph">Password</span></span>
+      <button class="pw-go" id="pw-go" onclick="checkPw()" aria-label="Unlock" disabled><svg viewBox="0 0 20 20"><path d="M4 10h11M11 5.5 15.5 10 11 14.5"/></svg></button>
+    </div>
+    <div class="pw-hint" id="pw-hint" aria-live="polite"></div>
+    <div class="pw-foot">
+      <button type="button" onclick="closePwModal()">Cancel</button>
+      <button type="button" class="pw-ask" onclick="pwAsk()">No password? Ask me →</button>
+    </div>
   </div>
 </div>
 
@@ -3001,7 +3487,7 @@
   <div class="dock-item">
     <div class="dock-icon"><img src="images/icons/chatgpt.png" alt=""></div>
     <div class="dock-dot"></div>
-    <div class="dock-tooltip">Copywriting support · Research · Ideation</div>
+    <div class="dock-tooltip">Research · Problem-solving · Making</div>
   </div>
   <div class="dock-item">
     <div class="dock-icon"><img src="images/icons/meta.png" alt=""></div>
@@ -3014,11 +3500,13 @@
   <!-- Help — placeholder tile until a real icon exists -->
   <div class="dock-item" onclick="startTour()" id="dock-help">
     <div class="dock-icon di-placeholder" title="Placeholder icon">
-      <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-        <circle cx="12" cy="12" r="9" stroke="#fff" stroke-width="1.8"/>
-        <path d="M9.3 9.2a2.8 2.8 0 0 1 5.4 1c0 1.9-2.7 2.2-2.7 3.8" stroke="#fff" stroke-width="1.8" stroke-linecap="round"/>
-        <circle cx="12" cy="17.4" r="1.2" fill="#fff"/>
-      </svg>
+      <span class="di-tile">
+        <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+          <circle cx="12" cy="12" r="9" stroke="#fff" stroke-width="1.8"/>
+          <path d="M9.3 9.2a2.8 2.8 0 0 1 5.4 1c0 1.9-2.7 2.2-2.7 3.8" stroke="#fff" stroke-width="1.8" stroke-linecap="round"/>
+          <circle cx="12" cy="17.4" r="1.2" fill="#fff"/>
+        </svg>
+      </span>
     </div>
     <div class="dock-dot"></div>
     <div class="dock-tooltip">Help</div>
@@ -3070,7 +3558,7 @@
         <div class="lock-note-icon"><i data-icon="spark"></i></div>
         <div class="lock-note-body">
           <div class="lock-note-top">
-            <span class="lock-note-title">Open to Work</span>
+            <span class="lock-note-title">Open to in-house roles</span>
             <span class="lock-note-time">now</span>
           </div>
           <div class="lock-note-text">Hamburg or remote.</div>
@@ -3084,7 +3572,7 @@
       </span>
     </span>
     <div class="lock-name">Vivien <em>Evers</em></div>
-    <div class="lock-role">Digital Designer</div>
+    <div class="lock-role">Brand &amp; Graphic Designer</div>
     <div class="lock-spacer lock-spacer-bottom"></div>
 
     <div class="lock-slider" id="lock-slider">
@@ -3122,7 +3610,7 @@
     </div>
     <div class="m-hero">
       <div class="m-welcome-title">Hi, I'm Vivien</div>
-      <p class="m-hero-intro">From brand and socials to digital design — every chapter gets crafted with love. Early in this one, hungry for what's next.</p>
+      <p class="m-hero-intro">I keep brands recognisable, from the poster on the wall to the story on your phone. Early in this chapter, hungry for what's next.</p>
     </div>
 
     <div class="m-desktop">
@@ -3137,6 +3625,12 @@
           <img src="images/icons/downloads.png" alt="">
         </span>
         <span class="m-folder-label">Downloads</span>
+      </button>
+      <button class="m-folder" onclick="mobOpenSheet('basteln')">
+        <span class="m-folder-img">
+          <img src="images/icons/basteln.png" alt="">
+        </span>
+        <span class="m-folder-label">Basteln</span>
       </button>
     </div>
 
@@ -3194,39 +3688,47 @@
 <!-- ══════════════════════════════════════════════════════
      SCRIPTS
 ══════════════════════════════════════════════════════ -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/bodymovin/5.12.2/lottie.min.js"></script>
 <script>
 /* ── BOOT SCREEN ──────────────────────────────────────────────────
-   A short "starting up" beat before the lock screen becomes visible
-   at all — progress bar fills, a small message types itself out, then
-   the whole overlay fades to reveal the (already-rendered) lock
-   screen underneath. Runs first, independent of everything else. */
+   The bar sits where the lock screen's name will be, creeps forward
+   while the page loads, completes on window load (min ~0.9s, max 6s),
+   then the overlay fades and the lock screen's content appears in its
+   place. Runs first, independent of everything else. */
 (function() {
   const boot = document.getElementById('boot');
-  const msgEl = document.getElementById('boot-msg-text');
-  if (!boot || !msgEl) return;
+  const fill = document.getElementById('boot-fill');
+  if (!boot || !fill) return;
+  if (document.documentElement.classList.contains('ve-return')) { boot.remove(); return; }
 
-  const MESSAGE = "Preparing everything for you...";
-  const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-
-  if (reduceMotion) {
-    msgEl.textContent = MESSAGE;
-    boot.classList.add('hide');
-    setTimeout(() => boot.remove(), 500);
-    return;
+  /* Line the bar up with whichever name is on screen (desktop or phone) */
+  function place() {
+    const name = [...document.querySelectorAll('#lock .lk-name, #lockscreen .lock-name')]
+      .find(e => e.getClientRects().length && e.getBoundingClientRect().height);
+    if (!name) return;
+    const r = name.getBoundingClientRect();
+    boot.style.setProperty('--boot-y', Math.round(r.top + r.height / 2) + 'px');
   }
+  place();
+  if (document.fonts && document.fonts.ready) document.fonts.ready.then(place);
 
-  let i = 0;
-  function typeChar() {
-    if (i <= MESSAGE.length) {
-      msgEl.textContent = MESSAGE.slice(0, i);
-      i++;
-      setTimeout(typeChar, 28);
-    }
+  const start = performance.now();
+  let pct = 0, done = false;
+  const set = v => { pct = v; fill.style.width = v + '%'; };
+  requestAnimationFrame(() => set(18));
+  const creep = setInterval(() => { if (!done && pct < 88) set(pct + (90 - pct) * .18); }, 260);
+
+  function finish() {
+    if (done) return; done = true;
+    clearInterval(creep);
+    const wait = Math.max(0, 900 - (performance.now() - start));
+    setTimeout(() => {
+      set(100);
+      setTimeout(() => { boot.classList.add('hide'); setTimeout(() => boot.remove(), 650); }, 420);
+    }, wait);
   }
-  setTimeout(typeChar, 500);
-  setTimeout(() => boot.classList.add('hide'), 2600);
-  setTimeout(() => boot.remove(), 3200);
+  if (document.readyState === 'complete') finish();
+  else addEventListener('load', finish, { once: true });
+  setTimeout(finish, 6000);
 })();
 
 /* ── PROJECTS ─────────────────────────────────────────────────── */
@@ -3245,6 +3747,7 @@ let CASES = [];
    alone forge. See checkSession()/ensureCasesLoaded() below. */
 let authenticated = false;
 let casesLoaded = false;
+let sessionCheck = null;
 let pendingWindow = null;
 let currentProject = 0;
 let zCounter = 600;
@@ -3285,7 +3788,9 @@ const ICONS = {
   health:  '<path d="M10 5.6a3.8 3.8 0 0 1 6.4 2.7c0 3.4-4.4 6-6.4 8.1-2-2.1-6.4-4.7-6.4-8.1A3.8 3.8 0 0 1 10 5.6z"/>',
   chevron: '<path d="M8 4.6 13.4 10 8 15.4"/>',
   download:'<path d="M10 3v10M5.8 9.2 10 13.4l4.2-4.2M3.6 16.4h12.8"/>',
-  briefcase: '<rect x="2.6" y="6.8" width="14.8" height="9.6" rx="1.8"/><path d="M7.2 6.8V5.4a1.6 1.6 0 0 1 1.6-1.6h2.4a1.6 1.6 0 0 1 1.6 1.6v1.4"/><path d="M2.6 10.6h14.8"/>'
+  briefcase: '<rect x="2.6" y="6.8" width="14.8" height="9.6" rx="1.8"/><path d="M7.2 6.8V5.4a1.6 1.6 0 0 1 1.6-1.6h2.4a1.6 1.6 0 0 1 1.6 1.6v1.4"/><path d="M2.6 10.6h14.8"/>',
+  image: '<rect x="2.8" y="4" width="14.4" height="12" rx="1.8"/><circle cx="7.3" cy="8.3" r="1.3"/><path d="m4 14.4 3.6-3.6 2.4 2.4 3-3.6L16.4 14"/>',
+  reel: '<rect x="2.6" y="3.4" width="14.8" height="13.2" rx="2"/><path d="m8.4 7.2 4.2 2.8-4.2 2.8z"/>'
 };
 
 /* Build an inline SVG. Outline style so the shapes stay legible on any
@@ -3468,8 +3973,9 @@ document.querySelectorAll('.w-weather-uv-value').forEach(el => {
 })();
 
 /* ── LOCK SCREEN (desktop) ────────────────────────────────────────
-   Shows on every load — a lock screen that only appeared once would be
-   a splash screen. Lockable again any time from the menubar. */
+   Shows on the first load of a session; once unlocked, refreshes in the
+   same session go straight to the desktop (sessionStorage 've-unlocked').
+   Lockable again any time from the menubar. */
 (function() {
   const lock  = document.getElementById('lock');
   const enter = document.getElementById('lk-enter');
@@ -3509,6 +4015,7 @@ document.querySelectorAll('.w-weather-uv-value').forEach(el => {
     if (!locked) return;
     locked = false;
     lock.classList.remove('showing');
+    try { sessionStorage.setItem('ve-unlocked', '1'); } catch (e) {}
     window.dispatchEvent(new Event('vivien:unlocked'));
   };
 
@@ -3531,9 +4038,14 @@ document.querySelectorAll('.w-weather-uv-value').forEach(el => {
 
   setInterval(() => { if (locked) tick(); }, 15000);
 
-  /* Locked on arrival — every load */
+  /* Locked on arrival — unless this session already got past it */
   tick();
   paintIcons(lock);
+  if (document.documentElement.classList.contains('ve-return')) {
+    locked = false;
+    lock.classList.remove('showing');
+    requestAnimationFrame(() => requestAnimationFrame(() => document.documentElement.classList.remove('ve-return')));
+  }
 })();
 
 /* ── LOCK SCREEN (mobile) ─────────────────────────────────────────
@@ -3551,8 +4063,11 @@ document.querySelectorAll('.w-weather-uv-value').forEach(el => {
     if (unlocked) return;
     unlocked = true;
     lock.classList.add('unlocked');
+    try { sessionStorage.setItem('ve-unlocked', '1'); } catch (e) {}
     window.dispatchEvent(new Event('vivien:unlocked'));
   }
+
+  if (document.documentElement.classList.contains('ve-return')) { unlocked = true; lock.classList.add('unlocked'); }
 
   /* Re-shows the mobile lock screen — the star in the mobile topbar. */
   window.mobLockScreen = function() {
@@ -3670,7 +4185,7 @@ updateClock();
 setInterval(updateClock, 15000);
 
 /* ── WINDOWS ──────────────────────────────────────────────────── */
-const WIN_IDS = ['work','about','about-more','contact','downloads','preview'];
+const WIN_IDS = ['work','about','about-more','contact','downloads','preview','trash','basteln'];
 
 /* Keep a window fully inside the viewport (below the menubar, above the
    dock) without touching its size. Reads real, laid-out dimensions rather
@@ -3701,18 +4216,81 @@ function centerBottom(win) {
   win.style.top  = Math.max(minTop, Math.round(window.innerHeight - r.height - margin)) + 'px';
 }
 
+/* Pops the Trash window up right over the bin it came from — every time,
+   like centerBottom does for Contact — rather than a fixed CSS position
+   that ignores where the icon actually sits. */
+function positionAboveIcon(win, icon) {
+  if (!icon) { clampWindowToViewport(win); return; }
+  const margin = 14, topSafe = 48, bottomSafe = 98;
+  const ir = icon.getBoundingClientRect();
+  const wr = win.getBoundingClientRect();
+  const left = Math.min(Math.max(ir.left + ir.width/2 - wr.width/2, margin), window.innerWidth - wr.width - margin);
+  const top  = Math.min(Math.max(ir.top - wr.height - margin, topSafe), window.innerHeight - wr.height - bottomSafe);
+  win.style.left = left + 'px';
+  win.style.top  = top + 'px';
+}
+
 function openWindow(id) {
   const win = document.getElementById('win-'+id);
   if (!win) return;
   const firstOpen = win.style.display !== 'flex';
   win.style.display = 'flex';
   if (id === 'contact') centerBottom(win);
+  else if (id === 'trash') positionAboveIcon(win, document.getElementById('desktop-trash'));
   /* Otherwise only nudge on first open — a window the visitor has already
      dragged keeps exactly where they left it. */
   else if (firstOpen) clampWindowToViewport(win);
   focusWindow(id);
   document.getElementById('dock-'+id)?.classList.add('active');
   if (id === 'work') selectProject(currentProject);
+  if (id === 'trash') resetTrash();
+  if (id === 'basteln' && window.bstOnOpen) window.bstOnOpen();
+}
+
+/* ── TRASH — emptying it is the whole joke: everything fades out, the
+   desktop icon empties, and a one-liner takes its place. Reset on every
+   re-open rather than kept truly gone, so the bit works again next visit
+   instead of the window just staying blank forever. */
+function emptyTrash() {
+  const list = document.getElementById('trash-list');
+  const msg  = document.getElementById('trash-empty-msg');
+  const icon = document.getElementById('trash-icon-img');
+  if (!list || !msg) return;
+  if (icon) icon.src = 'images/icons/trash-empty.png';
+  list.classList.add('trash-clearing');
+  setTimeout(() => {
+    list.style.display = 'none';
+    msg.style.display = 'flex';
+  }, 300);
+}
+function resetTrash() {
+  const list = document.getElementById('trash-list');
+  const msg  = document.getElementById('trash-empty-msg');
+  const icon = document.getElementById('trash-icon-img');
+  if (!list || !msg) return;
+  if (icon) icon.src = 'images/icons/trash-full.png';
+  list.style.display = '';
+  list.classList.remove('trash-clearing');
+  msg.style.display = 'none';
+}
+
+/* ── BASTELN — open the pinboard (optionally zoomed to one brand's zone), and the links between it and the case studies ── */
+function openBasteln(zone) {
+  openWindow('basteln');
+  if (zone && window.bstOnOpen) window.bstOnOpen(zone);
+}
+/* Used by the "The physical side" block at the end of a case study */
+function bstFromCase(zone) {
+  if (window.matchMedia('(max-width: 768px)').matches) { mobOpenSheet('basteln'); return; }
+  openBasteln(zone);
+}
+/* Used by the detail cards on the pinboard: jump to the matching case study */
+async function bstGoCase(id) {
+  if (!authenticated) { openProtected('work'); return; }
+  await ensureCasesLoaded();
+  const idx = CASES.findIndex(c => c.id === id);
+  if (idx >= 0) currentProject = idx;
+  openWindow('work');
 }
 
 function closeWindow(id) {
@@ -3768,11 +4346,11 @@ WIN_IDS.forEach(id => {
    live desktop rather than describing it in a list. Desktop only — every
    trigger for this is hidden on mobile already. */
 const TOUR_STEPS = [
-  { sel: '.badge', title: 'Hi, I\'m Vivien', text: 'Digital Designer based in Hamburg, who loves to build things. This whole desktop is designed and hand-built — no template.', place: 'right' },
-  { sel: '[data-folder="work"]', title: 'Start with Case Studies', text: 'Six case studies live here, each one written the same way: challenge, decisions, outcome. Password-protected — ask if you need the code.', place: 'right' },
+  { sel: '.badge', title: 'Hi, I\'m Vivien', text: 'Brand & Graphic Designer based in Hamburg, who also loves to build things. This whole desktop is designed by me, no template.', place: 'right' },
+  { sel: '[data-folder="work"]', title: 'Start with Case Studies', text: 'A handful of case studies live here, each one written the same way: challenge, decisions, outcome. Password-protected, so just ask if you need the code.', place: 'right' },
   { sel: '#garden', title: 'Plant something', text: 'Click the meadow. It\'s a small thing, but it\'s the one part of this site that\'s entirely yours.', place: 'left' },
   { sel: '#dock', title: 'My toolkit', text: 'Hover any icon down here to see how I actually use it day to day.', place: 'top' },
-  { sel: '.mb-lock', title: 'Come back anytime', text: 'That\'s the same icon that locked the screen when you arrived — click it whenever you want to see that again.', place: 'bottom' }
+  { sel: '.mb-lock', title: 'Come back anytime', text: 'That\'s the same icon that locked the screen when you arrived. Click it whenever you want to see that again.', place: 'bottom' }
 ];
 let tourIndex = 0;
 
@@ -3903,17 +4481,59 @@ async function ensureCasesLoaded() {
 }
 
 async function openProtected(id) {
+  /* A click that lands before the cookie check has answered must not be
+     mistaken for "logged out" — wait for it first. */
+  if (!authenticated && sessionCheck) await sessionCheck;
   if (authenticated) { await ensureCasesLoaded(); openWindow(id); return; }
   pendingWindow = id;
-  document.getElementById('pw-modal').classList.add('open');
+  openPwModal(id);
+}
+const PW_TARGETS = {
+  work:      ['Case Studies', 'images/icons/casestudies.png'],
+  downloads: ['Downloads',    'images/icons/downloads.png']
+};
+function openPwModal(key) {
+  const m = document.getElementById('pw-modal'), box = m.querySelector('.pw-box');
+  const [label, img] = PW_TARGETS[key] || ['This folder', 'images/icons/folder-custom.png'];
+  document.getElementById('pw-title').textContent = `“${label}” is locked`;
+  document.getElementById('pw-folder').src = img;
   document.getElementById('pw-input').value = '';
   document.getElementById('pw-hint').textContent = '';
-  setTimeout(()=>document.getElementById('pw-input').focus(),100);
+  box.classList.remove('ok', 'err', 'shake');
+  pwRender();
+  m.classList.add('open');
+  requestAnimationFrame(() => requestAnimationFrame(() => m.classList.add('show')));
+  setTimeout(() => document.getElementById('pw-input').focus(), 120);
+}
+/* Mirror the hidden input as dots, adding/removing only the changed ones
+   so each new dot pops in on its own. */
+function pwRender() {
+  const n = document.getElementById('pw-input').value.length;
+  const dots = document.getElementById('pw-dots');
+  const ph = dots.querySelector('.pw-ph');
+  if (n && ph) ph.remove();
+  if (!n && !ph) { dots.innerHTML = '<span class="pw-ph">Password</span>'; }
+  else if (n) {
+    let caret = dots.querySelector('.pw-caret');
+    if (!caret) { caret = document.createElement('span'); caret.className = 'pw-caret'; dots.appendChild(caret); }
+    const have = dots.querySelectorAll('i');
+    for (let k = have.length; k < n; k++) dots.insertBefore(document.createElement('i'), caret);
+    for (let k = have.length - 1; k >= n; k--) have[k].remove();
+  }
+  document.getElementById('pw-go').disabled = !n;
+  document.querySelector('.pw-box').classList.remove('err');
+}
+function pwAsk() {
+  const mobile = !!mobPwTarget;
+  closePwModal();
+  mobPwTarget = null; pendingWindow = null;
+  if (mobile) mobOpenSheet('contact'); else openWindow('contact');
 }
 async function checkPw() {
   const inp = document.getElementById('pw-input');
-  const btn = document.querySelector('.pw-btn');
-  if (btn) btn.disabled = true;
+  const btn = document.getElementById('pw-go'), box = document.querySelector('.pw-box');
+  if (!inp.value) return;
+  btn.disabled = true; btn.classList.add('busy');
   try {
     const res = await fetch('/api/login', {
       method: 'POST',
@@ -3924,22 +4544,27 @@ async function checkPw() {
     if (res.ok) {
       authenticated = true;
       syncLockIcons();
-      await ensureCasesLoaded();
+      btn.classList.remove('busy'); box.classList.add('ok');
+      await Promise.all([ensureCasesLoaded(), new Promise(r => setTimeout(r, 650))]);
       closePwModal();
       if (mobPwTarget) { mobOpenSheet(mobPwTarget); mobPwTarget = null; }
       else if (pendingWindow) { openWindow(pendingWindow); pendingWindow = null; }
     } else {
-      inp.classList.add('error');
-      document.getElementById('pw-hint').textContent = 'Wrong password — just ask me.';
-      setTimeout(()=>inp.classList.remove('error'),400);
+      box.classList.remove('shake'); void box.offsetWidth; box.classList.add('shake', 'err');
+      document.getElementById('pw-hint').textContent = 'Not quite. Just ask me.';
+      inp.select();
     }
   } catch (e) {
-    document.getElementById('pw-hint').textContent = 'Something went wrong — try again.';
+    document.getElementById('pw-hint').textContent = 'Something went wrong. Try again.';
   } finally {
-    if (btn) btn.disabled = false;
+    btn.classList.remove('busy'); btn.disabled = !inp.value;
   }
 }
-function closePwModal() { document.getElementById('pw-modal').classList.remove('open'); }
+function closePwModal() {
+  const m = document.getElementById('pw-modal');
+  m.classList.remove('show');
+  setTimeout(() => { if (!m.classList.contains('show')) m.classList.remove('open'); }, 260);
+}
 
 async function checkSession() {
   try {
@@ -3956,42 +4581,137 @@ async function checkSession() {
 /* ── FINDER: sidebar + inline case rendering ──────────────────── */
 
 /* Sidebar is generated from CASES so the two can never drift apart. */
+/* Tag chips a recruiter can filter Case Studies by — narrows the
+   sidebar list (and the mobile "work" sheet) together with search. */
+const activeFilters = new Set();
+
+const STATUS_LABEL = { current:'Current', paused:'Currently on pause', past:'Past Work', progress:'In progress' };
+
 function buildSidebar() {
   const el = document.getElementById('finder-sidebar');
   if (!el) return;
-  let html = '', lastGroup = null;
+  const allFilters = [...new Set(CASES.flatMap(c => c.filters || []))].sort((x, y) => (x === 'UX/UI') - (y === 'UX/UI'));
+  let html = allFilters.length
+    ? `<div class="fs-filters">${allFilters.map(f =>
+        `<button class="fs-filter-chip" data-filter="${f}" onclick="toggleFilter('${f}',this)">${f}</button>`
+      ).join('')}</div>`
+    : '';
+  let lastGroup = null;
   CASES.forEach((c, i) => {
     if (c.group !== lastGroup) {
-      html += `<div class="fs-section-label">${c.group}</div>`;
+      html += `<div class="fs-section-label" data-group="${c.group}">${c.group}</div>`;
       lastGroup = c.group;
     }
-    html += `<div class="fs-item" data-idx="${i}" onclick="selectProject(${i})">${icon(c.icon,'fs-ico')} ${c.nav}</div>`;
+    const ico = c.logo
+      ? `<img class="fs-ico" src="${c.logo}" alt="">`
+      : `<span class="fs-ico fs-ico-fallback"></span>`;
+    html += `<div class="fs-item" data-idx="${i}" onclick="selectProject(${i})">${ico} <span class="fs-item-name">${c.nav}</span>${c.badge ? `<span class="fs-badge">${c.badge}</span>` : ''}</div>`;
   });
   el.innerHTML = html;
 }
 
+function toggleFilter(f, btn) {
+  if (activeFilters.has(f)) { activeFilters.delete(f); btn.classList.remove('active'); }
+  else { activeFilters.add(f); btn.classList.add('active'); }
+  filterProjects(document.querySelector('.finder-search')?.value || '');
+}
+
 const esc = s => String(s);
 
-function sectionHTML(label, title, inner) {
-  return `<section class="case-section">
+/* Stable, readable anchors for the jump nav — falls back to a slugified
+   label for any section not in the map. */
+const SECTION_SLUGS = {
+  'The Challenge':'challenge', 'Approach':'approach', 'Key Decisions':'decisions',
+  'Live Demo':'demo', 'The Work':'work', 'Outcome':'outcome', 'Reflection':'reflection'
+};
+function sectionHTML(label, title, inner, forceSlug) {
+  const slug = forceSlug || SECTION_SLUGS[label] || label.toLowerCase().replace(/[^a-z0-9]+/g,'-');
+  return `<section class="case-section" id="cs-${slug}">
     <div class="cs-label">${label}</div>
     ${title ? `<div class="cs-title">${title}</div>` : ''}
     ${inner}
   </section>`;
 }
 
+/* Turns a media array into the grid used by both "The Work" and any
+   per-case sub-project spotlight. Three item kinds: a real 'img'/'video',
+   a 'placeholder' — a labelled dashed-frame standing in for a visual
+   Vivien hasn't dropped in yet — and a 'note', which is content (not
+   visual) still needed from her, so it renders as the yellow TODO box
+   instead of sitting in the image grid. */
+function mediaGridHTML(media) {
+  if (!media || !media.length) return '';
+  const notes = media.filter(m=>m.type==='note');
+  const vis   = media.filter(m=>m.type!=='note');
+  let out = '';
+  if (vis.length) {
+    out += `<div class="cs-media two">${vis.map(m => {
+      if (m.type === 'placeholder') {
+        return `<div class="cs-visual">${icon('image')}<span>${m.label}</span></div>`;
+      }
+      return `<figure class="cs-figure">
+        ${m.type==='video'
+          ? `<video src="${m.src}" muted loop playsinline autoplay></video>`
+          : `<img src="${m.src}" alt="${m.cap||''}" loading="lazy">`}
+        ${m.cap?`<figcaption class="cs-cap">${m.cap}</figcaption>`:''}
+      </figure>`;
+    }).join('')}</div>`;
+  }
+  notes.forEach(n => { out += `<div class="cs-todo" style="margin-top:14px">${n.text}</div>`; });
+  return out;
+}
+
+/* Which sections a given case actually has, in reading order — drives
+   both the jump nav and (implicitly) sectionHTML's calls below. Kept as
+   one list so the two can never drift apart. */
+function caseNavItems(c) {
+  const items = [];
+  if (c.challenge) items.push(['challenge','Challenge']);
+  if (c.approach) items.push(['approach','Approach']);
+  if (c.decisions) items.push(['decisions','Key Decisions']);
+  if (c.spotlight) items.push(['spotlight', c.spotlight.navLabel || 'Spotlight']);
+  if (c.demo) items.push(['demo','Live Demo']);
+  if ((c.media && c.media.length) || c.mediaTodo) items.push(['work','The Work']);
+  if (c.stats || c.outcome || c.outcomeTodo || c.meaning) items.push(['outcome','Outcome']);
+  if (c.reflection) items.push(['reflection','Reflection']);
+  return items;
+}
+
+const BST_LINKS = {
+  'studio-liebe': { zone:'sl',   img:'sl-slots.jpg',       text:'For Studio Liebe I made a vinyl with sleeve for the promo with Faze, slot machine keychains for the crew and the cover of the Can\'t Stop magazine.' },
+  'nrg':          { zone:'nrg',  img:'nrg-drinks.jpg',     text:'For the NRG promo I redesigned everyday products so the event details sit on them, and made lighters with the artists\' names.' },
+  'mi4l':         { zone:'mi4l', img:'mi4l-coasters.jpg',  text:'Mini vinyl coasters as a gift for the crew: sleeves made from event flyers, stickers plotted by me.' }
+};
 function renderCase(i) {
   const c = CASES[i];
   if (!c) return '';
+  if (c.customHTML) {
+    return `<article class="case case-custom"${c.theme ? ` data-theme="${c.theme}"` : ''}>${c.customHTML}</article>`;
+  }
   let h = '';
 
   /* Hero */
   h += `<div class="case-hero">
+    ${c.status ? `<span class="case-status case-status-${c.status}">${STATUS_LABEL[c.status]}</span>` : ''}
     <div class="case-kicker">${c.kicker}</div>
     <h1 class="case-title">${c.title}</h1>
     <p class="case-lede">${c.lede}</p>
     <div class="case-tags">${c.tags.map(t=>`<span class="case-tag">${t}</span>`).join('')}</div>
   </div>`;
+
+  /* Overview / Dive Deeper — an opt-in skim-first layout (c.overview).
+     A few visual placeholders, then facts, then the gist of the Key
+     Decisions with no supporting prose. Everything past this point
+     (the full write-up) sits in .case-detail, collapsed until the
+     button is clicked, so it never has to be read to get the gist. */
+  const OV_ICON = { reel:'reel', post:'image' };
+  if (c.overview) {
+    if (c.overview.visuals) {
+      h += `<div class="cs-ov-visuals">${c.overview.visuals.map(v=>
+        `<div class="cs-visual">${icon(OV_ICON[v.type] || 'image')}<span class="ov-brand">${v.brand}</span><span>${v.label}</span></div>`
+      ).join('')}</div>`;
+    }
+  }
 
   /* At a glance */
   if (c.facts) {
@@ -4000,10 +4720,42 @@ function renderCase(i) {
     ).join('')}</div>`;
   }
 
+  if (c.overview) {
+    if (c.challenge) h += `<div class="cs-ov-quote"><div class="cs-pull">${c.challenge.pull}</div></div>`;
+    if (c.decisions) {
+      h += `<div class="cs-ov-decisions">${c.decisions.map(d=>
+        `<div class="cs-ov-dec"><span class="cs-ov-dec-tag">${d.tag}</span>${d.title}</div>`
+      ).join('')}</div>`;
+    }
+    h += `<div class="cs-dive-wrap"><button class="cs-dive-btn" onclick="toggleCaseDetail(this)">
+      <span class="cs-dive-label">Dive deeper</span><span class="cs-dive-arrow">↓</span>
+    </button></div>`;
+    h += `<div class="case-detail">`;
+  }
+
+  /* Jump nav — lets a recruiter skip straight to Key Decisions or
+     Outcome. Sticks to the top of whichever scroll container it ends up
+     in (desktop finder or the mobile sheet) once scrolled past. */
+  const navItems = caseNavItems(c);
+  if (navItems.length > 1) {
+    h += `<nav class="cs-jumpnav">${navItems.map(([slug,label])=>
+      `<button class="cs-jump-item" data-target="cs-${slug}" onclick="jumpToSection('cs-${slug}')">${label}</button>`
+    ).join('')}</nav>`;
+  }
+
   /* Challenge */
   if (c.challenge) {
     h += sectionHTML('The Challenge','',
       `<div class="cs-pull">${c.challenge.pull}</div><div class="cs-body">${c.challenge.body}</div>`);
+  }
+
+  /* Full-bleed photo break — an editorial breather right after the
+     Challenge, before the denser Approach/Decisions sections. */
+  if (c.heroBreak) {
+    h += `<div class="cs-photobreak">
+      <img src="${c.heroBreak.src}" alt="${c.heroBreak.cap || ''}" loading="lazy">
+      ${c.heroBreak.cap ? `<span class="cs-photobreak-cap">${c.heroBreak.cap}</span>` : ''}
+    </div>`;
   }
 
   /* Approach */
@@ -4017,12 +4769,23 @@ function renderCase(i) {
   /* Decisions — the part most portfolios skip */
   if (c.decisions) {
     h += sectionHTML('Key Decisions','What I chose, and why.',
-      `<div class="cs-decisions">${c.decisions.map(d=>
+      `<div class="cs-decisions">${c.decisions.map((d,i)=>
         `<div class="cs-decision">
-           <div class="cs-dec-head"><span class="cs-dec-tag">${d.tag}</span><span class="cs-dec-title">${d.title}</span></div>
-           <div class="cs-dec-why">${d.why}</div>
+           <div class="cs-dec-n">0${i+1}</div>
+           <div class="cs-dec-body">
+             <div class="cs-dec-head"><span class="cs-dec-tag">${d.tag}</span><span class="cs-dec-title">${d.title}</span></div>
+             <div class="cs-dec-why">${d.why}</div>
+           </div>
          </div>`
       ).join('')}</div>`);
+  }
+
+  /* Sub-project spotlight — e.g. a smaller side-format that lives under
+     the main brand, called out on its own rather than buried in a bullet */
+  if (c.spotlight) {
+    const s = c.spotlight;
+    h += sectionHTML(s.eyebrow || 'Sub-Project', s.title,
+      `<div class="cs-body">${s.body}</div>${mediaGridHTML(s.media)}`, 'spotlight');
   }
 
   /* Live demo — an interactive prototype embedded in browser chrome */
@@ -4042,35 +4805,26 @@ function renderCase(i) {
   }
 
   /* The work / media */
-  if (c.media || c.mediaTodo) {
-    let inner = '';
-    if (c.media) {
-      const notes = c.media.filter(m=>m.type==='note');
-      const vis   = c.media.filter(m=>m.type!=='note');
-      if (vis.length) {
-        inner += `<div class="cs-media two">${vis.map(m=>
-          `<figure class="cs-figure">
-             ${m.type==='video'
-               ? `<video src="${m.src}" muted loop playsinline autoplay></video>`
-               : `<img src="${m.src}" alt="${m.cap||''}" loading="lazy">`}
-             ${m.cap?`<figcaption class="cs-cap">${m.cap}</figcaption>`:''}
-           </figure>`).join('')}</div>`;
-      }
-      notes.forEach(n=>{ inner += `<div class="cs-todo" style="margin-top:14px">${n.text}</div>`; });
-    }
+  if ((c.media && c.media.length) || c.mediaTodo) {
+    let inner = mediaGridHTML(c.media);
     if (c.mediaTodo) inner += `<div class="cs-todo">${c.mediaTodo}</div>`;
     h += sectionHTML('The Work','', inner);
   }
 
   /* Outcome */
-  if (c.stats || c.outcomeTodo) {
+  if (c.stats || c.outcome || c.outcomeTodo || c.meaning) {
     let inner = '';
+    if (c.outcome) {
+      inner += `<p class="cs-body" style="margin-bottom:14px">${c.outcome.lede}</p><div class="cs-outcome">${c.outcome.points.map(([tag,title,text]) =>
+        `<div class="cs-oc"><span class="cs-oc-tag">${tag}</span><h4>${title}</h4><p>${text}</p></div>`).join('')}</div>`;
+    }
     if (c.stats) {
       inner += `<div class="cs-stats">${c.stats.map(([v,l])=>
         `<div class="cs-stat"><span class="cs-stat-v">${v}</span><span class="cs-stat-l">${l}</span></div>`
       ).join('')}</div>`;
     }
     if (c.outcomeTodo) inner += `<div class="cs-todo">${c.outcomeTodo}</div>`;
+    if (c.meaning) inner += `<div class="cs-meaning"><div class="cs-meaning-l">What this means for you</div><p>${c.meaning}</p></div>`;
     h += sectionHTML('Outcome','What it changed.', inner);
   }
 
@@ -4079,6 +4833,8 @@ function renderCase(i) {
     h += sectionHTML('Reflection','What I took from it.', `<div class="cs-body">${c.reflection}</div>`);
   }
 
+  if (c.overview) h += `</div>`; /* close .case-detail */
+
   /* Prev / next */
   const prev = CASES[i-1], next = CASES[i+1];
   h += `<div class="case-foot">
@@ -4086,7 +4842,217 @@ function renderCase(i) {
     <div>${next?`<button class="next" onclick="selectProject(${i+1})">Next: ${next.nav} →</button>`:''}</div>
   </div>`;
 
-  return `<article class="case">${h}</article>`;
+  /* "The physical side" — a link from a case study to its zone on the Basteln pinboard */
+  const BST = BST_LINKS[c.id];
+  if (BST) h += `<div class="case-physical">
+    <div class="cp-media"><div class="polaroid"><div class="ph"><img src="work/basteln/web/${BST.img}" alt=""></div></div></div>
+    <div class="cp-text">
+      <div class="cp-eyebrow">The physical side</div>
+      <h3>Not everything I make lives on a screen.</h3>
+      <p>${BST.text}</p>
+      <button class="cp-btn" onclick="bstFromCase('${BST.zone}')">See it in Basteln →</button>
+    </div>
+  </div>`;
+  return `<article class="case"${c.theme ? ` data-theme="${c.theme}"` : ''}>${h}</article>`;
+}
+
+/* ══ JCO custom case — behaviour for the collage hero + deep dive ══
+   The markup comes from CASES[i].customHTML; this wires it up after
+   each render (desktop Finder or mobile sheet). Scroll-driven bits use
+   the case's own scroll container, not the window. */
+function jxRoot(el) { return el.closest('#case-scroll, .mob-sheet') || document.scrollingElement; }
+function jxLightbox(src) {
+  let lb = document.getElementById('jx-lightbox');
+  if (!lb) {
+    lb = document.createElement('div'); lb.id = 'jx-lightbox'; lb.className = 'jx-lightbox';
+    lb.innerHTML = '<img alt="">'; lb.onclick = () => lb.classList.remove('open');
+    document.body.appendChild(lb);
+  }
+  lb.querySelector('img').src = src; lb.classList.add('open');
+}
+function jxReel(el) {
+  const v = el.querySelector('video'); if (!v) return;
+  if (v.paused) { v.play(); el.classList.add('playing'); } else { v.pause(); el.classList.remove('playing'); }
+}
+function jxCarGo(btn, d) { const t = btn.parentElement.querySelector('.car-track'); t.scrollBy({ left: d * t.clientWidth, behavior: 'smooth' }); }
+/* Bento tiles: carousel dots, reels that play muted on hover and with sound on click */
+function jxTileDots(t) { const i = Math.round(t.scrollLeft / t.clientWidth); t.parentElement.querySelectorAll('.car-dots span').forEach((s, k) => s.classList.toggle('on', k === i)); }
+function jxTileHover(el, on) {
+  const v = el.querySelector('video'); if (!v || el.dataset.pinned) return;
+  if (on) { v.play(); el.classList.add('playing'); } else { v.pause(); el.classList.remove('playing'); }
+}
+/* Work-strip reels loop muted; a click toggles their sound */
+function jxWorkSound(fig) {
+  const v = fig.querySelector('video'); if (!v) return;
+  v.muted = !v.muted; fig.classList.toggle('sound', !v.muted);
+  if (v.paused) v.play();
+}
+function jxTileReel(el) {
+  const v = el.querySelector('video'); if (!v) return;
+  if (el.dataset.pinned) { delete el.dataset.pinned; v.muted = true; v.pause(); el.classList.remove('playing'); }
+  else { el.dataset.pinned = 1; v.muted = false; v.play(); el.classList.add('playing'); }
+}
+function jxCarDots(t) { const i = Math.round(t.scrollLeft / t.clientWidth); t.closest('.ig-post').querySelectorAll('.car-dots span').forEach((s, k) => s.classList.toggle('on', k === i)); }
+/* Pin the record to the bottom-right of the case's scroll area. Window
+   chrome can make CSS right/bottom resolve against the viewport, so
+   compute from the scroller's own rect instead. */
+function jxDock(surface) {
+  const wrap = surface.querySelector('.vinyl-wrap'), root = jxRoot(surface);
+  if (!wrap || !root.getBoundingClientRect) return;
+  const place = () => {
+    if (!surface.isConnected) { removeEventListener('resize', place); return; }
+    /* position:fixed may resolve against the window element (backdrop-filter
+       makes it the containing block), so measure where 0/0 lands first */
+    wrap.style.setProperty('--dock-x', '0px'); wrap.style.setProperty('--dock-y', '0px');
+    const o = wrap.getBoundingClientRect(), r = root.getBoundingClientRect();
+    const ox = o.right - 150, oy = o.bottom - 118;   /* box origin (scaled from bottom-right) */
+    wrap.style.setProperty('--dock-x', (r.right - 24 - 150 - ox) + 'px');
+    wrap.style.setProperty('--dock-y', (r.bottom - 38 - 118 - oy) + 'px');
+
+  };
+  place(); addEventListener('resize', place);
+}
+function jxLike(svg, e) {
+  e.stopPropagation();
+  const post = svg.closest('.ig-post, .tile'), liked = svg.classList.toggle('liked');
+  svg.classList.remove('pop'); void svg.getBoundingClientRect(); svg.classList.add('pop');
+  if (!liked || !post) return;
+  const pr = post.getBoundingClientRect(), sr = svg.getBoundingClientRect(), k = pr.width / post.offsetWidth || 1;
+  for (let i = 0; i < 7; i++) {
+    const h = document.createElement('span');
+    h.className = 'fly-heart';
+    h.innerHTML = '<svg viewBox="0 0 24 24"><path d="M12 21s-7-4.35-9.5-8.5C.5 8.5 3 5 6.5 5c2 0 3.5 1.2 4.5 2.8C12 6.2 13.5 5 15.5 5 19 5 21.5 8.5 19.5 12.5 17 16.65 12 21 12 21z"/></svg>';
+    h.style.left = ((sr.left - pr.left) / k + 2) + 'px';
+    h.style.top = ((sr.top - pr.top) / k - 4) + 'px';
+    const dx = (Math.random() - .5) * 60, dy = -(50 + Math.random() * 70), s = .6 + Math.random() * .7, r = (Math.random() - .5) * 50;
+    post.appendChild(h);
+    h.animate([
+      { transform: 'translate(0,0) scale(.3) rotate(0deg)', opacity: 0 },
+      { transform: `translate(${dx * .3}px, ${dy * .3}px) scale(${s}) rotate(${r * .4}deg)`, opacity: 1, offset: .25 },
+      { transform: `translate(${dx}px, ${dy}px) scale(${s * .8}) rotate(${r}deg)`, opacity: 0 }
+    ], { duration: 900 + Math.random() * 600, delay: i * 55, easing: 'cubic-bezier(.2,.7,.3,1)', fill: 'both' }).onfinish = () => h.remove();
+  }
+}
+function jxDive(el) {
+  const surface = el.closest('.surface'); if (!surface) return;
+  const opening = !surface.classList.contains('open');
+  const wrap = surface.querySelector('.vinyl-wrap');
+  const from = wrap && wrap.getBoundingClientRect();
+  surface.classList.toggle('open', opening);
+  const root = jxRoot(surface);
+  if (opening) { jxDock(surface); jxPlayLoops(surface); }
+  /* FLIP: glide the record between its spot and the docked corner */
+  if (wrap && from && wrap.animate) {
+    const to = wrap.getBoundingClientRect();
+    const dx = from.right - to.right, dy = from.bottom - to.bottom, k = from.width / to.width;
+    wrap.animate([{ transform: `translate(${dx}px, ${dy}px) scale(${k})` }, { transform: 'none' }],
+      { duration: 750, easing: 'cubic-bezier(.22,1,.36,1)' });
+  }
+  const target = opening ? surface.querySelector('.deep') : surface;
+  setTimeout(() => {
+    const top = target.getBoundingClientRect().top - (root.getBoundingClientRect ? root.getBoundingClientRect().top : 0) + root.scrollTop;
+    root.scrollTo({ top: opening ? top - 10 : 0, behavior: 'smooth' });
+  }, opening ? 120 : 0);
+}
+
+/* Looping case videos carry data-autoloop instead of autoplay: inside the
+   case window Chrome's autoplay heuristics wrongly treat them as off-screen
+   and keep pausing them, so play/pause is driven by visibility here. */
+function jxPlayLoops(root) {
+  const vids = root.querySelectorAll('video[data-autoloop], video[autoplay]');
+  const play = v => { const p = v.play(); if (p && p.catch) p.catch(() => {}); };
+  if (!('IntersectionObserver' in window)) { vids.forEach(play); return; }
+  /* play while on screen, pause when scrolled away */
+  const io = root._jxIO || (root._jxIO = new IntersectionObserver(es => es.forEach(e => {
+    if (e.isIntersecting) play(e.target); else e.target.pause();
+  }), { threshold: .2 }));
+  vids.forEach(v => io.observe(v));
+}
+function jxInit(scope) {
+  const jx = scope && scope.querySelector('.jx'); if (!jx) return;
+  jxPlayLoops(jx);
+  const root = jxRoot(jx);
+  /* Scale the fixed-size collage down on narrow containers */
+  const box = jx.querySelector('.jx-collage-box'), col = jx.querySelector('.collage');
+  const fit = () => {
+    if (!box || !col) return;
+    const w = col.clientWidth, s = Math.min(1, w / 650);
+    box.style.transform = s < 1 ? `scale(${s})` : '';
+    col.style.height = s < 1 ? (610 * s) + 'px' : '';
+  };
+  fit(); if (window.ResizeObserver && col) new ResizeObserver(fit).observe(col);
+  /* Segmented nav: click-to-scroll + scrollspy inside the case scroller */
+  const links = [...jx.querySelectorAll('.seg a')];
+  const secs = [...jx.querySelectorAll('.deep-in > section[id]')];
+  links.forEach(a => a.addEventListener('click', e => {
+    e.preventDefault();
+    const t = jx.querySelector(a.getAttribute('href')); if (!t) return;
+    const rTop = root.getBoundingClientRect ? root.getBoundingClientRect().top : 0;
+    root.scrollTo({ top: t.getBoundingClientRect().top - rTop + root.scrollTop - 70, behavior: 'smooth' });
+  }));
+  const spy = () => {
+    if (!jx.isConnected) { root.removeEventListener('scroll', spy); return; }
+    const rTop = root.getBoundingClientRect ? root.getBoundingClientRect().top : 0;
+    const h = root.clientHeight;
+    let cur = secs[0] && secs[0].id;
+    secs.forEach(s => { if (s.getBoundingClientRect().top - rTop < h * .4) cur = s.id; });
+    if (root.scrollTop + h >= root.scrollHeight - 4 && jx.querySelector('.surface.open')) cur = secs[secs.length - 1].id;
+    links.forEach(a => a.classList.toggle('on', a.getAttribute('href') === '#' + cur));
+  };
+  root.addEventListener('scroll', spy, { passive: true });
+  /* iMessage takeaway: plays once when it scrolls into view */
+  const chat = jx.querySelector('.chat'); if (!chat) return;
+  const list = chat.querySelector('.chat-list');
+  const q = list.querySelector('.msg.q'), typing = list.querySelector('.typing'),
+        replies = [...list.querySelectorAll('.msg.r')], done = list.querySelector('.chat-delivered');
+  const wait = ms => new Promise(r => setTimeout(r, ms));
+  function show(el, hide) {
+    const vis = [...list.children].filter(c => c !== el && c !== hide && c.offsetParent);
+    const before = vis.map(c => c.getBoundingClientRect().top);
+    if (hide) hide.classList.remove('show', 'pop');
+    el.classList.add('show'); el.classList.remove('pop'); void el.offsetWidth; el.classList.add('pop');
+    vis.forEach((c, i) => {
+      const dy = before[i] - c.getBoundingClientRect().top;
+      if (dy) c.animate([{ transform: `translateY(${dy}px)` }, { transform: 'none' }], { duration: 320, easing: 'cubic-bezier(.32,.72,0,1)' });
+    });
+  }
+  let played = false;
+  async function play() {
+    if (played) return; played = true;
+    show(q); await wait(450); show(done); await wait(800);
+    for (const m of replies) {
+      list.insertBefore(typing, m); show(typing);
+      await wait(900 + Math.min(m.textContent.length * 8, 900));
+      show(m, typing); await wait(500);
+    }
+  }
+  /* start only once the reader has scrolled all the way to the bottom */
+  const atBottom = () => {
+    if (!jx.isConnected) { root.removeEventListener('scroll', atBottom); return; }
+    if (!jx.querySelector('.surface.open')) return;
+    if (root.scrollTop + root.clientHeight >= root.scrollHeight - 12) { root.removeEventListener('scroll', atBottom); play(); }
+  };
+  root.addEventListener('scroll', atBottom, { passive: true });
+}
+
+/* Overview mode's "Dive deeper" — reveals the full write-up in place.
+   Jump nav only gets initialised once the detail is actually visible,
+   since an IntersectionObserver on display:none elements never fires. */
+function toggleCaseDetail(btn) {
+  const article = btn.closest('.case');
+  const detail = article && article.querySelector('.case-detail');
+  if (!detail) return;
+  const opening = !detail.classList.contains('open');
+  detail.classList.toggle('open', opening);
+  btn.classList.toggle('open', opening);
+  const label = btn.querySelector('.cs-dive-label');
+  if (label) label.textContent = opening ? 'Show less' : 'Dive deeper';
+  if (opening) {
+    const scope = btn.closest('#case-scroll, .mob-sheet');
+    if (scope) initJumpNav(scope);
+  } else {
+    btn.scrollIntoView({ behavior:'smooth', block:'center' });
+  }
 }
 
 function selectProject(idx) {
@@ -4098,18 +5064,65 @@ function selectProject(idx) {
   if (!scroll) return;
   scroll.innerHTML = renderCase(idx);
   scroll.scrollTop = 0;
+  initJumpNav(scroll);
+  jxInit(scroll);
 }
 
 function filterProjects(q) {
   q = q.toLowerCase().trim();
+  const groupsWithHits = new Set();
   document.querySelectorAll('.fs-item[data-idx]').forEach(el=>{
     const c = CASES[parseInt(el.dataset.idx)];
-    const hit = !q
+    const searchHit = !q
       || c.title.toLowerCase().includes(q)
       || c.nav.toLowerCase().includes(q)
       || c.tags.some(t=>t.toLowerCase().includes(q));
+    const filterHit = activeFilters.size === 0 || (c.filters||[]).some(f=>activeFilters.has(f));
+    const hit = searchHit && filterHit;
     el.style.display = hit ? '' : 'none';
+    if (hit) groupsWithHits.add(c.group);
   });
+  document.querySelectorAll('.fs-section-label[data-group]').forEach(lbl=>{
+    lbl.style.display = groupsWithHits.has(lbl.dataset.group) ? '' : 'none';
+  });
+}
+
+/* ── Jump nav: click-to-scroll + scrollspy ──────────────────────────
+   Works for both the desktop Finder (#case-scroll) and the mobile sheet
+   (.mob-sheet) — the two are the only scrollable ancestors a rendered
+   case ever sits inside. */
+let _jumpObserver = null;
+
+function jumpToSection(id) {
+  const target = document.getElementById(id);
+  if (!target) return;
+  const root = target.closest('#case-scroll, .mob-sheet');
+  if (!root) { target.scrollIntoView({behavior:'smooth', block:'start'}); return; }
+  const nav = root.querySelector('.cs-jumpnav');
+  const navH = nav ? nav.getBoundingClientRect().height : 0;
+  const headerH = root.classList.contains('mob-sheet')
+    ? (root.querySelector('.mob-sheet-header')?.getBoundingClientRect().height || 0) + 20
+    : 0;
+  const top = target.getBoundingClientRect().top - root.getBoundingClientRect().top
+    + root.scrollTop - navH - headerH - 8;
+  root.scrollTo({ top, behavior:'smooth' });
+}
+
+function initJumpNav(scope) {
+  const nav = scope.querySelector('.cs-jumpnav');
+  const sections = [...scope.querySelectorAll('.case-section[id]')];
+  if (_jumpObserver) { _jumpObserver.disconnect(); _jumpObserver = null; }
+  if (!nav || !sections.length) return;
+  const root = scope.closest('#case-scroll, .mob-sheet') || scope;
+  _jumpObserver = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (!entry.isIntersecting) return;
+      nav.querySelectorAll('.cs-jump-item').forEach(b =>
+        b.classList.toggle('active', b.dataset.target === entry.target.id)
+      );
+    });
+  }, { root, rootMargin: '-45% 0px -50% 0px', threshold: 0 });
+  sections.forEach(s => _jumpObserver.observe(s));
 }
 
 /* ── ABOUT TABS ────────────────────────────────────────────────── */
@@ -4121,8 +5134,8 @@ function showAboutTab(tab,el) {
 
 /* ── DOWNLOADS ────────────────────────────────────────────────── */
 const FILES = {
-  'cv-en':      { path:'/api/download?file=cv-en',       filename:'Vivien Evers - CV (EN).pdf',      label:'CV — English',    kind:'pdf' },
-  'cv-de':      { path:'/api/download?file=cv-de',       filename:'Vivien Evers - CV (DE).pdf',      label:'CV — German',     kind:'pdf' },
+  'cv-en':      { path:'/api/download?file=cv-en',       filename:'Vivien Evers - CV (EN).pdf',      label:'CV (English)',    kind:'pdf' },
+  'cv-de':      { path:'/api/download?file=cv-de',       filename:'Vivien Evers - CV (DE).pdf',      label:'CV (German)',     kind:'pdf' },
   'certificate':{ path:'/api/download?file=certificate', filename:'Vivien Evers - IHK Certificate.pdf', label:'IHK Certificate', kind:'pdf' },
   'coverletter':{ path:'downloads/vivien-evers-cover-letter-template.docx', filename:'vivien-evers-cover-letter-template.docx', label:'Cover Letter', kind:'binary' },
   'contact':    { path:'/api/download?file=contact',     filename:'vivien-evers.vcf',                 label:'Contact Card',    kind:'text' }
@@ -4201,28 +5214,38 @@ function downloadFile(type) { openFile(type); }
    a PDF into an iframe — the native viewer is simply better on a small
    screen, and it offers saving and sharing itself. */
 /* ── MOBILE ───────────────────────────────────────────────────── */
+const mobWorkFilters = new Set();
+function mobToggleWorkFilter(f, btn) {
+  if (mobWorkFilters.has(f)) { mobWorkFilters.delete(f); btn.classList.remove('active'); }
+  else { mobWorkFilters.add(f); btn.classList.add('active'); }
+  document.querySelectorAll('#mwf-list .mwf-card').forEach(card=>{
+    const filters = card.dataset.filters.split('|').filter(Boolean);
+    const hit = mobWorkFilters.size === 0 || filters.some(f=>mobWorkFilters.has(f));
+    card.style.display = hit ? '' : 'none';
+  });
+}
 const MOB_CONTENT = {
   about:{title:'About',html:`
     <div style="display:flex;flex-direction:column;align-items:center;text-align:center;margin-bottom:26px">
       <div style="position:relative;display:inline-block;margin-bottom:16px">
         <img src="images/about/itsme.jpg" style="width:132px;height:132px;border-radius:50%;object-fit:cover;display:block;box-shadow:0 10px 28px rgba(0,0,0,.3)" onerror="this.style.display='none'">
-        <span style="position:absolute;top:-8px;left:-28px;background:#0B93F6;color:#fff;font-family:'JetBrains Mono',monospace;font-size:10px;font-weight:600;padding:5px 10px;border-radius:12px 12px 3px 12px;box-shadow:0 4px 12px rgba(11,147,246,.4);white-space:nowrap">Digital Designer</span>
+        <span style="position:absolute;top:-8px;left:-28px;background:#0B93F6;color:#fff;font-family:'JetBrains Mono',monospace;font-size:10px;font-weight:600;padding:5px 10px;border-radius:12px 12px 3px 12px;box-shadow:0 4px 12px rgba(11,147,246,.4);white-space:nowrap">Brand &amp; Graphic Designer</span>
       </div>
       <div style="font-family:'Milky Cream',cursive;font-size:32px;color:var(--text)">Vivien <em style="font-style:italic;color:inherit">Evers</em></div>
       <div style="font-size:12.5px;color:var(--text-mid);margin-top:6px">26 · Hamburg · always building something</div>
     </div>
-    <p style="font-size:13px;color:var(--text-mid);line-height:1.7;margin-bottom:12px">Digital Designer, certified in Media Design (IHK Hamburg, Jan 2026).</p>
-    <p style="font-size:13px;color:var(--text-mid);line-height:1.7;margin-bottom:12px">Trained as a media designer — alongside that, founded house music event brands in 2022 and have been co-running them since 2024. Everything the curriculum didn't cover, I taught myself.</p>
-    <p style="font-size:13px;color:var(--text-mid);line-height:1.7;margin-bottom:12px">Started freelancing during my apprenticeship in 2025. In 2026, I built a handful of web projects — this portfolio and my workflow dashboard.</p>
-    <p style="font-size:13px;color:var(--text-mid);line-height:1.7;margin-bottom:12px">I'm not chasing one narrow title. I'm looking for a place where I can keep building and crafting — <strong style="color:var(--text)">digital, print, whatever the team needs</strong> — and bring the energy, curiosity, and range that got me here.</p>
+    <p style="font-size:13px;color:var(--text-mid);line-height:1.7;margin-bottom:12px">Brand &amp; Graphic Designer, certified in Media Design (IHK Hamburg, Jan 2026).</p>
+    <p style="font-size:13px;color:var(--text-mid);line-height:1.7;margin-bottom:12px">Trained as a media designer. Alongside that, I founded house music event brands in 2022 and have led their visual side since 2025. Everything the curriculum didn't cover, I taught myself.</p>
+    <p style="font-size:13px;color:var(--text-mid);line-height:1.7;margin-bottom:12px">Started freelancing during my apprenticeship in 2025. In 2026, I built a few small web projects on the side: this portfolio and my workflow dashboard.</p>
+    <p style="font-size:13px;color:var(--text-mid);line-height:1.7;margin-bottom:12px">I'm looking for an in-house place where I can look after a brand properly: <strong style="color:var(--text)">print, social, campaigns, whatever the team needs</strong>. I bring the energy, curiosity and range that got me here.</p>
     <div class="about-cta-wrap" onclick="closeMobSheet();mobOpenSheet('contact')" role="button" aria-label="Open Contact">
       <div class="about-cta-row">
-        <div class="about-cta-bubble">Got a project — or just curious? Let's talk.</div>
+        <div class="about-cta-bubble">Got a project, or just curious? Let's talk.</div>
       </div>
     </div>`},
   contact:{title:'Contact',html:`
     <div class="coffee-photo-wrap" style="margin-bottom:20px">
-      <img src="images/about/coffeechat-cta-square.png" alt="Vivien — let's have a coffee chat" class="coffee-photo">
+      <img src="images/about/coffeechat-cta-square.png" alt="Vivien: let's have a coffee chat" class="coffee-photo">
       <a href="mailto:hi@vivienevers.de" class="coffee-phone-overlay" style="top:68.4%;left:53%;width:38%;max-width:none" aria-label="Email Vivien to set up a coffee chat">
         <div class="coffee-screen">
           <div class="coffee-bubble">Coffee chat? ☕</div>
@@ -4250,13 +5273,21 @@ const MOB_CONTENT = {
     </div>`},
   /* CASES is empty until ensureCasesLoaded() resolves, so this has to be
      computed fresh on every open rather than joined once at page load. */
-  work:{title:'Case Studies',html:()=>CASES.map((c,i)=>`
-    <div onclick="mobOpenCase(${i})" style="padding:14px 0;border-bottom:1px solid var(--glass-border);cursor:pointer">
-      <div style="font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:var(--accent);margin-bottom:3px">${c.kicker}</div>
-      <div style="font-family:'Milky Cream',cursive;font-size:19px;color:var(--text);margin-bottom:5px">${c.title}</div>
-      <div style="font-size:12px;color:var(--text-mid);line-height:1.5;margin-bottom:8px">${c.lede}</div>
-      <span style="font-size:11px;font-weight:600;color:var(--accent)">Read case study →</span>
-    </div>`).join('')},
+  work:{title:'Case Studies',html:()=>{
+    const allFilters = [...new Set(CASES.flatMap(c=>c.filters||[]))];
+    const chips = allFilters.length ? `<div class="mwf-bar">${allFilters.map(f=>
+      `<button class="mwf-chip${mobWorkFilters.has(f)?' active':''}" onclick="mobToggleWorkFilter('${f}',this)">${f}</button>`
+    ).join('')}</div>` : '';
+    const cards = CASES.map((c,i)=>`
+      <div class="mwf-card" data-filters="${(c.filters||[]).join('|')}" onclick="mobOpenCase(${i})" style="padding:14px 0;border-bottom:1px solid var(--glass-border);cursor:pointer">
+        <div style="font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:var(--accent);margin-bottom:3px">${c.kicker}</div>
+        <div style="font-family:'JetBrains Mono',monospace;font-weight:700;font-size:17px;color:var(--text);margin-bottom:5px">${c.title}</div>
+        <div style="font-size:12px;color:var(--text-mid);line-height:1.5;margin-bottom:8px">${c.lede}</div>
+        <span style="font-size:11px;font-weight:600;color:var(--accent)">Read case study →</span>
+      </div>`).join('');
+    return chips + `<div id="mwf-list">${cards}</div>`;
+  }},
+  basteln:{title:'Basteln',html:()=>window.bstMobileHTML ? window.bstMobileHTML() : ''},
   tools:{title:'Tools',html:`
     <p style="font-size:13px;color:var(--text-mid);line-height:1.6;margin-bottom:16px">What I work with, and what I use it for.</p>
     <div style="display:flex;flex-direction:column;gap:12px">
@@ -4266,7 +5297,7 @@ const MOB_CONTENT = {
          ['indesign','InDesign','Print layouts · Editorial · Prepress'],
          ['capcut','CapCut','Video edits · Storytelling · Event documentation'],
          ['claude','Claude','Creative workflows · Strategy · Code'],
-         ['chatgpt','ChatGPT','Copywriting support · Research · Ideation'],
+         ['chatgpt','OpenAI','Research · Problem-solving · Making'],
          ['meta','Meta Business','Audience insights · Campaigns · Analytics']
         ].map(([f,n,d])=>`
         <div style="display:flex;align-items:center;gap:13px">
@@ -4280,10 +5311,10 @@ const MOB_CONTENT = {
   help:{title:'Help',html:`
     <p style="font-size:13px;color:var(--text-mid);line-height:1.6;margin-bottom:14px">How to find your way around.</p>
     <div style="display:flex;flex-direction:column;gap:14px">
-      ${[['casestudies','Case Studies','All case studies — password-protected, ask if you need the code'],
-         ['downloads','Downloads','CV and certificates — same password'],
+      ${[['casestudies','Case Studies','All case studies, password-protected. Ask if you need the code'],
+         ['downloads','Downloads','CV and certificates, same password'],
          ['about','About','Who I am, what I do, how I got here'],
-         ['contact','Contact','Coffee chat, email, or LinkedIn — whichever is easiest']
+         ['contact','Contact','Coffee chat, email or LinkedIn, whichever is easiest']
         ].map(([f,t,d])=>`
         <div style="display:flex;gap:12px;align-items:center">
           <img src="images/icons/${f}.png" alt="" style="width:34px;height:34px;object-fit:contain;flex-shrink:0;border-radius:8px">
@@ -4293,10 +5324,12 @@ const MOB_CONTENT = {
     </div>`},
   downloads:{title:'Downloads',html:`
     <div style="display:flex;flex-direction:column;gap:10px">
+      <a href="/portfolio/" target="_blank" rel="noopener" style="display:flex;align-items:center;gap:10px;padding:14px;background:var(--glass);border:1px solid var(--glass-border);border-radius:12px;text-decoration:none;color:var(--text)">
+        <span class="ms-ico">${icon('doc')}</span><div><div style="font-weight:600;font-size:13px">Portfolio</div><div style="font-size:11px;color:var(--text-soft)">Interactive · PDF Short + Deep Dive</div></div></a>
       <a href="/api/download?file=cv-en" target="_blank" rel="noopener" style="display:flex;align-items:center;gap:10px;padding:14px;background:var(--glass);border:1px solid var(--glass-border);border-radius:12px;text-decoration:none;color:var(--text)">
-        <span class="ms-ico">${icon('doc')}</span><div><div style="font-weight:600;font-size:13px">CV — English</div><div style="font-size:11px;color:var(--text-soft)">PDF · 2026</div></div></a>
+        <span class="ms-ico">${icon('doc')}</span><div><div style="font-weight:600;font-size:13px">CV (English)</div><div style="font-size:11px;color:var(--text-soft)">PDF · 2026</div></div></a>
       <a href="/api/download?file=cv-de" target="_blank" rel="noopener" style="display:flex;align-items:center;gap:10px;padding:14px;background:var(--glass);border:1px solid var(--glass-border);border-radius:12px;text-decoration:none;color:var(--text)">
-        <span class="ms-ico">${icon('doc')}</span><div><div style="font-weight:600;font-size:13px">CV — German</div><div style="font-size:11px;color:var(--text-soft)">PDF · 2026</div></div></a>
+        <span class="ms-ico">${icon('doc')}</span><div><div style="font-weight:600;font-size:13px">CV (German)</div><div style="font-size:11px;color:var(--text-soft)">PDF · 2026</div></div></a>
       <a href="/api/download?file=certificate" target="_blank" rel="noopener" style="display:flex;align-items:center;gap:10px;padding:14px;background:var(--glass);border:1px solid var(--glass-border);border-radius:12px;text-decoration:none;color:var(--text)">
         <span class="ms-ico">${icon('cert')}</span><div><div style="font-weight:600;font-size:13px">IHK Certificate</div><div style="font-size:11px;color:var(--text-soft)">PDF · English</div></div></a>
     </div>`}
@@ -4305,10 +5338,7 @@ const MOB_CONTENT = {
 function mobOpenProtected(key) {
   if (authenticated) { ensureCasesLoaded().then(() => mobOpenSheet(key)); return; }
   mobPwTarget = key;
-  document.getElementById('pw-modal').classList.add('open');
-  document.getElementById('pw-input').value = '';
-  document.getElementById('pw-hint').textContent = '';
-  setTimeout(()=>document.getElementById('pw-input').focus(),100);
+  openPwModal(key);
 }
 function mobOpenSheet(key){
   const d=MOB_CONTENT[key];if(!d)return;
@@ -4328,6 +5358,7 @@ function mobOpenSheet(key){
   document.getElementById('mob-sheet-title').textContent=d.title;
   document.getElementById('mob-sheet-content').innerHTML = typeof d.html === 'function' ? d.html() : d.html;
   paintIcons(document.getElementById('mob-sheet-content'));
+  document.getElementById('mob-sheet-content').querySelectorAll('video[autoplay]').forEach(v => { const p = v.play(); if (p && p.catch) p.catch(() => {}); });
   document.getElementById('mob-overlay').classList.add('open');
   requestAnimationFrame(()=>sheet.classList.add('open'));
 }
@@ -4339,6 +5370,8 @@ function mobOpenCase(i){
     `<div class="case mob-case">${renderCase(i)}</div>
      <button onclick="mobOpenSheet('work')" style="margin-top:20px;background:none;border:none;color:var(--accent);font-family:'JetBrains Mono',monospace;font-size:13px;font-weight:600;cursor:pointer;padding:0">← All work</button>`;
   document.getElementById('mob-sheet').scrollTop=0;
+  initJumpNav(document.getElementById('mob-sheet-content'));
+  jxInit(document.getElementById('mob-sheet-content'));
 }
 
 function closeMobSheet(){
@@ -4352,7 +5385,7 @@ function closeMobSheet(){
    a successful password entry. */
 buildSidebar();
 paintIcons();
-checkSession();
+sessionCheck = checkSession();
 
 
 /* ── CUSTOM CURSOR — dot + liquid-glass circle ───────────────────
@@ -4366,12 +5399,20 @@ checkSession();
   if (window.matchMedia('(hover: none)').matches) return;   /* touch: skip entirely */
 
   const HOVER_SEL = 'a, button, [onclick], .dock-item, .folder-icon, input, textarea, select';
+  /* Surfaces that stay light regardless of time of day — the dot needs
+     its cool "on-light" swap here even on the darkest night sky. */
+  const LIGHT_SEL = '.window, #pw-modal, #tour, #lock';
   let mx = 0, my = 0, gx = 0, gy = 0, shown = false;
 
   document.addEventListener('mousemove', e => {
     mx = e.clientX; my = e.clientY;
     dot.style.left = mx + 'px'; dot.style.top = my + 'px';
     if (!shown) { shown = true; dot.style.opacity = '1'; glass.style.opacity = glass.classList.contains('hover') ? '1' : '0'; }
+    /* Recomputed fresh on every move (rather than added/removed on
+       mouseover/mouseout) so a window closing — or anything else that
+       removes itself from under a stationary cursor — can't leave the
+       dot stuck in the wrong colour with no mouseout ever firing. */
+    dot.classList.toggle('on-light', !!e.target.closest(LIGHT_SEL));
   });
   document.addEventListener('mouseleave', () => {
     shown = false; dot.style.opacity = '0'; glass.style.opacity = '0';
@@ -4392,38 +5433,7 @@ checkSession();
   document.addEventListener('mousedown', () => { glass.classList.add('press'); });
   document.addEventListener('mouseup',   () => { glass.classList.remove('press'); });
 })();
-
-/* ── CLICK STAR BURST ─────────────────────────────────────────────
-   A tiny, understated sparkle (Lottie, ~1s, plays once) on clicks that
-   actually do something — buttons, links, folders, dock items — not on
-   every click across the desktop. Skipped on touch. */
-(function() {
-  if (window.matchMedia('(hover: none)').matches) return;
-  if (typeof lottie === 'undefined') return;
-
-  const TRIGGER_SEL = 'a, button, [onclick], .dock-item, .folder-icon';
-  const SIZE = 110; // native ratio 1125:207, scaled down — kept small on purpose
-
-  document.addEventListener('click', e => {
-    if (!e.target.closest(TRIGGER_SEL)) return;
-
-    const el = document.createElement('div');
-    el.style.cssText = `position:fixed; left:${e.clientX}px; top:${e.clientY}px;`
-      + `width:${SIZE}px; height:${Math.round(SIZE * 207 / 1125)}px;`
-      + `transform:translate(-50%,-50%); pointer-events:none; z-index:10000;`
-      + `opacity:.75;`;
-    document.body.appendChild(el);
-
-    const anim = lottie.loadAnimation({
-      container: el,
-      renderer: 'svg',
-      loop: false,
-      autoplay: true,
-      path: 'assets/lottie/star-burst.json'
-    });
-    anim.addEventListener('complete', () => { anim.destroy(); el.remove(); });
-  });
-})();
 </script>
+<script src="assets/basteln.js" defer></script>
 </body>
 </html>

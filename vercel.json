@@ -1,11 +1,21 @@
 {
   "routes": [
-    { "src": "/private/(.*)", "status": 404 },
-    { "handle": "filesystem" }
+    {
+      "src": "/private/(.*)",
+      "status": 404
+    },
+    {
+      "handle": "filesystem"
+    }
   ],
   "functions": {
     "api/download.js": {
       "includeFiles": "private/downloads/**"
+    },
+    "api/portfolio-pdf.js": {
+      "maxDuration": 60,
+      "memory": 1769,
+      "includeFiles": "node_modules/@sparticuz/chromium/**"
     }
   }
 }

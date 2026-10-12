@@ -1,0 +1,109 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex, nofollow">
+<title>Vivien Evers · Portfolio</title>
+<meta name="description" content="Portfolio of Vivien Evers, Brand & Product Designer in Hamburg.">
+<meta name="theme-color" content="#2c2c2c">
+<link rel="icon" href="/images/icons/downloads.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Anton&family=Nunito+Sans:ital,wght@0,400;0,600;0,700;0,800;1,700;1,800&family=JetBrains+Mono:wght@400;600;700&family=Fredoka:wght@500;600;700&family=Montserrat:ital,wght@1,800;1,900&family=Rubik:wght@800;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/portfolio/viewer.css">
+<link rel="stylesheet" href="/portfolio/pages.css">
+<style>@font-face{font-family:"Milky Cream";src:url("/fonts/MilkyCream.otf") format("opentype");font-display:swap}</style>
+</head>
+<body class="loading">
+
+<!-- ═══ Figma-style chrome (hidden in print mode) ═══ -->
+<header class="tb" id="tb">
+  <div class="tb-l">
+    <div class="tb-logo" title="Vivien Evers">V</div>
+    <button class="tb-ic" id="btn-sidebar" aria-label="Toggle layers"><svg viewBox="0 0 16 16"><path d="M2 3.5h12M2 8h12M2 12.5h12"/></svg></button>
+    <div class="tb-crumb"><span>Drafts</span><i>/</i><b id="file-name">Portfolio · Short</b></div>
+  </div>
+  <div class="tb-c" role="tablist" aria-label="Version">
+    <button role="tab" class="seg-btn" data-v="short" aria-selected="true">Short</button>
+    <button role="tab" class="seg-btn" data-v="deep" aria-selected="false">Deep Dive</button>
+  </div>
+  <div class="tb-r">
+    <div class="zoom">
+      <button class="tb-ic" id="z-out" aria-label="Zoom out">−</button>
+      <button class="z-val" id="z-val" aria-label="Fit to width">100%</button>
+      <button class="tb-ic" id="z-in" aria-label="Zoom in">+</button>
+    </div>
+    <button class="tb-btn ghost" id="btn-present"><svg viewBox="0 0 16 16"><path d="M5 3.2v9.6L13 8z"/></svg><span>Present</span></button>
+    <button class="tb-btn primary" id="btn-dl"><svg viewBox="0 0 16 16"><path d="M8 2v8m0 0L4.8 6.8M8 10l3.2-3.2M2.5 13h11"/></svg><span id="btn-dl-label">Download PDF</span></button>
+  </div>
+</header>
+
+<aside class="lp" id="lp">
+  <div class="lp-sec">
+    <div class="lp-h">Pages</div>
+    <button class="pg" data-v="short"><svg viewBox="0 0 16 16"><path d="M3 2.5h7l3 3v8H3z"/></svg>Short <em>for applications</em></button>
+    <button class="pg" data-v="deep"><svg viewBox="0 0 16 16"><path d="M3 2.5h7l3 3v8H3z"/></svg>Deep Dive <em>for interviews</em></button>
+  </div>
+  <div class="lp-sec grow">
+    <div class="lp-h">Layers</div>
+    <div id="layers"></div>
+  </div>
+</aside>
+
+<aside class="rp" id="rp">
+  <div class="rp-sec" id="rp-sel"></div>
+  <div class="rp-sec">
+    <div class="rp-h">Export</div>
+    <button class="exp" data-v="short"><span class="exp-n">Portfolio · Short</span><span class="exp-t">PDF</span><svg viewBox="0 0 16 16"><path d="M8 2v8m0 0L4.8 6.8M8 10l3.2-3.2M2.5 13h11"/></svg></button>
+    <button class="exp" data-v="deep"><span class="exp-n">Portfolio · Deep Dive</span><span class="exp-t">PDF</span><svg viewBox="0 0 16 16"><path d="M8 2v8m0 0L4.8 6.8M8 10l3.2-3.2M2.5 13h11"/></svg></button>
+    <p class="rp-note">PDFs are generated from the live case studies, always current.</p>
+  </div>
+  <div class="rp-sec">
+    <div class="rp-h">Contact</div>
+    <a class="rp-link" href="mailto:hi@vivienevers.de">hi@vivienevers.de</a>
+    <a class="rp-link" href="https://linkedin.com/in/vivien-evers" target="_blank" rel="noopener">linkedin.com/in/vivien-evers</a>
+    <a class="rp-link" href="https://www.vivienevers.de" target="_blank" rel="noopener">vivienevers.de</a>
+  </div>
+</aside>
+
+<!-- ═══ Canvas ═══ -->
+<main class="canvas" id="canvas" data-jx-scroll tabindex="0" aria-label="Portfolio canvas">
+  <div class="stage" id="stage"></div>
+</main>
+<!-- Deep Dive: not released yet -->
+<section class="soon" id="soon" aria-hidden="true" aria-label="Deep Dive coming soon">
+  <div class="soon-card">
+    <span class="soon-tag">In progress</span>
+    <h2>The Deep Dive is still in the works.</h2>
+    <p>I'm giving every case the space it deserves: the full story, the decisions and the work behind it. It will be here soon.</p>
+    <p>Until then, the Short version has the essentials.</p>
+    <button class="soon-btn" id="soon-back">Back to the Short version</button>
+  </div>
+</section>
+
+<!-- cute explainer cloud -->
+<div class="cloud" id="cloud">
+  <div class="cloud-card" id="cloud-card" role="dialog" aria-label="About this viewer">
+    <button class="x" id="cloud-x" aria-label="Close">✕</button>
+    <b>Psst, this isn’t a normal PDF</b>
+    <p>Instead of exporting a static file, I built this little PDF viewer. It’s interactive (videos play, things move), and every page is generated live from the case studies on my website.</p>
+    <p>So whenever I update a case study there, this portfolio and both PDF downloads update automatically. A regular PDF would have been way too boring.</p>
+    <em>Vivien</em>
+  </div>
+  <button class="cloud-btn" id="cloud-btn" aria-label="Why is this not a normal PDF?"><svg viewBox="6 2 116 60" aria-hidden="true"><defs><linearGradient id="cg" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#fff"/><stop offset="1" stop-color="#e9edff"/></linearGradient></defs><path d="M34 60c-13 0-22-8-22-19 0-10 8-17 18-17 1-12 11-20 23-20 8 0 14 4 18 10 3-2 7-3 11-3 11 0 20 8 20 19 9 1 16 8 16 16 0 9-8 14-17 14z" fill="url(#cg)"/></svg><span>psst…</span></button>
+</div>
+<div class="hint" id="hint">Scroll to pan · Ctrl/⌘ + scroll to zoom · <kbd>P</kbd> to present</div>
+<div class="toast" id="toast" role="status"></div>
+
+<!-- Present overlay -->
+<div class="present" id="present" aria-hidden="true">
+  <div class="pr-stage" id="pr-stage"></div>
+  <div class="pr-bar"><button id="pr-prev" aria-label="Previous">‹</button><span id="pr-count"></span><button id="pr-next" aria-label="Next">›</button><button id="pr-close" aria-label="Close">✕</button></div>
+</div>
+
+<script src="/portfolio/jx.js"></script>
+<script src="/portfolio/pages.js"></script>
+<script src="/portfolio/viewer.js"></script>
+</body>
+</html>

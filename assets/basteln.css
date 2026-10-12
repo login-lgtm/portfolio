@@ -1,0 +1,137 @@
+/* Brand colours of the Basteln zones */
+:root { --bst-mi4l: #E5608F; --bst-sl: #F0A642; --bst-nrg: #74B9EE; --bst-more: #9AA0AA; }
+/* Basteln: the pinboard folder. Everything is scoped under #win-basteln, so nothing leaks into the rest of the desktop. */
+#win-basteln { top: 52px; left: 110px; width: calc(100vw - 220px); height: calc(100vh - 190px);
+  --bst-hand: 'JetBrains Mono', monospace; }
+#win-basteln { overflow: hidden; }
+#win-basteln button { font-family: inherit; color: inherit; cursor: pointer; }
+#win-basteln .finder-body { min-height: 0; }
+#win-basteln .chips {display: flex; flex-wrap: wrap; gap: 5px; margin-left: 6px;}
+#win-basteln .chip {display: inline-flex; align-items: center; gap: 6px; font-family: 'JetBrains Mono', monospace; font-size: 10px; font-weight: 600; color: var(--text-mid); background: var(--glass); border: 1px solid var(--glass-border); border-radius: 20px; padding: 3px 10px; transition: all .15s;}
+#win-basteln .chip i {width: 7px; height: 7px; border-radius: 50%; background: var(--c);}
+#win-basteln .chip:hover {color: var(--text);}
+#win-basteln .chip.active {background: var(--accent); border-color: var(--accent); color: #fff;}
+#win-basteln .chip.active i {box-shadow: 0 0 0 1.5px rgba(255,255,255,.85);}
+#win-basteln .ft-title {font-size: 11px; color: var(--text-mid); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; min-width: 0;}
+#win-basteln .ft-title b {color: var(--text); font-weight: 600;}
+#win-basteln .ft-sp {flex: 1;}
+#win-basteln .zoom {display: flex; gap: 4px; flex-shrink: 0;}
+#win-basteln .zoom button {width: 26px; height: 22px; border-radius: 5px; border: 1px solid var(--glass-border); background: var(--glass); color: var(--text-mid); font-size: 13px;}
+#win-basteln .zoom .fit {width: auto; padding: 0 10px; font-size: 11px; white-space: nowrap;}
+#win-basteln .back {border: 1px solid rgba(46,125,209,.3); background: rgba(46,125,209,.14); color: var(--accent); border-radius: 20px; padding: 3px 11px; font-size: 10px; font-weight: 700; letter-spacing: .04em;}
+#win-basteln .back[hidden] {display: none;}
+#win-basteln .vp {position: relative; flex: 1; min-width: 0; overflow: hidden; cursor: grab; touch-action: none; background-color: #F1F2F4;
+      background-image: radial-gradient(rgba(60,60,67,.2) 1.3px, transparent 1.4px); background-size: 22px 22px;}
+#win-basteln .vp.panning {cursor: grabbing;}
+#win-basteln .board {position: absolute; left: 0; top: 0; width: 2160px; height: 1700px; transform-origin: 0 0;}
+#win-basteln .hint {position: absolute; left: 12px; bottom: 10px; font-size: 10px; color: var(--text-soft); background: rgba(255,255,255,.75); padding: 4px 9px; border-radius: 7px; pointer-events: none; z-index: 4;}
+#win-basteln .zone {position: absolute; border-radius: 22px; border: 1.5px solid color-mix(in srgb, var(--zc) 55%, transparent); background: color-mix(in srgb, var(--zc) 7%, rgba(255,255,255,.55)); transition: opacity .3s, filter .3s;}
+#win-basteln .zone.empty {border-style: dashed;}
+#win-basteln .zone.dim {opacity: .3; filter: grayscale(.8);}
+#win-basteln .zlabel {position: absolute; left: 20px; top: -13px; display: flex; align-items: baseline; gap: 10px; background: color-mix(in srgb, var(--zc) 82%, #000); color: #fff; padding: 5px 13px; border-radius: 20px;
+      font-size: 11px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase;}
+#win-basteln .zlabel small {font-size: 10px; font-weight: 500; letter-spacing: 0; text-transform: none; opacity: .85;}
+#win-basteln .zcount {position: absolute; right: 18px; top: 12px; font-size: 10px; font-weight: 600; letter-spacing: .06em; text-transform: uppercase; color: var(--text-soft);}
+#win-basteln .obj {position: absolute; left: var(--x); top: var(--y); transform: rotate(var(--r, 0deg)); cursor: grab; touch-action: none; filter: drop-shadow(0 8px 10px rgba(30,40,60,.28)); transition: filter .2s;}
+#win-basteln .obj:hover {filter: drop-shadow(0 14px 16px rgba(30,40,60,.34));}
+#win-basteln .obj.drag {cursor: grabbing; filter: drop-shadow(0 24px 22px rgba(30,40,60,.4));}
+#win-basteln .obj.sel {outline: 2px solid var(--accent); outline-offset: 6px; border-radius: 6px;}
+#win-basteln .obj img,
+#win-basteln .obj video {-webkit-user-drag: none;}
+#win-basteln .tape {position: absolute; top: -9px; left: 50%; width: 62px; height: 20px; z-index: 2; transform: translateX(-50%) rotate(-3deg); background: rgba(215,200,150,.62);
+      clip-path: polygon(0 8%, 4% 0, 8% 10%, 12% 0, 100% 0, 96% 50%, 100% 100%, 0 100%, 4% 50%);}
+#win-basteln .pin {position: absolute; top: -8px; left: 50%; width: 16px; height: 16px; margin-left: -8px; border-radius: 50%; z-index: 2; background: radial-gradient(circle at 35% 30%, #fff9, transparent 40%), #D9473F; box-shadow: 0 3px 4px rgba(0,0,0,.35);}
+#win-basteln .note {position: relative; width: var(--w, 200px); padding: 24px 18px 18px; background: #FBEFB0; color: #4a3d12; font-family: 'JetBrains Mono', monospace; font-weight: 700; font-size: 14px; line-height: 1.35;}
+#win-basteln .note small {display: block; margin-top: 10px; font: 500 10px/1.5 'JetBrains Mono', monospace; opacity: .65;}
+#win-basteln .note.blue {background: #9ED8F5; color: #0e3547;}
+#win-basteln .note.violet {background: #D2C5F8; color: #2b2150;}
+#win-basteln .polaroid {position: relative; padding: 10px 10px 40px; background: #fff; color: #23252b; border: 1px solid rgba(60,60,67,.1);}
+#win-basteln .polaroid .ph {overflow: hidden; background: #e8e9ec;}
+#win-basteln .polaroid .ph img,
+#win-basteln .polaroid .ph video {display: block; width: 100%; height: 100%; object-fit: cover;}
+#win-basteln .polaroid .cap {position: absolute; left: 6px; right: 6px; bottom: 8px; text-align: center; font-family: 'JetBrains Mono', monospace; font-weight: 600; font-size: 10px; line-height: 1; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;}
+#win-basteln .polaroid .ph.todo {display: grid; place-items: center; text-align: center; font-size: 10px; line-height: 1.5; color: var(--text-soft); background: repeating-linear-gradient(135deg, #e8e9ec 0 8px, #f1f2f4 8px 16px);}
+#win-basteln .cutout img {display: block; width: 100%; height: auto;}
+#win-basteln .lighters {position: relative; width: 310px; height: 300px;}
+#win-basteln .lighters img {position: absolute; bottom: 0; left: calc(var(--i) * 68px); height: 270px; width: auto; transform-origin: 50% 100%; transform: rotate(calc((var(--i) - 1.5) * 7deg)); pointer-events: none; filter: drop-shadow(0 6px 8px rgba(0,0,0,.4));}
+#win-basteln .phone {position: relative; width: 196px; height: 400px; padding: 8px; border-radius: 40px; background: linear-gradient(145deg, #4a4d57, #17181c 55%, #34363e); box-shadow: inset 0 0 0 1.5px rgba(255,255,255,.18);}
+#win-basteln .phone::before {content: ""; position: absolute; left: -3px; top: 84px; width: 3px; height: 44px; border-radius: 2px 0 0 2px; background: #2c2e35; box-shadow: 0 58px 0 #2c2e35;}
+#win-basteln .phone::after {content: ""; position: absolute; right: -3px; top: 110px; width: 3px; height: 66px; border-radius: 0 2px 2px 0; background: #2c2e35;}
+#win-basteln .phone .scr {position: relative; width: 100%; height: 100%; border-radius: 32px; overflow: hidden; background: #000;}
+#win-basteln .phone video {display: block; width: 100%; height: 100%; object-fit: cover; pointer-events: none;}
+#win-basteln .phone .isl {position: absolute; left: 50%; top: 10px; width: 58px; height: 17px; margin-left: -29px; border-radius: 10px; background: #000; z-index: 2;}
+#win-basteln .phone .home {position: absolute; left: 50%; bottom: 7px; width: 62px; height: 4px; margin-left: -31px; border-radius: 2px; background: rgba(255,255,255,.75); z-index: 2;}
+#win-basteln .phone-cap {margin-top: 10px; text-align: center; font-family: 'JetBrains Mono', monospace; font-weight: 600; font-size: 11px; color: #2E3138;}
+#win-basteln .drawer {position: absolute; right: 12px; top: 12px; bottom: 12px; width: 320px; z-index: 5; display: flex; flex-direction: column; gap: 12px; padding: 18px; overflow: auto;
+      background: rgba(255,255,255,.92); backdrop-filter: blur(20px); border: 1px solid var(--glass-border); border-radius: 12px; box-shadow: 0 20px 50px rgba(30,40,60,.25);
+      transform: translateX(120%); transition: transform .3s cubic-bezier(.2,.8,.2,1);}
+#win-basteln .drawer.open {transform: none;}
+#win-basteln .drawer h3 {font-family: 'JetBrains Mono', monospace; font-size: 17px; font-weight: 700; line-height: 1.3; color: var(--text); padding-right: 24px;}
+#win-basteln .drawer p {font-size: 12px; line-height: 1.7; color: var(--text-mid);}
+#win-basteln .drawer .x {position: absolute; right: 12px; top: 12px; width: 24px; height: 24px; border: 0; border-radius: 50%; background: var(--glass); color: var(--text-mid); font-size: 11px;}
+#win-basteln .stage {height: 230px; flex-shrink: 0; border-radius: 8px; overflow: hidden; background: #E9EAED; display: grid; place-items: center; font-size: 11px; color: var(--text-soft); text-align: center;}
+#win-basteln .stage img,
+#win-basteln .stage video {display: block; width: auto; height: auto; max-width: 100%; max-height: 230px; object-fit: contain;}
+#win-basteln .stage .phone {transform: scale(.52); margin: -90px 0;}
+#win-basteln .tags {display: flex; gap: 5px; flex-wrap: wrap;}
+#win-basteln .tg {font-size: 9.5px; font-weight: 600; padding: 3px 9px; border-radius: 20px; border: 1px solid var(--glass-border); background: var(--glass); color: var(--text-mid);}
+#win-basteln .tg.b {color: #fff; background: color-mix(in srgb, var(--c) 80%, #000); border-color: transparent;}
+#win-basteln .draft {font-size: 10px; color: var(--text-soft);}
+#win-basteln .btn {margin-top: auto; border: 0; border-radius: 6px; background: var(--accent); color: #fff; font-size: 11px; font-weight: 700; padding: 8px 12px; letter-spacing: .02em;}
+#win-basteln .btn:hover {filter: brightness(1.08);}
+
+.bst-m .tape {position: absolute; top: -9px; left: 50%; width: 62px; height: 20px; z-index: 2; transform: translateX(-50%) rotate(-3deg); background: rgba(215,200,150,.62);
+      clip-path: polygon(0 8%, 4% 0, 8% 10%, 12% 0, 100% 0, 96% 50%, 100% 100%, 0 100%, 4% 50%);}
+.bst-m .pin {position: absolute; top: -8px; left: 50%; width: 16px; height: 16px; margin-left: -8px; border-radius: 50%; z-index: 2; background: radial-gradient(circle at 35% 30%, #fff9, transparent 40%), #D9473F; box-shadow: 0 3px 4px rgba(0,0,0,.35);}
+.bst-m .note {position: relative; width: var(--w, 200px); padding: 24px 18px 18px; background: #FBEFB0; color: #4a3d12; font-family: 'JetBrains Mono', monospace; font-weight: 700; font-size: 14px; line-height: 1.35;}
+.bst-m .note small {display: block; margin-top: 10px; font: 500 10px/1.5 'JetBrains Mono', monospace; opacity: .65;}
+.bst-m .note.blue {background: #9ED8F5; color: #0e3547;}
+.bst-m .note.violet {background: #D2C5F8; color: #2b2150;}
+.bst-m .polaroid {position: relative; padding: 10px 10px 40px; background: #fff; color: #23252b; border: 1px solid rgba(60,60,67,.1);}
+.bst-m .polaroid .ph {overflow: hidden; background: #e8e9ec;}
+.bst-m .polaroid .ph img,
+.bst-m .polaroid .ph video {display: block; width: 100%; height: 100%; object-fit: cover;}
+.bst-m .polaroid .cap {position: absolute; left: 6px; right: 6px; bottom: 8px; text-align: center; font-family: 'JetBrains Mono', monospace; font-weight: 600; font-size: 10px; line-height: 1; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;}
+.bst-m .polaroid .ph.todo {display: grid; place-items: center; text-align: center; font-size: 10px; line-height: 1.5; color: var(--text-soft); background: repeating-linear-gradient(135deg, #e8e9ec 0 8px, #f1f2f4 8px 16px);}
+.bst-m .lighters {position: relative; width: 310px; height: 300px;}
+.bst-m .lighters img {position: absolute; bottom: 0; left: calc(var(--i) * 68px); height: 270px; width: auto; transform-origin: 50% 100%; transform: rotate(calc((var(--i) - 1.5) * 7deg)); pointer-events: none; filter: drop-shadow(0 6px 8px rgba(0,0,0,.4));}
+.bst-m .phone {position: relative; width: 196px; height: 400px; padding: 8px; border-radius: 40px; background: linear-gradient(145deg, #4a4d57, #17181c 55%, #34363e); box-shadow: inset 0 0 0 1.5px rgba(255,255,255,.18);}
+.bst-m .phone::before {content: ""; position: absolute; left: -3px; top: 84px; width: 3px; height: 44px; border-radius: 2px 0 0 2px; background: #2c2e35; box-shadow: 0 58px 0 #2c2e35;}
+.bst-m .phone::after {content: ""; position: absolute; right: -3px; top: 110px; width: 3px; height: 66px; border-radius: 0 2px 2px 0; background: #2c2e35;}
+.bst-m .phone .scr {position: relative; width: 100%; height: 100%; border-radius: 32px; overflow: hidden; background: #000;}
+.bst-m .phone video {display: block; width: 100%; height: 100%; object-fit: cover; pointer-events: none;}
+.bst-m .phone .isl {position: absolute; left: 50%; top: 10px; width: 58px; height: 17px; margin-left: -29px; border-radius: 10px; background: #000; z-index: 2;}
+.bst-m .phone .home {position: absolute; left: 50%; bottom: 7px; width: 62px; height: 4px; margin-left: -31px; border-radius: 2px; background: rgba(255,255,255,.75); z-index: 2;}
+.bst-m .tg {font-size: 9.5px; font-weight: 600; padding: 3px 9px; border-radius: 20px; border: 1px solid var(--glass-border); background: var(--glass); color: var(--text-mid);}
+.bst-m .tg.b {color: #fff; background: color-mix(in srgb, var(--c) 80%, #000); border-color: transparent;}
+/* Mobile bottom sheet */
+.bst-m { padding: 4px 0 24px; --bst-hand: 'JetBrains Mono', monospace; }
+.bst-m-head { margin-bottom: 22px; }
+.bst-m-title { font-size: 22px; font-weight: 800; letter-spacing: -.01em; margin-bottom: 8px; color: var(--text); }
+.bst-m p { font-size: 12.5px; line-height: 1.7; color: var(--text-mid); margin-bottom: 10px; }
+.bst-m-zone { margin-bottom: 26px; padding: 26px 14px 8px; border-radius: 18px; position: relative; border: 1.5px solid color-mix(in srgb, var(--zc) 55%, transparent); background: color-mix(in srgb, var(--zc) 8%, transparent); }
+.bst-m-label { position: absolute; left: 14px; top: -12px; background: color-mix(in srgb, var(--zc) 82%, #000); color: #fff; padding: 4px 12px; border-radius: 20px; font-size: 10px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; }
+.bst-m-label small { font-weight: 500; letter-spacing: 0; text-transform: none; opacity: .85; margin-left: 6px; }
+.bst-m-card { margin: 0 0 26px; text-align: center; }
+.bst-m-media { display: flex; justify-content: center; margin-bottom: 14px; position: relative; padding-top: 12px; }
+.bst-m-media .lighters { margin-left: -4px; }
+.bst-m-card h3 { font-size: 14px; font-weight: 700; color: var(--text); margin-bottom: 6px; }
+.bst-m-card p { font-size: 12px; text-align: left; }
+.bst-m .polaroid { filter: drop-shadow(0 6px 8px rgba(30,40,60,.22)); }
+
+
+/* "The physical side" block at the end of a case study (rendered by renderCase in index.html) */
+.case-physical { display: grid; grid-template-columns: 170px 1fr; gap: 26px; align-items: center; margin: 36px 0 8px; padding: 22px; border-radius: 12px; border: 1px solid var(--glass-border); background: var(--glass); }
+.case-physical .cp-media { justify-self: center; transform: rotate(-3deg); filter: drop-shadow(0 8px 10px rgba(30,40,60,.25)); }
+.case-physical .polaroid { width: 150px; padding: 10px 10px 34px; background: #fff; border: 1px solid rgba(60,60,67,.1); }
+.case-physical .ph { height: 150px; overflow: hidden; background: #e8e9ec; }
+.case-physical .ph img { display: block; width: 100%; height: 100%; object-fit: cover; }
+.case-physical .cp-eyebrow { font-size: 9px; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; color: var(--accent); }
+.case-physical h3 { font-size: 17px; font-weight: 700; line-height: 1.3; margin: 6px 0 8px; color: var(--text); }
+.case-physical p { font-size: 12px; line-height: 1.7; color: var(--text-mid); margin-bottom: 14px; max-width: 52ch; }
+.case-physical .cp-btn { border: 0; border-radius: 6px; background: var(--accent); color: #fff; font-family: inherit; font-size: 11px; font-weight: 700; padding: 8px 14px; cursor: pointer; }
+.case-physical .cp-btn:hover { filter: brightness(1.08); }
+@media (max-width: 700px) { .case-physical { grid-template-columns: 1fr; } }
+
+.bst-m-more { margin: 8px 16px 24px; padding: 16px; border: 1.5px dashed rgba(154,160,170,.6); border-radius: 14px; text-align: center; font-family: 'JetBrains Mono', monospace; font-size: 13px; font-weight: 700; color: var(--text, #3C3C43); }
+.bst-m-more small { display: block; margin-top: 4px; font-weight: 400; font-size: 11px; opacity: .6; }
