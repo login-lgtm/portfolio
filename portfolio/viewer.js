@@ -327,6 +327,15 @@ async function preparePrint() {
   });
   await Promise.all($$('video').map(stillOf));
   await Promise.all($$('img').map(i => i.complete ? 0 : new Promise(r => { i.onload = i.onerror = r; })));
+  /* embedded website demos (iframes): wait until their page, fonts and images are really there */
+  await Promise.all($$('iframe').map(async f => {
+    const wait = (el, ev) => new Promise(r => { el.addEventListener(ev, r, { once: true }); setTimeout(r, 12000); });
+    let d; try { d = f.contentDocument; } catch (e) { return; }
+    if (!d || d.readyState !== 'complete') { await wait(f, 'load'); try { d = f.contentDocument; } catch (e) { return; } }
+    if (!d) return;
+    await Promise.all([...d.images].map(i => { i.loading = 'eager'; return i.complete ? 0 : new Promise(r => { i.onload = i.onerror = r; setTimeout(r, 12000); }); }));
+    try { await Promise.race([d.fonts.ready, new Promise(r => setTimeout(r, 6000))]); } catch (e) {}
+  }));
   await new Promise(r => setTimeout(r, 500));
   window.__pdfReady = true;
 }
