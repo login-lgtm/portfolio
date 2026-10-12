@@ -16,7 +16,8 @@ const ALLOWED_HOST = /^(localhost(:\d+)?|127\.0\.0\.1(:\d+)?|(www\.)?vivienevers
 
 async function launch() {
   if (process.env.VERCEL) {
-    const chromium = require('@sparticuz/chromium');
+    const mod = require('@sparticuz/chromium');
+    const chromium = mod.default || mod;
     return puppeteer.launch({
       args: chromium.args, executablePath: await chromium.executablePath(),
       headless: 'shell', defaultViewport: { width: 1122, height: 793 },
