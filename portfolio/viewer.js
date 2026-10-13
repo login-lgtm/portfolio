@@ -8,8 +8,8 @@ const params = new URLSearchParams(location.search);
 const PRINT = params.get('print') === '1';
 let version = params.get('v') === 'deep' ? 'deep' : 'short';
 /* The Deep Dive is still being polished: visitors see a "coming soon" card instead of the pages.
-   Only localhost with ?dev=1 opens it, so it can keep being worked on locally. */
-const DEV = /^(localhost|127\.0\.0\.1)$/.test(location.hostname) && params.get('dev') === '1';
+   Localhost always opens it, so it can keep being worked on locally. */
+const DEV = /^(localhost|127\.0\.0\.1)$/.test(location.hostname);
 const deepLocked = v => v === 'deep' && !DEV && !PRINT;
 if (deepLocked('deep')) { const t = document.querySelector('.exp[data-v="deep"] .exp-t'); if (t) t.textContent = 'Soon'; }
 function showSoon(on) {
@@ -140,7 +140,7 @@ let rzT; addEventListener('resize', () => { if (PRINT) return; clearTimeout(rzT)
 /* version switch */
 async function switchTo(v) {
   if (v === version && frames.length && !document.body.classList.contains('deep-soon')) return;
-  version = v; history.replaceState(null, '', '?v=' + v + (DEV ? '&dev=1' : ''));
+  version = v; history.replaceState(null, '', '?v=' + v);
   if (deepLocked(v)) { showSoon(true); return; }
   showSoon(false);
   document.body.classList.add('loading');
@@ -326,6 +326,33 @@ async function preparePrint() {
     v.load();
   });
   await Promise.all($$('video').map(stillOf));
+  /* keep the PDF small: photos are displayed at ~200px but ship at 1000px+. Downscale every raster image
+     to about 2.4x its on-page size (≈230 dpi on A4) and re-encode it (JPEG, PNG only where it has transparency). */
+  await Promise.all($$('.page img').map(img => new Promise(res => {
+    try {
+      const src = img.currentSrc || img.src;
+      if (!src || /\.svg(\?|$)/i.test(src) || /^data:image\/svg/.test(src)) return res();
+      const go = () => {
+        const r = img.getBoundingClientRect(), nw = img.naturalWidth, nh = img.naturalHeight;
+        if (!r.width || !r.height || !nw || !nh) return res();
+        const k = Math.max(r.width * 2.4 / nw, r.height * 2.4 / nh);
+        let kk = k;
+        /* already small: keep the size, but still re-encode medium photos (Chrome writes EXIF-rotated JPEGs into the PDF losslessly, ~800 KB each) */
+        if (kk >= .8) { kk = 1; if (nw * nh < 250000) return res(); }
+        const c = document.createElement('canvas'); c.width = Math.max(1, Math.round(nw * kk)); c.height = Math.max(1, Math.round(nh * kk));
+        const x = c.getContext('2d'); x.drawImage(img, 0, 0, c.width, c.height);
+        let alpha = false;
+        if (/\.png(\?|$)/i.test(src) || /^data:image\/png/.test(src)) {
+          const d = x.getImageData(0, 0, c.width, c.height).data;
+          for (let i = 3; i < d.length; i += 4) if (d[i] < 250) { alpha = true; break; }
+        }
+        const url = alpha ? c.toDataURL('image/png') : c.toDataURL('image/jpeg', .82);
+        img.removeAttribute('srcset'); img.src = url;
+        img.decode().then(res, res);
+      };
+      if (img.complete) go(); else img.addEventListener('load', go, { once: true });
+    } catch (e) { res(); }
+  })));
   await Promise.all($$('img').map(i => i.complete ? 0 : new Promise(r => { i.onload = i.onerror = r; })));
   /* embedded website demos (iframes): wait until their page, fonts and images are really there */
   await Promise.all($$('iframe').map(async f => {
@@ -336,7 +363,7 @@ async function preparePrint() {
     await Promise.all([...d.images].map(i => { i.loading = 'eager'; return i.complete ? 0 : new Promise(r => { i.onload = i.onerror = r; setTimeout(r, 12000); }); }));
     try { await Promise.race([d.fonts.ready, new Promise(r => setTimeout(r, 6000))]); } catch (e) {}
   }));
-  await new Promise(r => setTimeout(r, 500));
+  await new Promise(r => setTimeout(r, 150));
   window.__pdfReady = true;
 }
 

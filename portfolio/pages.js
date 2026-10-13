@@ -73,7 +73,7 @@ function pageEnd(version) {
     <div class="end-info" data-a style="--d:2">${info}</div>
     <p class="end-avail" data-a style="--d:3"><i></i>Open to in-house roles in Hamburg or remote.</p>
     ${version === 'deep' ? '<p class="end-note" data-a style="--d:3">Thank you for taking the time.</p>' : ''}
-    <div class="end-egg">You made it to the last page. The Konami code doesn’t work in a PDF, but my phone number does.</div>${dock()}`);
+    <div class="end-egg">You made it to the last page. The coffee’s on me if you call.</div>${dock()}`);
 }
 
 /* ═══ case pages ═══ */
@@ -89,9 +89,11 @@ function customParts(c) {
     frag.querySelectorAll('style, link').forEach(n => holder.appendChild(n));
     document.head.appendChild(holder);
   }
-  /* nothing to click on paper: drop the sound hint from the reel labels */
-  frag.querySelectorAll('.t-label em').forEach(e => { if (/click for sound/i.test(e.textContent)) e.remove(); });
-  frag.querySelectorAll('.car-btn').forEach(e => e.remove());
+  /* nothing to click on paper: in the export, drop the sound hint from the reel labels (the viewer keeps it on hover) */
+  if (new URLSearchParams(location.search).get('print') === '1') {
+    frag.querySelectorAll('.t-label em').forEach(e => { if (/click for sound/i.test(e.textContent)) e.remove(); });
+    frag.querySelectorAll('.car-btn').forEach(e => e.remove());
+  }
   const jx = frag.querySelector('.jx');
   return { frag, jx, surface: jx.querySelector('.surface'), deepIn: jx.querySelector('.deep-in') };
 }
@@ -233,14 +235,19 @@ function tweakNrg(hero) {
      TODO(vivi): confirm this photo (lineup tube in daylight) is the one you want in the Motion tile */
   const mo = [...hero.querySelectorAll('.tile')].find(t => /Motion/.test(t.textContent));
   const v = mo && mo.querySelector('video');
-  if (v) { const img = document.createElement('img'); img.src = '/work/basteln/web/nrg-chips.jpg'; img.alt = ''; img.className = v.className; img.style.cssText = 'position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:50% 35%'; v.replaceWith(img); mo.querySelectorAll('.play-badge').forEach(x => x.remove()); const lb = mo.querySelector('.t-label b'); if (lb) lb.textContent = 'Packaging'; }
+  if (v) { const img = document.createElement('img'); img.src = '/work/basteln/web/nrg-chips.jpg'; img.alt = ''; img.className = v.className; img.style.cssText = 'position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:50% 35%'; v.replaceWith(img); mo.querySelectorAll('.play-badge').forEach(x => x.remove()); }
   /* Merch tile: the lighter photo as background, the four lighters on top */
   const me = hero.querySelector('.t-lighters');
   if (me) me.style.cssText += `;background:linear-gradient(rgba(18,19,31,.25),rgba(18,19,31,.25)),url(${abs('work/basteln/web/nrg-lighter-flame.jpg')}) 50% 100%/100% auto no-repeat #12131F`; me.classList.add('nrg-merch');
 }
 function tweakEbru(hero) {
-  /* the website demo is a live iframe on the website; in the export it shows the top of the page */
-  const f = hero.querySelector('iframe'); if (f) { f.setAttribute('scrolling', 'no'); f.setAttribute('src', f.getAttribute('src') + '?static'); const l = hero.querySelector('.t-site .t-label'); if (l) l.remove(); }
+  /* In the viewer the website demo is live: you can scroll through it and the hero animation runs.
+     A PDF file cannot do either, so the export (?print=1) shows a still of the top of the page. */
+  const f = hero.querySelector('iframe'); if (!f) return;
+  if (new URLSearchParams(location.search).get('print') === '1') {
+    f.setAttribute('scrolling', 'no'); f.setAttribute('src', f.getAttribute('src') + '?static');
+    const l = hero.querySelector('.t-site .t-label'); if (l) l.remove();
+  }
 }
 /* JCO: the Sub-brand label sits a little higher so it doesn't cover the lettering of the Ami Technu artwork */
 function tweakJco(hero) {
@@ -322,7 +329,7 @@ function buildShort(cases) {
     { label: 'Studio Liebe · Story', html: pageStory(sl, 9, N, 'MI4L Family · 2/3'), c: sl },
     { label: 'NRG', html: pageBento(nrg, 10, N, { mark: 'MI4L Family · 3/3', tweak: tweakNrg }), c: nrg },
     { label: 'NRG · Story', html: pageStory(nrg, 11, N, 'MI4L Family · 3/3'), c: nrg },
-    { label: 'Physiotherapie mit Herz', html: pageBento(eb, 12, N, { tweak: tweakEbru, cls: 'p-ebru1' }), c: eb },
+    { label: 'Mobile Physio mit Herz', html: pageBento(eb, 12, N, { tweak: tweakEbru, cls: 'p-ebru1' }), c: eb },
     { label: 'Basteln', html: pageAlso(13, N) },
     { label: 'Contact', html: pageEnd('short') }
   ];

@@ -334,4 +334,14 @@ body.print .p-cover .welcome small,body.print .p-end .bubble{text-shadow:0 2px 0
 body.print .p-cover .welcome p span{text-shadow:0 1px 0 rgba(28,58,110,.35)!important}
 
 /* bento tiles: the account name sits on a soft dark chip so it stays readable over any artwork (no blur: it would turn into a box in the PDF) */
-.p-hero .tile .t-ig{background:rgba(10,14,24,.55);padding:3px 9px 3px 4px;border-radius:99px}
+/* account name + avatar on the artwork: a wide, soft dark fade behind them in the top-left of the tile
+   (a plain gradient, not a blur, so it stays clean in the PDF) */
+.p-hero .tile .t-ig{background:none;padding:0;border-radius:0}
+.p-hero .tile:has(.t-ig)::before{content:'';position:absolute;left:0;top:0;width:100%;height:112px;z-index:2;pointer-events:none;
+  background:radial-gradient(ellipse 100% 100% at 0 0,rgba(4,6,14,.85) 0,rgba(4,6,14,.58) 45%,rgba(4,6,14,0) 100%)}
+body.print .page .tile .t-ig{text-shadow:none!important}
+body.print .page .tile .t-ig img{box-shadow:0 0 0 1.5px #fff!important}
+
+/* longer hover labels ("… · click for sound") need more room in the viewer */
+.p-hero .tile:hover .t-label{max-width:calc(100% - 18px)}
+.p-hero .tile:hover .t-label em{max-width:300px!important;white-space:normal!important;line-height:1.35}
