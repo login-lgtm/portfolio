@@ -2217,6 +2217,10 @@
         transition:opacity .22s ease, transform .22s cubic-bezier(.32,.72,0,1);
       }
       .mob-sheet.mob-window.open { opacity:1; transform:translate(-50%,-50%) scale(1); }
+      /* Basteln is long and picture-heavy: a taller, wider window. */
+      .mob-sheet.mob-window.mob-window-wide { width:94vw; max-height:84vh; }
+      .mob-sheet.mob-window.mob-window-wide .mob-sheet-content { padding:14px 14px 28px; }
+      @supports (height:1dvh) { .mob-sheet.mob-window.mob-window-wide { max-height:84dvh; } }
       .mob-sheet.mob-window .mob-sheet-handle { display:none; }
       .mob-sheet.mob-window .mob-sheet-header { padding:12px 14px; top:0; }
       .mob-sheet.mob-window .mob-sheet-close { display:none; }
@@ -2236,6 +2240,36 @@
       .mob-sheet-content .cs-jumpnav {
         top:70px; margin:0 -22px 0; padding:8px 22px; border-radius:0;
       }
+
+      /* ── Touch polish ──
+         Tap targets of at least ~44px without changing how anything
+         looks: the visible dot/icon stays small, an invisible ::after
+         extends the hit area. */
+      .mob-window-traffic .wt-close { position:relative; }
+      .mob-window-traffic .wt-close::after { content:''; position:absolute; inset:-17px -12px; }
+      .mob-sheet-close { position:relative; }
+      .mob-sheet-close::after { content:''; position:absolute; inset:-8px; }
+      .m-nav-linkedin, .m-topbar-star { position:relative; }
+      .m-nav-linkedin::after, .m-topbar-star::after { content:''; position:absolute; inset:-8px; }
+      .m-footer { gap:0 4px; font-size:10.5px; }
+      .m-footer a { padding:12px 8px; margin:-12px -4px; }
+
+      /* Intro line was 11.5px in the soft grey — the first thing a
+         visitor reads, so it gets body size and the stronger grey. */
+      .m-hero-intro { font-size:13px; line-height:1.55; color:var(--text-mid); max-width:310px; }
+      .m-folder-label { font-size:12.5px; }
+
+      /* dvh = the visible viewport on iOS Safari (vh includes the area
+         behind the collapsing address bar, so sheets got cut off). */
+      @supports (height:1dvh) {
+        .mob-sheet { max-height:88dvh; }
+        .mob-sheet.mob-window { max-height:74dvh; }
+      }
+      /* Scrolling inside a sheet must not scroll the page behind it. */
+      .mob-sheet { overscroll-behavior:contain; -webkit-overflow-scrolling:touch; }
+      .mob-sheet:not(.mob-window) .mob-sheet-handle,
+      .mob-sheet:not(.mob-window) .mob-sheet-header { touch-action:none; }
+      .mob-sheet.dragging { transition:none; }
     }
     @media (min-width: 769px) {
       #phone { display:none; }
@@ -3620,17 +3654,17 @@
         </span>
         <span class="m-folder-label">Case Studies</span>
       </button>
-      <button class="m-folder" onclick="mobOpenProtected('downloads')">
-        <span class="m-folder-img">
-          <img src="images/icons/downloads.png" alt="">
-        </span>
-        <span class="m-folder-label">Downloads</span>
-      </button>
       <button class="m-folder" onclick="mobOpenSheet('basteln')">
         <span class="m-folder-img">
           <img src="images/icons/basteln.png" alt="">
         </span>
         <span class="m-folder-label">Basteln</span>
+      </button>
+      <button class="m-folder" onclick="mobOpenProtected('downloads')">
+        <span class="m-folder-img">
+          <img src="images/icons/downloads.png" alt="">
+        </span>
+        <span class="m-folder-label">Downloads</span>
       </button>
     </div>
 
@@ -5352,7 +5386,9 @@ function mobOpenSheet(key){
   // the next frame, keeps the open animation to just fade + scale.
   sheet.style.transition = 'none';
   sheet.classList.remove('open');
-  sheet.classList.toggle('mob-window', key==='about'||key==='contact'||key==='tools'||key==='help');
+  sheet.classList.toggle('mob-window', key==='about'||key==='contact'||key==='tools'||key==='help'||key==='basteln');
+  sheet.classList.toggle('mob-window-wide', key==='basteln');
+  sheet.scrollTop=0;
   void sheet.offsetWidth;
   sheet.style.transition = '';
   document.getElementById('mob-sheet-title').textContent=d.title;
@@ -5378,6 +5414,36 @@ function closeMobSheet(){
   document.getElementById('mob-sheet').classList.remove('open');
   document.getElementById('mob-overlay').classList.remove('open');
 }
+
+/* Swipe down on the handle/header to dismiss a bottom sheet (the
+   centred "window" sheets keep their traffic-light close button). */
+(function() {
+  const sheet = document.getElementById('mob-sheet');
+  if (!sheet) return;
+  let startY = 0, dy = 0, tracking = false;
+  sheet.addEventListener('pointerdown', e => {
+    if (sheet.classList.contains('mob-window')) return;
+    if (!e.target.closest('.mob-sheet-handle, .mob-sheet-header')) return;
+    if (e.target.closest('button')) return;
+    tracking = true; startY = e.clientY; dy = 0;
+    sheet.classList.add('dragging');
+    sheet.setPointerCapture(e.pointerId);
+  });
+  sheet.addEventListener('pointermove', e => {
+    if (!tracking) return;
+    dy = Math.max(0, e.clientY - startY);
+    sheet.style.transform = 'translateY(' + dy + 'px)';
+  });
+  function end() {
+    if (!tracking) return;
+    tracking = false;
+    sheet.classList.remove('dragging');
+    sheet.style.transform = '';
+    if (dy > 90) closeMobSheet();
+  }
+  sheet.addEventListener('pointerup', end);
+  sheet.addEventListener('pointercancel', end);
+})();
 
 
 /* Sidebar starts empty and fills in once ensureCasesLoaded() resolves —

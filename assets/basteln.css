@@ -135,3 +135,21 @@
 
 .bst-m-more { margin: 8px 16px 24px; padding: 16px; border: 1.5px dashed rgba(154,160,170,.6); border-radius: 14px; text-align: center; font-family: 'JetBrains Mono', monospace; font-size: 13px; font-weight: 700; color: var(--text, #3C3C43); }
 .bst-m-more small { display: block; margin-top: 4px; font-weight: 400; font-size: 11px; opacity: .6; }
+
+/* Mobile window refinements */
+.bst-m { padding: 0; }
+.bst-m-head { margin-bottom: 18px; }
+.bst-m-title { font-size: 20px; }
+.bst-m-head p { font-size: 12.5px; margin-bottom: 8px; }
+.bst-m-zone { padding: 24px 12px 2px; margin-bottom: 24px; }
+.bst-m-card { margin-bottom: 24px; }
+.bst-m-card h3 { text-align: left; }
+.bst-m-media { padding-top: 14px; }
+.bst-m .polaroid { box-sizing: border-box; max-width: 100%; }
+.bst-m-media .phone { max-width: 100%; }
+.bst-m-media .lighters { width: 364px; margin: -26px 0 -80px; transform: translateX(12px) scale(.72); transform-origin: 50% 0; flex-shrink: 0; }
+.bst-m-more { margin: 4px 0 8px; }
+.bst-m-media { overflow-x: clip; }
+.bst-m-media { flex-direction: column; align-items: center; }
+.bst-m-media .phone { flex-shrink: 0; }
+.bst-m-media .phone-cap { margin-top: 12px; font-size: 11px; color: var(--text-mid); }

@@ -271,12 +271,19 @@
   });
 
   /* Mobile: the same pieces as a vertical list for the bottom sheet. */
+  /* Polaroids are authored at fixed pixel sizes for the board; on a phone they
+     must shrink to the window, keeping their photo's aspect ratio. */
+  function fluid(html) {
+    return html.replace(/<div class="polaroid" style="width:(\d+)px"><div class="tape"><\/div><div class="ph" style="height:(\d+)px">/g, function (m, w, h) {
+      return '<div class="polaroid" style="width:min(' + w + 'px,100%)"><div class="tape"></div><div class="ph" style="height:auto;aspect-ratio:' + (w - 20) + '/' + h + '">';
+    });
+  }
   window.bstMobileHTML = function () {
     var h = '<div class="bst-m"><div class="bst-m-head"><div class="bst-m-title">CEO of Basteln</div><p>Roughly: CEO of Crafting.<br>A title my friends gave me.</p><p>I love making things by hand. Gifts for friends, little extras for artists, whole worlds for events. Whenever there is an occasion, I am probably cutting, gluing or printing something for it.</p></div>';
     zones.filter(function (z) { return !z.empty; }).forEach(function (z) {
       h += '<section class="bst-m-zone" style="--zc:' + z.c + '"><div class="bst-m-label">' + z.label + (z.sub ? ' <small>' + z.sub + '</small>' : '') + '</div>';
       objs.filter(function (o) { return o.zone === z.id && !o.plain; }).forEach(function (o) {
-        h += '<article class="bst-m-card"><div class="bst-m-media">' + o.html + '</div><h3>' + o.title + '</h3><p>' + o.text + '</p></article>';
+        h += '<article class="bst-m-card"><div class="bst-m-media">' + fluid(o.html) + '</div><h3>' + o.title + '</h3><p>' + o.text + '</p></article>';
       });
       h += '</section>';
     });
