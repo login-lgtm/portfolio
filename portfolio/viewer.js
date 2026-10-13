@@ -9,7 +9,7 @@ const PRINT = params.get('print') === '1';
 let version = params.get('v') === 'deep' ? 'deep' : 'short';
 /* The Deep Dive is still being polished: visitors see a "coming soon" card instead of the pages.
    Localhost always opens it, so it can keep being worked on locally. */
-const DEV = /^(localhost|127\.0\.0\.1)$/.test(location.hostname);
+const DEV = /^(localhost|127\.0\.0\.1)$/.test(location.hostname) && params.get('soon') !== '1';   /* ?soon=1 previews the visitor view on localhost */
 const deepLocked = v => v === 'deep' && !DEV && !PRINT;
 if (deepLocked('deep')) { const t = document.querySelector('.exp[data-v="deep"] .exp-t'); if (t) t.textContent = 'Soon'; }
 function showSoon(on) {

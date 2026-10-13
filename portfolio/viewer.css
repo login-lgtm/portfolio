@@ -210,9 +210,21 @@ body.print .jx *{animation:none!important;transition:none!important}
 body.deep-soon .soon{display:flex}
 body.deep-soon #stage{visibility:hidden}
 .soon-card{max-width:460px;text-align:center;padding:36px 34px;border-radius:22px;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.16);color:#fff}
-.soon-tag{display:inline-block;font:700 10px var(--mono);letter-spacing:.14em;text-transform:uppercase;color:#7FD7FF;border:1px solid rgba(127,215,255,.4);border-radius:99px;padding:5px 12px;margin-bottom:16px}
-.soon-card h2{margin:0 0 14px;font:500 26px/1.25 var(--mono);letter-spacing:-.01em}
+
+.soon-card h2{margin:0 0 14px;font:600 20px/1.3 var(--sf);letter-spacing:-.015em}
 .soon-card p{margin:0 0 10px;font-size:14px;line-height:1.6;color:rgba(255,255,255,.72)}
 .soon-btn{margin-top:14px;padding:10px 20px;border-radius:10px;background:var(--blue);color:#fff;font-size:13px;font-weight:600}.soon-btn:hover{background:var(--blue-d)}
 @media (max-width:1100px){.soon{right:var(--gap)}}
 @media (max-width:760px){.soon{left:0;right:0}}
+
+/* "in progress" pill: soft blue glass with a pulsing dot, to show somebody is actually working on it */
+.soon-tag{display:inline-flex;align-items:center;gap:9px;margin-bottom:18px;padding:7px 15px 7px 12px;border-radius:99px;
+  font:700 10px/1 var(--mono);letter-spacing:.14em;text-transform:uppercase;color:#CBE8FF;
+  background:linear-gradient(180deg,rgba(13,153,255,.26),rgba(13,153,255,.12));border:1px solid rgba(110,190,255,.45);
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.18),0 6px 18px rgba(13,153,255,.18)}
+.soon-tag::before{content:'';width:8px;height:8px;border-radius:50%;background:#4DB6FF;animation:soonPulse 1.8s ease-out infinite;
+  box-shadow:0 0 0 0 rgba(77,182,255,.6),0 0 9px 1px rgba(77,182,255,.9)}
+@keyframes soonPulse{0%{box-shadow:0 0 0 0 rgba(77,182,255,.55),0 0 9px 1px rgba(77,182,255,.9)}70%{box-shadow:0 0 0 9px rgba(77,182,255,0),0 0 9px 1px rgba(77,182,255,.9)}100%{box-shadow:0 0 0 0 rgba(77,182,255,0),0 0 9px 1px rgba(77,182,255,.9)}}
+@media (prefers-reduced-motion:reduce){.soon-tag::before{animation:none}}
+/* Deep Dive is not released: no layers list yet */
+body.deep-soon .lp-sec.grow{display:none}
