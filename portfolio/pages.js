@@ -233,12 +233,12 @@ function tweakMi4l(hero) {
 function tweakNrg(hero) {
   /* the Motion tile shows a brighter photo from the Supermarket Run material (the Campaign tile keeps its reel).
      TODO(vivi): confirm this photo (lineup tube in daylight) is the one you want in the Motion tile */
-  const mo = [...hero.querySelectorAll('.tile')].find(t => /Motion/.test(t.textContent));
+  const mo = [...hero.querySelectorAll('.tile')].find(t => /Motion|Product shoot/.test(t.textContent));
   const v = mo && mo.querySelector('video');
   if (v) { const img = document.createElement('img'); img.src = '/work/basteln/web/nrg-chips.jpg'; img.alt = ''; img.className = v.className; img.style.cssText = 'position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:50% 35%'; v.replaceWith(img); mo.querySelectorAll('.play-badge').forEach(x => x.remove()); }
   /* Merch tile: the lighter photo as background, the four lighters on top */
   const me = hero.querySelector('.t-lighters');
-  if (me) me.style.cssText += `;background:linear-gradient(rgba(18,19,31,.25),rgba(18,19,31,.25)),url(${abs('work/basteln/web/nrg-lighter-flame.jpg')}) 50% 100%/100% auto no-repeat #12131F`; me.classList.add('nrg-merch');
+  if (me) { me.style.cssText += `;background:linear-gradient(rgba(18,19,31,.25),rgba(18,19,31,.25)),url(${abs('work/basteln/web/nrg-lighter-flame.jpg')}) 50% 100%/100% auto no-repeat #12131F`; me.classList.add('nrg-merch'); }
 }
 function tweakEbru(hero) {
   /* In the viewer the website demo is live: you can scroll through it and the hero animation runs.
