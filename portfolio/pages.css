@@ -345,3 +345,6 @@ body.print .page .tile .t-ig img{box-shadow:0 0 0 1.5px #fff!important}
 /* longer hover labels ("… · click for sound") need more room in the viewer */
 .p-hero .tile:hover .t-label{max-width:calc(100% - 18px)}
 .p-hero .tile:hover .t-label em{max-width:300px!important;white-space:normal!important;line-height:1.35}
+
+/* keep text metrics identical at every scale (no hinting-based line breaks when the frame is scaled to the screen) */
+.page{text-rendering:geometricPrecision;-webkit-text-size-adjust:100%;text-size-adjust:100%}

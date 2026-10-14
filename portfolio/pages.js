@@ -80,10 +80,28 @@ function pageEnd(version) {
 const surface = (inner, extra = '') => `<div class="p-surface ${extra}">${inner}</div>`;
 
 /* hero of a hand-built case = the real hero from the website */
+/* The pages are fixed A4 frames (1122 x 793) that get scaled to fit any screen. Their layout must therefore never depend on
+   the size of the device: drop width/height @media blocks and turn vw/vh units into px of the reference page. */
+function fixedCss(css) {
+  let out = '', i = 0;
+  while (i < css.length) {
+    const at = css.indexOf('@media', i);
+    if (at < 0) { out += css.slice(i); break; }
+    out += css.slice(i, at);
+    const open = css.indexOf('{', at); if (open < 0) { out += css.slice(at); break; }
+    const cond = css.slice(at, open);
+    let d = 1, j = open + 1;
+    while (j < css.length && d) { if (css[j] === '{') d++; else if (css[j] === '}') d--; j++; }
+    if (!/(min|max)-(width|height)|width\s*[<>]|orientation/.test(cond)) out += css.slice(at, j);
+    i = j;
+  }
+  return out.replace(/(-?\d*\.?\d+)(vw|vh)\b/g, (m, n, u) => (parseFloat(n) * (u === 'vw' ? 11.22 : 7.93)).toFixed(2) + 'px');
+}
 function customParts(c) {
   const tpl = document.createElement('template');
   tpl.innerHTML = fixPaths(c.customHTML);
   const frag = tpl.content;
+  frag.querySelectorAll('style').forEach(st => { st.textContent = fixedCss(st.textContent); });
   if (!document.querySelector(`[data-pf-assets="${c.id}"]`)) {
     const holder = document.createElement('div'); holder.dataset.pfAssets = c.id; holder.hidden = true;
     frag.querySelectorAll('style, link').forEach(n => holder.appendChild(n));
