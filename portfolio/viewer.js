@@ -258,14 +258,19 @@ function buildSky() {
     for (let ty = 0; ty < PH; ty += 200) for (let tx = 0; tx < PW; tx += 220)
       [[20, 30, 1.3], [90, 80, 1], [150, 40, 1.6], [60, 120, 1], [180, 140, 1.2], [10, 160, 1]].forEach(([x, y, r]) => { g.beginPath(); g.arc(tx + x, ty + y, r, 0, 7); g.fill(); });
   }
-  g.filter = 'blur(20px)';                            /* clouds */
+  /* clouds: soft ellipses as radial gradients (ctx.filter blur is not supported on iOS Safari) */
   SKY_CLOUDS.forEach(([x, ty, w, hh, bf, af, k]) => {
-    const X = x * PW, Y = ty / 100 * PH, z = 1.35;
-    g.fillStyle = `rgba(255,255,255,${.9 * Math.min(1, cloud * k)})`;
-    const el = (ox, oy, ew, eh) => { g.beginPath(); g.ellipse(X + (ox + ew / 2) * z, Y + (oy + eh / 2) * z, ew * z / 2, eh * z / 2, 0, 0, 7); g.fill(); };
+    const X = x * PW, Y = ty / 100 * PH, z = 1.35, a = .9 * Math.min(1, cloud * k), B = 22;
+    const el = (ox, oy, ew, eh) => {
+      const rx = ew * z / 2 + B, ry = eh * z / 2 + B, edge = Math.max(.1, 1 - 2 * B / (rx + ry));
+      g.save(); g.translate(X + (ox + ew / 2) * z, Y + (oy + eh / 2) * z); g.scale(rx, ry);
+      const rg = g.createRadialGradient(0, 0, 0, 0, 0, 1);
+      rg.addColorStop(0, `rgba(255,255,255,${a})`); rg.addColorStop(edge * .8, `rgba(255,255,255,${a * .92})`);
+      rg.addColorStop(edge + (1 - edge) * .45, `rgba(255,255,255,${a * .4})`); rg.addColorStop(1, 'rgba(255,255,255,0)');
+      g.fillStyle = rg; g.beginPath(); g.arc(0, 0, 1, 0, 7); g.fill(); g.restore();
+    };
     el(0, 0, w, hh); if (bf) el(bf[3], bf[2], bf[0], bf[1]); if (af) el(af[3], af[2], af[0], af[1]);
   });
-  g.filter = 'none';
   const luma = c => .299 * c[0] + .587 * c[1] + .114 * c[2];
   return (skyCache = { url: c.toDataURL('image/jpeg', .92), light: (luma(top) + luma(mid)) / 2 > 150 });
 }
