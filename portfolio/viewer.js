@@ -201,86 +201,22 @@ async function download(v) {
 $('#btn-dl').onclick = () => download(version);
 $$('.exp').forEach(b => b.onclick = () => download(b.dataset.v));
 
-/* ── sky: the same time-of-day sky as vivienevers.de (frozen, no animation) ──
-   Keyframes copied from the website's updateSky(). Time = Hamburg time (the PDF is
-   rendered on a server in UTC); ?h=14.5 overrides the hour for testing. */
-const SKY_KEYS = [
-  { h: 0,    top:[10,14,30],   mid:[15,20,45],   bot:[20,26,60],   star:1,   cloud:.12, glow:0,   gc:[255,190,140,0] },
-  { h: 4.5,  top:[20,28,55],   mid:[45,45,85],   bot:[95,80,105],  star:.5,  cloud:.18, glow:.25, gc:[255,170,140,.35] },
-  { h: 6.5,  top:[90,120,190], mid:[255,175,140],bot:[255,214,160],star:0,   cloud:.55, glow:.85, gc:[255,190,140,.65] },
-  { h: 9,    top:[110,180,240],mid:[160,215,250],bot:[210,235,255],star:0,   cloud:.85, glow:.15, gc:[255,210,170,.3] },
-  { h: 13,   top:[90,170,240], mid:[140,205,250],bot:[200,230,255],star:0,   cloud:.9,  glow:0,   gc:[255,210,170,0] },
-  { h: 17.5, top:[90,150,220], mid:[160,195,225],bot:[230,205,180],star:0,   cloud:.8,  glow:.15, gc:[255,170,120,.35] },
-  { h: 18.8, top:[70,90,150],  mid:[230,140,110],bot:[255,175,120],star:.05, cloud:.6,  glow:.9,  gc:[255,140,90,.7] },
-  { h: 20.5, top:[30,35,75],   mid:[70,60,100],  bot:[150,95,105], star:.5,  cloud:.3,  glow:.35, gc:[255,140,110,.35] },
-  { h: 22,   top:[12,16,34],   mid:[18,22,48],   bot:[24,28,60],   star:1,   cloud:.12, glow:0,   gc:[255,190,140,0] },
-  { h: 24,   top:[10,14,30],   mid:[15,20,45],   bot:[20,26,60],   star:1,   cloud:.12, glow:0,   gc:[255,190,140,0] }
-];
-const SKY_CLOUDS = [   /* x (share of width), top %, w, h, before [w,h,top,left], after [w,h,top,left], strength */
-  [.08, 14, 200, 60, [110, 80, -40, 20], [90, 60, -24, 100], 1],
-  [.60, 28, 140, 46, [80, 60, -30, 14], null, .75],
-  [.30,  8, 250, 70, [130, 90, -46, 30], [100, 70, -30, 150], .6],
-  [.80, 38, 170, 52, [95, 70, -32, 18], [70, 50, -18, 110], .7],
-  [.48, 20, 120, 40, [65, 50, -24, 12], null, .55],
-  [.04, 46, 230, 64, [120, 80, -40, 26], [95, 64, -26, 140], .65],
-  [.70, 12, 160, 50, [85, 64, -30, 16], [65, 46, -18, 100], .5],
-  [.36, 34, 190, 56, [100, 72, -34, 20], [75, 54, -20, 120], .6]
-];
+/* ── sky: pre-rendered images, one per hour of the day (Hamburg time). Every device and the PDF
+   export load the very same file, so the desktop background never differs between devices.
+   ?h=14.5 overrides the hour for testing. ── */
+const SKY_LIGHT = [7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17];
 function skyHour() {
   const q = parseFloat(params.get('h'));
-  if (!isNaN(q)) return q;
-  const p = Object.fromEntries(new Intl.DateTimeFormat('en-GB', { hour: 'numeric', minute: 'numeric', hourCycle: 'h23', timeZone: 'Europe/Berlin' }).formatToParts(new Date()).map(x => [x.type, x.value]));
-  return +p.hour + +p.minute / 60;
+  if (!isNaN(q)) return Math.floor(q) % 24;
+  return +new Intl.DateTimeFormat('en-GB', { hour: 'numeric', hourCycle: 'h23', timeZone: 'Europe/Berlin' }).format(new Date());
 }
-let skyCache = null;
-function buildSky() {
-  if (skyCache) return skyCache;
-  const h = skyHour(), lerp = (a, b, t) => a + (b - a) * t;
-  let a = SKY_KEYS[0], b = SKY_KEYS[SKY_KEYS.length - 1];
-  for (let i = 0; i < SKY_KEYS.length - 1; i++) if (h >= SKY_KEYS[i].h && h <= SKY_KEYS[i + 1].h) { a = SKY_KEYS[i]; b = SKY_KEYS[i + 1]; break; }
-  const t = (h - a.h) / (b.h - a.h), mix = k => a[k].map((v, i) => lerp(v, b[k][i], t));
-  const top = mix('top'), mid = mix('mid'), bot = mix('bot'), gc = mix('gc');
-  const star = lerp(a.star, b.star, t), cloud = lerp(a.cloud, b.cloud, t), glow = lerp(a.glow, b.glow, t);
-  const rgb = c => `rgb(${c[0] | 0},${c[1] | 0},${c[2] | 0})`;
-  const S = 1.5, c = document.createElement('canvas'); c.width = PW * S; c.height = PH * S;
-  const g = c.getContext('2d'); g.scale(S, S);
-  const lg = g.createLinearGradient(0, 0, 0, PH);
-  lg.addColorStop(0, rgb(top)); lg.addColorStop(.55, rgb(mid)); lg.addColorStop(1, rgb(bot));
-  g.fillStyle = lg; g.fillRect(0, 0, PW, PH);
-  if (glow > .01) {                                   /* horizon glow (sunrise / sunset) */
-    const d = Math.min(PW * .62, 720), cx = PW / 2, cy = PH * 1.12 - d / 2;
-    const rg = g.createRadialGradient(cx, cy, 0, cx, cy, d / 2);
-    rg.addColorStop(0, `rgba(${gc[0] | 0},${gc[1] | 0},${gc[2] | 0},${gc[3] * glow})`); rg.addColorStop(.7, `rgba(${gc[0] | 0},${gc[1] | 0},${gc[2] | 0},0)`);
-    g.fillStyle = rg; g.fillRect(0, 0, PW, PH);
-  }
-  if (star > .01) {                                   /* tiled stars */
-    g.fillStyle = `rgba(255,255,255,${star})`;
-    for (let ty = 0; ty < PH; ty += 200) for (let tx = 0; tx < PW; tx += 220)
-      [[20, 30, 1.3], [90, 80, 1], [150, 40, 1.6], [60, 120, 1], [180, 140, 1.2], [10, 160, 1]].forEach(([x, y, r]) => { g.beginPath(); g.arc(tx + x, ty + y, r, 0, 7); g.fill(); });
-  }
-  /* clouds: soft ellipses as radial gradients (ctx.filter blur is not supported on iOS Safari) */
-  SKY_CLOUDS.forEach(([x, ty, w, hh, bf, af, k]) => {
-    const X = x * PW, Y = ty / 100 * PH, z = 1.35, a = .9 * Math.min(1, cloud * k), B = 22;
-    const el = (ox, oy, ew, eh) => {
-      const rx = ew * z / 2 + B, ry = eh * z / 2 + B, edge = Math.max(.1, 1 - 2 * B / (rx + ry));
-      g.save(); g.translate(X + (ox + ew / 2) * z, Y + (oy + eh / 2) * z); g.scale(rx, ry);
-      const rg = g.createRadialGradient(0, 0, 0, 0, 0, 1);
-      rg.addColorStop(0, `rgba(255,255,255,${a})`); rg.addColorStop(edge * .8, `rgba(255,255,255,${a * .92})`);
-      rg.addColorStop(edge + (1 - edge) * .45, `rgba(255,255,255,${a * .4})`); rg.addColorStop(1, 'rgba(255,255,255,0)');
-      g.fillStyle = rg; g.beginPath(); g.arc(0, 0, 1, 0, 7); g.fill(); g.restore();
-    };
-    el(0, 0, w, hh); if (bf) el(bf[3], bf[2], bf[0], bf[1]); if (af) el(af[3], af[2], af[0], af[1]);
-  });
-  const luma = c => .299 * c[0] + .587 * c[1] + .114 * c[2];
-  return (skyCache = { url: c.toDataURL('image/jpeg', .92), light: (luma(top) + luma(mid)) / 2 > 150 });
-}
+const SKY_H = skyHour(), SKY_URL = `sky/${SKY_H}.jpg`;
 function paintSky(root = document) {
-  const sk = buildSky();
   $$('.p-desk', root).forEach(pg => {
     const el = $('.sky', pg); if (!el) return;
-    el.style.background = `url(${sk.url}) center/cover`;
+    el.style.background = `url(${SKY_URL}) center/cover`;
     $$('.cl', pg).forEach(x => x.remove());
-    pg.classList.toggle('sky-light', sk.light);
+    pg.classList.toggle('sky-light', SKY_LIGHT.includes(SKY_H));
   });
 }
 
@@ -298,6 +234,7 @@ async function preparePrint() {
   await document.fonts.ready;
   /* the sky is rasterised: PDF readers like macOS Preview mishandle layered alpha gradients */
   paintSky();
+  await new Promise(r => { const i = new Image(); i.onload = i.onerror = r; i.src = SKY_URL; });
   /* videos -> still images (first good frame) */
   const stillOf = v => new Promise(res => {
     const t0 = performance.now(), src = v.getAttribute('src');
