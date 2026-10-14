@@ -210,7 +210,7 @@ function skyHour() {
   if (!isNaN(q)) return Math.floor(q) % 24;
   return +new Intl.DateTimeFormat('en-GB', { hour: 'numeric', hourCycle: 'h23', timeZone: 'Europe/Berlin' }).format(new Date());
 }
-const SKY_H = skyHour(), SKY_URL = `sky/${SKY_H}.jpg`;
+const SKY_H = skyHour(), SKY_URL = `/portfolio/sky/${SKY_H}.jpg`;
 function paintSky(root = document) {
   $$('.p-desk', root).forEach(pg => {
     const el = $('.sky', pg); if (!el) return;
