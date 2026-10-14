@@ -186,9 +186,11 @@ async function download(v) {
   if (deepLocked(v)) { toast('The Deep Dive is still in the works and will be here soon'); return; }
   const btns = $$('#btn-dl, .exp'); btns.forEach(b => b.classList.add('busy'));
   $('#btn-dl-label').textContent = 'Preparing PDF…';
-  toast('Preparing your PDF. This takes a few seconds');
+  if (v !== 'short') toast('Preparing your PDF. This takes a few seconds');
   try {
-    const r = await fetch('/api/portfolio-pdf?v=' + v, { cache: 'no-store' });
+    /* Short: ready-made file from the CDN (instant); the live export is only the fallback */
+    let r = v === 'short' ? await fetch('/portfolio/Vivien-Evers_Portfolio_Short_2026.pdf').catch(() => null) : null;
+    if (!r || !r.ok) r = await fetch('/api/portfolio-pdf?v=' + v, { cache: 'no-store' });
     if (!r.ok) throw new Error(r.status);
     const blob = await r.blob(), a = document.createElement('a');
     a.href = URL.createObjectURL(blob);
