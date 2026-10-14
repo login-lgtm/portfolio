@@ -348,3 +348,6 @@ body.print .page .tile .t-ig img{box-shadow:0 0 0 1.5px #fff!important}
 
 /* keep text metrics identical at every scale (no hinting-based line breaks when the frame is scaled to the screen) */
 .page{text-rendering:geometricPrecision;-webkit-text-size-adjust:100%;text-size-adjust:100%}
+
+/* touch: the demo is tiny on a phone; swiping over it must scroll the page, not get trapped inside the iframe */
+@media (pointer:coarse){.p-ebru1 .t-site iframe{pointer-events:none}.p-ebru1 .t-site .t-label{display:none}}

@@ -262,6 +262,19 @@ function tweakEbru(hero) {
   /* In the viewer the website demo is live: you can scroll through it and the hero animation runs.
      A PDF file cannot do either, so the export (?print=1) shows a still of the top of the page. */
   const f = hero.querySelector('iframe'); if (!f) return;
+  /* the mockup screen is a fixed 202 x 447 px in the A4 frame: scale the 390 px wide site by plain numbers.
+     (the CSS container-query math in the case styles breaks inside the scaled viewer on some phones) */
+  /* touch devices: the demo is tiny there and iOS Safari mispositions an iframe inside the scaled stage,
+     so they get a still of the same page instead of the live iframe */
+  if (matchMedia('(pointer:coarse)').matches || /iPhone|iPad|iPod/.test(navigator.userAgent)) {
+    const im = document.createElement('img');
+    im.src = '/work/mobilephysiomitherz/site-preview.jpg'; im.alt = 'Website for Mobile Physio mit Herz';
+    im.style.cssText = 'position:absolute;left:0;top:0;width:100%;height:100%;object-fit:cover;object-position:top;display:block';
+    f.replaceWith(im); const l = hero.querySelector('.t-site .t-label'); if (l) l.remove();
+    return;
+  }
+  const k = 202 / 390;
+  f.style.cssText += `;width:390px;height:${Math.round(447 / k)}px;scale:none;transform:scale(${k.toFixed(5)});transform-origin:0 0;border-radius:${Math.round(17 / k)}px`;
   if (new URLSearchParams(location.search).get('print') === '1') {
     f.setAttribute('scrolling', 'no'); f.setAttribute('src', f.getAttribute('src') + '?static');
     const l = hero.querySelector('.t-site .t-label'); if (l) l.remove();
