@@ -5,7 +5,6 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="robots" content="noindex">
 <title>Erntezeit Freitag</title>
-<meta name="claude:viewport-fit-sides" content="cover">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow:ital,wght@0,400;0,500;0,600;1,400&family=Instrument+Sans:wght@400;500;600&display=swap">
@@ -30,6 +29,7 @@
   color-scheme:light;
 }
 *{box-sizing:border-box}
+[hidden]{display:none!important}
 body{background:var(--linen);color:var(--ink);font-family:var(--body);font-size:16px;line-height:1.55}
 
 /* Ankündigungsleiste */
@@ -85,7 +85,7 @@ canvas{position:absolute;inset:0;width:100%;height:100%;display:block}
 .paused span{width:62px;height:62px;border-radius:50%;background:rgba(245,242,238,.9);display:grid;place-items:center}
 .paused svg{width:24px;height:24px;margin-left:3px}
 
-.logo{display:inline-block;width:var(--lw,96px);aspect-ratio:236/60;background:currentColor;-webkit-mask:url("logo.png") center/contain no-repeat;mask:url("logo.png") center/contain no-repeat;flex:none}
+.logo{display:inline-block;width:var(--lw,96px);aspect-ratio:236/60;background:currentColor;-webkit-mask:url("/nedura/logo.png") center/contain no-repeat;mask:url("/nedura/logo.png") center/contain no-repeat;flex:none}
 .lc-logo{padding:14px 0 8px;color:var(--green);--lw:78px;display:flex;justify-content:center;width:100%}
 .lockup{display:flex;align-items:center;gap:12px;color:var(--green);--lw:92px;font-size:14px;font-weight:500;padding-bottom:8px}
 .lockup span{color:var(--muted)}.lockup span:first-child{color:var(--ink)}
